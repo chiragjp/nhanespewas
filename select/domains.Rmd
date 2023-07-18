@@ -1,0 +1,56 @@
+---
+title: "Exposome Phenome Domains"
+author: "Chirag Patel"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Get existing varnames
+```{r}
+con <- DBI::dbConnect(RSQLite::SQLite(), dbname='../nhanes_122322.sqlite')
+varnames <- tbl(con, "variable_names_epcf")
+tablenames <- tbl(con, "table_names_epcf")
+varnames <- varnames |> left_join(tablenames |> select(-component), by="Data.File.Name")
+
+```
+
+# Write out E table names
+```{r}
+varnames |> filter(epcf == 'e' | epcf == 'p', Variable.Name != 'SEQN') |> group_by(Variable.Name) |> collect() |> summarize(sample_vardesc=first(Variable.Description), sample_tablename=first(Data.File.Description), epcf=first(epcf), n=n()) |> write_csv("variable_domains_ep.csv")
+```
+
+
+## after categorizing, re-read
+```{r}
+varname_domain <- read_csv('./variable_domains_ep.csv')
+```
+
+
+```{r}
+varname_domain_to <- varname_domain |> select(Variable.Name, category, subcategory, epcf) |> rename(ep=epcf)
+varname_domain_to <- varname_domain_to |> mutate(varname=ifelse(Variable.Name == 'LBXHCT' & category == 'blood', 'LBXHCT_2', Variable.Name))
+varnames_2 <- varnames |> collect()
+varnames_2 <- varnames_2 |> mutate(varname = ifelse(Variable.Name == 'LBXHCT' & Variable.Description == 'Hematocrit (%)', 'LBXHCT_2', Variable.Name))
+varnames_3 <- varnames_2 |> full_join(varname_domain_to |> select(-Variable.Name), by='varname') 
+
+## add this new varname to the databases
+
+```
+
+
+```{r}
+# are there places where epcf != ep
+incorrect_1 <- varnames_3 |> filter(epcf == 'e' & ep == 'p')
+incorrect_2 <- varnames_3 |> filter(epcf == 'p' & ep == 'e')
+varnames_3 <- varnames_3 |> mutate(epcf = ifelse(epcf == 'e' & ep == 'p', 'p', epcf))
+varnames_3 <- varnames_3 |> mutate(epcf = ifelse(epcf == 'p' & ep == 'e', 'e', epcf))
+
+varnames_3 |> filter(epcf == 'p' & ep == 'e')
+varnames_3  |> select(-ep) |> write_csv('variable_domains_ep_2.csv')
+
+```

@@ -1,0 +1,13 @@
+name: pe_atlas
+title: pe_atlas
+username:
+account: chiragjp
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 9223013
+bundleId: 7430845
+url: https://chiragjp.shinyapps.io/pe_atlas/
+when: 1688730056.6357
+lastSyncTime: 1688730056.63571
+asMultiple: FALSE
+asStatic: FALSE

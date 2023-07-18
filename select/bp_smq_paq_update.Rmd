@@ -1,0 +1,394 @@
+---
+author: Chirag J Patel
+date: 03/12/23
+---
+
+
+# create new tables for blood pressure, physical activity, smoking
+# 3/7/23
+
+
+```{r}
+library(tidyverse)
+library(DBI)
+con <- DBI::dbConnect(RSQLite::SQLite(), dbname='../nhanes_122322.sqlite')
+```
+
+```{r}
+variable_information <- tbl(con, "variable_names_epcf")
+table_information <- tbl(con, "table_names_epcf") # c - control; e - exposure, f-filter; p - phenotype
+variable_information_joined <- variable_information |> left_join(table_information |> select(Data.File.Name , epcf), by="Data.File.Name")
+selected_variables <- read_csv("./select_variables_1.csv") |> filter(select == 1)
+
+variable_information_selected <- variable_information_joined |> collect() |> filter(Variable.Name %in% selected_variables$Variable.Name)
+```
+
+
+```{r FASG}
+# move FAS_G to expo
+fas_g_row <- table_information |> filter(Data.File.Name == 'FAS_G') |> mutate(epcf = 'e') |> collect() 
+rows_update(table_information, fas_g_row, by='Data.File.Name', in_place = T, copy = T, unmatched = "ignore")
+
+
+# move SSEBV to expo
+ssebv_tables <- variable_information |> filter(Variable.Name == 'SSEBV') |> select(Data.File.Name)
+
+rows_update(table_information,
+              table_information |> right_join (ssebv_tables, by='Data.File.Name') |> mutate(epcf = 'e') , # new data 
+              in_place=T, unmatched = "ignore")
+
+```
+
+```{r add row helper function to variable names}
+
+add_row_for_variable_name_like <- function(varname, var_desc, singleRow) {
+  ## create a df to add into the variable information table
+  return(singleRow |> mutate(Variable.Name = varname, Variable.Description=var_desc))
+}
+```
+
+```{r}
+avg_bp_table <- function(bpx_table) {
+  msy <- bpx_table |> select(starts_with('BPXSY')) |> rowwise() |> mutate(MSYSTOLIC=mean(c_across(1:4), na.rm=T))
+  mdi <- bpx_table |> select(starts_with('BPXDI')) |> rowwise() |> mutate(MDIASTOLIC=mean(c_across(1:4), na.rm=T))
+  bpx_table <- bpx_table |> mutate(MSYSTOLIC = msy$MSYSTOLIC, MDIASTOLIC=mdi$MDIASTOLIC)
+  bpx_table
+}
+
+
+
+bp_tabs <- variable_information_joined |> filter(Variable.Name == 'BPXSY1') |> pull(Data.File.Name)
+
+bb <- bp_tabs|> map(function(table_name) {
+  new_tab <- avg_bp_table(tbl(con, table_name) |> collect())
+})
+
+done <- bb |> map2(bp_tabs,
+                     ~dbWriteTable(con, name=.y, value=.x,overwrite = T))
+
+### add MSYS and DIAS to the table
+bpx_df <- variable_information |> filter(Variable.Name == 'BPXSY1') |> collect()
+bpx_information <- add_row_for_variable_name_like("MDIASTOLIC","Diastolic Mean", bpx_df)
+bpx_information <- bpx_information |> rbind(
+  add_row_for_variable_name_like("MSYSTOLIC", "Systolic Mean", bpx_df))
+```
+
+#Smoking variables
+
+```{r smq}
+smoking_table <- function(con, series_begin_year)  {
+  print(series_begin_year)
+  tab_name <- variable_information_joined |> filter(Variable.Name == 'SMQ020', Begin.Year == series_begin_year) |> select(Data.File.Name) |> pull()
+  demo_name <- variable_information_joined |> filter(Variable.Name == 'RIDAGEYR', Begin.Year == series_begin_year) |> select(Data.File.Name) |> pull()
+  smq <- tbl(con, tab_name) |> collect() |> left_join(tbl(con, demo_name) |> select(SEQN, RIDAGEYR) |> collect(), by = "SEQN")
+  smq <- smq |> mutate(SMQ_current_ever_never=case_when(
+    SMQ040 == 3 ~ 1, # ever, not currently
+    SMQ040 <= 3 ~ 2, # current smoker # bug
+    SMQ020 == 2 ~ 0, # never
+    TRUE ~ NA_real_
+  ))
+  ## SMQ050Q
+  ## SMQ050U
+  smq <- smq |> mutate(SMQ_how_long_since_quit_years = case_when(
+    SMQ050U == 1 ~ (SMQ050Q/365.25),
+    SMQ050U == 2 ~ (SMQ050Q/52),
+    SMQ050U == 3 ~ (SMQ050Q/12),
+    SMQ050U == 4 ~ (SMQ050Q),
+    TRUE ~ NA_real_
+  ))
+  smq <- smq |> mutate(SMQ_quit_age = RIDAGEYR - SMQ_how_long_since_quit_years) |> select(-RIDAGEYR)
+  list(table_name=tab_name, smq_table=smq)
+}
+
+
+years <- seq(1999, 2017, by=2)
+smoking_tables <- years |> map(~smoking_table(con, .x))
+done <- map(smoking_tables, function(tab_obj){
+  table_name <- tab_obj$table_name
+  tabl <- tab_obj$smq_table
+  dbWriteTable(con, table_name, tabl, overwrite=T)
+})
+
+smq_df <- variable_information |> filter(Variable.Name == 'SMQ020') |> collect()
+#SMQ_current_ever_never, SMQ_how_long_since_quit_years
+smq_information <- add_row_for_variable_name_like("SMQ_current_ever_never","Smoking: current, ever, never", smq_df)
+
+smq_information <- smq_information |> rbind(
+  add_row_for_variable_name_like("SMQ_how_long_since_quit_years", "How long since quit", smq_df)
+)
+
+smq_age_information <- add_row_for_variable_name_like("SMQ_quit_age", "Age quit smoking", smq_df)
+
+```
+
+
+#Physical activity and suggested MET
+
+```{r}
+physical_activity_table_ej_surveys <- function(con, pa_table_name) {
+  ##for years E-J
+  ## these are reported in minutes per week - so the MET is MET minutes per week
+  ## PAD615 (min vigorous activity_work) - 8.0
+  ## PAD630 (min moderate activity work) - 4
+  ## PAD645 (min walk/bike) - 4
+  ## PAD660 (min vigorous activity recreation) - 8 
+  ## PAD675 (min moderate rec activities) - 4
+  ## PAD680 (min sedentary activity) - analyze separately 
+  
+  pa_table <- tbl(con, pa_table_name) |> collect()
+  
+  pa_table <- pa_table |> mutate(PAQ_work_vigorous_week = case_when(
+    PAQ605 == 2 ~ 0,
+    (PAQ605 == 1 & PAD615 < 7777 & PAQ610 <= 7) ~ PAQ610*PAD615,
+    PAQ605 > 2 ~ NA_real_,
+  ))
+  
+  pa_table <- pa_table |> mutate(PAQ_work_moderate_week = case_when(
+    PAQ620 == 2 ~ 0,
+    (PAQ620 == 1 & PAD630 < 7777 & PAQ625 <= 7) ~ PAQ625*PAD630,
+    PAQ620 > 2 ~ NA_real_,
+    TRUE ~ NA_real_
+  ))
+  
+  pa_table <- pa_table |> mutate(PAQ_walk_week = case_when(
+    PAQ635 == 2 ~ 0,
+    (PAQ635 == 1 & PAD645 < 7777 & PAQ640 <= 7) ~ PAQ640*PAD645,
+    PAQ635 > 2 ~ NA_real_,
+    TRUE ~ NA_real_
+  ))
+  
+  pa_table <- pa_table |> mutate(PAQ_recreation_vigorous_week = case_when(
+    PAQ650 == 2 ~ 0,
+    (PAQ650 == 1 & PAD660 < 7777 & PAQ655 <= 7) ~ PAQ655*PAD660,
+    PAQ650 > 0 ~ NA_real_,
+    TRUE ~ NA_real_
+  ))
+  
+  pa_table <- pa_table |> mutate(PAQ_recreation_moderate_week = case_when(
+    PAQ665 == 2 ~ 0,
+    (PAQ665 == 1 & PAD675 < 7777 & PAQ670 <= 7) ~ PAQ670*PAD675,
+    PAQ665 > 2 ~ NA_real_,
+    TRUE ~ NA_real_
+  ))
+  
+  pa_table <- pa_table |> mutate(PAQ_work_vigorous_met = PAQ_work_vigorous_week*8,
+                                 PAQ_work_moderate_met = PAQ_work_moderate_week*4,
+                                 PAQ_walk_met = PAQ_walk_week*4,
+                                 PAQ_recreation_vigorous_met = PAQ_recreation_vigorous_week*8,
+                                 PAQ_recreation_moderate_met = PAQ_recreation_moderate_week*4,
+                                 )
+  
+  pa_table <- pa_table |> mutate(PA_sedentary_activity_min_per_day = ifelse(PAD680 < 7777, PAD680, NA))
+  pa_table <- pa_table |> mutate(PAQ_total_met = PAQ_work_vigorous_met + 
+                                   PAQ_work_moderate_met + PAQ_walk_met + PAQ_recreation_vigorous_met + PAQ_recreation_moderate_met)
+  
+  list(pa_table=pa_table, pa_table_name=pa_table_name)
+}
+
+physical_activity_table_ad_surveys <- function(con, pa_table_name, pa_iff_table_name) {
+  ## works on surveys A-D
+  # PAD020	Walked or bicycled over past 30 days to get to/from work, etc.	4.0
+  # PAQ100	Tasks in or around home or yard past 30 days.	4.5
+  # PAQ180	Average level of physical activity each day (1 - Mainly sit)	1.4
+  # PAQ180	Average level of physical activity each day (2 - Walk a lot)	1.5
+  # PAQ180	Average level of physical activity each day (3 - Carry light loads)	1.6
+  # PAQ180	Average level of physical activity each day (4 - Carry heavy loads)	1.8
+  # PAD440	Muscle strengthening activities	4.0
+  # PAQ560	Number of times per week play or exercise hard	7.0
+  # PAD590	 Average number of hours watch TV or videos over past 30 days	1.0
+  # PAD600	 Average number of hours used computer over past 30 days	1.5
+  pa_table <- tbl(con, pa_table_name) |> collect()
+ 
+  pa_table <- pa_table |> mutate(walk_min_per_day = ifelse(PAD080 < 77777, PAD080, NA)) |> 
+    mutate(PAQ_walk_days = case_when(
+    (PAD020 == 2) ~ 0,
+    (PAD020 == 1 & PAQ050Q < 77777 & PAQ050U == 1) ~ PAQ050Q * walk_min_per_day, # min per day
+    (PAD020 == 1 & PAQ050Q < 77777 & PAQ050U == 2) ~ (PAQ050Q/7) * (walk_min_per_day), # min per day
+    (PAD020 == 1 & PAQ050Q < 77777 & PAQ050U == 3) ~ (PAQ050Q/30)*walk_min_per_day, # min per day
+    PAD020 > 2 ~ NA_real_,
+    TRUE ~ NA_real_
+  )) |> mutate(PAQ_walk_days_per_week=PAQ_walk_days*7)
+  
+  pa_table <- pa_table |> mutate(PAQ_walk_met = PAQ_walk_days_per_week*4) #met-min-week
+  
+  pa_table <- pa_table |> mutate(PAQ_home_week = case_when(
+    PAQ100 == 2 ~ 0,
+    (PAQ100 ==1 & PAD120 < 77777 & PAD160 < 77777) ~ 7*(PAD120/30)*PAD160, # week mins
+    PAQ100 > 2 ~ NA_real_,
+    TRUE ~ NA_real_
+  ))
+  pa_table <- pa_table |> mutate(PAQ_home_met = PAQ_home_week*4.5) # met-min-week
+  
+  pa_table <- pa_table |> mutate(PAQ_work_met = case_when(
+    PAQ180 == 1 ~ 7 * 1.4,
+    PAQ180 == 2 ~ 7 * 1.5,
+    PAQ180 == 3 ~ 7 * 1.6,
+    PAQ180 == 4 ~ 7 * 1.6,
+    PAQ180 > 4 ~ NA_real_,
+    TRUE ~ NA_real_
+  ))
+  
+  ## strengthening 
+  pa_table <- pa_table |> mutate(PAQ_strengthening_days = case_when (
+    PAD440 == 2 ~ 0,
+    (PAD440 == 1 & PAD460 < 777) ~ PAD460,
+    PAD440 > 2 ~ NA_real_,
+    TRUE ~ NA_real_
+  )) |> mutate(PAQ_strengthening_week = (PAQ_strengthening_days/30)*7)
+  
+  pa_table <- pa_table |> mutate(PAQ_strengthening_met = PAQ_strengthening_week*4)
+  
+  if(pa_table_name != 'PAQ') { 
+    pa_table <- pa_table |> mutate(PAQ_sedentary_activity_min_per_day = case_when(
+      PAD590 == 6 ~ 0,
+      PAD590 <= 5 ~ PAD590*60,
+      TRUE ~ NA_real_
+    )) 
+  
+    pa_table <- pa_table |> mutate(PAQ_sedentary_activity_min_per_day = PAQ_sedentary_activity_min_per_day + case_when(
+      PAD600 == 6 ~ 0,
+      PAD600 <= 5 ~ PAD600*60,
+      TRUE ~ NA_real_
+    )) 
+  } else { ## 1999-2000 survey
+    pa_table <- pa_table |> mutate(PAQ_sedentary_activity_min_per_day = case_when(
+      PAD570 == 6 ~ 0,
+      PAD570 <= 5 ~ PAD570*60,
+      TRUE ~ NA_real_
+    )) 
+    
+    pa_table <- pa_table |> mutate(PAQ_sedentary_activity_min_per_day = PAQ_sedentary_activity_min_per_day + case_when(
+      PAQ580 == 6 ~ 0,
+      PAQ580 <= 5 ~ PAQ580*60,
+      TRUE ~ NA_real_
+    )) 
+  }
+  pa_iff_table <- tbl(con, pa_iff_table_name) |> collect()
+  pa_iff_summary <- pa_iff_table |> group_by(SEQN) |> summarize(PAQ_leisure_met = sum ( (7*(PADTIMES/30))*PADDURAT*PADMETS, na.rm=T)) |> ungroup()
+  pa_table <- pa_table |> left_join(pa_iff_summary, by = "SEQN")
+  pa_table <- pa_table |> mutate(PAQ_leisure_met = ifelse(is.na(PAQ_leisure_met) & PAD020 <= 2, 0 ,PAQ_leisure_met))
+  
+  pa_table <- pa_table |> mutate(PAQ_total_met = PAQ_leisure_met + PAQ_strengthening_met + PAQ_work_met + PAQ_home_met + PAQ_walk_met + PAQ_strengthening_met)
+  list(pa_table=pa_table, pa_table_name=pa_table_name)
+}
+
+paq_table_names_ej <- c("PAQ_E", "PAQ_F", "PAQ_G", "PAQ_H", "PAQ_I", "PAQ_J")
+pa_tabs_ej <- map(paq_table_names_ej, function(table_name) {
+    pa_tab <- physical_activity_table_ej_surveys(con, table_name)
+  }
+)
+
+paq_table_names_ad <- c("PAQ", "PAQ_B", "PAQ_C", "PAQ_D")
+paqiaf_table_names <- c("PAQIAF", "PAQIAF_B", "PAQIAF_C", "PAQIAF_D")
+pa_tabs_ad <- map2(paq_table_names_ad, paqiaf_table_names, function(x,y) {
+  pa_tab <- physical_activity_table_ad_surveys(con, x,y)
+})
+
+done <- map(pa_tabs_ad, function(tab_obj) {
+  n <- tab_obj$pa_table_name
+  print(n)
+  tab <- tab_obj$pa_table
+  dbWriteTable(con, n, tab, overwrite=T)
+})
+
+
+done <- map(pa_tabs_ej, function(tab_obj) {
+  n <- tab_obj$pa_table_name
+  print(n)
+  tab <- tab_obj$pa_table
+  dbWriteTable(con, n, tab, overwrite=T)
+})
+
+
+
+pa_names_ad <- c("walk_min_per_day", 
+               "PAQ_walk_days",
+               "PAQ_walk_days_per_week", 
+               "PAQ_walk_met",
+               "PAQ_home_week", 
+               "PAQ_home_met",
+               "PAQ_work_met",
+               "PAQ_strengthening_days",
+               "PAQ_strengthening_week", 
+               "PAQ_strengthening_met" ,
+               "PAQ_sedentary_activity_min_per_day",
+               "PAQ_leisure_met" , 
+               "PAQ_total_met")
+
+pa_desc_ad <- c(
+  "Min Walk Per Day",
+  "Days Walking",
+  "Days Walking Per Week",
+  "MET Walking Per Week",
+  "Home Activity Per Week",
+  "MET Home Activity Per Week",
+  "MET Work Activity Per Week",
+  "Strength Activity Days",
+  "Strength Activity Per Week",
+  "MET Strength Activity Per Week",
+  "Sedentary Activity Min Per Day",
+  "MET Leisure",
+  "MET Total"
+)
+
+pa_names_ej <- c("PAQ_work_vigorous_week",
+                 "PAQ_work_moderate_week",
+                 "PAQ_walk_week",
+                 "PAQ_recreation_vigorous_week",
+                 "PAQ_recreation_moderate_week",
+                 "PAQ_work_vigorous_met" ,
+                 "PAQ_work_moderate_met",
+                 "PAQ_walk_met",
+                 "PAQ_recreation_vigorous_met" ,
+                 "PAQ_recreation_moderate_met",
+                 "PA_sedentary_activity_min_per_day",
+                 "PAQ_total_met")
+
+pa_desc_ej <- c("Vigorous Work Per Week",
+                 "Moderate Work Per Week",
+                 "Walk Activity Per Week",
+                 "Vigorous Leisure Per Week",
+                 "Moderate Leisure Per Week",
+                 "MET Vigorous Work Per Week" ,
+                 "MET Moderate Work Per Week",
+                 "MET Walk Per Week",
+                 "MET Vigorous Leisure Per Week" ,
+                 "MET Moderate Leisure Per Week",
+                 "Sedentary Activity Min Per Day",
+                 "MET Total")
+
+paq_ad_df <- variable_information |> filter(Variable.Name == 'PAD020')
+paq_ej_df <- variable_information |> filter(Variable.Name == 'PAD615')
+
+## loop through and add to new_variable
+ad_rws <- vector(mode = "list", length=length(pa_names_ad))
+for(i in 1:length(pa_names_ad)) {
+  nme <- pa_names_ad[i]
+  desc <- pa_desc_ad[i]
+  ad_rws[[i]] <- add_row_for_variable_name_like(nme, desc, paq_ad_df |> collect())
+}
+
+eh_rws <- vector(mode="list", length = length(pa_names_ej))
+for(i in 1:length(pa_names_ej)) {
+  nme <- pa_names_ej[i]
+  desc <- pa_desc_ej[i]
+  eh_rws[[i]] <- add_row_for_variable_name_like(nme, desc, paq_ej_df |> collect())
+}
+
+pa_information <-  bind_rows(ad_rws, eh_rws)
+```
+
+```{r add rows to variable information}
+new_variable_information <- rbind(bpx_information, smq_information, pa_information)
+variable_information <- variable_information |> collect() |> rbind(new_variable_information)
+
+dbWriteTable(con,"variable_names_epcf", variable_information, overwrite = T)
+```
+
+```{r add rows for new smoking variable}
+
+variable_information <- variable_information |> collect() |> rbind(smq_age_information)
+dbWriteTable(con,"variable_names_epcf", variable_information, overwrite = T)
+```
+
+

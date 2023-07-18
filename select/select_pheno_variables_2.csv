@@ -1,0 +1,1541 @@
+Variable.Name,Variable.Description,Data.File.Name,Data.File.Description,Begin.Year,EndYear,Component,Use.Constraints,epcf
+BMXARMC,Arm Circumference (cm),BMX,Body Measures,1999,2000,Examination,None,p
+BMXARMC,Arm Circumference (cm),BMX_B,Body Measures,2001,2002,Examination,None,p
+BMXARMC,Arm Circumference (cm),BMX_C,Body Measures,2003,2004,Examination,None,p
+BMXARMC,Arm Circumference (cm),BMX_D,Body Measures,2005,2006,Examination,None,p
+BMXARMC,Arm Circumference (cm),BMX_E,Body Measures,2007,2008,Examination,None,p
+BMXARMC,Arm Circumference (cm),BMX_F,Body Measures,2009,2010,Examination,None,p
+BMXARMC,Arm Circumference (cm),BMX_G,Body Measures,2011,2012,Examination,None,p
+BMXARMC,Arm Circumference (cm),BMX_H,Body Measures,2013,2014,Examination,None,p
+BMXARMC,Arm Circumference (cm),BMX_I,Body Measures,2015,2016,Examination,None,p
+BMXARMC,Arm Circumference (cm),BMX_J,Body Measures,2017,2018,Examination,None,p
+BMXARML,Upper Arm Length (cm),BMX,Body Measures,1999,2000,Examination,None,p
+BMXARML,Upper Arm Length (cm),BMX_B,Body Measures,2001,2002,Examination,None,p
+BMXARML,Upper Arm Length (cm),BMX_C,Body Measures,2003,2004,Examination,None,p
+BMXARML,Upper Arm Length (cm),BMX_D,Body Measures,2005,2006,Examination,None,p
+BMXARML,Upper Arm Length (cm),BMX_E,Body Measures,2007,2008,Examination,None,p
+BMXARML,Upper Arm Length (cm),BMX_F,Body Measures,2009,2010,Examination,None,p
+BMXARML,Upper Arm Length (cm),BMX_G,Body Measures,2011,2012,Examination,None,p
+BMXARML,Upper Arm Length (cm),BMX_H,Body Measures,2013,2014,Examination,None,p
+BMXARML,Upper Arm Length (cm),BMX_I,Body Measures,2015,2016,Examination,None,p
+BMXARML,Upper Arm Length (cm),BMX_J,Body Measures,2017,2018,Examination,None,p
+BMXBMI,Body Mass Index (kg/m**2),BMX,Body Measures,1999,2000,Examination,None,p
+BMXBMI,Body Mass Index (kg/m**2),BMX_B,Body Measures,2001,2002,Examination,None,p
+BMXBMI,Body Mass Index (kg/m**2),BMX_C,Body Measures,2003,2004,Examination,None,p
+BMXBMI,Body Mass Index (kg/m**2),BMX_D,Body Measures,2005,2006,Examination,None,p
+BMXBMI,Body Mass Index (kg/m**2),BMX_E,Body Measures,2007,2008,Examination,None,p
+BMXBMI,Body Mass Index (kg/m**2),BMX_F,Body Measures,2009,2010,Examination,None,p
+BMXBMI,Body Mass Index (kg/m**2),BMX_G,Body Measures,2011,2012,Examination,None,p
+BMXBMI,Body Mass Index (kg/m**2),BMX_H,Body Measures,2013,2014,Examination,None,p
+BMXBMI,Body Mass Index (kg/m**2),BMX_I,Body Measures,2015,2016,Examination,None,p
+BMXBMI,Body Mass Index (kg/m**2),BMX_J,Body Measures,2017,2018,Examination,None,p
+BMXCALF,Maximal Calf Circumference (cm),BMX,Body Measures,1999,2000,Examination,None,p
+BMXCALF,Maximal Calf Circumference (cm),BMX_B,Body Measures,2001,2002,Examination,None,p
+BMXCALF,Maximal Calf Circumference (cm),BMX_C,Body Measures,2003,2004,Examination,None,p
+BMXCALF,Maximal Calf Circumference (cm),BMX_D,Body Measures,2005,2006,Examination,None,p
+BMXHEAD,Head Circumference (cm),BMX,Body Measures,1999,2000,Examination,None,p
+BMXHEAD,Head Circumference (cm),BMX_B,Body Measures,2001,2002,Examination,None,p
+BMXHEAD,Head Circumference (cm),BMX_C,Body Measures,2003,2004,Examination,None,p
+BMXHEAD,Head Circumference (cm),BMX_D,Body Measures,2005,2006,Examination,None,p
+BMXHEAD,Head Circumference (cm),BMX_E,Body Measures,2007,2008,Examination,None,p
+BMXHEAD,Head Circumference (cm),BMX_F,Body Measures,2009,2010,Examination,None,p
+BMXHEAD,Head Circumference (cm),BMX_G,Body Measures,2011,2012,Examination,None,p
+BMXHEAD,Head Circumference (cm),BMX_H,Body Measures,2013,2014,Examination,None,p
+BMXHEAD,Head Circumference (cm),BMX_I,Body Measures,2015,2016,Examination,None,p
+BMXHEAD,Head Circumference (cm),BMX_J,Body Measures,2017,2018,Examination,None,p
+BMXHIP,Hip Circumference (cm),BMX_J,Body Measures,2017,2018,Examination,None,p
+BMXHT,Standing Height (cm),BMX,Body Measures,1999,2000,Examination,None,p
+BMXHT,Standing Height (cm),BMX_B,Body Measures,2001,2002,Examination,None,p
+BMXHT,Standing Height (cm),BMX_C,Body Measures,2003,2004,Examination,None,p
+BMXHT,Standing Height (cm),BMX_D,Body Measures,2005,2006,Examination,None,p
+BMXHT,Standing Height (cm),BMX_E,Body Measures,2007,2008,Examination,None,p
+BMXHT,Standing Height (cm),BMX_F,Body Measures,2009,2010,Examination,None,p
+BMXHT,Standing Height (cm),BMX_G,Body Measures,2011,2012,Examination,None,p
+BMXHT,Standing Height (cm),BMX_H,Body Measures,2013,2014,Examination,None,p
+BMXHT,Standing Height (cm),BMX_I,Body Measures,2015,2016,Examination,None,p
+BMXHT,Standing Height (cm),BMX_J,Body Measures,2017,2018,Examination,None,p
+BMXLEG,Upper Leg Length (cm),BMX,Body Measures,1999,2000,Examination,None,p
+BMXLEG,Upper Leg Length (cm),BMX_B,Body Measures,2001,2002,Examination,None,p
+BMXLEG,Upper Leg Length (cm),BMX_C,Body Measures,2003,2004,Examination,None,p
+BMXLEG,Upper Leg Length (cm),BMX_D,Body Measures,2005,2006,Examination,None,p
+BMXLEG,Upper Leg Length (cm),BMX_E,Body Measures,2007,2008,Examination,None,p
+BMXLEG,Upper Leg Length (cm),BMX_F,Body Measures,2009,2010,Examination,None,p
+BMXLEG,Upper Leg Length (cm),BMX_G,Body Measures,2011,2012,Examination,None,p
+BMXLEG,Upper Leg Length (cm),BMX_H,Body Measures,2013,2014,Examination,None,p
+BMXLEG,Upper Leg Length (cm),BMX_I,Body Measures,2015,2016,Examination,None,p
+BMXLEG,Upper Leg Length (cm),BMX_J,Body Measures,2017,2018,Examination,None,p
+BMXRECUM,Recumbent Length (cm),BMX,Body Measures,1999,2000,Examination,None,p
+BMXRECUM,Recumbent Length (cm),BMX_B,Body Measures,2001,2002,Examination,None,p
+BMXRECUM,Recumbent Length (cm),BMX_C,Body Measures,2003,2004,Examination,None,p
+BMXRECUM,Recumbent Length (cm),BMX_D,Body Measures,2005,2006,Examination,None,p
+BMXRECUM,Recumbent Length (cm),BMX_E,Body Measures,2007,2008,Examination,None,p
+BMXRECUM,Recumbent Length (cm),BMX_F,Body Measures,2009,2010,Examination,None,p
+BMXRECUM,Recumbent Length (cm),BMX_G,Body Measures,2011,2012,Examination,None,p
+BMXRECUM,Recumbent Length (cm),BMX_H,Body Measures,2013,2014,Examination,None,p
+BMXRECUM,Recumbent Length (cm),BMX_I,Body Measures,2015,2016,Examination,None,p
+BMXRECUM,Recumbent Length (cm),BMX_J,Body Measures,2017,2018,Examination,None,p
+BMXSUB,Subscapular Skinfold (mm),BMX,Body Measures,1999,2000,Examination,None,p
+BMXSUB,Subscapular Skinfold (mm),BMX_B,Body Measures,2001,2002,Examination,None,p
+BMXSUB,Subscapular Skinfold (mm),BMX_C,Body Measures,2003,2004,Examination,None,p
+BMXSUB,Subscapular Skinfold (mm),BMX_D,Body Measures,2005,2006,Examination,None,p
+BMXSUB,Subscapular Skinfold (mm),BMX_E,Body Measures,2007,2008,Examination,None,p
+BMXSUB,Subscapular Skinfold (mm),BMX_F,Body Measures,2009,2010,Examination,None,p
+BMXTHICR,Thigh Circumference (cm),BMX,Body Measures,1999,2000,Examination,None,p
+BMXTHICR,Thigh Circumference (cm),BMX_B,Body Measures,2001,2002,Examination,None,p
+BMXTHICR,Thigh Circumference (cm),BMX_C,Body Measures,2003,2004,Examination,None,p
+BMXTHICR,Thigh Circumference (cm),BMX_D,Body Measures,2005,2006,Examination,None,p
+BMXTRI,Triceps Skinfold (mm),BMX,Body Measures,1999,2000,Examination,None,p
+BMXTRI,Triceps Skinfold (mm),BMX_B,Body Measures,2001,2002,Examination,None,p
+BMXTRI,Triceps Skinfold (mm),BMX_C,Body Measures,2003,2004,Examination,None,p
+BMXTRI,Triceps Skinfold (mm),BMX_D,Body Measures,2005,2006,Examination,None,p
+BMXTRI,Triceps Skinfold (mm),BMX_E,Body Measures,2007,2008,Examination,None,p
+BMXTRI,Triceps Skinfold (mm),BMX_F,Body Measures,2009,2010,Examination,None,p
+BMXWAIST,Waist Circumference (cm),BMX,Body Measures,1999,2000,Examination,None,p
+BMXWAIST,Waist Circumference (cm),BMX_B,Body Measures,2001,2002,Examination,None,p
+BMXWAIST,Waist Circumference (cm),BMX_C,Body Measures,2003,2004,Examination,None,p
+BMXWAIST,Waist Circumference (cm),BMX_D,Body Measures,2005,2006,Examination,None,p
+BMXWAIST,Waist Circumference (cm),BMX_E,Body Measures,2007,2008,Examination,None,p
+BMXWAIST,Waist Circumference (cm),BMX_F,Body Measures,2009,2010,Examination,None,p
+BMXWAIST,Waist Circumference (cm),BMX_G,Body Measures,2011,2012,Examination,None,p
+BMXWAIST,Waist Circumference (cm),BMX_H,Body Measures,2013,2014,Examination,None,p
+BMXWAIST,Waist Circumference (cm),BMX_I,Body Measures,2015,2016,Examination,None,p
+BMXWAIST,Waist Circumference (cm),BMX_J,Body Measures,2017,2018,Examination,None,p
+BMXWT,Weight (kg),BMX,Body Measures,1999,2000,Examination,None,p
+BMXWT,Weight (kg),BMX_B,Body Measures,2001,2002,Examination,None,p
+BMXWT,Weight (kg),BMX_C,Body Measures,2003,2004,Examination,None,p
+BMXWT,Weight (kg),BMX_D,Body Measures,2005,2006,Examination,None,p
+BMXWT,Weight (kg),BMX_E,Body Measures,2007,2008,Examination,None,p
+BMXWT,Weight (kg),BMX_F,Body Measures,2009,2010,Examination,None,p
+BMXWT,Weight (kg),BMX_G,Body Measures,2011,2012,Examination,None,p
+BMXWT,Weight (kg),BMX_H,Body Measures,2013,2014,Examination,None,p
+BMXWT,Weight (kg),BMX_I,Body Measures,2015,2016,Examination,None,p
+BMXWT,Weight (kg),BMX_J,Body Measures,2017,2018,Examination,None,p
+BPXCHR,60 sec HR (30 sec HR * 2),BPX,Blood Pressure,1999,2000,Examination,None,p
+BPXCHR,60 sec HR (30 sec HR * 2),BPX_B,Blood Pressure,2001,2002,Examination,None,p
+BPXCHR,60 sec HR (30 sec HR * 2),BPX_C,Blood Pressure,2003,2004,Examination,None,p
+BPXCHR,60 sec HR (30 sec HR * 2),BPX_D,Blood Pressure,2005,2006,Examination,None,p
+BPXCHR,60 sec HR (30 sec HR * 2),BPX_E,Blood Pressure,2007,2008,Examination,None,p
+BPXCHR,60 sec HR (30 sec HR * 2),BPX_F,Blood Pressure,2009,2010,Examination,None,p
+BPXCHR,60 sec HR (30 sec HR * 2),BPX_G,Blood Pressure,2011,2012,Examination,None,p
+BPXCHR,60 sec HR (30 sec HR * 2),BPX_H,Blood Pressure,2013,2014,Examination,None,p
+BPXCHR,60 sec HR (30 sec HR * 2),BPX_I,Blood Pressure,2015,2016,Examination,None,p
+BPXCHR,60 sec HR (30 sec HR * 2),BPX_J,Blood Pressure,2017,2018,Examination,None,p
+BPXDB,# of dropped beats in 30 seconds,BPX,Blood Pressure,1999,2000,Examination,None,p
+BPXDB,# of dropped beats in 30 seconds,BPX_B,Blood Pressure,2001,2002,Examination,None,p
+BPXDB,# of dropped beats in 30 seconds,BPX_C,Blood Pressure,2003,2004,Examination,None,p
+BPXDB,# of dropped beats in 30 seconds,BPX_D,Blood Pressure,2005,2006,Examination,None,p
+BPXPLS,60 sec. pulse (30 sec. pulse * 2):,BPX,Blood Pressure,1999,2000,Examination,None,p
+BPXPLS,60 sec. pulse (30 sec. pulse * 2):,BPX_B,Blood Pressure,2001,2002,Examination,None,p
+BPXPLS,60 sec. pulse (30 sec. pulse * 2):,BPX_C,Blood Pressure,2003,2004,Examination,None,p
+BPXPLS,60 sec. pulse (30 sec. pulse * 2):,BPX_D,Blood Pressure,2005,2006,Examination,None,p
+BPXPLS,60 sec. pulse (30 sec. pulse * 2):,BPX_E,Blood Pressure,2007,2008,Examination,None,p
+BPXPLS,60 sec. pulse (30 sec. pulse * 2):,BPX_F,Blood Pressure,2009,2010,Examination,None,p
+BPXPLS,60 sec. pulse (30 sec. pulse * 2),BPX_G,Blood Pressure,2011,2012,Examination,None,p
+BPXPLS,60 sec. pulse (30 sec. pulse * 2),BPX_H,Blood Pressure,2013,2014,Examination,None,p
+BPXPLS,60 sec. pulse (30 sec. pulse * 2),BPX_I,Blood Pressure,2015,2016,Examination,None,p
+BPXPLS,60 sec. pulse (30 sec. pulse * 2),BPX_J,Blood Pressure,2017,2018,Examination,None,p
+BPXSY4,Systolic:  Blood pressure (fourth reading if necessary) mm Hg,BPX,Blood Pressure,1999,2000,Examination,None,p
+BPXSY4,Systolic:  Blood pressure (fourth reading if necessary) mm Hg,BPX_B,Blood Pressure,2001,2002,Examination,None,p
+BPXSY4,Systolic:  Blood pressure (fourth reading if necessary) mm Hg,BPX_C,Blood Pressure,2003,2004,Examination,None,p
+BPXSY4,Systolic:  Blood pressure (fourth reading if necessary) mm Hg,BPX_D,Blood Pressure,2005,2006,Examination,None,p
+BPXSY4,Systolic:  Blood pressure (fourth reading if necessary) mm Hg,BPX_E,Blood Pressure,2007,2008,Examination,None,p
+BPXSY4,Systolic:  Blood pressure (fourth reading if necessary) mm Hg,BPX_F,Blood Pressure,2009,2010,Examination,None,p
+BPXSY4,Systolic:  Blood pressure (fourth reading if necessary) mm Hg,BPX_G,Blood Pressure,2011,2012,Examination,None,p
+BPXSY4,Systolic:  Blood pressure (fourth reading if necessary) mm Hg,BPX_H,Blood Pressure,2013,2014,Examination,None,p
+BPXSY4,Systolic:  Blood pressure (fourth reading if necessary) mm Hg,BPX_I,Blood Pressure,2015,2016,Examination,None,p
+BPXSY4,Systolic:  Blood pressure (fourth reading if necessary) mm Hg,BPX_J,Blood Pressure,2017,2018,Examination,None,p
+CVDESVO2,Estimated maximal oxygen uptake (ml/kg/min).,CVX,Cardiovascular Fitness,1999,2000,Examination,None,p
+CVDESVO2,Estimated maximal oxygen uptake (ml/kg/min).,CVX_B,Cardiovascular Fitness,2001,2002,Examination,None,p
+CVDESVO2,Estimated maximal oxygen uptake (ml/kg/min).,CVX_C,Cardiovascular Fitness,2003,2004,Examination,None,p
+CVDFITLV,Cardiovascular fitness level,CVX,Cardiovascular Fitness,1999,2000,Examination,None,p
+CVDFITLV,Cardiovascular fitness level,CVX_B,Cardiovascular Fitness,2001,2002,Examination,None,p
+CVDFITLV,Cardiovascular fitness level,CVX_C,Cardiovascular Fitness,2003,2004,Examination,None,p
+CVDVOMAX,Predicted maximal oxygen uptake (ml/kg/min),CVX,Cardiovascular Fitness,1999,2000,Examination,None,p
+CVDVOMAX,Predicted maximal oxygen uptake (ml/kg/min),CVX_B,Cardiovascular Fitness,2001,2002,Examination,None,p
+CVDVOMAX,Predicted maximal oxygen uptake (ml/kg/min),CVX_C,Cardiovascular Fitness,2003,2004,Examination,None,p
+DXAFMRD0,Calculated DO for femur,DXXFEM_D,Dual Energy X-ray Absorptiometry - Femur,2005,2006,Examination,None,p
+DXAFMRD0,Calculated DO for femur,DXXFEM_E,Dual Energy X-ray Absorptiometry - Femur,2007,2008,Examination,None,p
+DXAFMRD0,Calculated DO for femur,DXXFEM_F,Dual Energy X-ray Absorptiometry - Femur,2009,2010,Examination,None,p
+DXAFMRD0,Calculated DO for femur,DXXFEM_H,Dual-Energy X-ray Absorptiometry - Femur,2013,2014,Examination,None,p
+DXAFMRD0,Calculated DO for femur,DXXFEM_J,Dual-Energy X-ray Absorptiometry - Femur,2017,2018,Examination,None,p
+DXAFMRK,Calculated K for femur,DXXFEM_D,Dual Energy X-ray Absorptiometry - Femur,2005,2006,Examination,None,p
+DXAFMRK,Calculated K for femur,DXXFEM_E,Dual Energy X-ray Absorptiometry - Femur,2007,2008,Examination,None,p
+DXAFMRK,Calculated K for femur,DXXFEM_F,Dual Energy X-ray Absorptiometry - Femur,2009,2010,Examination,None,p
+DXAFMRK,Calculated K for femur,DXXFEM_H,Dual-Energy X-ray Absorptiometry - Femur,2013,2014,Examination,None,p
+DXAFMRK,Calculated K for femur,DXXFEM_J,Dual-Energy X-ray Absorptiometry - Femur,2017,2018,Examination,None,p
+DXASPND0,Calculated D0 for spine,DXXSPN_D,Dual Energy X-ray Absorptiometry - Spine,2005,2006,Examination,None,p
+DXASPND0,Calculated D0 for spine,DXXSPN_E,Dual Energy X-ray Absorptiometry - Spine,2007,2008,Examination,None,p
+DXASPND0,Calculated DO for Spine,DXXSPN_F,Dual Energy X-ray Absorptiometry - Spine,2009,2010,Examination,None,p
+DXASPND0,Calculated DO for spine,DXXSPN_H,Dual-Energy X-ray Absorptiometry - Spine,2013,2014,Examination,None,p
+DXASPND0,Calculated DO for spine,DXXSPN_J,Dual-Energy X-ray Absorptiometry - Spine,2017,2018,Examination,None,p
+DXASPNK,Calculated K for spine,DXXSPN_D,Dual Energy X-ray Absorptiometry - Spine,2005,2006,Examination,None,p
+DXASPNK,Calculated K for spine,DXXSPN_E,Dual Energy X-ray Absorptiometry - Spine,2007,2008,Examination,None,p
+DXASPNK,Calculated K for spine,DXXSPN_F,Dual Energy X-ray Absorptiometry - Spine,2009,2010,Examination,None,p
+DXASPNK,Calculated K for spine,DXXSPN_H,Dual-Energy X-ray Absorptiometry - Spine,2013,2014,Examination,None,p
+DXASPNK,Calculated K for spine,DXXSPN_J,Dual-Energy X-ray Absorptiometry - Spine,2017,2018,Examination,None,p
+DXDHELE,Head Lean excl Bone Mineral Content (grams),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXDHELE,Head Lean excl Bone Mineral Content (grams),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXDHELE,Head Lean excl Bone Mineral Content (grams),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXDHELE,Head Lean excl Bone Mineral Content (grams),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXDHEPF,Head Percent Fat,DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXDHEPF,Head Percent Fat,DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXDHEPF,Head Percent Fat,DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXDHEPF,Head Percent Fat,DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXDHETOT,Head Total (grams),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXDHETOT,Head Total (grams),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXDHETOT,Head Total (grams),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXDHETOT,Head Total (grams),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXDLALE,Left Arm Lean excl Body Mineral Content (grams),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXDLALE,Left Arm Lean excl Body Mineral Content (grams),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXDLALE,Left Arm Lean excl Body Mineral Content (grams),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXDLALE,Left Arm Lean excl Body Mineral Content (grams),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXDLAPF,Left Arm Percent Fat,DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXDLAPF,Left Arm Percent Fat,DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXDLAPF,Left Arm Percent Fat,DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXDLAPF,Left Arm Percent Fat,DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXDLATOT,Left Arm Total (grams),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXDLATOT,Left Arm Total (grams),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXDLATOT,Left Arm Total (grams),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXDLATOT,Left Arm Total (grams),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXDLLLE,Left Leg Lean excl Bone Mineral Content (grams),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXDLLLE,Left Leg Lean excl Bone Mineral Content (grams),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXDLLLE,Left Leg Lean excl Bone Mineral Content (grams),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXDLLLE,Left Leg Lean excl Bone Mineral Content (grams),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXDLLPF,Left Leg Percent Fat,DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXDLLPF,Left Leg Percent Fat,DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXDLLPF,Left Leg Percent Fat,DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXDLLPF,Left Leg Percent Fat,DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXDLLTOT,Left Leg Total (grams),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXDLLTOT,Left Leg Total (grams),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXDLLTOT,Left Leg Total (grams),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXDLLTOT,Left Leg Total (grams),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXDRALE,Right Arm Lean excl Bone Mineral Content (grams),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXDRALE,Right Arm Lean excl Bone Mineral Content (grams),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXDRALE,Right Arm Lean excl Bone Mineral Content (grams),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXDRALE,Right Arm Lean excl Bone Mineral Content (grams),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXDRAPF,Right Arm Percent Fat,DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXDRAPF,Right Arm Percent Fat,DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXDRAPF,Right Arm Percent Fat,DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXDRAPF,Right Arm Percent Fat,DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXDRATOT,Right Arm Total (grams),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXDRATOT,Right Arm Total (grams),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXDRATOT,Right Arm Total (grams),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXDRATOT,Right Arm Total (grams),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXDRLLE,Right Leg Lean excl Bone Mineral Content (grams),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXDRLLE,Right Leg Lean excl Bone Mineral Content (grams),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXDRLLE,Right Leg Lean excl Bone Mineral Content (grams),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXDRLLE,Right Leg Lean excl Bone Mineral Content (grams),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXDRLPF,Right Leg Percent Fat,DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXDRLPF,Right Leg Percent Fat,DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXDRLPF,Right Leg Percent Fat,DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXDRLPF,Right Leg Percent Fat,DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXDRLTOT,Right Leg Total (grams),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXDRLTOT,Right Leg Total (grams),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXDRLTOT,Right Leg Total (grams),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXDRLTOT,Right Leg Total (grams),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXDSTA,Subtotal Area (cm^2),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXDSTA,Subtotal Area (cm^2),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXDSTA,Subtotal Area (cm^2),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXDSTA,Subtotal Area (cm^2),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXDSTBMC,Subtotal Bone Mineral Content (grams),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXDSTBMC,Subtotal Bone Mineral Content (grams),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXDSTBMC,Subtotal Bone Mineral Content (grams),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXDSTBMC,Subtotal Bone Mineral Content (grams),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXDSTBMD,Subtotal Bone Mineral Density (grams/cm^2),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXDSTBMD,Subtotal Bone Mineral Density (grams/cm^2),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXDSTBMD,Subtotal Bone Mineral Density (grams/cm^2),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXDSTBMD,Subtotal Bone Mineral Density (grams/cm^2),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXDSTFAT,Subtotal Fat (g),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXDSTFAT,Subtotal Fat (g),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXDSTFAT,Subtotal Fat (g),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXDSTFAT,Subtotal Fat (g),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXDSTLE,Subtotal Lean excl BMC (g),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXDSTLE,Subtotal Lean excl BMC (g),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXDSTLE,Subtotal Lean excl BMC (g),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXDSTLE,Subtotal Lean excl BMC (g),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXDSTLI,Subtotal Lean incl BMC (g),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXDSTLI,Subtotal Lean incl BMC (g),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXDSTLI,Subtotal Lean incl BMC (g),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXDSTLI,Subtotal Lean incl BMC (g),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXDSTPF,Subtotal Percent Fat,DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXDSTPF,Subtotal Percent Fat,DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXDSTPF,Subtotal Percent Fat,DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXDSTPF,Subtotal Percent Fat,DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXDSTTOT,Subtotal (Total excl Head) (g),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXDSTTOT,Subtotal (Total excl Head) (g),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXDSTTOT,Subtotal (Total excl Head) (g),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXDSTTOT,Subtotal (Total excl Head) (g),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXDTOA,Total Area (cm^2),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXDTOA,Total Area (cm^2),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXDTOA,Total Area (cm^2),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXDTOA,Total Area (cm^2),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXDTOBMC,Total Bone Mineral Content (g),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXDTOBMC,Total Bone Mineral Content (g),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXDTOBMC,Total Bone Mineral Content (g),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXDTOBMC,Total Bone Mineral Content (g),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXDTOBMD,Total Bone Mineral Density (g/cm^2),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXDTOBMD,Total Bone Mineral Density (g/cm^2),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXDTOBMD,Total Bone Mineral Density (g/cm^2),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXDTOBMD,Total Bone Mineral Density (g/cm^2),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXDTOFAT,Total Fat (g),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXDTOFAT,Total Fat (g),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXDTOFAT,Total Fat (g),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXDTOFAT,Total Fat (g),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXDTOLE,Total Lean excl BMC (g),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXDTOLE,Total Lean excl BMC (g),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXDTOLE,Total Lean excl BMC (g),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXDTOLE,Total Lean excl BMC (g),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXDTOLI,Total Lean incl BMC (g),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXDTOLI,Total Lean incl BMC (g),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXDTOLI,Total Lean incl BMC (g),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXDTOLI,Total Lean incl BMC (g),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXDTOPF,Total Percent Fat,DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXDTOPF,Total Percent Fat,DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXDTOPF,Total Percent Fat,DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXDTOPF,Total Percent Fat,DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXDTOTOT,Total Lean+Fat (g),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXDTOTOT,Total Lean+Fat(g),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXDTOTOT,Total Lean+Fat(g),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXDTOTOT,Total Lean+Fat(g),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXDTRA,Trunk Bone area (cm^2),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXDTRA,Trunk Bone area (cm^2),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXDTRA,Trunk Bone area (cm^2),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXDTRA,Trunk Bone area (cm^2),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXDTRBMC,Trunk Bone Mineral Content (grams),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXDTRBMC,Trunk Bone Mineral Content (grams),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXDTRBMC,Trunk Bone Mineral Content (grams),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXDTRBMC,Trunk Bone Mineral Content (grams),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXDTRBMD,Trunk Bone BMD (g/cm^2),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXDTRBMD,Trunk Bone BMD (g/cm^2),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXDTRBMD,Trunk Bone BMD (g/cm^2),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXDTRBMD,Trunk Bone BMD (g/cm^2),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXDTRLE,Trunk Lean excl Bone Mineral Content (grams),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXDTRLE,Trunk Lean excl Bone Mineral Content (grams),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXDTRLE,Trunk Lean excl Bone Mineral Content (grams),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXDTRLE,Trunk Lean excl Bone Mineral Content (grams),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXDTRPF,Trunk Percent Fat,DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXDTRPF,Trunk Percent Fat,DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXDTRPF,Trunk Percent Fat,DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXDTRPF,Trunk Percent Fat,DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXDTRTOT,Trunk Total (grams),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXDTRTOT,Trunk Total (grams),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXDTRTOT,Trunk Total (grams),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXDTRTOT,Trunk Total (grams),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXXAGRAT,Android to gynoid ratio,DXXAG_C,Dual Energy X-ray Absorptiometry - Android/Gynoid,2003,2004,Examination,None,p
+DXXAGRAT,Android to gynoid ratio,DXXAG_D,Dual Energy X-ray Absorptiometry - Android/Gynoid,2005,2006,Examination,None,p
+DXXAGRAT,Android to gynoid ratio,DXXAG_G,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2011,2012,Examination,None,p
+DXXAGRAT,Android to gynoid ratio,DXXAG_H,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2013,2014,Examination,None,p
+DXXAGRAT,Android to gynoid ratio,DXXAG_I,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2015,2016,Examination,None,p
+DXXAGRAT,Android to gynoid ratio,DXXAG_J,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2017,2018,Examination,None,p
+DXXAGST,Android/gynoid region status,DXXAG_G,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2011,2012,Examination,None,p
+DXXAGST,Android/gynoid region status,DXXAG_H,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2013,2014,Examination,None,p
+DXXAGST,Android/gynoid region status,DXXAG_I,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2015,2016,Examination,None,p
+DXXAGST,Android/gynoid region status,DXXAG_J,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2017,2018,Examination,None,p
+DXXANFM,Android fat mass,DXXAG_C,Dual Energy X-ray Absorptiometry - Android/Gynoid,2003,2004,Examination,None,p
+DXXANFM,Android fat mass,DXXAG_D,Dual Energy X-ray Absorptiometry - Android/Gynoid,2005,2006,Examination,None,p
+DXXANFM,Android fat mass,DXXAG_G,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2011,2012,Examination,None,p
+DXXANFM,Android fat mass,DXXAG_H,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2013,2014,Examination,None,p
+DXXANFM,Android fat mass,DXXAG_I,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2015,2016,Examination,None,p
+DXXANFM,Android fat mass,DXXAG_J,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2017,2018,Examination,None,p
+DXXANLM,Android lean mass,DXXAG_C,Dual Energy X-ray Absorptiometry - Android/Gynoid,2003,2004,Examination,None,p
+DXXANLM,Android lean mass,DXXAG_D,Dual Energy X-ray Absorptiometry - Android/Gynoid,2005,2006,Examination,None,p
+DXXANLM,Android lean mass,DXXAG_G,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2011,2012,Examination,None,p
+DXXANLM,Android lean mass,DXXAG_H,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2013,2014,Examination,None,p
+DXXANLM,Android lean mass,DXXAG_I,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2015,2016,Examination,None,p
+DXXANLM,Android lean mass,DXXAG_J,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2017,2018,Examination,None,p
+DXXANTOM,Android total mass,DXXAG_C,Dual Energy X-ray Absorptiometry - Android/Gynoid,2003,2004,Examination,None,p
+DXXANTOM,Android total mass,DXXAG_D,Dual Energy X-ray Absorptiometry - Android/Gynoid,2005,2006,Examination,None,p
+DXXANTOM,Android total mass,DXXAG_G,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2011,2012,Examination,None,p
+DXXANTOM,Android total mass,DXXAG_H,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2013,2014,Examination,None,p
+DXXANTOM,Android total mass,DXXAG_I,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2015,2016,Examination,None,p
+DXXANTOM,Android total mass,DXXAG_J,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2017,2018,Examination,None,p
+DXXAPFAT,Android percent fat,DXXAG_C,Dual Energy X-ray Absorptiometry - Android/Gynoid,2003,2004,Examination,None,p
+DXXAPFAT,Android percent fat,DXXAG_D,Dual Energy X-ray Absorptiometry - Android/Gynoid,2005,2006,Examination,None,p
+DXXAPFAT,Android percent fat,DXXAG_G,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2011,2012,Examination,None,p
+DXXAPFAT,Android percent fat,DXXAG_H,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2013,2014,Examination,None,p
+DXXAPFAT,Android percent fat,DXXAG_I,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2015,2016,Examination,None,p
+DXXAPFAT,Android percent fat,DXXAG_J,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2017,2018,Examination,None,p
+DXXGPFAT,Gynoid percent fat,DXXAG_C,Dual Energy X-ray Absorptiometry - Android/Gynoid,2003,2004,Examination,None,p
+DXXGPFAT,Gynoid percent fat,DXXAG_D,Dual Energy X-ray Absorptiometry - Android/Gynoid,2005,2006,Examination,None,p
+DXXGPFAT,Gynoid percent fat,DXXAG_G,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2011,2012,Examination,None,p
+DXXGPFAT,Gynoid percent fat,DXXAG_H,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2013,2014,Examination,None,p
+DXXGPFAT,Gynoid percent fat,DXXAG_I,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2015,2016,Examination,None,p
+DXXGPFAT,Gynoid percent fat,DXXAG_J,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2017,2018,Examination,None,p
+DXXGYFM,Gynoid fat mass,DXXAG_C,Dual Energy X-ray Absorptiometry - Android/Gynoid,2003,2004,Examination,None,p
+DXXGYFM,Gynoid fat mass,DXXAG_D,Dual Energy X-ray Absorptiometry - Android/Gynoid,2005,2006,Examination,None,p
+DXXGYFM,Gynoid fat mass,DXXAG_G,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2011,2012,Examination,None,p
+DXXGYFM,Gynoid fat mass,DXXAG_H,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2013,2014,Examination,None,p
+DXXGYFM,Gynoid fat mass,DXXAG_I,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2015,2016,Examination,None,p
+DXXGYFM,Gynoid fat mass,DXXAG_J,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2017,2018,Examination,None,p
+DXXGYLM,Gynoid lean mass,DXXAG_C,Dual Energy X-ray Absorptiometry - Android/Gynoid,2003,2004,Examination,None,p
+DXXGYLM,Gynoid lean mass,DXXAG_D,Dual Energy X-ray Absorptiometry - Android/Gynoid,2005,2006,Examination,None,p
+DXXGYLM,Gynoid lean mass,DXXAG_G,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2011,2012,Examination,None,p
+DXXGYLM,Gynoid lean mass,DXXAG_H,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2013,2014,Examination,None,p
+DXXGYLM,Gynoid lean mass,DXXAG_I,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2015,2016,Examination,None,p
+DXXGYLM,Gynoid lean mass,DXXAG_J,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2017,2018,Examination,None,p
+DXXGYTOM,Gynoid total mass,DXXAG_C,Dual Energy X-ray Absorptiometry - Android/Gynoid,2003,2004,Examination,None,p
+DXXGYTOM,Gynoid total mass,DXXAG_D,Dual Energy X-ray Absorptiometry - Android/Gynoid,2005,2006,Examination,None,p
+DXXGYTOM,Gynoid total mass,DXXAG_G,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2011,2012,Examination,None,p
+DXXGYTOM,Gynoid total mass,DXXAG_H,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2013,2014,Examination,None,p
+DXXGYTOM,Gynoid total mass,DXXAG_I,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2015,2016,Examination,None,p
+DXXGYTOM,Gynoid total mass,DXXAG_J,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2017,2018,Examination,None,p
+DXXHEA,Head Area (cm^2),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXXHEA,Head Area (cm^2),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXXHEA,Head Area (cm^2),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXXHEA,Head Area (cm^2),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXXHEBMC,Head Bone Mineral Content (grams),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXXHEBMC,Head Bone Mineral Content (grams),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXXHEBMC,Head Bone Mineral Content (grams),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXXHEBMC,Head Bone Mineral Content (grams),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXXHEBMD,Head Bone Mineral Density (grams/cm^2),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXXHEBMD,Head Bone Mineral Density (grams/cm^2),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXXHEBMD,Head Bone Mineral Density (grams/cm^2),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXXHEBMD,Head Bone Mineral Density (grams/cm^2),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXXHEFAT,Head Fat (grams),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXXHEFAT,Head Fat (grams),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXXHEFAT,Head Fat (grams),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXXHEFAT,Head Fat (grams),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXXHELI,Head Lean incl Bone Mineral Content (grams),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXXHELI,Head Lean incl Bone Mineral Content (grams),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXXHELI,Head Lean incl Bone Mineral Content (grams),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXXHELI,Head Lean incl Bone Mineral Content (grams),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXXINA,Intertrochanter area (cm^2),DXXFEM_D,Dual Energy X-ray Absorptiometry - Femur,2005,2006,Examination,None,p
+DXXINA,Intertrochanter area (cm^2),DXXFEM_E,Dual Energy X-ray Absorptiometry - Femur,2007,2008,Examination,None,p
+DXXINA,Intertrochanter area (cm^2),DXXFEM_F,Dual Energy X-ray Absorptiometry - Femur,2009,2010,Examination,None,p
+DXXINA,Intertrochanter area,DXXFEM_H,Dual-Energy X-ray Absorptiometry - Femur,2013,2014,Examination,None,p
+DXXINA,Intertrochanter area,DXXFEM_J,Dual-Energy X-ray Absorptiometry - Femur,2017,2018,Examination,None,p
+DXXINBMC,Intertrochanter bone mineral content (gm),DXXFEM_D,Dual Energy X-ray Absorptiometry - Femur,2005,2006,Examination,None,p
+DXXINBMC,Intertrochanter bone mineral content (gm),DXXFEM_E,Dual Energy X-ray Absorptiometry - Femur,2007,2008,Examination,None,p
+DXXINBMC,Intertrochanter bone mineral content (gm),DXXFEM_F,Dual Energy X-ray Absorptiometry - Femur,2009,2010,Examination,None,p
+DXXINBMC,Intertrochanter BMC,DXXFEM_H,Dual-Energy X-ray Absorptiometry - Femur,2013,2014,Examination,None,p
+DXXINBMC,Intertrochanter BMC,DXXFEM_J,Dual-Energy X-ray Absorptiometry - Femur,2017,2018,Examination,None,p
+DXXINBMD,Intertrochanter bone mineral density (gm/cm^2),DXXFEM_D,Dual Energy X-ray Absorptiometry - Femur,2005,2006,Examination,None,p
+DXXINBMD,Intertrochanter bone mineral density (gm/cm^2),DXXFEM_E,Dual Energy X-ray Absorptiometry - Femur,2007,2008,Examination,None,p
+DXXINBMD,Intertrochanter bone mineral density (gm/cm^2),DXXFEM_F,Dual Energy X-ray Absorptiometry - Femur,2009,2010,Examination,None,p
+DXXINBMD,Intertrochanter BMD,DXXFEM_H,Dual-Energy X-ray Absorptiometry - Femur,2013,2014,Examination,None,p
+DXXINBMD,Intertrochanter BMD,DXXFEM_J,Dual-Energy X-ray Absorptiometry - Femur,2017,2018,Examination,None,p
+DXXL1A,L1 area,DXXSPN_D,Dual Energy X-ray Absorptiometry - Spine,2005,2006,Examination,None,p
+DXXL1A,L1 area,DXXSPN_E,Dual Energy X-ray Absorptiometry - Spine,2007,2008,Examination,None,p
+DXXL1A,L1 area (cm^2),DXXSPN_F,Dual Energy X-ray Absorptiometry - Spine,2009,2010,Examination,None,p
+DXXL1A,L1 area,DXXSPN_H,Dual-Energy X-ray Absorptiometry - Spine,2013,2014,Examination,None,p
+DXXL1A,L1 area,DXXSPN_J,Dual-Energy X-ray Absorptiometry - Spine,2017,2018,Examination,None,p
+DXXL1BMC,L1 Bone Mineral Composition,DXXSPN_D,Dual Energy X-ray Absorptiometry - Spine,2005,2006,Examination,None,p
+DXXL1BMC,L1 Bone Mineral Composition,DXXSPN_E,Dual Energy X-ray Absorptiometry - Spine,2007,2008,Examination,None,p
+DXXL1BMC,L1 bone mineral content (gm),DXXSPN_F,Dual Energy X-ray Absorptiometry - Spine,2009,2010,Examination,None,p
+DXXL1BMC,L1 BMC,DXXSPN_H,Dual-Energy X-ray Absorptiometry - Spine,2013,2014,Examination,None,p
+DXXL1BMC,L1 BMC,DXXSPN_J,Dual-Energy X-ray Absorptiometry - Spine,2017,2018,Examination,None,p
+DXXL1BMD,L1 Bone Mineral Density,DXXSPN_D,Dual Energy X-ray Absorptiometry - Spine,2005,2006,Examination,None,p
+DXXL1BMD,L1 Bone Mineral Density,DXXSPN_E,Dual Energy X-ray Absorptiometry - Spine,2007,2008,Examination,None,p
+DXXL1BMD,L1 bone mineral density (gm/cm^2),DXXSPN_F,Dual Energy X-ray Absorptiometry - Spine,2009,2010,Examination,None,p
+DXXL1BMD,L1 BMD,DXXSPN_H,Dual-Energy X-ray Absorptiometry - Spine,2013,2014,Examination,None,p
+DXXL1BMD,L1 BMD,DXXSPN_J,Dual-Energy X-ray Absorptiometry - Spine,2017,2018,Examination,None,p
+DXXL1TBS,L1 TBS,DXXSPN_D,Dual Energy X-ray Absorptiometry - Spine,2005,2006,Examination,None,p
+DXXL1TBS,L1 TBS,DXXSPN_E,Dual Energy X-ray Absorptiometry - Spine,2007,2008,Examination,None,p
+DXXL2A,L2 area,DXXSPN_D,Dual Energy X-ray Absorptiometry - Spine,2005,2006,Examination,None,p
+DXXL2A,L2 area,DXXSPN_E,Dual Energy X-ray Absorptiometry - Spine,2007,2008,Examination,None,p
+DXXL2A,L2 area (cm^2),DXXSPN_F,Dual Energy X-ray Absorptiometry - Spine,2009,2010,Examination,None,p
+DXXL2A,L2 area,DXXSPN_H,Dual-Energy X-ray Absorptiometry - Spine,2013,2014,Examination,None,p
+DXXL2A,L2 area,DXXSPN_J,Dual-Energy X-ray Absorptiometry - Spine,2017,2018,Examination,None,p
+DXXL2BMC,L2 Bone Mineral Composition,DXXSPN_D,Dual Energy X-ray Absorptiometry - Spine,2005,2006,Examination,None,p
+DXXL2BMC,L2 Bone Mineral Composition,DXXSPN_E,Dual Energy X-ray Absorptiometry - Spine,2007,2008,Examination,None,p
+DXXL2BMC,L2 bone mineral content (gm),DXXSPN_F,Dual Energy X-ray Absorptiometry - Spine,2009,2010,Examination,None,p
+DXXL2BMC,L2 BMC,DXXSPN_H,Dual-Energy X-ray Absorptiometry - Spine,2013,2014,Examination,None,p
+DXXL2BMC,L2 BMC,DXXSPN_J,Dual-Energy X-ray Absorptiometry - Spine,2017,2018,Examination,None,p
+DXXL2BMD,L2 Bone Mineral Density,DXXSPN_D,Dual Energy X-ray Absorptiometry - Spine,2005,2006,Examination,None,p
+DXXL2BMD,L2 Bone Mineral Density,DXXSPN_E,Dual Energy X-ray Absorptiometry - Spine,2007,2008,Examination,None,p
+DXXL2BMD,L2 bone mineral density (gm/cm^2),DXXSPN_F,Dual Energy X-ray Absorptiometry - Spine,2009,2010,Examination,None,p
+DXXL2BMD,L2 BMD,DXXSPN_H,Dual-Energy X-ray Absorptiometry - Spine,2013,2014,Examination,None,p
+DXXL2BMD,L2 BMD,DXXSPN_J,Dual-Energy X-ray Absorptiometry - Spine,2017,2018,Examination,None,p
+DXXL2TBS,L2 TBS,DXXSPN_D,Dual Energy X-ray Absorptiometry - Spine,2005,2006,Examination,None,p
+DXXL2TBS,L2 TBS,DXXSPN_E,Dual Energy X-ray Absorptiometry - Spine,2007,2008,Examination,None,p
+DXXL3A,L3 area,DXXSPN_D,Dual Energy X-ray Absorptiometry - Spine,2005,2006,Examination,None,p
+DXXL3A,L3 area,DXXSPN_E,Dual Energy X-ray Absorptiometry - Spine,2007,2008,Examination,None,p
+DXXL3A,L3 area (cm^2),DXXSPN_F,Dual Energy X-ray Absorptiometry - Spine,2009,2010,Examination,None,p
+DXXL3A,L3 area,DXXSPN_H,Dual-Energy X-ray Absorptiometry - Spine,2013,2014,Examination,None,p
+DXXL3A,L3 area,DXXSPN_J,Dual-Energy X-ray Absorptiometry - Spine,2017,2018,Examination,None,p
+DXXL3BMC,L3 Bone Mineral Composition,DXXSPN_D,Dual Energy X-ray Absorptiometry - Spine,2005,2006,Examination,None,p
+DXXL3BMC,L3 Bone Mineral Composition,DXXSPN_E,Dual Energy X-ray Absorptiometry - Spine,2007,2008,Examination,None,p
+DXXL3BMC,L3 bone mineral content (gm),DXXSPN_F,Dual Energy X-ray Absorptiometry - Spine,2009,2010,Examination,None,p
+DXXL3BMC,L3 BMC,DXXSPN_H,Dual-Energy X-ray Absorptiometry - Spine,2013,2014,Examination,None,p
+DXXL3BMC,L3 BMC,DXXSPN_J,Dual-Energy X-ray Absorptiometry - Spine,2017,2018,Examination,None,p
+DXXL3TBS,L3 TBS,DXXSPN_D,Dual Energy X-ray Absorptiometry - Spine,2005,2006,Examination,None,p
+DXXL3TBS,L3 TBS,DXXSPN_E,Dual Energy X-ray Absorptiometry - Spine,2007,2008,Examination,None,p
+DXXL4A,L4 area,DXXSPN_D,Dual Energy X-ray Absorptiometry - Spine,2005,2006,Examination,None,p
+DXXL4A,L4 area,DXXSPN_E,Dual Energy X-ray Absorptiometry - Spine,2007,2008,Examination,None,p
+DXXL4A,L4 area (cm^2),DXXSPN_F,Dual Energy X-ray Absorptiometry - Spine,2009,2010,Examination,None,p
+DXXL4A,L4 area,DXXSPN_H,Dual-Energy X-ray Absorptiometry - Spine,2013,2014,Examination,None,p
+DXXL4A,L4 area,DXXSPN_J,Dual-Energy X-ray Absorptiometry - Spine,2017,2018,Examination,None,p
+DXXL4BMC,L4 Bone Mineral Composition,DXXSPN_D,Dual Energy X-ray Absorptiometry - Spine,2005,2006,Examination,None,p
+DXXL4BMC,L4 Bone Mineral Composition,DXXSPN_E,Dual Energy X-ray Absorptiometry - Spine,2007,2008,Examination,None,p
+DXXL4BMC,L4 bone mineral content (gm),DXXSPN_F,Dual Energy X-ray Absorptiometry - Spine,2009,2010,Examination,None,p
+DXXL4BMC,L4 BMC,DXXSPN_H,Dual-Energy X-ray Absorptiometry - Spine,2013,2014,Examination,None,p
+DXXL4BMC,L4 BMC,DXXSPN_J,Dual-Energy X-ray Absorptiometry - Spine,2017,2018,Examination,None,p
+DXXL4BMD,L4 Bone Mineral Density,DXXSPN_D,Dual Energy X-ray Absorptiometry - Spine,2005,2006,Examination,None,p
+DXXL4BMD,L4 Bone Mineral Density,DXXSPN_E,Dual Energy X-ray Absorptiometry - Spine,2007,2008,Examination,None,p
+DXXL4BMD,L4 bone mineral density (gm/cm^2),DXXSPN_F,Dual Energy X-ray Absorptiometry - Spine,2009,2010,Examination,None,p
+DXXL4BMD,L4 BMD,DXXSPN_H,Dual-Energy X-ray Absorptiometry - Spine,2013,2014,Examination,None,p
+DXXL4BMD,L4 BMD,DXXSPN_J,Dual-Energy X-ray Absorptiometry - Spine,2017,2018,Examination,None,p
+DXXL4TBS,L4 TBS,DXXSPN_D,Dual Energy X-ray Absorptiometry - Spine,2005,2006,Examination,None,p
+DXXL4TBS,L4 TBS,DXXSPN_E,Dual Energy X-ray Absorptiometry - Spine,2007,2008,Examination,None,p
+DXXLAA,Left Arm Area (cm^2),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXXLAA,Left Arm Area (cm^2),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXXLAA,Left Arm Area (cm^2),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXXLAA,Left Arm Area (cm^2),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXXLABMC,Left Arm Body Mineral Content (grams),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXXLABMC,Left Arm Body Mineral Content (grams),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXXLABMC,Left Arm Body Mineral Content (grams),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXXLABMC,Left Arm Body Mineral Content (grams),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXXLABMD,Left Arm Body Mineral Density (grams/cm^2),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXXLABMD,Left Arm Body Mineral Density (grams/cm^2),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXXLABMD,Left Arm Body Mineral Density (grams/cm^2),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXXLABMD,Left Arm Body Mineral Density (grams/cm^2),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXXLAFAT,Left Arm Fat (grams),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXXLAFAT,Left Arm Fat (grams),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXXLAFAT,Left Arm Fat (grams),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXXLAFAT,Left Arm Fat (grams),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXXLALI,Left Arm Lean incl BMC (grams),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXXLALI,Left Arm Lean incl BMC (grams),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXXLALI,Left Arm Lean incl BMC (grams),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXXLALI,Left Arm Lean incl BMC (grams),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXXLLA,Left Leg Area(cm^2),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXXLLA,Left Leg Area(cm^2),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXXLLA,Left Leg Area(cm^2),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXXLLA,Left Leg Area(cm^2),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXXLLBMC,Left Leg Bone Mineral Content (grams),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXXLLBMC,Left Leg Bone Mineral Content (grams),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXXLLBMC,Left Leg Bone Mineral Content (grams),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXXLLBMC,Left Leg Bone Mineral Content (grams),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXXLLBMD,Left Leg Bone Mineral Density (grams/cm^2),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXXLLBMD,Left Leg Bone Mineral Density (grams/cm^2),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXXLLBMD,Left Leg Bone Mineral Density (grams/cm^2),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXXLLBMD,Left Leg Bone Mineral Density (grams/cm^2),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXXLLFAT,Left Leg Fat (grams),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXXLLFAT,Left Leg Fat (grams),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXXLLFAT,Left Leg Fat (grams),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXXLLFAT,Left Leg Fat (grams),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXXLLLI,Left Leg Lean incl Bone Mineral Content (grams),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXXLLLI,Left Leg Lean incl Bone Mineral Content (grams),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXXLLLI,Left Leg Lean incl Bone Mineral Content (grams),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXXLLLI,Left Leg Lean incl Bone Mineral Content (grams),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXXLRA,Left Ribs Area(cm^2),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXXLRA,Left Ribs Area(cm^2),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXXLRA,Left Ribs Area(cm^2),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXXLRA,Left Ribs Area(cm^2),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXXLRBMC,Left Ribs Bone Mineral Content (grams),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXXLRBMC,Left Ribs Bone Mineral Content (grams),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXXLRBMC,Left Ribs Bone Mineral Content (grams),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXXLRBMC,Left Ribs Bone Mineral Content (grams),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXXLRBMD,Left Ribs Bone Mineral Density (grams/cm^2),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXXLRBMD,Left Ribs Bone Mineral Density (grams/cm^2),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXXLRBMD,Left Ribs Bone Mineral Density (grams/cm^2),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXXLRBMD,Left Ribs Bone Mineral Density (grams/cm^2),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXXLSA,Lumbar Spine Area (cm^2),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXXLSA,Lumbar Spine Area (cm^2),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXXLSA,Lumbar Spine Area (cm^2),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXXLSA,Lumbar Spine Area (cm^2),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXXLSBMC,Lumbar Spine Bone Mineral Content (grams),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXXLSBMC,Lumbar Spine Bone Mineral Content (grams),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXXLSBMC,Lumbar Spine Bone Mineral Content (grams),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXXLSBMC,Lumbar Spine Bone Mineral Content (grams),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXXLSBMD,Lumbar Spine Bone Mineral Density (grams/cm^2),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXXLSBMD,Lumbar Spine Bone Mineral Density (grams/cm^2),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXXLSBMD,Lumbar Spine Bone Mineral Density (grams/cm^2),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXXLSBMD,Lumbar Spine Bone Mineral Density (grams/cm^2),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXXNKA,Femoral neck area (cm^2),DXXFEM_D,Dual Energy X-ray Absorptiometry - Femur,2005,2006,Examination,None,p
+DXXNKA,Femoral neck area (cm^2),DXXFEM_E,Dual Energy X-ray Absorptiometry - Femur,2007,2008,Examination,None,p
+DXXNKA,Femoral neck area (cm^2),DXXFEM_F,Dual Energy X-ray Absorptiometry - Femur,2009,2010,Examination,None,p
+DXXNKA,Femoral neck area,DXXFEM_H,Dual-Energy X-ray Absorptiometry - Femur,2013,2014,Examination,None,p
+DXXNKA,Femoral neck area,DXXFEM_J,Dual-Energy X-ray Absorptiometry - Femur,2017,2018,Examination,None,p
+DXXNKBMC,Femoral neck bone mineral content (gm),DXXFEM_D,Dual Energy X-ray Absorptiometry - Femur,2005,2006,Examination,None,p
+DXXNKBMC,Femoral neck bone mineral content (gm),DXXFEM_E,Dual Energy X-ray Absorptiometry - Femur,2007,2008,Examination,None,p
+DXXNKBMC,Femoral neck bone mineral content (gm),DXXFEM_F,Dual Energy X-ray Absorptiometry - Femur,2009,2010,Examination,None,p
+DXXNKBMC,Femoral neck BMC,DXXFEM_H,Dual-Energy X-ray Absorptiometry - Femur,2013,2014,Examination,None,p
+DXXNKBMC,Femoral neck BMC,DXXFEM_J,Dual-Energy X-ray Absorptiometry - Femur,2017,2018,Examination,None,p
+DXXNKBMD,Femoral neck bone mineral density (gm/cm^2),DXXFEM_D,Dual Energy X-ray Absorptiometry - Femur,2005,2006,Examination,None,p
+DXXNKBMD,Femoral neck bone mineral density (gm/cm^2),DXXFEM_E,Dual Energy X-ray Absorptiometry - Femur,2007,2008,Examination,None,p
+DXXNKBMD,Femoral neck bone mineral density (gm/cm^2),DXXFEM_F,Dual Energy X-ray Absorptiometry - Femur,2009,2010,Examination,None,p
+DXXNKBMD,Femoral neck BMD,DXXFEM_H,Dual-Energy X-ray Absorptiometry - Femur,2013,2014,Examination,None,p
+DXXNKBMD,Femoral neck BMD,DXXFEM_J,Dual-Energy X-ray Absorptiometry - Femur,2017,2018,Examination,None,p
+DXXOFA,Total femur area (cm^2),DXXFEM_D,Dual Energy X-ray Absorptiometry - Femur,2005,2006,Examination,None,p
+DXXOFA,Total femur area (cm^2),DXXFEM_E,Dual Energy X-ray Absorptiometry - Femur,2007,2008,Examination,None,p
+DXXOFA,Total femur area (cm^2),DXXFEM_F,Dual Energy X-ray Absorptiometry - Femur,2009,2010,Examination,None,p
+DXXOFA,Total femur area,DXXFEM_H,Dual-Energy X-ray Absorptiometry - Femur,2013,2014,Examination,None,p
+DXXOFA,Total femur area,DXXFEM_J,Dual-Energy X-ray Absorptiometry - Femur,2017,2018,Examination,None,p
+DXXOFBMC,Total femur bone mineral content (gm),DXXFEM_D,Dual Energy X-ray Absorptiometry - Femur,2005,2006,Examination,None,p
+DXXOFBMC,Total femur bone mineral content (gm),DXXFEM_E,Dual Energy X-ray Absorptiometry - Femur,2007,2008,Examination,None,p
+DXXOFBMC,Total femur bone mineral content (gm),DXXFEM_F,Dual Energy X-ray Absorptiometry - Femur,2009,2010,Examination,None,p
+DXXOFBMC,Total femur BMC,DXXFEM_H,Dual-Energy X-ray Absorptiometry - Femur,2013,2014,Examination,None,p
+DXXOFBMC,Total femur BMC,DXXFEM_J,Dual-Energy X-ray Absorptiometry - Femur,2017,2018,Examination,None,p
+DXXOFBMD,Total femur bone mineral density (gm/cm^2),DXXFEM_D,Dual Energy X-ray Absorptiometry - Femur,2005,2006,Examination,None,p
+DXXOFBMD,Total femur bone mineral density (gm/cm^2),DXXFEM_E,Dual Energy X-ray Absorptiometry - Femur,2007,2008,Examination,None,p
+DXXOFBMD,Total femur bone mineral density (gm/cm^2),DXXFEM_F,Dual Energy X-ray Absorptiometry - Femur,2009,2010,Examination,None,p
+DXXOFBMD,Total femur BMD,DXXFEM_H,Dual-Energy X-ray Absorptiometry - Femur,2013,2014,Examination,None,p
+DXXOFBMD,Total femur BMD,DXXFEM_J,Dual-Energy X-ray Absorptiometry - Femur,2017,2018,Examination,None,p
+DXXOSA,Total spine area,DXXSPN_D,Dual Energy X-ray Absorptiometry - Spine,2005,2006,Examination,None,p
+DXXOSA,Total spine area,DXXSPN_E,Dual Energy X-ray Absorptiometry - Spine,2007,2008,Examination,None,p
+DXXOSA,Total spine area (cm^2),DXXSPN_F,Dual Energy X-ray Absorptiometry - Spine,2009,2010,Examination,None,p
+DXXOSA,Total spine area,DXXSPN_H,Dual-Energy X-ray Absorptiometry - Spine,2013,2014,Examination,None,p
+DXXOSA,Total spine area,DXXSPN_J,Dual-Energy X-ray Absorptiometry - Spine,2017,2018,Examination,None,p
+DXXOSBMC,Total spine BMC,DXXSPN_D,Dual Energy X-ray Absorptiometry - Spine,2005,2006,Examination,None,p
+DXXOSBMC,Total spine BMC,DXXSPN_E,Dual Energy X-ray Absorptiometry - Spine,2007,2008,Examination,None,p
+DXXOSBMC,Total spine bone mineral content (gm),DXXSPN_F,Dual Energy X-ray Absorptiometry - Spine,2009,2010,Examination,None,p
+DXXOSBMC,Total spine BMC,DXXSPN_H,Dual-Energy X-ray Absorptiometry - Spine,2013,2014,Examination,None,p
+DXXOSBMC,Total spine BMC,DXXSPN_J,Dual-Energy X-ray Absorptiometry - Spine,2017,2018,Examination,None,p
+DXXOSBMD,Total spine BMD,DXXSPN_D,Dual Energy X-ray Absorptiometry - Spine,2005,2006,Examination,None,p
+DXXOSBMD,Total spine BMD,DXXSPN_E,Dual Energy X-ray Absorptiometry - Spine,2007,2008,Examination,None,p
+DXXOSBMD,Total spine bone mineral density (gm/cm^2),DXXSPN_F,Dual Energy X-ray Absorptiometry - Spine,2009,2010,Examination,None,p
+DXXOSBMD,Total spine BMD,DXXSPN_H,Dual-Energy X-ray Absorptiometry - Spine,2013,2014,Examination,None,p
+DXXOSBMD,Total spine BMD,DXXSPN_J,Dual-Energy X-ray Absorptiometry - Spine,2017,2018,Examination,None,p
+DXXPEA,Pelvis Area (cm^2),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXXPEA,Pelvis Area (cm^2),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXXPEA,Pelvis Area (cm^2),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXXPEA,Pelvis Area (cm^2),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXXPEBMC,Pelvis Bone Mineral Content (grams),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXXPEBMC,Pelvis Bone Mineral Content (grams),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXXPEBMC,Pelvis Bone Mineral Content (grams),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXXPEBMC,Pelvis Bone Mineral Content (grams),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXXPEBMD,Pelvis Bone Mineral Density (grams/cm^2),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXXPEBMD,Pelvis Bone Mineral Density (grams/cm^2),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXXPEBMD,Pelvis Bone Mineral Density (grams/cm^2),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXXPEBMD,Pelvis Bone Mineral Density (grams/cm^2),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXXRAA,Right Arm Area (cm^2),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXXRAA,Right Arm Area (cm^2),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXXRAA,Right Arm Area (cm^2),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXXRAA,Right Arm Area (cm^2),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXXRABMC,Right Arm Bone Mineral Content (grams),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXXRABMC,Right Arm Bone Mineral Content (grams),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXXRABMC,Right Arm Bone Mineral Content (grams),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXXRABMC,Right Arm Bone Mineral Content (grams),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXXRABMD,Right Arm Bone Mineral Density (grams/cm^2),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXXRABMD,Right Arm Bone Mineral Density (grams/cm^2),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXXRABMD,Right Arm Bone Mineral Density (grams/cm^2),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXXRABMD,Right Arm Bone Mineral Density (grams/cm^2),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXXRAFAT,Right Arm Fat (grams),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXXRAFAT,Right Arm Fat (grams),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXXRAFAT,Right Arm Fat (grams),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXXRAFAT,Right Arm Fat (grams),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXXRALI,Right Arm Lean incl Bone Mineral Content (grams),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXXRALI,Right Arm Lean incl Bone Mineral Content (grams),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXXRALI,Right Arm Lean incl Bone Mineral Content (grams),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXXRALI,Right Arm Lean incl Bone Mineral Content (grams),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXXRLA,Right Leg Area (cm^2),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXXRLA,Right Leg Area (cm^2),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXXRLA,Right Leg Area (cm^2),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXXRLA,Right Leg Area (cm^2),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXXRLBMC,Right Leg Bone Mineral Content (grams),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXXRLBMC,Right Leg Bone Mineral Content (grams),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXXRLBMC,Right Leg Bone Mineral Content (grams),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXXRLBMC,Right Leg Bone Mineral Content (grams),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXXRLBMD,Right Leg Bone Mineral Density (grams/cm^2),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXXRLBMD,Right Leg Bone Mineral Density (grams/cm^2),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXXRLBMD,Right Leg Bone Mineral Density (grams/cm^2),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXXRLBMD,Right Leg Bone Mineral Density (grams/cm^2),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXXRLFAT,Right Leg Fat (grams),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXXRLFAT,Right Leg Fat (grams),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXXRLFAT,Right Leg Fat (grams),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXXRLFAT,Right Leg Fat (grams),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXXRLLI,Right Leg Lean incl Bone Mineral Content (grams),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXXRLLI,Right Leg Lean incl Bone Mineral Content (grams),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXXRLLI,Right Leg Lean incl Bone Mineral Content (grams),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXXRLLI,Right Leg Lean incl Bone Mineral Content (grams),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXXRRA,Right Ribs Area (cm^2),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXXRRA,Right Ribs Area (cm^2),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXXRRA,Right Ribs Area (cm^2),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXXRRA,Right Ribs Area (cm^2),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXXRRBMC,Right Ribs Bone Mineral Content (grams),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXXRRBMC,Right Ribs Bone Mineral Content (grams),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXXRRBMC,Right Ribs Bone Mineral Content (grams),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXXRRBMC,Right Ribs Bone Mineral Content (grams),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXXRRBMD,Right Ribs Bone Mineral Density (grams/cm^2),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXXRRBMD,Right Ribs Bone Mineral Density (grams/cm^2),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXXRRBMD,Right Ribs Bone Mineral Density (grams/cm^2),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXXRRBMD,Right Ribs Bone Mineral Density (grams/cm^2),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXXSATA,Subcutaneous fat area,DXXAG_G,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2011,2012,Examination,None,p
+DXXSATA,Subcutaneous fat area,DXXAG_H,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2013,2014,Examination,None,p
+DXXSATA,Subcutaneous fat area,DXXAG_I,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2015,2016,Examination,None,p
+DXXSATA,Subcutaneous fat area,DXXAG_J,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2017,2018,Examination,None,p
+DXXSATM,Subcutaneous fat mass,DXXAG_G,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2011,2012,Examination,None,p
+DXXSATM,Subcutaneous fat mass,DXXAG_H,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2013,2014,Examination,None,p
+DXXSATM,Subcutaneous fat mass,DXXAG_I,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2015,2016,Examination,None,p
+DXXSATM,Subcutaneous fat mass,DXXAG_J,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2017,2018,Examination,None,p
+DXXSATV,Subcutaneous fat volume,DXXAG_G,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2011,2012,Examination,None,p
+DXXSATV,Subcutaneous fat volume,DXXAG_H,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2013,2014,Examination,None,p
+DXXSATV,Subcutaneous fat volume,DXXAG_I,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2015,2016,Examination,None,p
+DXXSATV,Subcutaneous fat volume,DXXAG_J,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2017,2018,Examination,None,p
+DXXTATA,Total abdominal fat area,DXXAG_G,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2011,2012,Examination,None,p
+DXXTATA,Total abdominal fat area,DXXAG_H,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2013,2014,Examination,None,p
+DXXTATA,Total abdominal fat area,DXXAG_I,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2015,2016,Examination,None,p
+DXXTATA,Total abdominal fat area,DXXAG_J,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2017,2018,Examination,None,p
+DXXTATM,Total abdominal fat mass,DXXAG_G,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2011,2012,Examination,None,p
+DXXTATM,Total abdominal fat mass,DXXAG_H,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2013,2014,Examination,None,p
+DXXTATM,Total abdominal fat mass,DXXAG_I,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2015,2016,Examination,None,p
+DXXTATM,Total abdominal fat mass,DXXAG_J,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2017,2018,Examination,None,p
+DXXTATV,Total abdominal fat volume,DXXAG_G,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2011,2012,Examination,None,p
+DXXTATV,Total abdominal fat volume,DXXAG_H,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2013,2014,Examination,None,p
+DXXTATV,Total abdominal fat volume,DXXAG_I,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2015,2016,Examination,None,p
+DXXTATV,Total abdominal fat volume,DXXAG_J,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2017,2018,Examination,None,p
+DXXTOTBS,Total Trabecular Bone Score,DXXSPN_D,Dual Energy X-ray Absorptiometry - Spine,2005,2006,Examination,None,p
+DXXTOTBS,Total Trabecular Bone Score,DXXSPN_E,Dual Energy X-ray Absorptiometry - Spine,2007,2008,Examination,None,p
+DXXTRA,Trochanter area (cm^2),DXXFEM_D,Dual Energy X-ray Absorptiometry - Femur,2005,2006,Examination,None,p
+DXXTRA,Trochanter area (cm^2),DXXFEM_E,Dual Energy X-ray Absorptiometry - Femur,2007,2008,Examination,None,p
+DXXTRA,Trochanter area (cm^2),DXXFEM_F,Dual Energy X-ray Absorptiometry - Femur,2009,2010,Examination,None,p
+DXXTRA,Trochanter area,DXXFEM_H,Dual-Energy X-ray Absorptiometry - Femur,2013,2014,Examination,None,p
+DXXTRA,Trochanter area,DXXFEM_J,Dual-Energy X-ray Absorptiometry - Femur,2017,2018,Examination,None,p
+DXXTRBMC,Trochanter bone mineral content (gm),DXXFEM_D,Dual Energy X-ray Absorptiometry - Femur,2005,2006,Examination,None,p
+DXXTRBMC,Trochanter bone mineral content (gm),DXXFEM_E,Dual Energy X-ray Absorptiometry - Femur,2007,2008,Examination,None,p
+DXXTRBMC,Trochanter bone mineral content (gm),DXXFEM_F,Dual Energy X-ray Absorptiometry - Femur,2009,2010,Examination,None,p
+DXXTRBMC,Trochanter BMC,DXXFEM_H,Dual-Energy X-ray Absorptiometry - Femur,2013,2014,Examination,None,p
+DXXTRBMC,Trochanter BMC,DXXFEM_J,Dual-Energy X-ray Absorptiometry - Femur,2017,2018,Examination,None,p
+DXXTRBMD,Trochanter bone mineral density (gm/cm^2),DXXFEM_D,Dual Energy X-ray Absorptiometry - Femur,2005,2006,Examination,None,p
+DXXTRBMD,Trochanter bone mineral density (gm/cm^2),DXXFEM_E,Dual Energy X-ray Absorptiometry - Femur,2007,2008,Examination,None,p
+DXXTRBMD,Trochanter bone mineral density (gm/cm^2),DXXFEM_F,Dual Energy X-ray Absorptiometry - Femur,2009,2010,Examination,None,p
+DXXTRBMD,Trochanter BMD,DXXFEM_H,Dual-Energy X-ray Absorptiometry - Femur,2013,2014,Examination,None,p
+DXXTRBMD,Trochanter BMD,DXXFEM_J,Dual-Energy X-ray Absorptiometry - Femur,2017,2018,Examination,None,p
+DXXTRFAT,Trunk Fat (grams),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXXTRFAT,Trunk Fat (grams),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXXTRFAT,Trunk Fat (grams),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXXTRFAT,Trunk Fat (grams),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXXTRLI,Trunk Lean incl Bone Mineral Content (grams),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXXTRLI,Trunk Lean incl Bone Mineral Content (grams),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXXTRLI,Trunk Lean incl Bone Mineral Content (grams),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXXTRLI,Trunk Lean incl Bone Mineral Content (grams),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXXTSA,Thoracic Spine Area (cm^2),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXXTSA,Thoracic Spine Area (cm^2),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXXTSA,Thoracic Spine Area (cm^2),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXXTSA,Thoracic Spine Area (cm^2),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXXTSBMC,Thoracic Spine Bone Mineral Content (grams),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXXTSBMC,Thoracic Spine Bone Mineral Content (grams),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXXTSBMC,Thoracic Spine Bone Mineral Content (grams),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXXTSBMC,Thoracic Spine Bone Mineral Content (grams),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXXTSBMD,Thoracic Spine Bone Mineral Density (grams/cm^2),DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,2011,2012,Examination,None,p
+DXXTSBMD,Thoracic Spine Bone Mineral Density (grams/cm^2),DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,2013,2014,Examination,None,p
+DXXTSBMD,Thoracic Spine Bone Mineral Density (grams/cm^2),DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,2015,2016,Examination,None,p
+DXXTSBMD,Thoracic Spine Bone Mineral Density (grams/cm^2),DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,2017,2018,Examination,None,p
+DXXVFATA,Visceral adipose tissue area,DXXAG_G,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2011,2012,Examination,None,p
+DXXVFATA,Visceral adipose tissue area,DXXAG_H,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2013,2014,Examination,None,p
+DXXVFATA,Visceral adipose tissue area,DXXAG_I,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2015,2016,Examination,None,p
+DXXVFATA,Visceral adipose tissue area,DXXAG_J,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2017,2018,Examination,None,p
+DXXVFATM,Visceral adipose tissue mass,DXXAG_G,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2011,2012,Examination,None,p
+DXXVFATM,Visceral adipose tissue mass,DXXAG_H,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2013,2014,Examination,None,p
+DXXVFATM,Visceral adipose tissue mass,DXXAG_I,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2015,2016,Examination,None,p
+DXXVFATM,Visceral adipose tissue mass,DXXAG_J,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2017,2018,Examination,None,p
+DXXVFATV,Visceral adipose tissue volume,DXXAG_G,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2011,2012,Examination,None,p
+DXXVFATV,Visceral adipose tissue volume,DXXAG_H,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2013,2014,Examination,None,p
+DXXVFATV,Visceral adipose tissue volume,DXXAG_I,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2015,2016,Examination,None,p
+DXXVFATV,Visceral adipose tissue volume,DXXAG_J,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,2017,2018,Examination,None,p
+DXXWDA,Ward's triangle area (cm^2),DXXFEM_D,Dual Energy X-ray Absorptiometry - Femur,2005,2006,Examination,None,p
+DXXWDA,Ward's triangle area (cm^2),DXXFEM_E,Dual Energy X-ray Absorptiometry - Femur,2007,2008,Examination,None,p
+DXXWDA,Wards triangle area (cm^2),DXXFEM_F,Dual Energy X-ray Absorptiometry - Femur,2009,2010,Examination,None,p
+DXXWDA,Wards triangle area,DXXFEM_H,Dual-Energy X-ray Absorptiometry - Femur,2013,2014,Examination,None,p
+DXXWDA,Wards triangle area,DXXFEM_J,Dual-Energy X-ray Absorptiometry - Femur,2017,2018,Examination,None,p
+DXXWDBMC,Ward's triangle bone mineral content (gm),DXXFEM_D,Dual Energy X-ray Absorptiometry - Femur,2005,2006,Examination,None,p
+DXXWDBMC,Ward's triangle bone mineral content (gm),DXXFEM_E,Dual Energy X-ray Absorptiometry - Femur,2007,2008,Examination,None,p
+DXXWDBMC,Wards triangle bone mineral content (gm),DXXFEM_F,Dual Energy X-ray Absorptiometry - Femur,2009,2010,Examination,None,p
+DXXWDBMC,Wards triangle BMC,DXXFEM_H,Dual-Energy X-ray Absorptiometry - Femur,2013,2014,Examination,None,p
+DXXWDBMC,Wards triangle BMC,DXXFEM_J,Dual-Energy X-ray Absorptiometry - Femur,2017,2018,Examination,None,p
+DXXWDBMD,Ward's triangle bone mineral density (gm/cm^2),DXXFEM_D,Dual Energy X-ray Absorptiometry - Femur,2005,2006,Examination,None,p
+DXXWDBMD,Ward's triangle bone mineral density (gm/cm^2),DXXFEM_E,Dual Energy X-ray Absorptiometry - Femur,2007,2008,Examination,None,p
+DXXWDBMD,Wards triangle bone mineral density (gm/cm^2),DXXFEM_F,Dual Energy X-ray Absorptiometry - Femur,2009,2010,Examination,None,p
+DXXWDBMD,Wards triangle BMD,DXXFEM_H,Dual-Energy X-ray Absorptiometry - Femur,2013,2014,Examination,None,p
+DXXWDBMD,Wards triangle BMD,DXXFEM_J,Dual-Energy X-ray Absorptiometry - Femur,2017,2018,Examination,None,p
+ENXCMT,Comment for ENO exams not done,ENX_E,Exhaled Nitric Oxide,2007,2008,Examination,None,p
+ENXCMT,Comment for ENO exams not done,ENX_F,Exhaled Nitric Oxide,2009,2010,Examination,None,p
+ENXCMT,Comment for ENO exams not done,ENX_G,Exhaled Nitric Oxide,2011,2012,Examination,None,p
+ENXMEAN,"Mean of two reproducible FENO measurements, in parts per billion",ENX_E,Exhaled Nitric Oxide,2007,2008,Examination,None,p
+ENXMEAN,"Mean of two reproducible FENO measurements, in parts per billion",ENX_F,Exhaled Nitric Oxide,2009,2010,Examination,None,p
+ENXMEAN,"Mean of two reproducible FENO measurements, in parts per billion",ENX_G,Exhaled Nitric Oxide,2011,2012,Examination,None,p
+LB2BANO,Basophils number (1000 cells/uL),l25_2_b,"Complete Blood Count with 5-part Differential - Whole Blood, Second Exam",2001,2002,Laboratory,None,p
+LB2BAP,Bone alkaline phosphotase (ug/L),L11_2_b,"C-Reactive Protein & Others, Second Exam",2001,2002,Laboratory,None,p
+LB2BAPCT,Basophils percent (%),l25_2_b,"Complete Blood Count with 5-part Differential - Whole Blood, Second Exam",2001,2002,Laboratory,None,p
+LB2CP,C-peptide: pmol/mL,L10_2_B,"Glycohemoglobin, Plasma Glucose, Serum C-peptide, & Insulin, Second Exam",2001,2002,Laboratory,None,p
+LB2CRP,C-reactive protein (mg/dL),L11_2_b,"C-Reactive Protein & Others, Second Exam",2001,2002,Laboratory,None,p
+LB2EONO,Eosinophils number (1000 cells/uL),l25_2_b,"Complete Blood Count with 5-part Differential - Whole Blood, Second Exam",2001,2002,Laboratory,None,p
+LB2EOPCT,Eosinophils percent (%),l25_2_b,"Complete Blood Count with 5-part Differential - Whole Blood, Second Exam",2001,2002,Laboratory,None,p
+LB2EPP,Erythrocyte protoporphyrin (ug/dL RBC),l39_2_b,Erythrocyte Protoporphyrin,2001,2002,Laboratory,None,p
+LB2FB,Fibrinogen (mg/dL),L11_2_b,"C-Reactive Protein & Others, Second Exam",2001,2002,Laboratory,None,p
+LB2FSH,Follicle stimulating hormone (mIU/mL),L40_2_B,"Standard Biochemistry Profile, Follicle Stimulating Hormone & Luteinizing Hormone, Second Exam",2001,2002,Laboratory,None,p
+LB2GH,Glycohemoglobin (%),L10_2_B,"Glycohemoglobin, Plasma Glucose, Serum C-peptide, & Insulin, Second Exam",2001,2002,Laboratory,None,p
+LB2GLU,Plasma glucose (mg/dL),L10_2_B,"Glycohemoglobin, Plasma Glucose, Serum C-peptide, & Insulin, Second Exam",2001,2002,Laboratory,None,p
+LB2HCT,Hematocrit (%),l25_2_b,"Complete Blood Count with 5-part Differential - Whole Blood, Second Exam",2001,2002,Laboratory,None,p
+LB2HDL,HDL-cholesterol (mg/dL),l13_2_b,"Cholesterol - Total, HDL, LDL  & Triglycerides, Second Exam",2001,2002,Laboratory,None,p
+LB2HGB,Hemoglobin (g/dL),l25_2_b,"Complete Blood Count with 5-part Differential - Whole Blood, Second Exam",2001,2002,Laboratory,None,p
+LB2IN,Insulin (uU/mL),L10_2_B,"Glycohemoglobin, Plasma Glucose, Serum C-peptide, & Insulin, Second Exam",2001,2002,Laboratory,None,p
+LB2LDL,LDL-cholesterol (mg/dL),l13_2_b,"Cholesterol - Total, HDL, LDL  & Triglycerides, Second Exam",2001,2002,Laboratory,None,p
+LB2LH,Luteinizing hormone (mIU/mL),L40_2_B,"Standard Biochemistry Profile, Follicle Stimulating Hormone & Luteinizing Hormone, Second Exam",2001,2002,Laboratory,None,p
+LB2LYMNO,Lymphocyte number (1000 cells/uL),l25_2_b,"Complete Blood Count with 5-part Differential - Whole Blood, Second Exam",2001,2002,Laboratory,None,p
+LB2LYPCT,Lymphocyte percent (%),l25_2_b,"Complete Blood Count with 5-part Differential - Whole Blood, Second Exam",2001,2002,Laboratory,None,p
+LB2MC,MCHC (g/dL),l25_2_b,"Complete Blood Count with 5-part Differential - Whole Blood, Second Exam",2001,2002,Laboratory,None,p
+LB2MCHSI,Mean cell hemoglobin (pg),l25_2_b,"Complete Blood Count with 5-part Differential - Whole Blood, Second Exam",2001,2002,Laboratory,None,p
+LB2MCVSI,Mean cell volume (fL),l25_2_b,"Complete Blood Count with 5-part Differential - Whole Blood, Second Exam",2001,2002,Laboratory,None,p
+LB2MONO,Monocyte number (1000 cells/uL),l25_2_b,"Complete Blood Count with 5-part Differential - Whole Blood, Second Exam",2001,2002,Laboratory,None,p
+LB2MOPCT,Monocyte percent (%),l25_2_b,"Complete Blood Count with 5-part Differential - Whole Blood, Second Exam",2001,2002,Laboratory,None,p
+LB2MPSI,Mean platelet volume (fL),l25_2_b,"Complete Blood Count with 5-part Differential - Whole Blood, Second Exam",2001,2002,Laboratory,None,p
+LB2NENO,Segmented neutrophils num (1000 cell/uL),l25_2_b,"Complete Blood Count with 5-part Differential - Whole Blood, Second Exam",2001,2002,Laboratory,None,p
+LB2NEPCT,Segmented neutrophils percent (%),l25_2_b,"Complete Blood Count with 5-part Differential - Whole Blood, Second Exam",2001,2002,Laboratory,None,p
+LB2P1,"Prostate specific antigen, total (ng/mL)",l11p_2_b,"Prostate-specific Antigen (PSA), Second Exam",2001,2002,Laboratory,None,p
+LB2P2,"Prostate specific antigen (PSA), free (ng/mL)",l11p_2_b,"Prostate-specific Antigen (PSA), Second Exam",2001,2002,Laboratory,None,p
+LB2P3,Prostate specific antigen ratio (%),l11p_2_b,"Prostate-specific Antigen (PSA), Second Exam",2001,2002,Laboratory,None,p
+LB2PLTSI,Platelet count (1000 cells/uL),l25_2_b,"Complete Blood Count with 5-part Differential - Whole Blood, Second Exam",2001,2002,Laboratory,None,p
+LB2RBCSI,Red blood cell count (million cells/uL),l25_2_b,"Complete Blood Count with 5-part Differential - Whole Blood, Second Exam",2001,2002,Laboratory,None,p
+LB2RDW,Red cell distribution width (%),l25_2_b,"Complete Blood Count with 5-part Differential - Whole Blood, Second Exam",2001,2002,Laboratory,None,p
+LB2SAL,Albumin (g/dL),L40_2_B,"Standard Biochemistry Profile, Follicle Stimulating Hormone & Luteinizing Hormone, Second Exam",2001,2002,Laboratory,None,p
+LB2SAPSI,Alkaline phosphotase (U/L),L40_2_B,"Standard Biochemistry Profile, Follicle Stimulating Hormone & Luteinizing Hormone, Second Exam",2001,2002,Laboratory,None,p
+LB2SASSI,Aspartate aminotransferase (U/L),L40_2_B,"Standard Biochemistry Profile, Follicle Stimulating Hormone & Luteinizing Hormone, Second Exam",2001,2002,Laboratory,None,p
+LB2SATSI,Alanine aminotransferase (U/L),L40_2_B,"Standard Biochemistry Profile, Follicle Stimulating Hormone & Luteinizing Hormone, Second Exam",2001,2002,Laboratory,None,p
+LB2SBU,Blood urea nitrogen (mg/dL),L40_2_B,"Standard Biochemistry Profile, Follicle Stimulating Hormone & Luteinizing Hormone, Second Exam",2001,2002,Laboratory,None,p
+LB2SC3SI,Bicarbonate (mmol/L),L40_2_B,"Standard Biochemistry Profile, Follicle Stimulating Hormone & Luteinizing Hormone, Second Exam",2001,2002,Laboratory,None,p
+LB2SCA,Total calcium (mg/dL),L40_2_B,"Standard Biochemistry Profile, Follicle Stimulating Hormone & Luteinizing Hormone, Second Exam",2001,2002,Laboratory,None,p
+LB2SCH,Cholesterol (mg/dL),L40_2_B,"Standard Biochemistry Profile, Follicle Stimulating Hormone & Luteinizing Hormone, Second Exam",2001,2002,Laboratory,None,p
+LB2SCLSI,Chloride (mmol/L),L40_2_B,"Standard Biochemistry Profile, Follicle Stimulating Hormone & Luteinizing Hormone, Second Exam",2001,2002,Laboratory,None,p
+LB2SCR,Creatinine (mg/dL),L40_2_B,"Standard Biochemistry Profile, Follicle Stimulating Hormone & Luteinizing Hormone, Second Exam",2001,2002,Laboratory,None,p
+LB2SGL,Glucose (mg/dL),L40_2_B,"Standard Biochemistry Profile, Follicle Stimulating Hormone & Luteinizing Hormone, Second Exam",2001,2002,Laboratory,None,p
+LB2SIR,Iron (ug/dL),L40_2_B,"Standard Biochemistry Profile, Follicle Stimulating Hormone & Luteinizing Hormone, Second Exam",2001,2002,Laboratory,None,p
+LB2SKSI,Potassium (mmol/L),L40_2_B,"Standard Biochemistry Profile, Follicle Stimulating Hormone & Luteinizing Hormone, Second Exam",2001,2002,Laboratory,None,p
+LB2SPH,Phosphorus (mg/dL),L40_2_B,"Standard Biochemistry Profile, Follicle Stimulating Hormone & Luteinizing Hormone, Second Exam",2001,2002,Laboratory,None,p
+LB2STB,"Bilirubin, total (mg/dL)",L40_2_B,"Standard Biochemistry Profile, Follicle Stimulating Hormone & Luteinizing Hormone, Second Exam",2001,2002,Laboratory,None,p
+LB2STP,"Protein, total (g/dL)",L40_2_B,"Standard Biochemistry Profile, Follicle Stimulating Hormone & Luteinizing Hormone, Second Exam",2001,2002,Laboratory,None,p
+LB2STR,Triglycerides (mg/dL),L40_2_B,"Standard Biochemistry Profile, Follicle Stimulating Hormone & Luteinizing Hormone, Second Exam",2001,2002,Laboratory,None,p
+LB2SUA,Uric acid (mg/dL),L40_2_B,"Standard Biochemistry Profile, Follicle Stimulating Hormone & Luteinizing Hormone, Second Exam",2001,2002,Laboratory,None,p
+LB2TC,Total cholesterol (mg/dL),l13_2_b,"Cholesterol - Total, HDL, LDL  & Triglycerides, Second Exam",2001,2002,Laboratory,None,p
+LB2TR,Triglyceride (mg/dL),l13_2_b,"Cholesterol - Total, HDL, LDL  & Triglycerides, Second Exam",2001,2002,Laboratory,None,p
+LB2WBCSI,White blood cell count (1000 cells/uL),l25_2_b,"Complete Blood Count with 5-part Differential - Whole Blood, Second Exam",2001,2002,Laboratory,None,p
+LBDBANO,Basophils number (1000 cells/uL),CBC_D,Complete Blood Count with 5-Part Differential - Whole Blood,2005,2006,Laboratory,None,p
+LBDBANO,Basophils number (1000 cells/uL),CBC_E,Complete Blood Count with 5-part Differential - Whole Blood,2007,2008,Laboratory,None,p
+LBDBANO,Basophils number (1000 cells/uL),CBC_F,Complete Blood Count with 5-part Differential - Whole Blood,2009,2010,Laboratory,None,p
+LBDBANO,Basophils number (1000 cells/uL),CBC_G,Complete Blood Count with 5-part Differential - Whole Blood,2011,2012,Laboratory,None,p
+LBDBANO,Basophils number (1000 cells/uL),CBC_H,Complete Blood Count with 5-part Differential - Whole Blood,2013,2014,Laboratory,None,p
+LBDBANO,Basophils number (1000 cells/uL),CBC_I,Complete Blood Count with 5-Part Differential - Whole Blood,2015,2016,Laboratory,None,p
+LBDBANO,Basophils number (1000 cells/uL),CBC_J,Complete Blood Count with 5-Part Differential,2017,2018,Laboratory,None,p
+LBDBANO,Basophils number,L25_B,Complete Blood Count with 5-part Differential - Whole Blood,2001,2002,Laboratory,None,p
+LBDBANO,Basophils number,L25_C,Complete Blood Count with 5-part Differential - Whole Blood,2003,2004,Laboratory,None,p
+LBDBANO,Basophils number,LAB25,Complete Blood Count with 5-part Differential - Whole Blood,1999,2000,Laboratory,None,p
+LBDEONO,Eosinophils number (1000 cells/uL),CBC_D,Complete Blood Count with 5-Part Differential - Whole Blood,2005,2006,Laboratory,None,p
+LBDEONO,Eosinophils number (1000 cells/uL),CBC_E,Complete Blood Count with 5-part Differential - Whole Blood,2007,2008,Laboratory,None,p
+LBDEONO,Eosinophils number (1000 cells/uL),CBC_F,Complete Blood Count with 5-part Differential - Whole Blood,2009,2010,Laboratory,None,p
+LBDEONO,Eosinophils number (1000 cells/uL),CBC_G,Complete Blood Count with 5-part Differential - Whole Blood,2011,2012,Laboratory,None,p
+LBDEONO,Eosinophils number (1000 cells/uL),CBC_H,Complete Blood Count with 5-part Differential - Whole Blood,2013,2014,Laboratory,None,p
+LBDEONO,Eosinophils number (1000 cells/uL),CBC_I,Complete Blood Count with 5-Part Differential - Whole Blood,2015,2016,Laboratory,None,p
+LBDEONO,Eosinophils number (1000 cells/uL),CBC_J,Complete Blood Count with 5-Part Differential,2017,2018,Laboratory,None,p
+LBDEONO,Eosinophils number,L25_B,Complete Blood Count with 5-part Differential - Whole Blood,2001,2002,Laboratory,None,p
+LBDEONO,Eosinophils number,L25_C,Complete Blood Count with 5-part Differential - Whole Blood,2003,2004,Laboratory,None,p
+LBDEONO,Eosinophils number,LAB25,Complete Blood Count with 5-part Differential - Whole Blood,1999,2000,Laboratory,None,p
+LBDFOT,Serum total folate (ng/mL),FOLFMS_G,Folate Forms - Total & Individual - Serum,2011,2012,Laboratory,None,p
+LBDFOT,Serum total folate (ng/mL),FOLFMS_H,Folate Forms - Total & Individual - Serum,2013,2014,Laboratory,None,p
+LBDFOT,Serum total folate (ng/mL),FOLFMS_I,Folate Forms - Total & Individual - Serum,2015,2016,Laboratory,None,p
+LBDFOT,Serum total folate (ng/mL),FOLFMS_J,Folate Forms - Total & Individual - Serum,2017,2018,Laboratory,None,p
+LBDHDD,Direct HDL-Cholesterol (mg/dL),HDL_D,Cholesterol - HDL,2005,2006,Laboratory,None,p
+LBDHDD,Direct HDL-Cholesterol (mg/dL),HDL_E,Cholesterol - HDL,2007,2008,Laboratory,None,p
+LBDHDD,Direct HDL-Cholesterol (mg/dL),HDL_F,Cholesterol - HDL,2009,2010,Laboratory,None,p
+LBDHDD,Direct HDL-Cholesterol (mg/dL),HDL_G,Cholesterol - HDL,2011,2012,Laboratory,None,p
+LBDHDD,Direct HDL-Cholesterol (mg/dL),HDL_H,Cholesterol - HDL,2013,2014,Laboratory,None,p
+LBDHDD,Direct HDL-Cholesterol (mg/dL),HDL_I,Cholesterol - High-Density Lipoprotein (HDL),2015,2016,Laboratory,None,p
+LBDHDD,Direct HDL-Cholesterol (mg/dL),HDL_J,Cholesterol - High - Density Lipoprotein (HDL),2017,2018,Laboratory,None,p
+LBDINSI,Insulin (pmol/L),GLU_D,Plasma Fasting Glucose & Insulin,2005,2006,Laboratory,None,p
+LBDINSI,Insulin (pmol/L),GLU_E,Plasma Fasting Glucose & Insulin,2007,2008,Laboratory,None,p
+LBDINSI,Insulin (pmol/L),GLU_F,Plasma Fasting Glucose & Insulin,2009,2010,Laboratory,None,p
+LBDINSI,Insulin (pmol/L),GLU_G,Plasma Fasting Glucose & Insulin,2011,2012,Laboratory,None,p
+LBDINSI,Insulin: SI(pmol/L),L10AM_C,"Plasma Fasting Glucose, Serum C-peptide & Insulin",2003,2004,Laboratory,None,p
+LBDIRNSI,"Iron, Frozen Serum (umol/L)",FETIB_D,"Iron, Total Iron Binding Capacity (TIBC), & Transferrin Saturation",2005,2006,Laboratory,None,p
+LBDIRNSI,"Iron frozen, Serum (umol/L)",FETIB_J,Iron Status - Serum,2017,2018,Laboratory,None,p
+LBDIRNSI,"Iron, frozen (umol/L)",L40FE_B,"Iron, Total Iron Binding Capacity (TIBC), & Transferrin Saturation",2001,2002,Laboratory,None,p
+LBDIRNSI,"Iron, frozen (umol/L)",L40FE_C,"Iron, Total Iron Binding Capacity (TIBC), & Transferrin Saturation",2003,2004,Laboratory,None,p
+LBDLDL,LDL-cholesterol (mg/dL),L13AM_B,Cholesterol - LDL & Triglycerides,2001,2002,Laboratory,None,p
+LBDLDL,LDL-cholesterol (mg/dL),L13AM_C,Cholesterol - LDL & Triglycerides,2003,2004,Laboratory,None,p
+LBDLDL,LDL-cholesterol (mg/dL),LAB13AM,Cholesterol - LDL & Triglycerides,1999,2000,Laboratory,None,p
+LBDLDL,LDL-cholesterol (mg/dL),TRIGLY_D,"Cholesterol - LDL, Triglyceride & Apoliprotein (ApoB)",2005,2006,Laboratory,None,p
+LBDLDL,LDL-cholesterol (mg/dL),TRIGLY_E,Cholesterol - LDL & Triglycerides,2007,2008,Laboratory,None,p
+LBDLDL,LDL-cholesterol (mg/dL),TRIGLY_F,Cholesterol - LDL & Triglycerides,2009,2010,Laboratory,None,p
+LBDLDL,LDL-cholesterol (mg/dL),TRIGLY_G,Cholesterol - LDL & Triglycerides,2011,2012,Laboratory,None,p
+LBDLDL,LDL-cholesterol (mg/dL),TRIGLY_H,Cholesterol - LDL & Triglycerides,2013,2014,Laboratory,None,p
+LBDLDL,LDL-cholesterol (mg/dL),TRIGLY_I,Cholesterol - Low - Density Lipoprotein (LDL) & Triglycerides,2015,2016,Laboratory,None,p
+LBDLDL,"LDL-Cholesterol, Friedewald equation (mg/dL).
+
+LBDLDL = (LBXTC-(LBDHDD + ",TRIGLY_J,Cholesterol - Low-Density Lipoproteins (LDL) & Triglycerides,2017,2018,Laboratory,None,p
+LBDLYMNO,Lymphocyte number (1000 cells/uL),CBC_D,Complete Blood Count with 5-Part Differential - Whole Blood,2005,2006,Laboratory,None,p
+LBDLYMNO,Lymphocyte number (1000 cells/uL),CBC_E,Complete Blood Count with 5-part Differential - Whole Blood,2007,2008,Laboratory,None,p
+LBDLYMNO,Lymphocyte number (1000 cells/uL),CBC_F,Complete Blood Count with 5-part Differential - Whole Blood,2009,2010,Laboratory,None,p
+LBDLYMNO,Lymphocyte number (1000 cells/uL),CBC_G,Complete Blood Count with 5-part Differential - Whole Blood,2011,2012,Laboratory,None,p
+LBDLYMNO,Lymphocyte number (1000 cells/uL),CBC_H,Complete Blood Count with 5-part Differential - Whole Blood,2013,2014,Laboratory,None,p
+LBDLYMNO,Lymphocyte number (1000 cells/uL),CBC_I,Complete Blood Count with 5-Part Differential - Whole Blood,2015,2016,Laboratory,None,p
+LBDLYMNO,Lymphocyte number (1000 cells/uL),CBC_J,Complete Blood Count with 5-Part Differential,2017,2018,Laboratory,None,p
+LBDLYMNO,Lymphocyte number,L25_B,Complete Blood Count with 5-part Differential - Whole Blood,2001,2002,Laboratory,None,p
+LBDLYMNO,Lymphocyte number,L25_C,Complete Blood Count with 5-part Differential - Whole Blood,2003,2004,Laboratory,None,p
+LBDLYMNO,Lymphocyte number,LAB25,Complete Blood Count with 5-part Differential - Whole Blood,1999,2000,Laboratory,None,p
+LBDMONO,Monocyte number (1000 cells/uL),CBC_D,Complete Blood Count with 5-Part Differential - Whole Blood,2005,2006,Laboratory,None,p
+LBDMONO,Monocyte number (1000 cells/uL),CBC_E,Complete Blood Count with 5-part Differential - Whole Blood,2007,2008,Laboratory,None,p
+LBDMONO,Monocyte number (1000 cells/uL),CBC_F,Complete Blood Count with 5-part Differential - Whole Blood,2009,2010,Laboratory,None,p
+LBDMONO,Monocyte number (1000 cells/uL),CBC_G,Complete Blood Count with 5-part Differential - Whole Blood,2011,2012,Laboratory,None,p
+LBDMONO,Monocyte number (1000 cells/uL),CBC_H,Complete Blood Count with 5-part Differential - Whole Blood,2013,2014,Laboratory,None,p
+LBDMONO,Monocyte number (1000 cells/uL),CBC_I,Complete Blood Count with 5-Part Differential - Whole Blood,2015,2016,Laboratory,None,p
+LBDMONO,Monocyte number (1000 cells/uL),CBC_J,Complete Blood Count with 5-Part Differential,2017,2018,Laboratory,None,p
+LBDMONO,Monocyte number,L25_B,Complete Blood Count with 5-part Differential - Whole Blood,2001,2002,Laboratory,None,p
+LBDMONO,Monocyte number,L25_C,Complete Blood Count with 5-part Differential - Whole Blood,2003,2004,Laboratory,None,p
+LBDMONO,Monocyte number,LAB25,Complete Blood Count with 5-part Differential - Whole Blood,1999,2000,Laboratory,None,p
+LBDNENO,Segmented neutrophils num (1000 cell/uL),CBC_D,Complete Blood Count with 5-Part Differential - Whole Blood,2005,2006,Laboratory,None,p
+LBDNENO,Segmented neutrophils num (1000 cell/uL),CBC_E,Complete Blood Count with 5-part Differential - Whole Blood,2007,2008,Laboratory,None,p
+LBDNENO,Segmented neutrophils num (1000 cell/uL),CBC_F,Complete Blood Count with 5-part Differential - Whole Blood,2009,2010,Laboratory,None,p
+LBDNENO,Segmented neutrophils num (1000 cell/uL),CBC_G,Complete Blood Count with 5-part Differential - Whole Blood,2011,2012,Laboratory,None,p
+LBDNENO,Segmented neutrophils num (1000 cell/uL),CBC_H,Complete Blood Count with 5-part Differential - Whole Blood,2013,2014,Laboratory,None,p
+LBDNENO,Segmented neutrophils number (1000 cell/uL),CBC_I,Complete Blood Count with 5-Part Differential - Whole Blood,2015,2016,Laboratory,None,p
+LBDNENO,Segmented neutrophils number (1000 cell/uL),CBC_J,Complete Blood Count with 5-Part Differential,2017,2018,Laboratory,None,p
+LBDNENO,Segmented neutrophils number,L25_B,Complete Blood Count with 5-part Differential - Whole Blood,2001,2002,Laboratory,None,p
+LBDNENO,Segmented neutrophils number,L25_C,Complete Blood Count with 5-part Differential - Whole Blood,2003,2004,Laboratory,None,p
+LBDNENO,Segmented neutrophils number,LAB25,Complete Blood Count with 5-part Differential - Whole Blood,1999,2000,Laboratory,None,p
+LBDP3,Prostate specific antigen ratio (%),L11PSA_B,Prostate specific antigen (PSA),2001,2002,Laboratory,None,p
+LBDP3,Prostate specific antigen ratio (%),L11PSA_C,Prostate Specific Antigen (PSA),2003,2004,Laboratory,None,p
+LBDP3,Prostate specific antigen ratio (%),PSA_D,Prostate Specific Antigen (PSA),2005,2006,Laboratory,None,p
+LBDP3,Prostate specific antigen ratio (%),PSA_E,Prostate Specific Antigen (PSA),2007,2008,Laboratory,None,p
+LBDP3,Prostate specific antigen ratio (%),PSA_F,Prostate Specific Antigen (PSA),2009,2010,Laboratory,None,p
+LBDPCT,Transferrin saturation (%),FETIB_D,"Iron, Total Iron Binding Capacity (TIBC), & Transferrin Saturation",2005,2006,Laboratory,None,p
+LBDPCT,Transferrin Saturation (%),FETIB_J,Iron Status - Serum,2017,2018,Laboratory,None,p
+LBDPCT,Transferrin saturation (%),L40FE_B,"Iron, Total Iron Binding Capacity (TIBC), & Transferrin Saturation",2001,2002,Laboratory,None,p
+LBDPCT,Transferrin saturation (%),L40FE_C,"Iron, Total Iron Binding Capacity (TIBC), & Transferrin Saturation",2003,2004,Laboratory,None,p
+LBDRFO,RBC folate (ng/mL),FOLATE_G,Folate - RBC,2011,2012,Laboratory,None,p
+LBDRFO,RBC folate (ng/mL),FOLATE_H,Folate - RBC,2013,2014,Laboratory,None,p
+LBDRFO,RBC folate (ng/mL),FOLATE_I,Folate - RBC,2015,2016,Laboratory,None,p
+LBDRFO,RBC folate (ng/mL),FOLATE_J,Folate - RBC,2017,2018,Laboratory,None,p
+LBDSAPSI,Alkaline phosphatase (U/L),L40_B,Standard Biochemistry Profile,2001,2002,Laboratory,None,p
+LBXAPB,Apolipoprotein (B) (mg/dL),ApoB_E,Apolipoprotein B,2007,2008,Laboratory,None,p
+LBXAPB,Apolipoprotein (B) (mg/dL),ApoB_F,Apolipoprotein B,2009,2010,Laboratory,None,p
+LBXAPB,Apolipoprotein (B) (mg/dL),ApoB_G,Apolipoprotein B,2011,2012,Laboratory,None,p
+LBXAPB,Apolipoprotein (B) (mg/dL),ApoB_H,Apolipoprotein B,2013,2014,Laboratory,None,p
+LBXAPB,Apolipoprotein (B) (mg/dL),APOB_I,Apolipoprotein B,2015,2016,Laboratory,None,p
+LBXAPB,Apolipoprotein (B) (mg/dL),TRIGLY_D,"Cholesterol - LDL, Triglyceride & Apoliprotein (ApoB)",2005,2006,Laboratory,None,p
+LBXATG,Thyroglobulin antibodies (IU/mL),THYROD_E,Thyroid Profile,2007,2008,Laboratory,None,p
+LBXATG,Thyroglobulin antibodies (IU/mL),THYROD_F,Thyroid Profile,2009,2010,Laboratory,None,p
+LBXATG,Thyroglobulin antibodies (IU/mL),THYROD_G,Thyroid Profile,2011,2012,Laboratory,None,p
+LBXBAP,Bone alkaline phosphotase (ug/L),L11_C,"C-Reactive Protein (CRP), Bone Alkaline Phosphatase (BAP) & Parathyroid Hormone (PTH)",2003,2004,Laboratory,None,p
+LBXBAP,Bone alkaline phosphotase (ug/L),LAB11,C-Reactive Protein (CRP),1999,2000,Laboratory,None,p
+LBXBAPCT,Basophils percent (%),CBC_D,Complete Blood Count with 5-Part Differential - Whole Blood,2005,2006,Laboratory,None,p
+LBXBAPCT,Basophils percent (%),CBC_E,Complete Blood Count with 5-part Differential - Whole Blood,2007,2008,Laboratory,None,p
+LBXBAPCT,Basophils percent (%),CBC_F,Complete Blood Count with 5-part Differential - Whole Blood,2009,2010,Laboratory,None,p
+LBXBAPCT,Basophils percent (%),CBC_G,Complete Blood Count with 5-part Differential - Whole Blood,2011,2012,Laboratory,None,p
+LBXBAPCT,Basophils percent (%),CBC_H,Complete Blood Count with 5-part Differential - Whole Blood,2013,2014,Laboratory,None,p
+LBXBAPCT,Basophils percent (%),CBC_I,Complete Blood Count with 5-Part Differential - Whole Blood,2015,2016,Laboratory,None,p
+LBXBAPCT,Basophils percent (%),CBC_J,Complete Blood Count with 5-Part Differential,2017,2018,Laboratory,None,p
+LBXBAPCT,Basophils percent (%),L25_B,Complete Blood Count with 5-part Differential - Whole Blood,2001,2002,Laboratory,None,p
+LBXBAPCT,Basophils percent (%),L25_C,Complete Blood Count with 5-part Differential - Whole Blood,2003,2004,Laboratory,None,p
+LBXBAPCT,Basophils percent (%),LAB25,Complete Blood Count with 5-part Differential - Whole Blood,1999,2000,Laboratory,None,p
+LBXCPSI,C-peptide (nmol/L) in SI units,L10AM_B,"Plasma Fasting Glucose, Serum C-peptide & Insulin",2001,2002,Laboratory,None,p
+LBXCPSI,C-peptide (nmol/L) in SI units,L10AM_C,"Plasma Fasting Glucose, Serum C-peptide & Insulin",2003,2004,Laboratory,None,p
+LBXCPSI,C-peptide (nmol/L) in SI units,LAB10AM,"Plasma Fasting Glucose, Serum C-peptide & Insulin",1999,2000,Laboratory,None,p
+LBXCRP,C-reactive protein (mg/dL),CRP_D,C-Reactive Protein (CRP),2005,2006,Laboratory,None,p
+LBXCRP,C-reactive protein (mg/dL),CRP_E,C-Reactive Protein (CRP),2007,2008,Laboratory,None,p
+LBXCRP,C-reactive protein(mg/dL),CRP_F,C-Reactive Protein (CRP),2009,2010,Laboratory,None,p
+LBXCRP,C-reactive protein (mg/dL),L11_B,"C-Reactive protein (CRP), Fibrinogen, Bone Alkaline Phosphatase & Urinary N-telopeptides",2001,2002,Laboratory,None,p
+LBXCRP,C-reactive protein (mg/dL),L11_C,"C-Reactive Protein (CRP), Bone Alkaline Phosphatase (BAP) & Parathyroid Hormone (PTH)",2003,2004,Laboratory,None,p
+LBXCRP,C-reactive protein (mg/dL),LAB11,C-Reactive Protein (CRP),1999,2000,Laboratory,None,p
+LBXEOPCT,Eosinophils percent (%),CBC_D,Complete Blood Count with 5-Part Differential - Whole Blood,2005,2006,Laboratory,None,p
+LBXEOPCT,Eosinophils percent (%),CBC_E,Complete Blood Count with 5-part Differential - Whole Blood,2007,2008,Laboratory,None,p
+LBXEOPCT,Eosinophils percent (%),CBC_F,Complete Blood Count with 5-part Differential - Whole Blood,2009,2010,Laboratory,None,p
+LBXEOPCT,Eosinophils percent (%),CBC_G,Complete Blood Count with 5-part Differential - Whole Blood,2011,2012,Laboratory,None,p
+LBXEOPCT,Eosinophils percent (%),CBC_H,Complete Blood Count with 5-part Differential - Whole Blood,2013,2014,Laboratory,None,p
+LBXEOPCT,Eosinophils percent (%),CBC_I,Complete Blood Count with 5-Part Differential - Whole Blood,2015,2016,Laboratory,None,p
+LBXEOPCT,Eosinophils percent (%),CBC_J,Complete Blood Count with 5-Part Differential,2017,2018,Laboratory,None,p
+LBXEOPCT,Eosinophils percent (%),L25_B,Complete Blood Count with 5-part Differential - Whole Blood,2001,2002,Laboratory,None,p
+LBXEOPCT,Eosinophils percent (%),L25_C,Complete Blood Count with 5-part Differential - Whole Blood,2003,2004,Laboratory,None,p
+LBXEOPCT,Eosinophils percent (%),LAB25,Complete Blood Count with 5-part Differential - Whole Blood,1999,2000,Laboratory,None,p
+LBXEPP,Protoporphyrin(ug/dL RBC),EPP_D,Erythrocyte Protoporphyrin,2005,2006,Laboratory,None,p
+LBXEPP,Protoporphyrin(ug/dL RBC),L39_B,Erythrocyte Protoporphyrin,2001,2002,Laboratory,None,p
+LBXEPP,Protoporphyrin(ug/dL RBC),L39EPP_C,Erythrocyte Protoporphyrin & Selenium,2003,2004,Laboratory,None,p
+LBXEST,Estradiol (pg/mL),TST_H,Sex Steroid Hormone - Serum,2013,2014,Laboratory,None,p
+LBXEST,Estradiol (pg/mL),TST_I,Sex Steroid Hormone - Serum,2015,2016,Laboratory,None,p
+LBXFB,Fibrinogen (mg/dL),L11_B,"C-Reactive protein (CRP), Fibrinogen, Bone Alkaline Phosphatase & Urinary N-telopeptides",2001,2002,Laboratory,None,p
+LBXFB,Fibrinogen (mg/dL),LAB11,C-Reactive Protein (CRP),1999,2000,Laboratory,None,p
+LBXFER,Ferritin(ng/mL),FERTIN_D,Ferritin,2005,2006,Laboratory,None,p
+LBXFER,Ferritin (ng/mL),FERTIN_E,Ferritin,2007,2008,Laboratory,None,p
+LBXFER,Ferritin (ng/mL),FERTIN_F,Ferritin,2009,2010,Laboratory,None,p
+LBXFER,Ferritin (ng/mL),FERTIN_I,Ferritin,2015,2016,Laboratory,None,p
+LBXFER,Ferritin (ng/mL),FERTIN_J,Ferritin,2017,2018,Laboratory,None,p
+LBXFOL,"Folate, serum (ng/mL)",FOLATE_D,Folate - RBC & Serum,2005,2006,Laboratory,None,p
+LBXFOLSI,Serum folate ( nmol/L),FOLATE_E,Folate - RBC & Serum,2007,2008,Laboratory,None,p
+LBXFOLSI,Serum folate (nmol/L),FOLATE_F,Folate - RBC & Serum,2009,2010,Laboratory,None,p
+LBXFSH,Follicle stimulating hormone (mIU/mL),L40_B,Standard Biochemistry Profile,2001,2002,Laboratory,None,p
+LBXFSH,Follicle stimulating hormone (mIU/mL),LAB18,Standard Biochemistry Profile & Hormones,1999,2000,Laboratory,None,p
+LBXGH,Glycohemoglobin (%),GHB_D,Glycohemoglobin,2005,2006,Laboratory,None,p
+LBXGH,Glycohemoglobin (%),GHB_E,Glycohemoglobin,2007,2008,Laboratory,None,p
+LBXGH,Glycohemoglobin (%),GHB_F,Glycohemoglobin,2009,2010,Laboratory,None,p
+LBXGH,Glycohemoglobin (%),GHB_G,Glycohemoglobin,2011,2012,Laboratory,None,p
+LBXGH,Glycohemoglobin (%),GHB_H,Glycohemoglobin,2013,2014,Laboratory,None,p
+LBXGH,Glycohemoglobin (%),GHB_I,Glycohemoglobin,2015,2016,Laboratory,None,p
+LBXGH,Glycohemoglobin (%),GHB_J,Glycohemoglobin,2017,2018,Laboratory,None,p
+LBXGH,Glycohemoglobin (%),L10_B,Glycohemoglobin,2001,2002,Laboratory,None,p
+LBXGH,Glycohemoglobin (%),L10_C,Glycohemoglobin,2003,2004,Laboratory,None,p
+LBXGH,,LAB10,Glycohemoglobin,1999,2000,Laboratory,None,p
+LBXGLT,Two hour oral glucose tolerance (OGTT) (mg/dL),OGTT_D,Oral Glucose Tolerance Test,2005,2006,Laboratory,None,p
+LBXGLT,Two Hour Glucose(OGTT) (mg/dL),OGTT_E,Oral Glucose Tolerance Test,2007,2008,Laboratory,None,p
+LBXGLT,Two Hour Glucose(OGTT) (mg/dL),OGTT_F,Oral Glucose Tolerance Test,2009,2010,Laboratory,None,p
+LBXGLT,Two Hour Glucose(OGTT) (mg/dL),OGTT_G,Oral Glucose Tolerance Test,2011,2012,Laboratory,None,p
+LBXGLT,Two Hour Glucose(OGTT) (mg/dL),OGTT_H,Oral Glucose Tolerance Test,2013,2014,Laboratory,None,p
+LBXGLT,Two Hour Glucose (OGTT) (mg/dL),OGTT_I,Oral Glucose Tolerance Test,2015,2016,Laboratory,None,p
+LBXGLU,Fasting Glucose (mg/dL),GLU_D,Plasma Fasting Glucose & Insulin,2005,2006,Laboratory,None,p
+LBXGLU,Fasting Glucose (mg/dL),GLU_E,Plasma Fasting Glucose & Insulin,2007,2008,Laboratory,None,p
+LBXGLU,Fasting Glucose (mg/dL),GLU_F,Plasma Fasting Glucose & Insulin,2009,2010,Laboratory,None,p
+LBXGLU,Fasting Glucose (mg/dL),GLU_G,Plasma Fasting Glucose & Insulin,2011,2012,Laboratory,None,p
+LBXGLU,Fasting Glucose (mg/dL),GLU_H,Plasma Fasting Glucose,2013,2014,Laboratory,None,p
+LBXGLU,Fasting Glucose (mg/dL),GLU_I,Plasma Fasting Glucose,2015,2016,Laboratory,None,p
+LBXGLU,Fasting Glucose (mg/dL),GLU_J,Plasma Fasting Glucose,2017,2018,Laboratory,None,p
+LBXGLU,"Glucose, plasma (mg/dL)",L10AM_B,"Plasma Fasting Glucose, Serum C-peptide & Insulin",2001,2002,Laboratory,None,p
+LBXGLU,"Glucose, plasma (mg/dL)",L10AM_C,"Plasma Fasting Glucose, Serum C-peptide & Insulin",2003,2004,Laboratory,None,p
+LBXGLU,"Glucose, plasma (mg/dL)",LAB10AM,"Plasma Fasting Glucose, Serum C-peptide & Insulin",1999,2000,Laboratory,None,p
+LBXHCT,Hematocrit (%),CBC_D,Complete Blood Count with 5-Part Differential - Whole Blood,2005,2006,Laboratory,None,p
+LBXHCT,Hematocrit (%),CBC_E,Complete Blood Count with 5-part Differential - Whole Blood,2007,2008,Laboratory,None,p
+LBXHCT,Hematocrit (%),CBC_F,Complete Blood Count with 5-part Differential - Whole Blood,2009,2010,Laboratory,None,p
+LBXHCT,Hematocrit (%),CBC_G,Complete Blood Count with 5-part Differential - Whole Blood,2011,2012,Laboratory,None,p
+LBXHCT,Hematocrit (%),CBC_H,Complete Blood Count with 5-part Differential - Whole Blood,2013,2014,Laboratory,None,p
+LBXHCT,Hematocrit (%),CBC_I,Complete Blood Count with 5-Part Differential - Whole Blood,2015,2016,Laboratory,None,p
+LBXHCT,Hematocrit (%),CBC_J,Complete Blood Count with 5-Part Differential,2017,2018,Laboratory,None,p
+LBXHCT,Hematocrit (%),L25_B,Complete Blood Count with 5-part Differential - Whole Blood,2001,2002,Laboratory,None,p
+LBXHCT,Hematocrit (%),L25_C,Complete Blood Count with 5-part Differential - Whole Blood,2003,2004,Laboratory,None,p
+LBXHCT,Hematocrit (%),LAB25,Complete Blood Count with 5-part Differential - Whole Blood,1999,2000,Laboratory,None,p
+LBXHCY,Homocysteine (umol/L),HCY_D,Homocysteine,2005,2006,Laboratory,None,p
+LBXHDD,Direct HDL-Cholesterol (mg/dL),l13_c,Cholesterol - Total & HDL,2003,2004,Laboratory,None,p
+LBXHGB,Hemoglobin (g/dL),CBC_D,Complete Blood Count with 5-Part Differential - Whole Blood,2005,2006,Laboratory,None,p
+LBXHGB,Hemoglobin (g/dL),CBC_E,Complete Blood Count with 5-part Differential - Whole Blood,2007,2008,Laboratory,None,p
+LBXHGB,Hemoglobin (g/dL),CBC_F,Complete Blood Count with 5-part Differential - Whole Blood,2009,2010,Laboratory,None,p
+LBXHGB,Hemoglobin (g/dL),CBC_G,Complete Blood Count with 5-part Differential - Whole Blood,2011,2012,Laboratory,None,p
+LBXHGB,Hemoglobin (g/dL),CBC_H,Complete Blood Count with 5-part Differential - Whole Blood,2013,2014,Laboratory,None,p
+LBXHGB,Hemoglobin (g/dL),CBC_I,Complete Blood Count with 5-Part Differential - Whole Blood,2015,2016,Laboratory,None,p
+LBXHGB,Hemoglobin (g/dL),CBC_J,Complete Blood Count with 5-Part Differential,2017,2018,Laboratory,None,p
+LBXHGB,Hemoglobin (g/dL),L25_B,Complete Blood Count with 5-part Differential - Whole Blood,2001,2002,Laboratory,None,p
+LBXHGB,Hemoglobin (g/dL),L25_C,Complete Blood Count with 5-part Differential - Whole Blood,2003,2004,Laboratory,None,p
+LBXHGB,Hemoglobin (g/dL),LAB25,Complete Blood Count with 5-part Differential - Whole Blood,1999,2000,Laboratory,None,p
+LBXHP1,Helicobacter pylori (ISR),LAB11,C-Reactive Protein (CRP),1999,2000,Laboratory,None,p
+LBXIN,Insulin (uU/mL ),GLU_D,Plasma Fasting Glucose & Insulin,2005,2006,Laboratory,None,p
+LBXIN,Insulin (uU/mL),GLU_E,Plasma Fasting Glucose & Insulin,2007,2008,Laboratory,None,p
+LBXIN,Insulin (uU/mL),GLU_F,Plasma Fasting Glucose & Insulin,2009,2010,Laboratory,None,p
+LBXIN,Insulin (uU/mL),GLU_G,Plasma Fasting Glucose & Insulin,2011,2012,Laboratory,None,p
+LBXIN,Insulin (uU/mL),L10AM_B,"Plasma Fasting Glucose, Serum C-peptide & Insulin",2001,2002,Laboratory,None,p
+LBXIN,Insulin (uU/mL),L10AM_C,"Plasma Fasting Glucose, Serum C-peptide & Insulin",2003,2004,Laboratory,None,p
+LBXIN,Insulin (uU/mL),LAB10AM,"Plasma Fasting Glucose, Serum C-peptide & Insulin",1999,2000,Laboratory,None,p
+LBXINSI,Insulin: SI(pmol/L),L10AM_B,"Plasma Fasting Glucose, Serum C-peptide & Insulin",2001,2002,Laboratory,None,p
+LBXINSI,Insulin: SI(pmol/L),LAB10AM,"Plasma Fasting Glucose, Serum C-peptide & Insulin",1999,2000,Laboratory,None,p
+LBXIRN,"Iron, Frozen Serum (ug/dL)",FETIB_D,"Iron, Total Iron Binding Capacity (TIBC), & Transferrin Saturation",2005,2006,Laboratory,None,p
+LBXIRN,"Iron frozen, Serum (ug/dL)",FETIB_J,Iron Status - Serum,2017,2018,Laboratory,None,p
+LBXIRN,"Iron, frozen (ug/dL)",L40FE_B,"Iron, Total Iron Binding Capacity (TIBC), & Transferrin Saturation",2001,2002,Laboratory,None,p
+LBXIRN,"Iron, frozen (ug/dL)",L40FE_C,"Iron, Total Iron Binding Capacity (TIBC), & Transferrin Saturation",2003,2004,Laboratory,None,p
+LBXLH,Luteinizing hormone (mIU/mL),L40_B,Standard Biochemistry Profile,2001,2002,Laboratory,None,p
+LBXLH,Luteinizing hormone (mIU/mL),LAB18,Standard Biochemistry Profile & Hormones,1999,2000,Laboratory,None,p
+LBXLYPCT,Lymphocyte percent (%),CBC_D,Complete Blood Count with 5-Part Differential - Whole Blood,2005,2006,Laboratory,None,p
+LBXLYPCT,Lymphocyte percent (%),CBC_E,Complete Blood Count with 5-part Differential - Whole Blood,2007,2008,Laboratory,None,p
+LBXLYPCT,Lymphocyte percent (%),CBC_F,Complete Blood Count with 5-part Differential - Whole Blood,2009,2010,Laboratory,None,p
+LBXLYPCT,Lymphocyte percent (%),CBC_G,Complete Blood Count with 5-part Differential - Whole Blood,2011,2012,Laboratory,None,p
+LBXLYPCT,Lymphocyte percent (%),CBC_H,Complete Blood Count with 5-part Differential - Whole Blood,2013,2014,Laboratory,None,p
+LBXLYPCT,Lymphocyte percent (%),CBC_I,Complete Blood Count with 5-Part Differential - Whole Blood,2015,2016,Laboratory,None,p
+LBXLYPCT,Lymphocyte percent (%),CBC_J,Complete Blood Count with 5-Part Differential,2017,2018,Laboratory,None,p
+LBXLYPCT,Lymphocyte percent (%),L25_B,Complete Blood Count with 5-part Differential - Whole Blood,2001,2002,Laboratory,None,p
+LBXLYPCT,Lymphocyte percent (%),L25_C,Complete Blood Count with 5-part Differential - Whole Blood,2003,2004,Laboratory,None,p
+LBXLYPCT,Lymphocyte percent (%),LAB25,Complete Blood Count with 5-part Differential - Whole Blood,1999,2000,Laboratory,None,p
+LBXMC,Mean cell hemoglobin concentration (g/dL),CBC_D,Complete Blood Count with 5-Part Differential - Whole Blood,2005,2006,Laboratory,None,p
+LBXMC,Mean cell hemoglobin concentration (g/dL),CBC_E,Complete Blood Count with 5-part Differential - Whole Blood,2007,2008,Laboratory,None,p
+LBXMC,Mean cell hemoglobin concentration (g/dL),CBC_F,Complete Blood Count with 5-part Differential - Whole Blood,2009,2010,Laboratory,None,p
+LBXMC,Mean cell hemoglobin concentration (g/dL),CBC_G,Complete Blood Count with 5-part Differential - Whole Blood,2011,2012,Laboratory,None,p
+LBXMC,Mean cell hemoglobin concentration (g/dL),CBC_H,Complete Blood Count with 5-part Differential - Whole Blood,2013,2014,Laboratory,None,p
+LBXMC,Mean Cell Hemoglobin Concentration (g/dL),CBC_I,Complete Blood Count with 5-Part Differential - Whole Blood,2015,2016,Laboratory,None,p
+LBXMC,Mean cell hemoglobin concentration (g/dL),CBC_J,Complete Blood Count with 5-Part Differential,2017,2018,Laboratory,None,p
+LBXMC,Mean cell hemoglobin concentration (g/dL),L25_B,Complete Blood Count with 5-part Differential - Whole Blood,2001,2002,Laboratory,None,p
+LBXMC,Mean cell hemoglobin concentration (g/dL),L25_C,Complete Blood Count with 5-part Differential - Whole Blood,2003,2004,Laboratory,None,p
+LBXMC,Mean cell hemoglobin concentration (g/dL),LAB25,Complete Blood Count with 5-part Differential - Whole Blood,1999,2000,Laboratory,None,p
+LBXMCHSI,Mean cell hemoglobin (pg),CBC_D,Complete Blood Count with 5-Part Differential - Whole Blood,2005,2006,Laboratory,None,p
+LBXMCHSI,Mean cell hemoglobin (pg),CBC_E,Complete Blood Count with 5-part Differential - Whole Blood,2007,2008,Laboratory,None,p
+LBXMCHSI,Mean cell hemoglobin (pg),CBC_F,Complete Blood Count with 5-part Differential - Whole Blood,2009,2010,Laboratory,None,p
+LBXMCHSI,Mean cell hemoglobin (pg),CBC_G,Complete Blood Count with 5-part Differential - Whole Blood,2011,2012,Laboratory,None,p
+LBXMCHSI,Mean cell hemoglobin (pg),CBC_H,Complete Blood Count with 5-part Differential - Whole Blood,2013,2014,Laboratory,None,p
+LBXMCHSI,Mean cell hemoglobin (pg),CBC_I,Complete Blood Count with 5-Part Differential - Whole Blood,2015,2016,Laboratory,None,p
+LBXMCHSI,Mean cell hemoglobin (pg),CBC_J,Complete Blood Count with 5-Part Differential,2017,2018,Laboratory,None,p
+LBXMCHSI,Mean cell hemoglobin (pg),L25_B,Complete Blood Count with 5-part Differential - Whole Blood,2001,2002,Laboratory,None,p
+LBXMCHSI,Mean cell hemoglobin (pg),L25_C,Complete Blood Count with 5-part Differential - Whole Blood,2003,2004,Laboratory,None,p
+LBXMCHSI,Mean cell hemoglobin (pg),LAB25,Complete Blood Count with 5-part Differential - Whole Blood,1999,2000,Laboratory,None,p
+LBXMCVSI,Mean cell volume (fL),CBC_D,Complete Blood Count with 5-Part Differential - Whole Blood,2005,2006,Laboratory,None,p
+LBXMCVSI,Mean cell volume (fL),CBC_E,Complete Blood Count with 5-part Differential - Whole Blood,2007,2008,Laboratory,None,p
+LBXMCVSI,Mean cell volume (fL),CBC_F,Complete Blood Count with 5-part Differential - Whole Blood,2009,2010,Laboratory,None,p
+LBXMCVSI,Mean cell volume (fL),CBC_G,Complete Blood Count with 5-part Differential - Whole Blood,2011,2012,Laboratory,None,p
+LBXMCVSI,Mean cell volume (fL),CBC_H,Complete Blood Count with 5-part Differential - Whole Blood,2013,2014,Laboratory,None,p
+LBXMCVSI,Mean cell volume (fL),CBC_I,Complete Blood Count with 5-Part Differential - Whole Blood,2015,2016,Laboratory,None,p
+LBXMCVSI,Mean cell volume (fL),CBC_J,Complete Blood Count with 5-Part Differential,2017,2018,Laboratory,None,p
+LBXMCVSI,Mean cell volume (fL),L25_B,Complete Blood Count with 5-part Differential - Whole Blood,2001,2002,Laboratory,None,p
+LBXMCVSI,Mean cell volume (fL),L25_C,Complete Blood Count with 5-part Differential - Whole Blood,2003,2004,Laboratory,None,p
+LBXMCVSI,Mean cell volume (fL),LAB25,Complete Blood Count with 5-part Differential - Whole Blood,1999,2000,Laboratory,None,p
+LBXMMASI,Methylmalonic Acid (nmol/L),MMA_G,Methylmalonic Acid,2011,2012,Laboratory,None,p
+LBXMMASI,Methylmalonic Acid (nmol/L),MMA_H,Methylmalonic Acid,2013,2014,Laboratory,None,p
+LBXMOPCT,Monocyte percent (%),CBC_D,Complete Blood Count with 5-Part Differential - Whole Blood,2005,2006,Laboratory,None,p
+LBXMOPCT,Monocyte percent (%),CBC_E,Complete Blood Count with 5-part Differential - Whole Blood,2007,2008,Laboratory,None,p
+LBXMOPCT,Monocyte percent (%),CBC_F,Complete Blood Count with 5-part Differential - Whole Blood,2009,2010,Laboratory,None,p
+LBXMOPCT,Monocyte percent (%),CBC_G,Complete Blood Count with 5-part Differential - Whole Blood,2011,2012,Laboratory,None,p
+LBXMOPCT,Monocyte percent (%),CBC_H,Complete Blood Count with 5-part Differential - Whole Blood,2013,2014,Laboratory,None,p
+LBXMOPCT,Monocyte percent (%),CBC_I,Complete Blood Count with 5-Part Differential - Whole Blood,2015,2016,Laboratory,None,p
+LBXMOPCT,Monocyte percent (%),CBC_J,Complete Blood Count with 5-Part Differential,2017,2018,Laboratory,None,p
+LBXMOPCT,Monocyte percent (%),L25_B,Complete Blood Count with 5-part Differential - Whole Blood,2001,2002,Laboratory,None,p
+LBXMOPCT,Monocyte percent (%),L25_C,Complete Blood Count with 5-part Differential - Whole Blood,2003,2004,Laboratory,None,p
+LBXMOPCT,Monocyte percent (%),LAB25,Complete Blood Count with 5-part Differential - Whole Blood,1999,2000,Laboratory,None,p
+LBXMPSI,Mean platelet volume (fL),CBC_D,Complete Blood Count with 5-Part Differential - Whole Blood,2005,2006,Laboratory,None,p
+LBXMPSI,Mean platelet volume (fL),CBC_E,Complete Blood Count with 5-part Differential - Whole Blood,2007,2008,Laboratory,None,p
+LBXMPSI,Mean platelet volume (fL),CBC_F,Complete Blood Count with 5-part Differential - Whole Blood,2009,2010,Laboratory,None,p
+LBXMPSI,Mean platelet volume (fL),CBC_G,Complete Blood Count with 5-part Differential - Whole Blood,2011,2012,Laboratory,None,p
+LBXMPSI,Mean platelet volume (fL),CBC_H,Complete Blood Count with 5-part Differential - Whole Blood,2013,2014,Laboratory,None,p
+LBXMPSI,Mean platelet volume (fL),CBC_I,Complete Blood Count with 5-Part Differential - Whole Blood,2015,2016,Laboratory,None,p
+LBXMPSI,Mean platelet volume (fL),CBC_J,Complete Blood Count with 5-Part Differential,2017,2018,Laboratory,None,p
+LBXMPSI,Mean platelet volume (fL),L25_B,Complete Blood Count with 5-part Differential - Whole Blood,2001,2002,Laboratory,None,p
+LBXMPSI,Mean platelet volume (fL),L25_C,Complete Blood Count with 5-part Differential - Whole Blood,2003,2004,Laboratory,None,p
+LBXMPSI,Mean platelet volume (fL),LAB25,Complete Blood Count with 5-part Differential - Whole Blood,1999,2000,Laboratory,None,p
+LBXNEPCT,Segmented neutrophils percent (%),CBC_D,Complete Blood Count with 5-Part Differential - Whole Blood,2005,2006,Laboratory,None,p
+LBXNEPCT,Segmented neutrophils percent (%),CBC_E,Complete Blood Count with 5-part Differential - Whole Blood,2007,2008,Laboratory,None,p
+LBXNEPCT,Segmented neutrophils percent (%),CBC_F,Complete Blood Count with 5-part Differential - Whole Blood,2009,2010,Laboratory,None,p
+LBXNEPCT,Segmented neutrophils percent (%),CBC_G,Complete Blood Count with 5-part Differential - Whole Blood,2011,2012,Laboratory,None,p
+LBXNEPCT,Segmented neutrophils percent (%),CBC_H,Complete Blood Count with 5-part Differential - Whole Blood,2013,2014,Laboratory,None,p
+LBXNEPCT,Segmented neutrophils percent (%),CBC_I,Complete Blood Count with 5-Part Differential - Whole Blood,2015,2016,Laboratory,None,p
+LBXNEPCT,Segmented neutrophils percent (%),CBC_J,Complete Blood Count with 5-Part Differential,2017,2018,Laboratory,None,p
+LBXNEPCT,Segmented neutrophils percent (%),L25_B,Complete Blood Count with 5-part Differential - Whole Blood,2001,2002,Laboratory,None,p
+LBXNEPCT,Segmented neutrophils percent (%),L25_C,Complete Blood Count with 5-part Differential - Whole Blood,2003,2004,Laboratory,None,p
+LBXNEPCT,Segmented neutrophils percent (%),LAB25,Complete Blood Count with 5-part Differential - Whole Blood,1999,2000,Laboratory,None,p
+LBXP1,"Prostate specific antigen, total (ng/mL)",L11PSA_B,Prostate specific antigen (PSA),2001,2002,Laboratory,None,p
+LBXP1,"Prostate specific antigen, total (ng/mL)",L11PSA_C,Prostate Specific Antigen (PSA),2003,2004,Laboratory,None,p
+LBXP1,Total prostate specific antigen (ng/mL),PSA_D,Prostate Specific Antigen (PSA),2005,2006,Laboratory,None,p
+LBXP1,Total prostate specific antigen (ng/mL),PSA_E,Prostate Specific Antigen (PSA),2007,2008,Laboratory,None,p
+LBXP1,Total prostate specific antigen (ng/mL),PSA_F,Prostate Specific Antigen (PSA),2009,2010,Laboratory,None,p
+LBXP2,"Prostate specific antigen (PSA), free (ng/mL)",L11PSA_B,Prostate specific antigen (PSA),2001,2002,Laboratory,None,p
+LBXP2,"Prostate specific antigen (PSA), free (ng/mL)",L11PSA_C,Prostate Specific Antigen (PSA),2003,2004,Laboratory,None,p
+LBXP2,Free prostate specific antigen (ng/mL),PSA_D,Prostate Specific Antigen (PSA),2005,2006,Laboratory,None,p
+LBXP2,Free prostate specific antigen (ng/mL),PSA_E,Prostate Specific Antigen (PSA),2007,2008,Laboratory,None,p
+LBXP2,Free prostate specific antigen (ng/mL),PSA_F,Prostate Specific Antigen (PSA),2009,2010,Laboratory,None,p
+LBXPLTSI,Platelet count SI (1000 cells/uL),CBC_D,Complete Blood Count with 5-Part Differential - Whole Blood,2005,2006,Laboratory,None,p
+LBXPLTSI,Platelet count (%) SI,CBC_E,Complete Blood Count with 5-part Differential - Whole Blood,2007,2008,Laboratory,None,p
+LBXPLTSI,Platelet count (1000 cells/uL),CBC_F,Complete Blood Count with 5-part Differential - Whole Blood,2009,2010,Laboratory,None,p
+LBXPLTSI,Platelet count (1000 cells/uL),CBC_G,Complete Blood Count with 5-part Differential - Whole Blood,2011,2012,Laboratory,None,p
+LBXPLTSI,Platelet count (1000 cells/uL),CBC_H,Complete Blood Count with 5-part Differential - Whole Blood,2013,2014,Laboratory,None,p
+LBXPLTSI,Platelet count (1000 cells/uL),CBC_I,Complete Blood Count with 5-Part Differential - Whole Blood,2015,2016,Laboratory,None,p
+LBXPLTSI,Platelet count (1000 cells/uL),CBC_J,Complete Blood Count with 5-Part Differential,2017,2018,Laboratory,None,p
+LBXPLTSI,Platelet count (%) SI,L25_B,Complete Blood Count with 5-part Differential - Whole Blood,2001,2002,Laboratory,None,p
+LBXPLTSI,Platelet count SI (1000 cells/uL),L25_C,Complete Blood Count with 5-part Differential - Whole Blood,2003,2004,Laboratory,None,p
+LBXPLTSI,Platelet count (%) SI,LAB25,Complete Blood Count with 5-part Differential - Whole Blood,1999,2000,Laboratory,None,p
+LBXPS4,Complexed prostate specific antigen (ng/mL),PSA_E,Prostate Specific Antigen (PSA),2007,2008,Laboratory,None,p
+LBXPS4,Complexed prostate specific antigen (ng/mL),PSA_F,Prostate Specific Antigen (PSA),2009,2010,Laboratory,None,p
+LBXPT21,Parathyroid Hormone(Elecys method) pg/mL,L11_C,"C-Reactive Protein (CRP), Bone Alkaline Phosphatase (BAP) & Parathyroid Hormone (PTH)",2003,2004,Laboratory,None,p
+LBXPT21,Parathyroid Hormone(Elecys method) pg/mL,PTH_D,Parathyroid Hormone,2005,2006,Laboratory,None,p
+LBXRBCSI,Red blood cell count (million cells/uL),CBC_D,Complete Blood Count with 5-Part Differential - Whole Blood,2005,2006,Laboratory,None,p
+LBXRBCSI,Red cell count SI,CBC_E,Complete Blood Count with 5-part Differential - Whole Blood,2007,2008,Laboratory,None,p
+LBXRBCSI,Red blood cell count (million cells/uL),CBC_F,Complete Blood Count with 5-part Differential - Whole Blood,2009,2010,Laboratory,None,p
+LBXRBCSI,Red blood cell count (million cells/uL),CBC_G,Complete Blood Count with 5-part Differential - Whole Blood,2011,2012,Laboratory,None,p
+LBXRBCSI,Red blood cell count (million cells/uL),CBC_H,Complete Blood Count with 5-part Differential - Whole Blood,2013,2014,Laboratory,None,p
+LBXRBCSI,Red blood cell count (million cells/uL),CBC_I,Complete Blood Count with 5-Part Differential - Whole Blood,2015,2016,Laboratory,None,p
+LBXRBCSI,Red blood cell count (million cells/uL),CBC_J,Complete Blood Count with 5-Part Differential,2017,2018,Laboratory,None,p
+LBXRBCSI,Red cell count SI,L25_B,Complete Blood Count with 5-part Differential - Whole Blood,2001,2002,Laboratory,None,p
+LBXRBCSI,Red blood cell count (million cells/uL),L25_C,Complete Blood Count with 5-part Differential - Whole Blood,2003,2004,Laboratory,None,p
+LBXRBCSI,Red cell count SI,LAB25,Complete Blood Count with 5-part Differential - Whole Blood,1999,2000,Laboratory,None,p
+LBXRBF,"Folate, RBC (ng/mL RBC)",FOLATE_D,Folate - RBC & Serum,2005,2006,Laboratory,None,p
+LBXRBFSI,RBC folate (nmol/L),FOLATE_E,Folate - RBC & Serum,2007,2008,Laboratory,None,p
+LBXRBFSI,RBC folate (nmol/L),FOLATE_F,Folate - RBC & Serum,2009,2010,Laboratory,None,p
+LBXRDW,Red cell distribution width (%),CBC_D,Complete Blood Count with 5-Part Differential - Whole Blood,2005,2006,Laboratory,None,p
+LBXRDW,Red cell distribution width (%),CBC_E,Complete Blood Count with 5-part Differential - Whole Blood,2007,2008,Laboratory,None,p
+LBXRDW,Red cell distribution width (%),CBC_F,Complete Blood Count with 5-part Differential - Whole Blood,2009,2010,Laboratory,None,p
+LBXRDW,Red cell distribution width (%),CBC_G,Complete Blood Count with 5-part Differential - Whole Blood,2011,2012,Laboratory,None,p
+LBXRDW,Red cell distribution width (%),CBC_H,Complete Blood Count with 5-part Differential - Whole Blood,2013,2014,Laboratory,None,p
+LBXRDW,Red cell distribution width (%),CBC_I,Complete Blood Count with 5-Part Differential - Whole Blood,2015,2016,Laboratory,None,p
+LBXRDW,Red cell distribution width (%),CBC_J,Complete Blood Count with 5-Part Differential,2017,2018,Laboratory,None,p
+LBXRDW,Red cell distribution width (%),L25_B,Complete Blood Count with 5-part Differential - Whole Blood,2001,2002,Laboratory,None,p
+LBXRDW,Red cell distribution width (%),L25_C,Complete Blood Count with 5-part Differential - Whole Blood,2003,2004,Laboratory,None,p
+LBXRDW,Red cell distribution width (%),LAB25,Complete Blood Count with 5-part Differential - Whole Blood,1999,2000,Laboratory,None,p
+LBXSAL,Albumin (g/dL),BIOPRO_D,Standard Biochemistry Profile,2005,2006,Laboratory,None,p
+LBXSAL,Albumin (g/dL),BIOPRO_E,Standard Biochemistry Profile,2007,2008,Laboratory,None,p
+LBXSAL,Albumin (g/dL),BIOPRO_F,Standard Biochemistry Profile,2009,2010,Laboratory,None,p
+LBXSAL,Albumin (g/dL),BIOPRO_G,Standard Biochemistry Profile,2011,2012,Laboratory,None,p
+LBXSAL,Albumin (g/dL),BIOPRO_H,Standard Biochemistry Profile,2013,2014,Laboratory,None,p
+LBXSAL,"Albumin, refrigerated serum (g/dL)",BIOPRO_I,Standard Biochemistry Profile,2015,2016,Laboratory,None,p
+LBXSAL,"Albumin, refrigerated serum (g/dL)",BIOPRO_J,Standard Biochemistry Profile,2017,2018,Laboratory,None,p
+LBXSAL,Albumin (g/dL),L40_B,Standard Biochemistry Profile,2001,2002,Laboratory,None,p
+LBXSAL,Albumin (g/dL),L40_C,Standard Biochemistry Profile,2003,2004,Laboratory,None,p
+LBXSAL,Albumin (g/dL),LAB18,Standard Biochemistry Profile & Hormones,1999,2000,Laboratory,None,p
+LBXSAPSI,Alkaline phosphotase (U/L),BIOPRO_D,Standard Biochemistry Profile,2005,2006,Laboratory,None,p
+LBXSAPSI,Alkaline phosphotase (U/L),BIOPRO_E,Standard Biochemistry Profile,2007,2008,Laboratory,None,p
+LBXSAPSI,Alkaline phosphotase (U/L),BIOPRO_F,Standard Biochemistry Profile,2009,2010,Laboratory,None,p
+LBXSAPSI,Alkaline phosphotase (U/L),BIOPRO_G,Standard Biochemistry Profile,2011,2012,Laboratory,None,p
+LBXSAPSI,Alkaline phosphatase (IU/L),BIOPRO_H,Standard Biochemistry Profile,2013,2014,Laboratory,None,p
+LBXSAPSI,Alkaline Phosphatase (ALP) (IU/L),BIOPRO_I,Standard Biochemistry Profile,2015,2016,Laboratory,None,p
+LBXSAPSI,Alkaline Phosphatase (ALP) (IU/L),BIOPRO_J,Standard Biochemistry Profile,2017,2018,Laboratory,None,p
+LBXSAPSI,Alkaline phosphatase(U/L),L40_C,Standard Biochemistry Profile,2003,2004,Laboratory,None,p
+LBXSAPSI,Alkaline phosphotase (U/L),LAB18,Standard Biochemistry Profile & Hormones,1999,2000,Laboratory,None,p
+LBXSASSI,Aspartate aminotransferase AST (U/L),BIOPRO_D,Standard Biochemistry Profile,2005,2006,Laboratory,None,p
+LBXSASSI,Asparate aminotransferase (AST)(U/L),BIOPRO_E,Standard Biochemistry Profile,2007,2008,Laboratory,None,p
+LBXSASSI,Aspartate aminotransferase AST (U/L),BIOPRO_F,Standard Biochemistry Profile,2009,2010,Laboratory,None,p
+LBXSASSI,Aspartate aminotransferase AST (U/L),BIOPRO_G,Standard Biochemistry Profile,2011,2012,Laboratory,None,p
+LBXSASSI,Aspartate aminotransferase AST (U/L),BIOPRO_H,Standard Biochemistry Profile,2013,2014,Laboratory,None,p
+LBXSASSI,Aspartate Aminotransferase (AST) (U/L),BIOPRO_I,Standard Biochemistry Profile,2015,2016,Laboratory,None,p
+LBXSASSI,Aspartate Aminotransferase (AST) (U/L),BIOPRO_J,Standard Biochemistry Profile,2017,2018,Laboratory,None,p
+LBXSASSI,AST: SI (U/L),L40_B,Standard Biochemistry Profile,2001,2002,Laboratory,None,p
+LBXSASSI,Aspartate aminotransferase(U/L),L40_C,Standard Biochemistry Profile,2003,2004,Laboratory,None,p
+LBXSASSI,AST (U/L),LAB18,Standard Biochemistry Profile & Hormones,1999,2000,Laboratory,None,p
+LBXSATSI,Alanine aminotransferase ALT (U/L),BIOPRO_D,Standard Biochemistry Profile,2005,2006,Laboratory,None,p
+LBXSATSI,Alanine aminotransferase (ALT)(U/L),BIOPRO_E,Standard Biochemistry Profile,2007,2008,Laboratory,None,p
+LBXSATSI,Alanine aminotransferase ALT (U/L),BIOPRO_F,Standard Biochemistry Profile,2009,2010,Laboratory,None,p
+LBXSATSI,Alanine aminotransferase ALT (U/L),BIOPRO_G,Standard Biochemistry Profile,2011,2012,Laboratory,None,p
+LBXSATSI,Alanine aminotransferase ALT (U/L),BIOPRO_H,Standard Biochemistry Profile,2013,2014,Laboratory,None,p
+LBXSATSI,Alanine Aminotransferase (ALT) (U/L),BIOPRO_I,Standard Biochemistry Profile,2015,2016,Laboratory,None,p
+LBXSATSI,Alanine Aminotransferase (ALT) (U/L),BIOPRO_J,Standard Biochemistry Profile,2017,2018,Laboratory,None,p
+LBXSATSI,ALT: SI (U/L),L40_B,Standard Biochemistry Profile,2001,2002,Laboratory,None,p
+LBXSATSI,Alanine aminotransferase(U/L),L40_C,Standard Biochemistry Profile,2003,2004,Laboratory,None,p
+LBXSATSI,ALT (U/L),LAB18,Standard Biochemistry Profile & Hormones,1999,2000,Laboratory,None,p
+LBXSBU,Blood urea nitrogen (mg/dL),BIOPRO_D,Standard Biochemistry Profile,2005,2006,Laboratory,None,p
+LBXSBU,Blood urea nitrogen (mg/dL),BIOPRO_E,Standard Biochemistry Profile,2007,2008,Laboratory,None,p
+LBXSBU,Blood urea nitrogen (mg/dL),BIOPRO_F,Standard Biochemistry Profile,2009,2010,Laboratory,None,p
+LBXSBU,Blood urea nitrogen (mg/dL),BIOPRO_G,Standard Biochemistry Profile,2011,2012,Laboratory,None,p
+LBXSBU,Blood urea nitrogen (mg/dL),BIOPRO_H,Standard Biochemistry Profile,2013,2014,Laboratory,None,p
+LBXSBU,Blood Urea Nitrogen (mg/dL),BIOPRO_I,Standard Biochemistry Profile,2015,2016,Laboratory,None,p
+LBXSBU,Blood Urea Nitrogen (mg/dL),BIOPRO_J,Standard Biochemistry Profile,2017,2018,Laboratory,None,p
+LBXSBU,Blood urea nitrogen (mg/dL),L40_B,Standard Biochemistry Profile,2001,2002,Laboratory,None,p
+LBXSBU,Blood urea nitrogen (mg/dL),L40_C,Standard Biochemistry Profile,2003,2004,Laboratory,None,p
+LBXSBU,Blood urea nitrogen (mg/dL),LAB18,Standard Biochemistry Profile & Hormones,1999,2000,Laboratory,None,p
+LBXSC3SI,Bicarbonate (mmol/L),BIOPRO_D,Standard Biochemistry Profile,2005,2006,Laboratory,None,p
+LBXSC3SI,Bicarbonate(mmol/L),BIOPRO_E,Standard Biochemistry Profile,2007,2008,Laboratory,None,p
+LBXSC3SI,Bicarbonate (mmol/L),BIOPRO_F,Standard Biochemistry Profile,2009,2010,Laboratory,None,p
+LBXSC3SI,Bicarbonate (mmol/L),BIOPRO_G,Standard Biochemistry Profile,2011,2012,Laboratory,None,p
+LBXSC3SI,Bicarbonate (mmol/L),BIOPRO_H,Standard Biochemistry Profile,2013,2014,Laboratory,None,p
+LBXSC3SI,Bicarbonate (mmol/L),BIOPRO_I,Standard Biochemistry Profile,2015,2016,Laboratory,None,p
+LBXSC3SI,Bicarbonate (mmol/L),BIOPRO_J,Standard Biochemistry Profile,2017,2018,Laboratory,None,p
+LBXSC3SI,Bicarbonate: SI (mmol/L),L40_B,Standard Biochemistry Profile,2001,2002,Laboratory,None,p
+LBXSC3SI,Bicarbonate(mmol/L),L40_C,Standard Biochemistry Profile,2003,2004,Laboratory,None,p
+LBXSC3SI,Bicarbonate (mmol/L),LAB18,Standard Biochemistry Profile & Hormones,1999,2000,Laboratory,None,p
+LBXSCA,Total calcium (mg/dL),BIOPRO_D,Standard Biochemistry Profile,2005,2006,Laboratory,None,p
+LBXSCA,Total calcium (mg/dL),BIOPRO_E,Standard Biochemistry Profile,2007,2008,Laboratory,None,p
+LBXSCA,Total calcium (mg/dL),BIOPRO_F,Standard Biochemistry Profile,2009,2010,Laboratory,None,p
+LBXSCA,Total calcium (mg/dL),BIOPRO_G,Standard Biochemistry Profile,2011,2012,Laboratory,None,p
+LBXSCA,Total calcium (mg/dL),BIOPRO_H,Standard Biochemistry Profile,2013,2014,Laboratory,None,p
+LBXSCA,Total Calcium (mg/dL),BIOPRO_I,Standard Biochemistry Profile,2015,2016,Laboratory,None,p
+LBXSCA,Total Calcium (mg/dL),BIOPRO_J,Standard Biochemistry Profile,2017,2018,Laboratory,None,p
+LBXSCA,Total Calcium (mg/dL),L40_B,Standard Biochemistry Profile,2001,2002,Laboratory,None,p
+LBXSCA,Total calcium (mg/dL),L40_C,Standard Biochemistry Profile,2003,2004,Laboratory,None,p
+LBXSCA,"Calcium, total (mg/dL)",LAB18,Standard Biochemistry Profile & Hormones,1999,2000,Laboratory,None,p
+LBXSCH,Cholesterol (mg/dL),BIOPRO_D,Standard Biochemistry Profile,2005,2006,Laboratory,None,p
+LBXSCH,Cholesterol (mg/dL),BIOPRO_E,Standard Biochemistry Profile,2007,2008,Laboratory,None,p
+LBXSCH,Cholesterol (mg/dL),BIOPRO_F,Standard Biochemistry Profile,2009,2010,Laboratory,None,p
+LBXSCH,Cholesterol (mg/dL),BIOPRO_G,Standard Biochemistry Profile,2011,2012,Laboratory,None,p
+LBXSCH,Cholesterol (mg/dL),BIOPRO_H,Standard Biochemistry Profile,2013,2014,Laboratory,None,p
+LBXSCH,"Cholesterol, refrigerated serum (mg/dL)",BIOPRO_I,Standard Biochemistry Profile,2015,2016,Laboratory,None,p
+LBXSCH,"Total Cholesterol, refrigerated serum (mg/dL)",BIOPRO_J,Standard Biochemistry Profile,2017,2018,Laboratory,None,p
+LBXSCH,Cholesterol (mg/dL),L40_B,Standard Biochemistry Profile,2001,2002,Laboratory,None,p
+LBXSCH,Cholesterol (mg/dL),L40_C,Standard Biochemistry Profile,2003,2004,Laboratory,None,p
+LBXSCH,"Cholesterol, total (mg/dL)",LAB18,Standard Biochemistry Profile & Hormones,1999,2000,Laboratory,None,p
+LBXSCK,Creatine Phosphokinase(CPK) (IU/L),BIOPRO_G,Standard Biochemistry Profile,2011,2012,Laboratory,None,p
+LBXSCK,Creatine Phosphokinase(CPK) (IU/L),BIOPRO_H,Standard Biochemistry Profile,2013,2014,Laboratory,None,p
+LBXSCK,Creatine Phosphokinase (CPK) (IU/L),BIOPRO_I,Standard Biochemistry Profile,2015,2016,Laboratory,None,p
+LBXSCK,Creatine Phosphokinase (CPK) (IU/L),BIOPRO_J,Standard Biochemistry Profile,2017,2018,Laboratory,None,p
+LBXSCLSI,Chloride (mmol/L),BIOPRO_D,Standard Biochemistry Profile,2005,2006,Laboratory,None,p
+LBXSCLSI,Chloride (mmol/L),BIOPRO_E,Standard Biochemistry Profile,2007,2008,Laboratory,None,p
+LBXSCLSI,Chloride (mmol/L),BIOPRO_F,Standard Biochemistry Profile,2009,2010,Laboratory,None,p
+LBXSCLSI,Chloride (mmol/L),BIOPRO_G,Standard Biochemistry Profile,2011,2012,Laboratory,None,p
+LBXSCLSI,Chloride (mmol/L),BIOPRO_H,Standard Biochemistry Profile,2013,2014,Laboratory,None,p
+LBXSCLSI,Chloride (mmol/L),BIOPRO_I,Standard Biochemistry Profile,2015,2016,Laboratory,None,p
+LBXSCLSI,Chloride (mmol/L),BIOPRO_J,Standard Biochemistry Profile,2017,2018,Laboratory,None,p
+LBXSCLSI,Chloride: SI (mmol/L),L40_B,Standard Biochemistry Profile,2001,2002,Laboratory,None,p
+LBXSCLSI,Chloride(mmol/L),L40_C,Standard Biochemistry Profile,2003,2004,Laboratory,None,p
+LBXSCLSI,Chloride (mmol/L),LAB18,Standard Biochemistry Profile & Hormones,1999,2000,Laboratory,None,p
+LBXSCR,Creatinine (mg/dL),BIOPRO_D,Standard Biochemistry Profile,2005,2006,Laboratory,None,p
+LBXSCR,Creatinine (mg/dL),BIOPRO_E,Standard Biochemistry Profile,2007,2008,Laboratory,None,p
+LBXSCR,Creatinine (mg/dL),BIOPRO_F,Standard Biochemistry Profile,2009,2010,Laboratory,None,p
+LBXSCR,Creatinine (mg/dL),BIOPRO_G,Standard Biochemistry Profile,2011,2012,Laboratory,None,p
+LBXSCR,Creatinine (mg/dL),BIOPRO_H,Standard Biochemistry Profile,2013,2014,Laboratory,None,p
+LBXSCR,"Creatinine, refrigerated serum (mg/dL)",BIOPRO_I,Standard Biochemistry Profile,2015,2016,Laboratory,None,p
+LBXSCR,"Creatinine, refrigerated serum (mg/dL)",BIOPRO_J,Standard Biochemistry Profile,2017,2018,Laboratory,None,p
+LBXSCR,Creatinine (mg/dL),L40_C,Standard Biochemistry Profile,2003,2004,Laboratory,None,p
+LBXSCR,Creatinine (mg/dL),LAB18,Standard Biochemistry Profile & Hormones,1999,2000,Laboratory,None,p
+LBXSEL,Selenium(ug/L),L39EPP_C,Erythrocyte Protoporphyrin & Selenium,2003,2004,Laboratory,None,p
+LBXSF1SI,5-Methyl-tetrahydrofolate (nmol/L),FOLFMS_E,Folate Forms - Individual - Serum,2007,2008,Laboratory,None,p
+LBXSF1SI,5-Methyl-tetrahydrofolate (nmol/L),FOLFMS_G,Folate Forms - Total & Individual - Serum,2011,2012,Laboratory,None,p
+LBXSF1SI,5-Methyl-tetrahydrofolate (nmol/L),FOLFMS_H,Folate Forms - Total & Individual - Serum,2013,2014,Laboratory,None,p
+LBXSF1SI,5-Methyl-tetrahydrofolate (nmol/L),FOLFMS_I,Folate Forms - Total & Individual - Serum,2015,2016,Laboratory,None,p
+LBXSF1SI,5-Methyl-tetrahydrofolate (nmol/L),FOLFMS_J,Folate Forms - Total & Individual - Serum,2017,2018,Laboratory,None,p
+LBXSF2SI,Folic acid (nmol/L),FOLFMS_E,Folate Forms - Individual - Serum,2007,2008,Laboratory,None,p
+LBXSF2SI,Folic acid (nmol/L),FOLFMS_G,Folate Forms - Total & Individual - Serum,2011,2012,Laboratory,None,p
+LBXSF2SI,Folic acid (nmol/L),FOLFMS_H,Folate Forms - Total & Individual - Serum,2013,2014,Laboratory,None,p
+LBXSF2SI,Folic acid (nmol/L),FOLFMS_I,Folate Forms - Total & Individual - Serum,2015,2016,Laboratory,None,p
+LBXSF2SI,Folic acid (nmol/L),FOLFMS_J,Folate Forms - Total & Individual - Serum,2017,2018,Laboratory,None,p
+LBXSF3SI,5-Formyl-tetrahydrofolate (nmol/L),FOLFMS_G,Folate Forms - Total & Individual - Serum,2011,2012,Laboratory,None,p
+LBXSF3SI,5-Formyl-tetrahydrofolate (nmol/L),FOLFMS_H,Folate Forms - Total & Individual - Serum,2013,2014,Laboratory,None,p
+LBXSF3SI,5-Formyl-tetrahydrofolate (nmol/L),FOLFMS_I,Folate Forms - Total & Individual - Serum,2015,2016,Laboratory,None,p
+LBXSF3SI,5-Formyl-tetrahydrofolate (nmol/L),FOLFMS_J,Folate Forms - Total & Individual - Serum,2017,2018,Laboratory,None,p
+LBXSF4SI,Tetrahydrofolate (nmol/L),FOLFMS_G,Folate Forms - Total & Individual - Serum,2011,2012,Laboratory,None,p
+LBXSF4SI,Tetrahydrofolate (nmol/L),FOLFMS_H,Folate Forms - Total & Individual - Serum,2013,2014,Laboratory,None,p
+LBXSF4SI,Tetrahydrofolate (nmol/L),FOLFMS_I,Folate Forms - Total & Individual - Serum,2015,2016,Laboratory,None,p
+LBXSF4SI,Tetrahydrofolate (nmol/L),FOLFMS_J,Folate Forms - Total & Individual - Serum,2017,2018,Laboratory,None,p
+LBXSF5SI,"5,10-Methenyl-tetrahydrofolate (nmol/L)",FOLFMS_G,Folate Forms - Total & Individual - Serum,2011,2012,Laboratory,None,p
+LBXSF5SI,"5,10-Methenyl-tetrahydrofolate (nmol/L)",FOLFMS_H,Folate Forms - Total & Individual - Serum,2013,2014,Laboratory,None,p
+LBXSF5SI,"5,10-Methenyl-tetrahydrofolate (nmol/L)",FOLFMS_I,Folate Forms - Total & Individual - Serum,2015,2016,Laboratory,None,p
+LBXSF5SI,"5,10-Methenyl-tetrahydrofolate (nmol/L)",FOLFMS_J,Folate Forms - Total & Individual - Serum,2017,2018,Laboratory,None,p
+LBXSF6SI,Mefox oxidation product (nmol/L),FOLFMS_G,Folate Forms - Total & Individual - Serum,2011,2012,Laboratory,None,p
+LBXSF6SI,Mefox oxidation product (nmol/L),FOLFMS_H,Folate Forms - Total & Individual - Serum,2013,2014,Laboratory,None,p
+LBXSF6SI,Mefox oxidation product (nmol/L),FOLFMS_I,Folate Forms - Total & Individual - Serum,2015,2016,Laboratory,None,p
+LBXSF6SI,Mefox oxidation product (nmol/L),FOLFMS_J,Folate Forms - Total & Individual - Serum,2017,2018,Laboratory,None,p
+LBXSGB,Globulin (g/dL),BIOPRO_D,Standard Biochemistry Profile,2005,2006,Laboratory,None,p
+LBXSGB,Globulin (g/dL),BIOPRO_E,Standard Biochemistry Profile,2007,2008,Laboratory,None,p
+LBXSGB,Globulin (g/dL),BIOPRO_F,Standard Biochemistry Profile,2009,2010,Laboratory,None,p
+LBXSGB,Globulin (g/dL),BIOPRO_G,Standard Biochemistry Profile,2011,2012,Laboratory,None,p
+LBXSGB,Globulin (g/dL),BIOPRO_H,Standard Biochemistry Profile,2013,2014,Laboratory,None,p
+LBXSGB,Globulin (g/dL),BIOPRO_I,Standard Biochemistry Profile,2015,2016,Laboratory,None,p
+LBXSGB,Globulin (g/dL),BIOPRO_J,Standard Biochemistry Profile,2017,2018,Laboratory,None,p
+LBXSGB,Globulin (g/dL),L40_B,Standard Biochemistry Profile,2001,2002,Laboratory,None,p
+LBXSGB,Globulin (g/dL),L40_C,Standard Biochemistry Profile,2003,2004,Laboratory,None,p
+LBXSGB,Globulin (g/dL),LAB18,Standard Biochemistry Profile & Hormones,1999,2000,Laboratory,None,p
+LBXSGL,"Glucose, serum (mg/dL)",BIOPRO_D,Standard Biochemistry Profile,2005,2006,Laboratory,None,p
+LBXSGL,"Glucose, serum (mg/dL)",BIOPRO_E,Standard Biochemistry Profile,2007,2008,Laboratory,None,p
+LBXSGL,"Glucose, serum (mg/dL)",BIOPRO_F,Standard Biochemistry Profile,2009,2010,Laboratory,None,p
+LBXSGL,"Glucose, serum (mg/dL)",BIOPRO_G,Standard Biochemistry Profile,2011,2012,Laboratory,None,p
+LBXSGL,"Glucose, refrigerated serum (mg/dL)",BIOPRO_H,Standard Biochemistry Profile,2013,2014,Laboratory,None,p
+LBXSGL,"Glucose, refrigerated serum (mg/dL)",BIOPRO_I,Standard Biochemistry Profile,2015,2016,Laboratory,None,p
+LBXSGL,"Glucose, refrigerated serum (mg/dL)",BIOPRO_J,Standard Biochemistry Profile,2017,2018,Laboratory,None,p
+LBXSGL,"Glucose, serum (mg/dL)",L40_B,Standard Biochemistry Profile,2001,2002,Laboratory,None,p
+LBXSGL,"Glucose, serum (mg/dL)",L40_C,Standard Biochemistry Profile,2003,2004,Laboratory,None,p
+LBXSGL,Glucose (mg/dL),LAB18,Standard Biochemistry Profile & Hormones,1999,2000,Laboratory,None,p
+LBXSGTSI,Gamma glutamyl transferase (U/L),BIOPRO_D,Standard Biochemistry Profile,2005,2006,Laboratory,None,p
+LBXSGTSI,Gamma glutamyl transferase (U/L),BIOPRO_E,Standard Biochemistry Profile,2007,2008,Laboratory,None,p
+LBXSGTSI,Gamma glutamyl transferase (U/L),BIOPRO_F,Standard Biochemistry Profile,2009,2010,Laboratory,None,p
+LBXSGTSI,Gamma glutamyl transferase (U/L),BIOPRO_G,Standard Biochemistry Profile,2011,2012,Laboratory,None,p
+LBXSGTSI,Gamma glutamyl transferase (U/L),BIOPRO_H,Standard Biochemistry Profile,2013,2014,Laboratory,None,p
+LBXSGTSI,Gamma Glutamyl Transferase (GGT) (U/L),BIOPRO_I,Standard Biochemistry Profile,2015,2016,Laboratory,None,p
+LBXSGTSI,Gamma Glutamyl Transferase (GGT) (IU/L),BIOPRO_J,Standard Biochemistry Profile,2017,2018,Laboratory,None,p
+LBXSGTSI,GGT: SI (U/L),L40_B,Standard Biochemistry Profile,2001,2002,Laboratory,None,p
+LBXSGTSI,Gamma glutamyl transferase : SI (U/L),L40_C,Standard Biochemistry Profile,2003,2004,Laboratory,None,p
+LBXSGTSI,GGT (U/L),LAB18,Standard Biochemistry Profile & Hormones,1999,2000,Laboratory,None,p
+LBXSHBG,"Sex Hormone Binding Globulin (SHBG, nmol/L)",TST_H,Sex Steroid Hormone - Serum,2013,2014,Laboratory,None,p
+LBXSHBG,"Sex Hormone Binding Globulin (SHBG, nmol/L)",TST_I,Sex Steroid Hormone - Serum,2015,2016,Laboratory,None,p
+LBXSIR,"Iron, refigerated (ug/dL)",BIOPRO_D,Standard Biochemistry Profile,2005,2006,Laboratory,None,p
+LBXSIR,"Iron, refigerated (ug/dL)",BIOPRO_E,Standard Biochemistry Profile,2007,2008,Laboratory,None,p
+LBXSIR,"Iron, refigerated (ug/dL)",BIOPRO_F,Standard Biochemistry Profile,2009,2010,Laboratory,None,p
+LBXSIR,"Iron, refigerated (ug/dL)",BIOPRO_G,Standard Biochemistry Profile,2011,2012,Laboratory,None,p
+LBXSIR,"Iron, refrigerated serum (ug/dL)",BIOPRO_H,Standard Biochemistry Profile,2013,2014,Laboratory,None,p
+LBXSIR,"Iron, refrigerated serum (ug/dL)",BIOPRO_I,Standard Biochemistry Profile,2015,2016,Laboratory,None,p
+LBXSIR,"Iron, refrigerated serum (ug/dL)",BIOPRO_J,Standard Biochemistry Profile,2017,2018,Laboratory,None,p
+LBXSIR,Iron (ug/dL),L40_B,Standard Biochemistry Profile,2001,2002,Laboratory,None,p
+LBXSIR,"Iron, refigerated (ug/dL)",L40_C,Standard Biochemistry Profile,2003,2004,Laboratory,None,p
+LBXSIR,Iron (ug/dL),LAB18,Standard Biochemistry Profile & Hormones,1999,2000,Laboratory,None,p
+LBXSKSI,Potassium (mmol/L),BIOPRO_D,Standard Biochemistry Profile,2005,2006,Laboratory,None,p
+LBXSKSI,Potassium (mmol/L),BIOPRO_E,Standard Biochemistry Profile,2007,2008,Laboratory,None,p
+LBXSKSI,Potassium (mmol/L),BIOPRO_F,Standard Biochemistry Profile,2009,2010,Laboratory,None,p
+LBXSKSI,Potassium (mmol/L),BIOPRO_G,Standard Biochemistry Profile,2011,2012,Laboratory,None,p
+LBXSKSI,Potassium (mmol/L),BIOPRO_H,Standard Biochemistry Profile,2013,2014,Laboratory,None,p
+LBXSKSI,Potassium (mmol/L),BIOPRO_I,Standard Biochemistry Profile,2015,2016,Laboratory,None,p
+LBXSKSI,Potassium (mmol/L),BIOPRO_J,Standard Biochemistry Profile,2017,2018,Laboratory,None,p
+LBXSKSI,Potassium: SI (mmol/L),L40_B,Standard Biochemistry Profile,2001,2002,Laboratory,None,p
+LBXSKSI,Potassium (mmol/L),L40_C,Standard Biochemistry Profile,2003,2004,Laboratory,None,p
+LBXSKSI,Potassium (mmol/L),LAB18,Standard Biochemistry Profile & Hormones,1999,2000,Laboratory,None,p
+LBXSLDSI,Lactate dehydrogenase LDH (U/L),BIOPRO_D,Standard Biochemistry Profile,2005,2006,Laboratory,None,p
+LBXSLDSI,Lactate dehydrogenase LDH (U/L),BIOPRO_E,Standard Biochemistry Profile,2007,2008,Laboratory,None,p
+LBXSLDSI,Lactate dehydrogenase (U/L),BIOPRO_F,Standard Biochemistry Profile,2009,2010,Laboratory,None,p
+LBXSLDSI,Lactate dehydrogenase (U/L),BIOPRO_G,Standard Biochemistry Profile,2011,2012,Laboratory,None,p
+LBXSLDSI,Lactate dehydrogenase (U/L),BIOPRO_H,Standard Biochemistry Profile,2013,2014,Laboratory,None,p
+LBXSLDSI,Lactate Dehydrogenase (LDH) (U/L),BIOPRO_I,Standard Biochemistry Profile,2015,2016,Laboratory,None,p
+LBXSLDSI,Lactate Dehydrogenase (LDH) (IU/L),BIOPRO_J,Standard Biochemistry Profile,2017,2018,Laboratory,None,p
+LBXSLDSI,Lactate dehydrogenase LDH (U/L),L40_C,Standard Biochemistry Profile,2003,2004,Laboratory,None,p
+LBXSLDSI,LDH (U/L),LAB18,Standard Biochemistry Profile & Hormones,1999,2000,Laboratory,None,p
+LBXSNASI,Sodium (mmol/L),BIOPRO_D,Standard Biochemistry Profile,2005,2006,Laboratory,None,p
+LBXSNASI,Sodium (mmol/L),BIOPRO_E,Standard Biochemistry Profile,2007,2008,Laboratory,None,p
+LBXSNASI,Sodium (mmol/L),BIOPRO_F,Standard Biochemistry Profile,2009,2010,Laboratory,None,p
+LBXSNASI,Sodium (mmol/L),BIOPRO_G,Standard Biochemistry Profile,2011,2012,Laboratory,None,p
+LBXSNASI,Sodium (mmol/L),BIOPRO_H,Standard Biochemistry Profile,2013,2014,Laboratory,None,p
+LBXSNASI,Sodium (mmol/L),BIOPRO_I,Standard Biochemistry Profile,2015,2016,Laboratory,None,p
+LBXSNASI,Sodium (mmol/L),BIOPRO_J,Standard Biochemistry Profile,2017,2018,Laboratory,None,p
+LBXSNASI,Sodium: SI (mmol/L),L40_B,Standard Biochemistry Profile,2001,2002,Laboratory,None,p
+LBXSNASI,Sodium(mmol/L),L40_C,Standard Biochemistry Profile,2003,2004,Laboratory,None,p
+LBXSNASI,Sodium (mmol/L),LAB18,Standard Biochemistry Profile & Hormones,1999,2000,Laboratory,None,p
+LBXSOSSI,Osmolality (mmol/Kg),BIOPRO_D,Standard Biochemistry Profile,2005,2006,Laboratory,None,p
+LBXSOSSI,Osmolality (mmol/Kg),BIOPRO_E,Standard Biochemistry Profile,2007,2008,Laboratory,None,p
+LBXSOSSI,Osmolality (mmol/Kg),BIOPRO_F,Standard Biochemistry Profile,2009,2010,Laboratory,None,p
+LBXSOSSI,Osmolality (mmol/Kg),BIOPRO_G,Standard Biochemistry Profile,2011,2012,Laboratory,None,p
+LBXSOSSI,Osmolality (mmol/Kg),BIOPRO_H,Standard Biochemistry Profile,2013,2014,Laboratory,None,p
+LBXSOSSI,Osmolality (mmol/Kg),BIOPRO_I,Standard Biochemistry Profile,2015,2016,Laboratory,None,p
+LBXSOSSI,Osmolality (mmol/Kg),BIOPRO_J,Standard Biochemistry Profile,2017,2018,Laboratory,None,p
+LBXSOSSI,Osmolality: SI (mmol/Kg),L40_B,Standard Biochemistry Profile,2001,2002,Laboratory,None,p
+LBXSOSSI,Osmolality(mmol/Kg),L40_C,Standard Biochemistry Profile,2003,2004,Laboratory,None,p
+LBXSOSSI,Osmolality (mOsm/kg),LAB18,Standard Biochemistry Profile & Hormones,1999,2000,Laboratory,None,p
+LBXSPH,Phosphorus (mg/dL),BIOPRO_D,Standard Biochemistry Profile,2005,2006,Laboratory,None,p
+LBXSPH,Phosphorus (mg/dL),BIOPRO_E,Standard Biochemistry Profile,2007,2008,Laboratory,None,p
+LBXSPH,Phosphorus (mg/dL),BIOPRO_F,Standard Biochemistry Profile,2009,2010,Laboratory,None,p
+LBXSPH,Phosphorus (mg/dL),BIOPRO_G,Standard Biochemistry Profile,2011,2012,Laboratory,None,p
+LBXSPH,Phosphorus (mg/dL),BIOPRO_H,Standard Biochemistry Profile,2013,2014,Laboratory,None,p
+LBXSPH,Phosphorus (mg/dL),BIOPRO_I,Standard Biochemistry Profile,2015,2016,Laboratory,None,p
+LBXSPH,Phosphorus (mg/dL),BIOPRO_J,Standard Biochemistry Profile,2017,2018,Laboratory,None,p
+LBXSPH,Phosphorus  (mg/dL),L40_C,Standard Biochemistry Profile,2003,2004,Laboratory,None,p
+LBXSPH,Phosphorus  (mg/dL),LAB18,Standard Biochemistry Profile & Hormones,1999,2000,Laboratory,None,p
+LBXSTB,Total bilirubin (mg/dL),BIOPRO_D,Standard Biochemistry Profile,2005,2006,Laboratory,None,p
+LBXSTB,Total bilirubin (mg/dL),BIOPRO_E,Standard Biochemistry Profile,2007,2008,Laboratory,None,p
+LBXSTB,Total bilirubin (mg/dL),BIOPRO_F,Standard Biochemistry Profile,2009,2010,Laboratory,None,p
+LBXSTB,Total bilirubin (mg/dL),BIOPRO_G,Standard Biochemistry Profile,2011,2012,Laboratory,None,p
+LBXSTB,Total bilirubin (mg/dL),BIOPRO_H,Standard Biochemistry Profile,2013,2014,Laboratory,None,p
+LBXSTB,Total Bilirubin (mg/dL),BIOPRO_I,Standard Biochemistry Profile,2015,2016,Laboratory,None,p
+LBXSTB,Total Bilirubin (mg/dL),BIOPRO_J,Standard Biochemistry Profile,2017,2018,Laboratory,None,p
+LBXSTB,Total bilirubin (mg/dL),L40_C,Standard Biochemistry Profile,2003,2004,Laboratory,None,p
+LBXSTB,"Bilirubin, total (mg/dL)",LAB18,Standard Biochemistry Profile & Hormones,1999,2000,Laboratory,None,p
+LBXSTP,Total protein (g/dL),BIOPRO_D,Standard Biochemistry Profile,2005,2006,Laboratory,None,p
+LBXSTP,Total protein (g/dL),BIOPRO_E,Standard Biochemistry Profile,2007,2008,Laboratory,None,p
+LBXSTP,Total protein (g/dL),BIOPRO_F,Standard Biochemistry Profile,2009,2010,Laboratory,None,p
+LBXSTP,Total protein (g/dL),BIOPRO_G,Standard Biochemistry Profile,2011,2012,Laboratory,None,p
+LBXSTP,Total protein (g/dL),BIOPRO_H,Standard Biochemistry Profile,2013,2014,Laboratory,None,p
+LBXSTP,Total Protein (g/dL),BIOPRO_I,Standard Biochemistry Profile,2015,2016,Laboratory,None,p
+LBXSTP,Total Protein (g/dL),BIOPRO_J,Standard Biochemistry Profile,2017,2018,Laboratory,None,p
+LBXSTP,Total protein (g/dL),L40_B,Standard Biochemistry Profile,2001,2002,Laboratory,None,p
+LBXSTP,Total protein (g/dL),L40_C,Standard Biochemistry Profile,2003,2004,Laboratory,None,p
+LBXSTP,"Protein, total (g/dL)",LAB18,Standard Biochemistry Profile & Hormones,1999,2000,Laboratory,None,p
+LBXSTR,Triglycerides (mg/dL),BIOPRO_D,Standard Biochemistry Profile,2005,2006,Laboratory,None,p
+LBXSTR,Triglycerides (mg/dL),BIOPRO_E,Standard Biochemistry Profile,2007,2008,Laboratory,None,p
+LBXSTR,Triglycerides (mg/dL),BIOPRO_F,Standard Biochemistry Profile,2009,2010,Laboratory,None,p
+LBXSTR,Triglycerides (mg/dL),BIOPRO_G,Standard Biochemistry Profile,2011,2012,Laboratory,None,p
+LBXSTR,"Triglycerides, refrigerated (mg/dL)",BIOPRO_H,Standard Biochemistry Profile,2013,2014,Laboratory,None,p
+LBXSTR,"Triglycerides, refrig serum (mg/dL)",BIOPRO_I,Standard Biochemistry Profile,2015,2016,Laboratory,None,p
+LBXSTR,"Triglycerides, refrigerated serum (mg/dL)",BIOPRO_J,Standard Biochemistry Profile,2017,2018,Laboratory,None,p
+LBXSTR,Triglycerides (mg/dL),L40_B,Standard Biochemistry Profile,2001,2002,Laboratory,None,p
+LBXSTR,Triglycerides (mg/dL),L40_C,Standard Biochemistry Profile,2003,2004,Laboratory,None,p
+LBXSTR,Triglycerides (mg/dL),LAB18,Standard Biochemistry Profile & Hormones,1999,2000,Laboratory,None,p
+LBXSUA,Uric acid (mg/dL),BIOPRO_D,Standard Biochemistry Profile,2005,2006,Laboratory,None,p
+LBXSUA,Uric acid (mg/dL),BIOPRO_E,Standard Biochemistry Profile,2007,2008,Laboratory,None,p
+LBXSUA,Uric acid (mg/dL),BIOPRO_F,Standard Biochemistry Profile,2009,2010,Laboratory,None,p
+LBXSUA,Uric acid (mg/dL),BIOPRO_G,Standard Biochemistry Profile,2011,2012,Laboratory,None,p
+LBXSUA,Uric acid (mg/dL),BIOPRO_H,Standard Biochemistry Profile,2013,2014,Laboratory,None,p
+LBXSUA,Uric acid (mg/dL),BIOPRO_I,Standard Biochemistry Profile,2015,2016,Laboratory,None,p
+LBXSUA,Uric acid (mg/dL),BIOPRO_J,Standard Biochemistry Profile,2017,2018,Laboratory,None,p
+LBXSUA,Uric acid (mg/dL),L40_B,Standard Biochemistry Profile,2001,2002,Laboratory,None,p
+LBXSUA,Uric acid (mg/dL),L40_C,Standard Biochemistry Profile,2003,2004,Laboratory,None,p
+LBXSUA,Uric acid (mg/dL),LAB18,Standard Biochemistry Profile & Hormones,1999,2000,Laboratory,None,p
+LBXT3F,"Triiodothyronine (T3), free (pg/mL)",THYROD_E,Thyroid Profile,2007,2008,Laboratory,None,p
+LBXT3F,"Triiodothyronine (T3), free (pg/mL)",THYROD_F,Thyroid Profile,2009,2010,Laboratory,None,p
+LBXT3F,"Triiodothyronine (T3), free (pg/mL)",THYROD_G,Thyroid Profile,2011,2012,Laboratory,None,p
+LBXT4,Thyroxine (T4) (ug/dL),L40T4_B,Thyroid - Stimulating Hormone & Thyroxine (TSH & T4),2001,2002,Laboratory,None,p
+LBXT4,Thyroxine (T4) (ug/dL),LAB18T4,Thyroid - Stimulating Hormone & Thyroxine (TSH & T4),1999,2000,Laboratory,None,p
+LBXT4F,"Thyroxine, free (ng/dL)",THYROD_E,Thyroid Profile,2007,2008,Laboratory,None,p
+LBXT4F,"Thyroxine, free (ng/dL)",THYROD_F,Thyroid Profile,2009,2010,Laboratory,None,p
+LBXT4F,"Thyroxine, free (ng/dL)",THYROD_G,Thyroid Profile,2011,2012,Laboratory,None,p
+LBXTC,Total cholesterol (mg/dL),l13_b,Cholesterol - Total & HDL,2001,2002,Laboratory,None,p
+LBXTC,Total Cholesterol (mg/dL),l13_c,Cholesterol - Total & HDL,2003,2004,Laboratory,None,p
+LBXTC,Total cholesterol (mg/dL),Lab13,Cholesterol - Total & HDL,1999,2000,Laboratory,None,p
+LBXTC,Total cholesterol (mg/dL),TCHOL_D,Cholesterol - Total,2005,2006,Laboratory,None,p
+LBXTC,Total Cholesterol (mg/dL),TCHOL_E,Cholesterol - Total,2007,2008,Laboratory,None,p
+LBXTC,Total Cholesterol (mg/dL),TCHOL_F,Cholesterol - Total,2009,2010,Laboratory,None,p
+LBXTC,Total Cholesterol( mg/dL),TCHOL_G,Cholesterol - Total,2011,2012,Laboratory,None,p
+LBXTC,Total Cholesterol( mg/dL),TCHOL_H,Cholesterol - Total,2013,2014,Laboratory,None,p
+LBXTC,Total Cholesterol (mg/dL),TCHOL_I,Cholesterol - Total,2015,2016,Laboratory,None,p
+LBXTC,Total Cholesterol (mg/dL),TCHOL_J,Cholesterol - Total,2017,2018,Laboratory,None,p
+LBXTFR,Transferrin Receptor (mg/L),TFR_D,Transferrin Receptor,2005,2006,Laboratory,None,p
+LBXTFR,Transferrin Receptor (mg/L),TFR_E,Transferrin Receptor,2007,2008,Laboratory,None,p
+LBXTFR,Transferrin receptor (mg/L),TFR_F,Transferrin Receptor,2009,2010,Laboratory,None,p
+LBXTFR,Transferrin receptor (mg/L),TFR_I,Transferrin Receptor,2015,2016,Laboratory,None,p
+LBXTFR,Transferrin receptor (mg/L),TFR_J,Transferrin Receptor,2017,2018,Laboratory,None,p
+LBXTGN,Thyroglobulin (ng/mL),THYROD_E,Thyroid Profile,2007,2008,Laboratory,None,p
+LBXTGN,Thyroglobulin (ng/mL),THYROD_F,Thyroid Profile,2009,2010,Laboratory,None,p
+LBXTGN,Thyroglobulin (ng/mL),THYROD_G,Thyroid Profile,2011,2012,Laboratory,None,p
+LBXTIB,"TIBC, Frozen Serum (ug/dL)",FETIB_D,"Iron, Total Iron Binding Capacity (TIBC), & Transferrin Saturation",2005,2006,Laboratory,None,p
+LBXTIB,Total iron binding capacity (ug/dL),L40FE_C,"Iron, Total Iron Binding Capacity (TIBC), & Transferrin Saturation",2003,2004,Laboratory,None,p
+LBXTO1,Toxoplasma (IgG),LAB17,Cryptosporidum & Toxoplasma,1999,2000,Laboratory,None,p
+LBXTO3,Toxoplasma (Dye) Positive => 1:8,LAB17,Cryptosporidum & Toxoplasma,1999,2000,Laboratory,None,p
+LBXTO4,Toxoplasma Differential Agglutination,LAB17,Cryptosporidum & Toxoplasma,1999,2000,Laboratory,None,p
+LBXTO4IN,Toxoplasma Agglutin interpretation,LAB17,Cryptosporidum & Toxoplasma,1999,2000,Laboratory,None,p
+LBXTO5,Toxoplasma (Avidity) IgG,LAB17,Cryptosporidum & Toxoplasma,1999,2000,Laboratory,None,p
+LBXTO5IN,Toxoplasma (Avidity IgG) interpretation,LAB17,Cryptosporidum & Toxoplasma,1999,2000,Laboratory,None,p
+LBXTPO,Thyroid peroxidase antibodies (IU/mL),THYROD_E,Thyroid Profile,2007,2008,Laboratory,None,p
+LBXTPO,Thyroid perioxidase antibodies (IU/mL),THYROD_F,Thyroid Profile,2009,2010,Laboratory,None,p
+LBXTPO,Thyroid perioxidase antibodies (IU/mL),THYROD_G,Thyroid Profile,2011,2012,Laboratory,None,p
+LBXTR,Triglyceride (mg/dL),L13AM_B,Cholesterol - LDL & Triglycerides,2001,2002,Laboratory,None,p
+LBXTR,Triglyceride (mg/dL),L13AM_C,Cholesterol - LDL & Triglycerides,2003,2004,Laboratory,None,p
+LBXTR,Triglyceride (mg/dL),LAB13AM,Cholesterol - LDL & Triglycerides,1999,2000,Laboratory,None,p
+LBXTR,Triglyceride (mg/dL),TRIGLY_D,"Cholesterol - LDL, Triglyceride & Apoliprotein (ApoB)",2005,2006,Laboratory,None,p
+LBXTR,Triglyceride (mg/dL),TRIGLY_E,Cholesterol - LDL & Triglycerides,2007,2008,Laboratory,None,p
+LBXTR,Triglyceride (mg/dL),TRIGLY_F,Cholesterol - LDL & Triglycerides,2009,2010,Laboratory,None,p
+LBXTR,Triglyceride (mg/dL),TRIGLY_G,Cholesterol - LDL & Triglycerides,2011,2012,Laboratory,None,p
+LBXTR,Triglyceride (mg/dL),TRIGLY_H,Cholesterol - LDL & Triglycerides,2013,2014,Laboratory,None,p
+LBXTR,Triglyceride (mg/dL),TRIGLY_I,Cholesterol - Low - Density Lipoprotein (LDL) & Triglycerides,2015,2016,Laboratory,None,p
+LBXTR,Triglyceride (mg/dL),TRIGLY_J,Cholesterol - Low-Density Lipoproteins (LDL) & Triglycerides,2017,2018,Laboratory,None,p
+LBXTSH,Thyroid stimulating hormone (TSH) (IU/L),L40T4_B,Thyroid - Stimulating Hormone & Thyroxine (TSH & T4),2001,2002,Laboratory,None,p
+LBXTSH,Thyroid stimulating hormone (IU/L),LAB18T4,Thyroid - Stimulating Hormone & Thyroxine (TSH & T4),1999,2000,Laboratory,None,p
+LBXTSH1,Thyroid stimulating hormone (uIU/mL),THYROD_E,Thyroid Profile,2007,2008,Laboratory,None,p
+LBXTSH1,Thyroid stimulating hormone (uIU/mL),THYROD_F,Thyroid Profile,2009,2010,Laboratory,None,p
+LBXTSH1,Thyroid stimulating hormone (uIU/mL),THYROD_G,Thyroid Profile,2011,2012,Laboratory,None,p
+LBXTST,Testosterone total (ng/dL),TST_G,Total Testosterone,2011,2012,Laboratory,None,p
+LBXTST,"Testosterone, total (ng/dL)",TST_H,Sex Steroid Hormone - Serum,2013,2014,Laboratory,None,p
+LBXTST,"Testosterone, total (ng/dL)",TST_I,Sex Steroid Hormone - Serum,2015,2016,Laboratory,None,p
+LBXTT3,"Triiodothyronine (T3), total (ng/dL)",THYROD_E,Thyroid Profile,2007,2008,Laboratory,None,p
+LBXTT3,"Triiodothyronine (T3), total (ng/dL)",THYROD_F,Thyroid Profile,2009,2010,Laboratory,None,p
+LBXTT3,"Triiodothyronine (T3), total (ng/dL)",THYROD_G,Thyroid Profile,2011,2012,Laboratory,None,p
+LBXTT4,"Thyroxine, total (T4) (ug/dL)",THYROD_E,Thyroid Profile,2007,2008,Laboratory,None,p
+LBXTT4,"Thyroxine, total (T4) (ug/dL)",THYROD_F,Thyroid Profile,2009,2010,Laboratory,None,p
+LBXTT4,"Thyroxine, total (T4) (ug/dL)",THYROD_G,Thyroid Profile,2011,2012,Laboratory,None,p
+LBXWBCSI,White blood cell count (1000 cells/uL),CBC_D,Complete Blood Count with 5-Part Differential - Whole Blood,2005,2006,Laboratory,None,p
+LBXWBCSI,White blood cell count:  SI,CBC_E,Complete Blood Count with 5-part Differential - Whole Blood,2007,2008,Laboratory,None,p
+LBXWBCSI,White blood cell count:  SI,CBC_F,Complete Blood Count with 5-part Differential - Whole Blood,2009,2010,Laboratory,None,p
+LBXWBCSI,White blood cell count (1000 cells/uL),CBC_G,Complete Blood Count with 5-part Differential - Whole Blood,2011,2012,Laboratory,None,p
+LBXWBCSI,White blood cell count (1000 cells/uL),CBC_H,Complete Blood Count with 5-part Differential - Whole Blood,2013,2014,Laboratory,None,p
+LBXWBCSI,White blood cell count (1000 cells/uL),CBC_I,Complete Blood Count with 5-Part Differential - Whole Blood,2015,2016,Laboratory,None,p
+LBXWBCSI,White blood cell count (1000 cells/uL),CBC_J,Complete Blood Count with 5-Part Differential,2017,2018,Laboratory,None,p
+LBXWBCSI,White blood cell count:  SI,L25_B,Complete Blood Count with 5-part Differential - Whole Blood,2001,2002,Laboratory,None,p
+LBXWBCSI,White blood cell count (1000 cells/uL),L25_C,Complete Blood Count with 5-part Differential - Whole Blood,2003,2004,Laboratory,None,p
+LBXWBCSI,White blood cell count:  SI,LAB25,Complete Blood Count with 5-part Differential - Whole Blood,1999,2000,Laboratory,None,p
+LUXCAPM,Median controlled attenuated parameter (CAP) This indicator is presented as,LUX_J,Liver Ultrasound Transient Elastography,2017,2018,Examination,None,p
+LUXSMED,Median liver stiffness (E) This indicator is presented with one digit to th,LUX_J,Liver Ultrasound Transient Elastography,2017,2018,Examination,None,p
+MDIASTOLIC,Diastolic Mean,BPX,Blood Pressure,1999,2000,Examination,None,p
+MDIASTOLIC,Diastolic Mean,BPX_B,Blood Pressure,2001,2002,Examination,None,p
+MDIASTOLIC,Diastolic Mean,BPX_C,Blood Pressure,2003,2004,Examination,None,p
+MDIASTOLIC,Diastolic Mean,BPX_D,Blood Pressure,2005,2006,Examination,None,p
+MDIASTOLIC,Diastolic Mean,BPX_E,Blood Pressure,2007,2008,Examination,None,p
+MDIASTOLIC,Diastolic Mean,BPX_F,Blood Pressure,2009,2010,Examination,None,p
+MDIASTOLIC,Diastolic Mean,BPX_G,Blood Pressure,2011,2012,Examination,None,p
+MDIASTOLIC,Diastolic Mean,BPX_H,Blood Pressure,2013,2014,Examination,None,p
+MDIASTOLIC,Diastolic Mean,BPX_I,Blood Pressure,2015,2016,Examination,None,p
+MDIASTOLIC,Diastolic Mean,BPX_J,Blood Pressure,2017,2018,Examination,None,p
+MSYSTOLIC,Systolic Mean,BPX,Blood Pressure,1999,2000,Examination,None,p
+MSYSTOLIC,Systolic Mean,BPX_B,Blood Pressure,2001,2002,Examination,None,p
+MSYSTOLIC,Systolic Mean,BPX_C,Blood Pressure,2003,2004,Examination,None,p
+MSYSTOLIC,Systolic Mean,BPX_D,Blood Pressure,2005,2006,Examination,None,p
+MSYSTOLIC,Systolic Mean,BPX_E,Blood Pressure,2007,2008,Examination,None,p
+MSYSTOLIC,Systolic Mean,BPX_F,Blood Pressure,2009,2010,Examination,None,p
+MSYSTOLIC,Systolic Mean,BPX_G,Blood Pressure,2011,2012,Examination,None,p
+MSYSTOLIC,Systolic Mean,BPX_H,Blood Pressure,2013,2014,Examination,None,p
+MSYSTOLIC,Systolic Mean,BPX_I,Blood Pressure,2015,2016,Examination,None,p
+MSYSTOLIC,Systolic Mean,BPX_J,Blood Pressure,2017,2018,Examination,None,p
+SPXBFEV1,"Bronchodilator 2nd Test Spirometry, Forced Expiratory Volume in the first 1",SPX_E,Spirometry - Pre and Post-Bronchodilator,2007,2008,Examination,None,p
+SPXBFEV1,"Bronchodilator 2nd Test Spirometry, Forced Expiratory Volume in the first 1",SPX_F,Spirometry - Pre and Post-Bronchodilator,2009,2010,Examination,None,p
+SPXBFEV1,"Bronchodilator 2nd Test Spirometry, Forced Expiratory Volume in the first 1",SPX_G,Spirometry - Pre and Post-Bronchodilator,2011,2012,Examination,None,p
+SPXBFVC,"Bronchodilator 2nd Test Spirometry, Forced Vital Capacity, in mL.",SPX_E,Spirometry - Pre and Post-Bronchodilator,2007,2008,Examination,None,p
+SPXBFVC,"Bronchodilator 2nd Test Spirometry, Forced Vital Capacity, in mL.",SPX_F,Spirometry - Pre and Post-Bronchodilator,2009,2010,Examination,None,p
+SPXBFVC,"Bronchodilator 2nd Test Spirometry, Forced Vital Capacity, in mL.",SPX_G,Spirometry - Pre and Post-Bronchodilator,2011,2012,Examination,None,p
+SPXNFEV1,"Baseline 1st Test Spirometry, Forced Expiratory Volume in the first 1.0 sec",SPX_E,Spirometry - Pre and Post-Bronchodilator,2007,2008,Examination,None,p
+SPXNFEV1,"Baseline 1st Test Spirometry, Forced Expiratory Volume in the first 1.0 sec",SPX_F,Spirometry - Pre and Post-Bronchodilator,2009,2010,Examination,None,p
+SPXNFEV1,"Baseline 1st Test Spirometry, Forced Expiratory Volume in the first 1.0 sec",SPX_G,Spirometry - Pre and Post-Bronchodilator,2011,2012,Examination,None,p
+SPXNFVC,"Baseline 1st Test Spirometry, Forced Vital Capacity, in mL.",SPX_E,Spirometry - Pre and Post-Bronchodilator,2007,2008,Examination,None,p
+SPXNFVC,"Baseline 1st Test Spirometry, Forced Vital Capacity, in mL.",SPX_F,Spirometry - Pre and Post-Bronchodilator,2009,2010,Examination,None,p
+SPXNFVC,"Baseline 1st Test Spirometry, Forced Vital Capacity, in mL.",SPX_G,Spirometry - Pre and Post-Bronchodilator,2011,2012,Examination,None,p
+TELOMEAN,Mean T/S ratio,TELO_A,Telomere Mean and Standard Deviation (Surplus),1999,2000,Laboratory,None,p
+TELOMEAN,Mean T/S ratio,TELO_B,Telomere Mean and Standard Deviation (Surplus),2001,2002,Laboratory,None,p
+TELOSTD,Asso. Std. Dev. of Mean T/S ratio,TELO_A,Telomere Mean and Standard Deviation (Surplus),1999,2000,Laboratory,None,p
+TELOSTD,Asso. Std. Dev. of Mean T/S ratio,TELO_B,Telomere Mean and Standard Deviation (Surplus),2001,2002,Laboratory,None,p
+UR2NT,N-telopeptides (nmol BCE),L11_2_b,"C-Reactive Protein & Others, Second Exam",2001,2002,Laboratory,None,p
+UR2UCR,"Creatinine, urine (mg/dL)",L16_2_B,"Creatinine & Albumin - Urine, Second Exam",2001,2002,Laboratory,None,p
+UR2UMA,"Albumin, urine (ug/mL)",L16_2_B,"Creatinine & Albumin - Urine, Second Exam",2001,2002,Laboratory,None,p
+URDNT,N-Telopeptides (nmol BCE),L11_B,"C-Reactive protein (CRP), Fibrinogen, Bone Alkaline Phosphatase & Urinary N-telopeptides",2001,2002,Laboratory,None,p
+URXCRS,"Creatinine, urine (umol/L)",ALB_CR_D,Albumin & Creatinine - Urine,2005,2006,Laboratory,None,p
+URXCRS,"Creatinine, urine (umol/L)",ALB_CR_E,Albumin & Creatinine - Urine,2007,2008,Laboratory,None,p
+URXCRS,"Creatinine, urine (umol/L)",ALB_CR_F,Albumin & Creatinine - Urine,2009,2010,Laboratory,None,p
+URXCRS,"Creatinine, urine (umol/L)",ALB_CR_G,Albumin & Creatinine - Urine,2011,2012,Laboratory,None,p
+URXCRS,"Creatinine, urine (umol/L)",ALB_CR_H,Albumin & Creatinine - Urine,2013,2014,Laboratory,None,p
+URXCRS,"Creatinine, urine (umol/L)",ALB_CR_I,Albumin & Creatinine - Urine,2015,2016,Laboratory,None,p
+URXCRS,"Creatinine, urine (umol/L)",ALB_CR_J,Albumin & Creatinine - Urine,2017,2018,Laboratory,None,p
+URXNT,N-telopeptides (NTx) (nmol BCE),LAB11,C-Reactive Protein (CRP),1999,2000,Laboratory,None,p
+URXUCR,"Creatinine, urine (mg/dL)",ALB_CR_D,Albumin & Creatinine - Urine,2005,2006,Laboratory,None,p
+URXUCR,"Creatinine, urine (mg/dL)",ALB_CR_E,Albumin & Creatinine - Urine,2007,2008,Laboratory,None,p
+URXUCR,"Creatinine, urine (mg/dL)",ALB_CR_F,Albumin & Creatinine - Urine,2009,2010,Laboratory,None,p
+URXUCR,"Creatinine, urine (mg/dL)",ALB_CR_G,Albumin & Creatinine - Urine,2011,2012,Laboratory,None,p
+URXUCR,"Creatinine, urine (mg/dL)",ALB_CR_H,Albumin & Creatinine - Urine,2013,2014,Laboratory,None,p
+URXUCR,"Creatinine, urine (mg/dL)",ALB_CR_I,Albumin & Creatinine - Urine,2015,2016,Laboratory,None,p
+URXUCR,"Creatinine, urine (mg/dL)",ALB_CR_J,Albumin & Creatinine - Urine,2017,2018,Laboratory,None,p
+URXUCR,"Creatinine, urine (mg/dL)",L16_B,Albumin & Creatinine - Urine,2001,2002,Laboratory,None,p
+URXUCR,"Creatinine, urine (mg/dL)",LAB16,Albumin & Creatinine - Urine,1999,2000,Laboratory,None,p
+URXUMA,"Albumin, urine (ug/mL)",ALB_CR_D,Albumin & Creatinine - Urine,2005,2006,Laboratory,None,p
+URXUMA,"Albumin, urine (ug/mL)",ALB_CR_E,Albumin & Creatinine - Urine,2007,2008,Laboratory,None,p
+URXUMA,"Albumin, urine (ug/mL)",ALB_CR_F,Albumin & Creatinine - Urine,2009,2010,Laboratory,None,p
+URXUMA,"Albumin, urine (ug/mL)",ALB_CR_G,Albumin & Creatinine - Urine,2011,2012,Laboratory,None,p
+URXUMA,"Albumin, urine (ug/mL)",ALB_CR_H,Albumin & Creatinine - Urine,2013,2014,Laboratory,None,p
+URXUMA,"Albumin, urine (ug/mL)",ALB_CR_I,Albumin & Creatinine - Urine,2015,2016,Laboratory,None,p
+URXUMA,"Albumin, urine (ug/mL)",ALB_CR_J,Albumin & Creatinine - Urine,2017,2018,Laboratory,None,p
+URXUMA,"Albumin, urine (ug/mL)",L16_B,Albumin & Creatinine - Urine,2001,2002,Laboratory,None,p
+URXUMA,"Albumin, urine (ug/mL)",LAB16,Albumin & Creatinine - Urine,1999,2000,Laboratory,None,p
+URXUMS,"Albumin, urine (mg/L)",ALB_CR_D,Albumin & Creatinine - Urine,2005,2006,Laboratory,None,p
+URXUMS,"Albumin, urine (mg/L)",ALB_CR_E,Albumin & Creatinine - Urine,2007,2008,Laboratory,None,p
+URXUMS,"Albumin, urine (mg/L)",ALB_CR_F,Albumin & Creatinine - Urine,2009,2010,Laboratory,None,p
+URXUMS,"Albumin, urine (mg/L)",ALB_CR_G,Albumin & Creatinine - Urine,2011,2012,Laboratory,None,p
+URXUMS,"Albumin, urine (mg/L)",ALB_CR_H,Albumin & Creatinine - Urine,2013,2014,Laboratory,None,p
+URXUMS,"Albumin, urine (mg/L)",ALB_CR_I,Albumin & Creatinine - Urine,2015,2016,Laboratory,None,p
+URXUMS,"Albumin, urine (mg/L)",ALB_CR_J,Albumin & Creatinine - Urine,2017,2018,Laboratory,None,p

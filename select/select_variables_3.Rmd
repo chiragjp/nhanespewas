@@ -1,0 +1,200 @@
+---
+title: "Select Part 3 - inclusion of domains"
+author: "Chirag Patel"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+
+```{r}
+library(tidyverse) 
+library(DBI)
+```
+
+```{r}
+con <- DBI::dbConnect(RSQLite::SQLite(),'../nhanes_122322.sqlite')
+## see domains.Rmd - updated categorization of e and p variables
+
+variable_information <- tbl(con, "variable_names_epcf")
+table_information <- tbl(con, "table_names_epcf") # c - control; e - exposure, f-filter; p - phenotype
+variable_information_joined <- variable_information |> left_join(table_information |> select(Data.File.Name , epcf), by="Data.File.Name")
+
+variables_domains <- read_csv('./variable_domains_ep_2.csv')
+```
+
+
+
+```{r}
+selected_variables_previous <- read_csv('./select_variables_1.csv')
+selected_variables_previous <- selected_variables_previous |> filter(select == 1)
+## new selected ones:
+variable_information_selected <- variables_domains |> filter(Variable.Name %in% selected_variables_previous$Variable.Name)
+```
+
+```{r}
+remove_vars <- c("DXASPNST", "BMDSADCM", "BPXDAR", "BMXSAD1", "BMXSAD2", "BMXSAD3", "BMXSAD4", "HIQ065" , "BPXDI1", "BPXDI2", "BPXDI3", "BPXDI4", "BPXSY1", "BPXSY2", "BPXSY3", "BPXSAR", "LBDSELSI", "LBDSY3", "LBDSY4")
+variable_information_selected <- variable_information_selected |> filter(!(Variable.Name %in% remove_vars))
+variable_information_selected <- variable_information_selected |> filter(!(Variable.Name == 'URXUCR' & epcf == 'e'))
+```
+
+
+```{r}
+#filter out variables that are not in the database
+in_db <- dbListTables(con)
+variable_information_selected <- variable_information_selected |> filter(Data.File.Name %in% in_db)
+```
+
+#  refer to bp_smq_paq_update.Rmd
+- add variables created there in the selected list
+
+```{r}
+updated_bpx_variables <- variable_information_joined |> filter(Variable.Name == "MSYSTOLIC" | Variable.Name == "MDIASTOLIC")
+updated_smq_variables <- variable_information_joined |> filter(Variable.Name == "SMQ_current_ever_never"  | Variable.Name ==  "SMQ_how_long_since_quit_years") 
+pa_names_ad <- c("walk_min_per_day", 
+               "PAQ_walk_days",
+               "PAQ_walk_days_per_week", 
+               "PAQ_walk_met",
+               "PAQ_home_week", 
+               "PAQ_home_met",
+               "PAQ_work_met",
+               "PAQ_strengthening_days",
+               "PAQ_strengthening_week", 
+               "PAQ_strengthening_met" ,
+               "PAQ_sedentary_activity_min_per_day",
+               "PAQ_leisure_met" , 
+               "PAQ_total_met")
+
+pa_names_ej <- c("PAQ_work_vigorous_week",
+                 "PAQ_work_moderate_week",
+                 "PAQ_walk_week",
+                 "PAQ_recreation_vigorous_week",
+                 "PAQ_recreation_moderate_week",
+                 "PAQ_work_vigorous_met" ,
+                 "PAQ_work_moderate_met",
+                 "PAQ_walk_met",
+                 "PAQ_recreation_vigorous_met" ,
+                 "PAQ_recreation_moderate_met",
+                 "PA_sedentary_activity_min_per_day",
+                 "PAQ_total_met")
+updated_paq_variables <- variable_information_joined |> filter(Variable.Name %in% c(pa_names_ad, pa_names_ej))
+
+
+
+updated_variables <- rbind(updated_bpx_variables |> collect() |> mutate(varname=Variable.Name, category='blood pressure', subcategory=NA),
+                           updated_smq_variables |> collect() |> mutate(varname=Variable.Name, category="smoking", subcategory="smoking behavior"), 
+                           updated_paq_variables |> collect() |> mutate(varname=Variable.Name, category='physical activity', subcategory=NA)) 
+
+# remove the SMQ 
+# remove the PA variables
+smq_tables <- variable_information_joined |> filter(Variable.Name == "SMQ_current_ever_never") |> pull(Data.File.Name) |> unique()
+pa_tables <- variable_information_joined |> filter(Variable.Name == 'PAQ_total_met' ) |> pull(Data.File.Name) |> unique()
+variable_information_selected <- variable_information_selected |> filter(!(Data.File.Name %in% smq_tables))
+variable_information_selected <- variable_information_selected |> filter(!(Data.File.Name %in% pa_tables))
+
+variable_information_selected <- variable_information_selected |> select(-series) |> rbind(updated_variables)
+```
+
+
+```{r}
+hpv_variable_names <- c(
+  'LBDHPCR',
+  'LBDRPCR',
+  'ORXHPV',
+  'LBXHP2C',
+  'LBX06', # - HPV 06 result
+  'LBX11', # - HPV 11 result
+  'LBX16', # - HPV 16 result
+  'LBX18' # - HPV 18 result
+)
+hpv_rows <- variable_information_selected |> filter(Variable.Name %in% hpv_variable_names)
+# remove the tables 
+hpv_tables <- variable_information_selected |> filter(Variable.Name %in% hpv_variable_names) %>% pull(Data.File.Name)
+variable_information_selected <- variable_information_selected |> filter(!(Data.File.Name %in% hpv_tables))
+variable_information_selected <- variable_information_selected |> rbind(hpv_rows)
+  
+```
+
+```{r}
+to_remove <- c('LBDSY4', 'LBXBVPH', 'LBXHIV1', 'LBXHIV2', 'LBXHNAT')
+variable_information_selected <- variable_information_selected |> filter(!(Variable.Name %in% to_remove))
+```
+
+# S. Aureus
+# LBXMS1
+```{r}
+saur_table_names <- variable_information_selected |> filter(Variable.Name == 'LBXMS1') |> pull(Data.File.Name) |> unique()
+saur_rows <- variable_information_selected |> filter(Variable.Name == 'LBXMS1')
+variable_information_selected <- variable_information_selected |> filter(!(Data.File.Name %in% saur_table_names))
+variable_information_selected <- variable_information_selected |> rbind(saur_rows)
+
+```
+
+remove SS for now (including special samples)
+```{r}
+variable_information_selected <- variable_information_selected |> filter(!grepl('^SS', Data.File.Name))
+
+
+special_sample_data_tables <- c('PERNTS_G', 'PAHS_G', 'UHMS_G', 'UASS_G', 'AMDGDS_H', 'ALDS_H', 'UTASS_H', 'UASS_H', 'ETHOXS_H', 'FORMAS_H', 'HCAAS_H', 'PERNTS_H', 'PAHS_H', 'VNAS_H', 'UVOCS_H', 'VOCWBS_H', 'UTASS_I', 'UCOTS_I', 'UMS_I', 'PERNTS_I', 'PAHS_I', 'UASS_I', 'UVOCS_I', 'VOCWBS_I') 
+
+variable_information_selected <- variable_information_selected |> filter(!(Data.File.Name %in% special_sample_data_tables))
+```
+
+eliminate creatinine from the exposure tables and remove pairs that use a redundant creatinine variable
+
+```{r}
+has_both <- variable_information_selected |> group_by(Data.File.Name) |> summarise(has_e_p=any(epcf=='p') & any(epcf=='e')) |> filter(has_e_p == T)
+
+for(hb in 1:nrow(has_both)) {
+  variable_information_selected <- variable_information_selected |> 
+    filter(!(Data.File.Name == has_both$Data.File.Name[hb] & Variable.Name == 'URXUCR'))
+}
+
+## variable_information_selected - now select the tables where URXUCR is present at maximum as the p variable of choice
+with_ucr <- variable_information_selected |> filter(Variable.Name == 'URXUCR') |> group_by(Data.File.Name)  ## 
+## 
+
+variable_information_selected <- variable_information_selected |> filter(!(Variable.Name == 'URXUCR' & Data.File.Name == 'L06UIO_B'))
+variable_information_selected <- variable_information_selected |> filter(!(Variable.Name == 'URXUCR' & Data.File.Name == 'L06UIO_C'))
+variable_information_selected <- variable_information_selected |> filter(!(Variable.Name == 'URXUCR' & Data.File.Name == 'UIO_D'))
+variable_information_selected <- variable_information_selected |> filter(!(Variable.Name == 'URXUCR' & Data.File.Name == 'UIO_E'))
+variable_information_selected <- variable_information_selected |> filter(!(Variable.Name == 'URXUCR' & Data.File.Name == 'UIO_F'))
+variable_information_selected <- variable_information_selected |> filter(!(Variable.Name == 'URXUCR' & Data.File.Name == 'UIO_G'))
+variable_information_selected <- variable_information_selected |> filter(!(Variable.Name == 'URXUCR' & Data.File.Name == 'UIO_H')) 
+
+```
+
+```{r}
+## load in the older selected variables to see if there is concordance
+selected_previous_filtered_ep <- rbind(
+  read_csv('./select_expo_variables_2.csv'),
+  read_csv('./select_pheno_variables_2.csv')
+)
+
+setdiff(variable_information_selected$Variable.Name, selected_previous_filtered_ep$Variable.Name)
+```
+
+```{r}
+variable_information_selected |> filter(epcf == 'p') |> arrange(Variable.Name) |> write_csv(file="select_pheno_variables_3.csv")
+variable_information_selected |> filter(epcf == 'e') |> arrange(Variable.Name) |> write_csv(file="select_expo_variables_3.csv")
+```
+
+```{r}
+pheno_3 <- read_csv(file='select_pheno_variables_3.csv') 
+microbiome_pheno <- (read_csv(file='select_ubiome_pheno_variables.csv')) |> mutate(varname = Variable.Name, epcf = 'p', category='microbiome diversity', subcategory=NA)
+pheno_3 |> rbind(microbiome_pheno) |> write_csv(file='select_pheno_variables_3.csv')
+
+
+```
+```{r modify telomean name in the database}
+telo_a <- tbl(con, 'TELO_A') |> collect() |> rename(TeloMean = TELOMEAN, TeloStd = TELOSTD)
+telo_b <- tbl(con, 'TELO_B') |> collect() |> rename(TeloMean = TELOMEAN, TeloStd = TELOSTD)
+dbWriteTable(con, "TELO_A", telo_a, overwrite=TRUE)
+dbWriteTable(con, "TELO_B", telo_b, overwrite=TRUE)
+
+dbDisconnect(con)
+
+```
+
+```{r}
+
+```

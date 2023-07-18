@@ -1,0 +1,1375 @@
+Data.File.Name,Data.File.Description,component,series,epcf
+AA_H,Aromatic Amines - Urine,LABORATORY,H,e
+AAS_H,Aromatic Amines - Urine - Special Sample,LABORATORY,H,e
+ACQ,Acculturation,QUESTIONNAIRE,A,
+ACQ_B,Acculturation,QUESTIONNAIRE,B,
+ACQ_C,Acculturation,QUESTIONNAIRE,C,
+ACQ_D,Acculturation,QUESTIONNAIRE,D,
+ACQ_E,Acculturation,QUESTIONNAIRE,E,
+ACQ_F,Acculturation,QUESTIONNAIRE,F,
+ACQ_G,Acculturation,QUESTIONNAIRE,G,
+ACQ_H,Acculturation,QUESTIONNAIRE,H,
+ACQ_I,Acculturation,QUESTIONNAIRE,I,
+ACQ_J,Acculturation,QUESTIONNAIRE,J,
+AGQ_D,Allergy,QUESTIONNAIRE,D,e
+AL_IGE_D,Allergen Specific IgE(s) & Total IgE - Serum,LABORATORY,D,e
+ALB_CR_D,Albumin & Creatinine - Urine,LABORATORY,D,p
+ALB_CR_E,Albumin & Creatinine - Urine,LABORATORY,E,p
+ALB_CR_F,Albumin & Creatinine - Urine,LABORATORY,F,p
+ALB_CR_G,Albumin & Creatinine - Urine,LABORATORY,G,p
+ALB_CR_H,Albumin & Creatinine - Urine,LABORATORY,H,p
+ALB_CR_I,Albumin & Creatinine - Urine,LABORATORY,I,p
+ALB_CR_J,Albumin & Creatinine - Urine,LABORATORY,J,p
+ALD_H,Aldehydes - Serum,LABORATORY,H,e
+ALDS_H,Aldehydes - Serum - Special Sample,LABORATORY,H,e
+ALDUST_D,Allergens - Household Dust,LABORATORY,D,
+ALQ,Alcohol Use,QUESTIONNAIRE,A,
+ALQ_B,Alcohol Use,QUESTIONNAIRE,B,
+ALQ_C,Alcohol Use,QUESTIONNAIRE,C,
+ALQ_D,Alcohol Use,QUESTIONNAIRE,D,
+ALQ_E,Alcohol Use,QUESTIONNAIRE,E,
+ALQ_F,Alcohol Use,QUESTIONNAIRE,F,
+ALQ_G,Alcohol Use,QUESTIONNAIRE,G,
+ALQ_H,Alcohol Use,QUESTIONNAIRE,H,
+ALQ_I,Alcohol Use,QUESTIONNAIRE,I,
+ALQ_J,Alcohol Use,QUESTIONNAIRE,J,
+ALQY_F,Alcohol Use (Ages 18-19),QUESTIONNAIRE,F,
+AMDGDS_H,Acrylamide & Glycidamide - Special Sample,LABORATORY,H,e
+AMDGYD_D,Acrylamide & Glycidamide,LABORATORY,D,e
+AMDGYD_H,Acrylamide & Glycidamide,LABORATORY,H,e
+AMDGYD_I,Acrylamide & Glycidamide,LABORATORY,I,e
+ApoB_E,Apolipoprotein B,LABORATORY,E,p
+ApoB_F,Apolipoprotein B,LABORATORY,F,p
+ApoB_G,Apolipoprotein B,LABORATORY,G,p
+ApoB_H,Apolipoprotein B,LABORATORY,H,p
+APOB_I,Apolipoprotein B,LABORATORY,I,p
+AQQ_E,Air Quality,QUESTIONNAIRE,E,e
+AQQ_F,Air Quality,QUESTIONNAIRE,F,e
+ARQ_F,Arthritis,QUESTIONNAIRE,F,e
+ARX_F,Arthritis Body Measures,EXAM,F,p
+AUQ,Audiometry,QUESTIONNAIRE,A,
+AUQ_B,Audiometry,QUESTIONNAIRE,B,
+AUQ_C,Audiometry,QUESTIONNAIRE,C,
+AUQ_D,Audiometry,QUESTIONNAIRE,D,
+AUQ_E,Audiometry,QUESTIONNAIRE,E,
+AUQ_F,Audiometry,QUESTIONNAIRE,F,
+AUQ_G,Audiometry,QUESTIONNAIRE,G,
+AUQ_I,Audiometry,QUESTIONNAIRE,I,
+AUQ_J,Audiometry,QUESTIONNAIRE,J,
+AUX_B,Audiometry,EXAM,B,
+AUX_C,Audiometry,EXAM,C,
+AUX_D,Audiometry,EXAM,D,
+AUX_E,Audiometry,EXAM,E,
+AUX_F,Audiometry,EXAM,F,
+AUX_G,Audiometry,EXAM,G,
+AUX_I,Audiometry,EXAM,I,
+AUX_J,Audiometry,EXAM,J,
+AUX1,Audiometry,EXAM,A,
+AUXAR,Audiometry - Acoustic Reflex,EXAM,A,
+AUXAR_B,Audiometry - Acoustic Reflex,EXAM,B,
+AUXAR_C,Audiometry - Acoustic Reflex,EXAM,C,
+AUXAR_D,Audiometry - Acoustic Reflex,EXAM,D,
+AUXAR_E,Audiometry - Acoustic Reflex,EXAM,E,
+AUXAR_F,Audiometry - Acoustic Reflex,EXAM,F,
+AUXAR_G,Audiometry - Acoustic Reflex,EXAM,G,
+AUXAR_I,Audiometry - Acoustic Reflex,EXAM,I,
+AUXAR_J,Audiometry - Acoustic Reflex,EXAM,J,
+AUXTYM,Audiometry - Tympanometry,EXAM,A,
+AUXTYM_B,Audiometry - Tympanometry,EXAM,B,
+AUXTYM_C,Audiometry - Tympanometry,EXAM,C,
+AUXTYM_D,Audiometry - Tympanometry,EXAM,D,
+AUXTYM_E,Audiometry - Tympanometry,EXAM,E,
+AUXTYM_F,Audiometry - Tympanometry,EXAM,F,
+AUXTYM_G,Audiometry - Tympanometry,EXAM,G,
+AUXTYM_I,Audiometry - Tympanometry,EXAM,I,
+AUXTYM_J,Audiometry - Tympanometry,EXAM,J,
+AUXWBR_I,Audiometry – Wideband Reflectance,EXAM,I,
+AUXWBR_J,Audiometry - Wideband Reflectance,EXAM,J,
+B12_D,Vitamin B12,LABORATORY,D,e
+BAQ,Balance,QUESTIONNAIRE,A,
+BAQ_B,Balance,QUESTIONNAIRE,B,
+BAQ_C,Balance,QUESTIONNAIRE,C,
+BAX,Balance,EXAM,A,
+BAX_B,Balance,EXAM,B,
+BAX_C,Balance,EXAM,C,
+BFRPOL_D,Brominated Flame Retardants (BFRs) - Pooled Samples,LABORATORY,D,
+BFRPOL_E,Brominated Flame Retardants (BFRs) - Pooled Samples,LABORATORY,E,
+BFRPOL_F,Brominated Flame Retardants (BFRs) - Pooled Samples,LABORATORY,F,
+BFRPOL_G,Brominated Flame Retardants (BFRs) - Pooled Samples,LABORATORY,G,
+BFRPOL_H,Brominated Flame Retardants (BFRs) - Pooled Samples,LABORATORY,H,
+BFRPOL_I,Brominated Flame Retardants (BFRs) - Pooled Samples,LABORATORY,I,
+BHQ_D,Bowel Health,QUESTIONNAIRE,D,
+BHQ_E,Bowel Health,QUESTIONNAIRE,E,
+BHQ_F,Bowel Health,QUESTIONNAIRE,F,
+BIOPRO_D,Standard Biochemistry Profile,LABORATORY,D,p
+BIOPRO_E,Standard Biochemistry Profile,LABORATORY,E,p
+BIOPRO_F,Standard Biochemistry Profile,LABORATORY,F,p
+BIOPRO_G,Standard Biochemistry Profile,LABORATORY,G,p
+BIOPRO_H,Standard Biochemistry Profile,LABORATORY,H,p
+BIOPRO_I,Standard Biochemistry Profile,LABORATORY,I,p
+BIOPRO_J,Standard Biochemistry Profile,LABORATORY,J,p
+BIX,Bioelectrical Impedance Analysis,EXAM,A,
+BIX_B,Bioelectrical Impedance Analysis,EXAM,B,
+BIX_C,Bioelectrical Impedance Analysis,EXAM,C,
+BMX,Body Measures,EXAM,A,p
+BMX_B,Body Measures,EXAM,B,p
+BMX_C,Body Measures,EXAM,C,p
+BMX_D,Body Measures,EXAM,D,p
+BMX_E,Body Measures,EXAM,E,p
+BMX_F,Body Measures,EXAM,F,p
+BMX_G,Body Measures,EXAM,G,p
+BMX_H,Body Measures,EXAM,H,p
+BMX_I,Body Measures,EXAM,I,p
+BMX_J,Body Measures,EXAM,J,p
+BPQ,Blood Pressure & Cholesterol,QUESTIONNAIRE,A,f
+BPQ_B,Blood Pressure & Cholesterol,QUESTIONNAIRE,B,f
+BPQ_C,Blood Pressure & Cholesterol,QUESTIONNAIRE,C,f
+BPQ_D,Blood Pressure & Cholesterol,QUESTIONNAIRE,D,f
+BPQ_E,Blood Pressure & Cholesterol,QUESTIONNAIRE,E,f
+BPQ_F,Blood Pressure & Cholesterol,QUESTIONNAIRE,F,f
+BPQ_G,Blood Pressure & Cholesterol,QUESTIONNAIRE,G,f
+BPQ_H,Blood Pressure & Cholesterol,QUESTIONNAIRE,H,f
+BPQ_I,Blood Pressure & Cholesterol,QUESTIONNAIRE,I,f
+BPQ_J,Blood Pressure & Cholesterol,QUESTIONNAIRE,J,f
+BPX,Blood Pressure,EXAM,A,p
+BPX_B,Blood Pressure,EXAM,B,p
+BPX_C,Blood Pressure,EXAM,C,p
+BPX_D,Blood Pressure,EXAM,D,p
+BPX_E,Blood Pressure,EXAM,E,p
+BPX_F,Blood Pressure,EXAM,F,p
+BPX_G,Blood Pressure,EXAM,G,p
+BPX_H,Blood Pressure,EXAM,H,p
+BPX_I,Blood Pressure,EXAM,I,p
+BPX_J,Blood Pressure,EXAM,J,p
+BPXO_J,Blood Pressure - Oscillometric Measurements,EXAM,J,
+CAFE_F,Caffeine & Caffeine Metabolites - Urine,LABORATORY,F,e
+CAFE_G,Caffeine & Caffeine Metabolites - Urine,LABORATORY,G,e
+CAFE_H,Caffeine & Caffeine Metabolites - Urine,LABORATORY,H,e
+CARB_D,Pesticides - Carbamates & Organophosphorus Metabolites - Urine,LABORATORY,D,e
+CARB_E,Pesticides - Carbamates & Organophosphorus Metabolites - Urine,LABORATORY,E,e
+CBC_D,Complete Blood Count with 5-Part Differential - Whole Blood,LABORATORY,D,p
+CBC_E,Complete Blood Count with 5-part Differential - Whole Blood,LABORATORY,E,p
+CBC_F,Complete Blood Count with 5-part Differential - Whole Blood,LABORATORY,F,p
+CBC_G,Complete Blood Count with 5-part Differential - Whole Blood,LABORATORY,G,p
+CBC_H,Complete Blood Count with 5-part Differential - Whole Blood,LABORATORY,H,p
+CBC_I,Complete Blood Count with 5-Part Differential - Whole Blood,LABORATORY,I,p
+CBC_J,Complete Blood Count with 5-Part Differential,LABORATORY,J,p
+CBQ_E,Consumer Behavior,QUESTIONNAIRE,E,
+CBQ_F,Consumer Behavior,QUESTIONNAIRE,F,
+CBQ_G,Consumer Behavior,QUESTIONNAIRE,G,
+CBQ_H,Consumer Behavior,QUESTIONNAIRE,H,
+CBQ_I,Consumer Behavior,QUESTIONNAIRE,I,
+CBQ_J,Consumer Behavior,QUESTIONNAIRE,J,
+CBQPFA_E,Consumer Behavior Phone Follow-up Module - Adult,QUESTIONNAIRE,E,
+CBQPFA_F,Consumer Behavior Phone Follow-up Module - Adult,QUESTIONNAIRE,F,
+CBQPFA_J,Consumer Behavior Phone Follow-up Module - Adult,QUESTIONNAIRE,J,
+CBQPFC_E,Consumer Behavior Phone Follow-up Module - Child,QUESTIONNAIRE,E,
+CBQPFC_F,Consumer Behavior Phone Follow-up Module - Child,QUESTIONNAIRE,F,
+CBQPFC_J,Consumer Behavior Phone Follow-up Module - Child,QUESTIONNAIRE,J,
+CDQ,Cardiovascular Health,QUESTIONNAIRE,A,f
+CDQ_B,Cardiovascular Health,QUESTIONNAIRE,B,f
+CDQ_C,Cardiovascular Health,QUESTIONNAIRE,C,f
+CDQ_D,Cardiovascular Health,QUESTIONNAIRE,D,f
+CDQ_E,Cardiovascular Health,QUESTIONNAIRE,E,f
+CDQ_F,Cardiovascular Health,QUESTIONNAIRE,F,f
+CDQ_G,Cardiovascular Health,QUESTIONNAIRE,G,f
+CDQ_H,Cardiovascular Health,QUESTIONNAIRE,H,f
+CDQ_I,Cardiovascular Health,QUESTIONNAIRE,I,f
+CDQ_J,Cardiovascular Health,QUESTIONNAIRE,J,f
+CFQ,Cognitive Functioning,QUESTIONNAIRE,A,
+CFQ_B,Cognitive Functioning,QUESTIONNAIRE,B,
+CFQ_G,Cognitive Functioning,QUESTIONNAIRE,G,
+CFQ_H,Cognitive Functioning,QUESTIONNAIRE,H,
+CHLMDA_D,Chlamydia & Gonorrhea - Urine,LABORATORY,D,e
+CHLMDA_E,Chlamydia & Gonorrhea - Urine,LABORATORY,E,e
+CHLMDA_F,Chlamydia - Urine,LABORATORY,F,e
+CHLMDA_G,Chlamydia - Urine,LABORATORY,G,e
+CHLMDA_H,Chlamydia - Urine,LABORATORY,H,e
+CHLMDA_I,Chlamydia - Urine,LABORATORY,I,e
+CIQDEP_B,Mental Health - Depression,QUESTIONNAIRE,B,
+CIQDEP_C,Mental Health - Depression,QUESTIONNAIRE,C,
+CIQGAD,Mental Health - Generalized Anxiety Disorder,QUESTIONNAIRE,A,
+CIQGAD_B,Mental Health - Generalized Anxiety Disorder,QUESTIONNAIRE,B,
+CIQGAD_C,Mental Health - Generalized Anxiety Disorder,QUESTIONNAIRE,C,
+CIQMDEP,Mental Health - Depression,QUESTIONNAIRE,A,
+CIQPAN_B,Mental Health - Panic Disorder,QUESTIONNAIRE,B,
+CIQPAN_C,Mental Health - Panic Disorder,QUESTIONNAIRE,C,
+CIQPANIC,Mental Health - Panic Disorder,QUESTIONNAIRE,A,
+CKQ_G,Creatine Kinase,QUESTIONNAIRE,G,p
+CKQ_H,Creatine Kinase,QUESTIONNAIRE,H,p
+CMV_G,Cytomegalovirus IgG & IgM Antibodies - Serum,LABORATORY,G,e
+CMV_J,Cytomegalovirus IgG & IgM Antibodies - Serum,LABORATORY,J,e
+COT_D,Cotinine - Serum,LABORATORY,D,e
+COT_H,Cotinine and Hydroxycotinine - Serum,LABORATORY,H,e
+COT_I,Cotinine and Hydroxycotinine - Serum,LABORATORY,I,e
+COT_J,Cotinine and Hydroxycotinine - Serum,LABORATORY,J,e
+COTNAL_E,Cotinine - Serum & Total NNAL - Urine,LABORATORY,E,e
+COTNAL_F,Cotinine - Serum & Total NNAL - Urine,LABORATORY,F,e
+COTNAL_G,Cotinine - Serum & Total NNAL - Urine,LABORATORY,G,e
+CRCO_I,Chromium & Cobalt,LABORATORY,I,e
+CRCO_J,Chromium & Cobalt,LABORATORY,J,e
+CRP_D,C-Reactive Protein (CRP),LABORATORY,D,p
+CRP_E,C-Reactive Protein (CRP),LABORATORY,E,p
+CRP_F,C-Reactive Protein (CRP),LABORATORY,F,p
+CSQ_G,Taste & Smell,QUESTIONNAIRE,G,
+CSQ_H,Taste & Smell,QUESTIONNAIRE,H,
+CSX_H,Taste & Smell,EXAM,H,
+CUSEZN_G,"Copper, Selenium & Zinc - Serum",LABORATORY,G,
+CUSEZN_H,"Copper, Selenium & Zinc - Serum",LABORATORY,H,
+CUSEZN_I,"Copper, Selenium & Zinc - Serum",LABORATORY,I,
+CVX,Cardiovascular Fitness,EXAM,A,p
+CVX_B,Cardiovascular Fitness,EXAM,B,p
+CVX_C,Cardiovascular Fitness,EXAM,C,p
+DBQ,Diet Behavior & Nutrition,QUESTIONNAIRE,A,f
+DBQ_B,Diet Behavior & Nutrition,QUESTIONNAIRE,B,f
+DBQ_C,Diet Behavior & Nutrition,QUESTIONNAIRE,C,f
+DBQ_D,Diet Behavior & Nutrition,QUESTIONNAIRE,D,f
+DBQ_E,Diet Behavior & Nutrition,QUESTIONNAIRE,E,f
+DBQ_F,Diet Behavior & Nutrition,QUESTIONNAIRE,F,f
+DBQ_G,Diet Behavior & Nutrition,QUESTIONNAIRE,G,f
+DBQ_H,Diet Behavior & Nutrition,QUESTIONNAIRE,H,f
+DBQ_I,Diet Behavior & Nutrition,QUESTIONNAIRE,I,f
+DBQ_J,Diet Behavior & Nutrition,QUESTIONNAIRE,J,f
+DEET_E,DEET and Metabolites,LABORATORY,E,e
+DEET_F,DEET and Metabolites,LABORATORY,F,e
+DEET_G,DEET and Metabolites,LABORATORY,G,e
+DEET_H,DEET and Metabolites,LABORATORY,H,e
+DEET_I,DEET Metabolite - Urine,LABORATORY,I,e
+DEMO,Demographic Variables & Sample Weights,DEMO,A,c
+DEMO_B,Demographic Variables & Sample Weights,DEMO,B,c
+DEMO_C,Demographic Variables & Sample Weights,DEMO,C,c
+DEMO_D,Demographic Variables & Sample Weights,DEMO,D,c
+DEMO_E,Demographic Variables & Sample Weights,DEMO,E,c
+DEMO_F,Demographic Variables & Sample Weights,DEMO,F,c
+DEMO_G,Demographic Variables & Sample Weights,DEMO,G,c
+DEMO_H,Demographic Variables and Sample Weights,DEMO,H,c
+DEMO_I,Demographic Variables and Sample Weights,DEMO,I,c
+DEMO_J,Demographic Variables and Sample Weights,DEMO,J,c
+DEQ,Dermatology,QUESTIONNAIRE,A,
+DEQ_B,Dermatology,QUESTIONNAIRE,B,
+DEQ_C,Dermatology,QUESTIONNAIRE,C,
+DEQ_D,Dermatology,QUESTIONNAIRE,D,
+DEQ_F,Dermatology,QUESTIONNAIRE,F,
+DEQ_G,Dermatology,QUESTIONNAIRE,G,
+DEQ_H,Dermatology,QUESTIONNAIRE,H,
+DEQ_I,Dermatology,QUESTIONNAIRE,I,
+DEQ_J,Dermatology,QUESTIONNAIRE,J,
+DEX_C,Dermatology,EXAM,C,
+DIQ,Diabetes,QUESTIONNAIRE,A,f
+DIQ_B,Diabetes,QUESTIONNAIRE,B,f
+DIQ_C,Diabetes,QUESTIONNAIRE,C,f
+DIQ_D,Diabetes,QUESTIONNAIRE,D,f
+DIQ_E,Diabetes,QUESTIONNAIRE,E,f
+DIQ_F,Diabetes,QUESTIONNAIRE,F,f
+DIQ_G,Diabetes,QUESTIONNAIRE,G,f
+DIQ_H,Diabetes,QUESTIONNAIRE,H,f
+DIQ_I,Diabetes,QUESTIONNAIRE,I,f
+DIQ_J,Diabetes,QUESTIONNAIRE,J,f
+DLQ_H,Disability,QUESTIONNAIRE,H,
+DLQ_I,Disability,QUESTIONNAIRE,I,
+DLQ_J,Disability,QUESTIONNAIRE,J,
+DOXPOL_D,"Polychlorinated dibenzo-p-dioxins (PCDDs), Dibenzofurans (PCDFs) & Coplanar Polychlorinated Biphenyl",LABORATORY,D,
+DOXPOL_E,"Polychlorinated dibenzo-p-dioxins (PCDDs), Dibenzofurans (PCDFs) & Coplanar Polychlorinated Biphenyl",LABORATORY,E,
+DOXPOL_F,"Polychlorinated dibenzo-p-dioxins (PCDDs), Dibenzofurans (PCDFs) & Coplanar Polychlorinated Biphenyl",LABORATORY,F,
+DPQ_D,Mental Health - Depression Screener,QUESTIONNAIRE,D,
+DPQ_E,Mental Health - Depression Screener,QUESTIONNAIRE,E,
+DPQ_F,Mental Health - Depression Screener,QUESTIONNAIRE,F,
+DPQ_G,Mental Health - Depression Screener,QUESTIONNAIRE,G,
+DPQ_H,Mental Health - Depression Screener,QUESTIONNAIRE,H,
+DPQ_I,Mental Health - Depression Screener,QUESTIONNAIRE,I,
+DPQ_J,Mental Health - Depression Screener,QUESTIONNAIRE,J,
+DR1IFF_C,"Dietary Interview - Individual Foods, First Day",DIET,C,
+DR1IFF_D,"Dietary Interview - Individual Foods, First Day",DIET,D,
+DR1IFF_E,"Dietary Interview - Individual Foods, First Day",DIET,E,
+DR1IFF_F,"Dietary Interview - Individual Foods, First Day",DIET,F,
+DR1IFF_G,"Dietary Interview - Individual Foods, First Day",DIET,G,
+DR1IFF_H,"Dietary Interview - Individual Foods, First Day",DIET,H,
+DR1IFF_I,"Dietary Interview - Individual Foods, First Day",DIET,I,
+DR1IFF_J,"Dietary Interview - Individual Foods, First Day",DIET,J,
+DR1TOT_C,"Dietary Interview - Total Nutrient Intakes, First Day",DIET,C,e
+DR1TOT_D,"Dietary Interview - Total Nutrient Intakes, First Day",DIET,D,e
+DR1TOT_E,"Dietary Interview - Total Nutrient Intakes, First Day",DIET,E,e
+DR1TOT_F,"Dietary Interview - Total Nutrient Intakes, First Day",DIET,F,e
+DR1TOT_G,"Dietary Interview - Total Nutrient Intakes, First Day",DIET,G,e
+DR1TOT_H,"Dietary Interview - Total Nutrient Intakes, First Day",DIET,H,e
+DR1TOT_I,"Dietary Interview - Total Nutrient Intakes, First Day",DIET,I,e
+DR1TOT_J,"Dietary Interview - Total Nutrient Intakes, First Day",DIET,J,e
+DR2IFF_C,"Dietary Interview - Individual Foods, Second Day",DIET,C,
+DR2IFF_D,"Dietary Interview - Individual Foods, Second Day",DIET,D,
+DR2IFF_E,"Dietary Interview - Individual Foods, Second Day",DIET,E,
+DR2IFF_F,"Dietary Interview - Individual Foods, Second Day",DIET,F,
+DR2IFF_G,"Dietary Interview - Individual Foods, Second Day",DIET,G,
+DR2IFF_H,"Dietary Interview - Individual Foods, Second Day",DIET,H,
+DR2IFF_I,"Dietary Interview - Individual Foods, Second Day",DIET,I,
+DR2IFF_J,"Dietary Interview - Individual Foods, Second Day",DIET,J,
+DR2TOT_C,"Dietary Interview - Total Nutrient Intakes, Second Day",DIET,C,e
+DR2TOT_D,"Dietary Interview - Total Nutrient Intakes, Second Day",DIET,D,e
+DR2TOT_E,"Dietary Interview - Total Nutrient Intakes, Second Day",DIET,E,e
+DR2TOT_F,"Dietary Interview - Total Nutrient Intakes, Second Day",DIET,F,e
+DR2TOT_G,"Dietary Interview - Total Nutrient Intakes, Second Day",DIET,G,e
+DR2TOT_H,"Dietary Interview - Total Nutrient Intakes, Second Day",DIET,H,e
+DR2TOT_I,"Dietary Interview - Total Nutrient Intakes, Second Day",DIET,I,e
+DR2TOT_J,"Dietary Interview - Total Nutrient Intakes, Second Day",DIET,J,e
+DRXFCD_C,Dietary Interview Technical Support File - Food Codes,DIET,C,
+DRXFCD_D,Dietary Interview Technical Support File - Food Codes,DIET,D,
+DRXFCD_E,Dietary Interview Technical Support File - Food Codes,DIET,E,
+DRXFCD_F,Dietary Interview Technical Support File - Food Codes,DIET,F,
+DRXFCD_G,Dietary Interview Technical Support File - Food Codes,DIET,G,
+DRXFCD_H,Dietary Interview Technical Support File - Food Codes,DIET,H,
+DRXIFF,Dietary Interview - Individual Foods,DIET,A,
+DRXIFF_B,Dietary Interview - Individual Foods,DIET,B,
+DRXMCD_C,Dietary Interview Technical Support File - Modification Codes,DIET,C,
+DRXMCD_D,Dietary Interview Technical Support File - Modification Codes,DIET,D,
+DRXMCD_E,Dietary Interview Technical Support File - Modification Codes,DIET,E,
+DRXMCD_F,Dietary Interview Technical Support File - Modification Codes,DIET,F,
+DRXMCD_G,Dietary Interview Technical Support File - Modification Codes,DIET,G,
+DRXTOT,Dietary Interview - Total Nutrient Intakes,DIET,A,e
+DRXTOT_B,Dietary Interview - Total Nutrient Intakes,DIET,B,e
+DS1IDS_E,"Dietary Supplement Use 24-Hour - Individual Dietary Supplements, First Day",DIET,E,
+DS1IDS_F,"Dietary Supplement Use 24-Hour - Individual Dietary Supplements, First Day",DIET,F,
+DS1IDS_G,"Dietary Supplement Use 24-Hour - Individual Dietary Supplements, First Day",DIET,G,
+DS1IDS_H,"Dietary Supplement Use 24-Hour - Individual Dietary Supplements, First Day",DIET,H,
+DS1IDS_I,"Dietary Supplement Use 24-Hour - Individual Dietary Supplements, First Day",DIET,I,
+DS1IDS_J,"Dietary Supplement Use 24-Hour - Individual Dietary Supplements, First Day",DIET,J,
+DS1TOT_E,"Dietary Supplement Use 24-Hour - Total Dietary Supplements, First Day",DIET,E,e
+DS1TOT_F,"Dietary Supplement Use 24-Hour - Total Dietary Supplements, First Day",DIET,F,e
+DS1TOT_G,"Dietary Supplement Use 24-Hour - Total Dietary Supplements, First Day",DIET,G,e
+DS1TOT_H,"Dietary Supplement Use 24-Hour - Total Dietary Supplements, First Day",DIET,H,e
+DS1TOT_I,"Dietary Supplement Use 24-Hour - Total Dietary Supplements, First Day",DIET,I,e
+DS1TOT_J,"Dietary Supplement Use 24-Hour - Total Dietary Supplements, First Day",DIET,J,e
+DS2IDS_E,"Dietary Supplement Use 24-Hour - Individual Dietary Supplements, Second Day",DIET,E,
+DS2IDS_F,"Dietary Supplement Use 24-Hour - Individual Dietary Supplements, Second Day",DIET,F,
+DS2IDS_G,"Dietary Supplement Use 24-Hour - Individual Dietary Supplements, Second Day",DIET,G,
+DS2IDS_H,"Dietary Supplement Use 24-Hour - Individual Dietary Supplements, Second Day",DIET,H,
+DS2IDS_I,"Dietary Supplement Use 24-Hour - Individual Dietary Supplements, Second Day",DIET,I,
+DS2IDS_J,"Dietary Supplement Use 24-Hour - Individual Dietary Supplements, Second Day",DIET,J,
+DS2TOT_E,"Dietary Supplement Use 24-Hour - Total Dietary Supplements, Second Day",DIET,E,e
+DS2TOT_F,"Dietary Supplement Use 24-Hour - Total Dietary Supplements, Second Day",DIET,F,e
+DS2TOT_G,"Dietary Supplement Use 24-Hour - Total Dietary Supplements, Second Day",DIET,G,e
+DS2TOT_H,"Dietary Supplement Use 24-Hour - Total Dietary Supplements, Second Day",DIET,H,e
+DS2TOT_I,"Dietary Supplement Use 24-Hour - Total Dietary Supplements, Second Day",DIET,I,e
+DS2TOT_J,"Dietary Supplement Use 24-Hour - Total Dietary Supplements, Second Day",DIET,J,e
+DSQ1_B,"Dietary Supplement Use 30-Day - File 1, Supplement Counts",DIET,B,
+DSQ1_C,"Dietary Supplement Use 30-Day - File 1, Supplement Counts",DIET,C,
+DSQ1_D,"Dietary Supplement Use 30-Day - File 1, Supplement Counts",DIET,D,
+DSQ2_B,"Dietary Supplement Use 30-Day - File 2, Participant's Use of Supplements",DIET,B,
+DSQ2_C,"Dietary Supplement Use 30-Day - File 2, Participant's Use of Supplements",DIET,C,
+DSQ2_D,"Dietary Supplement Use 30-Day - File 2, Participant's Use of Supplements",DIET,D,
+DSQFILE1,"Dietary Supplement Use 30-Day - File 1, Supplement Counts",DIET,A,
+DSQFILE2,"Dietary Supplement Use 30-Day - File 2, Participant's Use of Supplements",DIET,A,
+DSQIDS_E,Dietary Supplement Use 30 Day - Individual Dietary Supplements,DIET,E,
+DSQIDS_F,Dietary Supplement Use 30 Day - Individual Dietary Supplements,DIET,F,
+DSQIDS_G,Dietary Supplement Use 30 Day - Individual Dietary Supplements,DIET,G,
+DSQIDS_H,Dietary Supplement Use 30-Day - Individual Dietary Supplements,DIET,H,
+DSQIDS_I,Dietary Supplement Use 30-Day - Individual Dietary Supplements,DIET,I,
+DSQIDS_J,Dietary Supplement Use 30-Day - Individual Dietary Supplements,DIET,J,
+DSQTOT_E,Dietary Supplement Use 30-Day - Total Dietary Supplements,DIET,E,e
+DSQTOT_F,Dietary Supplement Use 30-Day - Total Dietary Supplements,DIET,F,e
+DSQTOT_G,Dietary Supplement Use 30-Day - Total Dietary Supplements,DIET,G,e
+DSQTOT_H,Dietary Supplement Use 30-Day - Total Dietary Supplements,DIET,H,e
+DSQTOT_I,Dietary Supplement Use 30-Day - Total Dietary Supplements,DIET,I,e
+DSQTOT_J,Dietary Supplement Use 30-Day - Total Dietary Supplements,DIET,J,e
+DTQ_F,Dietary Screener Questionnaire,DIET,F,
+DUQ,Drug Use,QUESTIONNAIRE,A,
+DUQ_B,Drug Use,QUESTIONNAIRE,B,
+DUQ_C,Drug Use,QUESTIONNAIRE,C,
+DUQ_D,Drug Use,QUESTIONNAIRE,D,
+DUQ_E,Drug Use,QUESTIONNAIRE,E,
+DUQ_F,Drug Use,QUESTIONNAIRE,F,
+DUQ_G,Drug Use,QUESTIONNAIRE,G,
+DUQ_H,Drug Use,QUESTIONNAIRE,H,
+DUQ_I,Drug Use,QUESTIONNAIRE,I,
+DUQ_J,Drug Use,QUESTIONNAIRE,J,
+DXX_2_B,"Dual-Energy X-ray Absorptiometry - Whole Body, Second Exam",EXAM,B,
+DXX_G,Dual-Energy X-ray Absorptiometry - Whole Body,EXAM,G,p
+DXX_H,Dual-Energy X-ray Absorptiometry - Whole Body,EXAM,H,p
+DXX_I,Dual-Energy X-ray Absorptiometry - Whole Body,EXAM,I,p
+DXX_J,Dual-Energy X-ray Absorptiometry - Whole Body,EXAM,J,p
+DXXAAC_H,Dual-Energy X-ray Absorptiometry - Abdominal Aortic Calcification,EXAM,H,p
+DXXAG_C,Dual Energy X-ray Absorptiometry - Android/Gynoid,EXAM,C,p
+DXXAG_D,Dual Energy X-ray Absorptiometry - Android/Gynoid,EXAM,D,p
+DXXAG_G,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,EXAM,G,p
+DXXAG_H,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,EXAM,H,p
+DXXAG_I,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,EXAM,I,p
+DXXAG_J,Dual-Energy X-ray Absorptiometry - Android/Gynoid Measurements,EXAM,J,p
+DXXFEM_D,Dual Energy X-ray Absorptiometry - Femur,EXAM,D,p
+DXXFEM_E,Dual Energy X-ray Absorptiometry - Femur,EXAM,E,p
+DXXFEM_F,Dual Energy X-ray Absorptiometry - Femur,EXAM,F,p
+DXXFEM_H,Dual-Energy X-ray Absorptiometry - Femur,EXAM,H,p
+DXXFEM_J,Dual-Energy X-ray Absorptiometry - Femur,EXAM,J,p
+DXXFRX_H,Dual-Energy X-ray Absorptiometry - FRAX Score,EXAM,H,p
+DXXL1_H,Dual-Energy X-ray Absorptiometry - L1 Vertebrae Morphology,EXAM,H,p
+DXXL2_H,Dual-Energy X-ray Absorptiometry - L2 Vertebrae Morphology,EXAM,H,p
+DXXL3_H,Dual-Energy X-ray Absorptiometry - L3 Vertebrae Morphology,EXAM,H,p
+DXXL4_H,Dual-Energy X-ray Absorptiometry - L4 Vertebrae Morphology,EXAM,H,p
+DXXSPN_D,Dual Energy X-ray Absorptiometry - Spine,EXAM,D,p
+DXXSPN_E,Dual Energy X-ray Absorptiometry - Spine,EXAM,E,p
+DXXSPN_F,Dual Energy X-ray Absorptiometry - Spine,EXAM,F,p
+DXXSPN_H,Dual-Energy X-ray Absorptiometry - Spine,EXAM,H,p
+DXXSPN_J,Dual-Energy X-ray Absorptiometry - Spine,EXAM,J,p
+DXXT10_H,Dual-Energy X-ray Absorptiometry - T10 Vertebrae Morphology,EXAM,H,p
+DXXT11_H,Dual-Energy X-ray Absorptiometry - T11 Vertebrae Morphology,EXAM,H,p
+DXXT12_H,Dual-Energy X-ray Absorptiometry - T12 Vertebrae Morphology,EXAM,H,p
+DXXT4_H,Dual-Energy X-ray Absorptiometry - T4 Vertebrae Morphology,EXAM,H,p
+DXXT5_H,Dual-Energy X-ray Absorptiometry - T5 Vertebrae Morphology,EXAM,H,p
+DXXT6_H,Dual-Energy X-ray Absorptiometry - T6 Vertebrae Morphology,EXAM,H,p
+DXXT7_H,Dual-Energy X-ray Absorptiometry - T7 Vertebrae Morphology,EXAM,H,p
+DXXT8_H,Dual-Energy X-ray Absorptiometry - T8 Vertebrae Morphology,EXAM,H,p
+DXXT9_H,Dual-Energy X-ray Absorptiometry - T9 Vertebrae Morphology,EXAM,H,p
+DXXVFA_H,Dual-Energy X-ray Absorptiometry - Vertebral Fracture Assessment,EXAM,H,p
+ECQ,Early Childhood,QUESTIONNAIRE,A,
+ECQ_B,Early Childhood,QUESTIONNAIRE,B,
+ECQ_C,Early Childhood,QUESTIONNAIRE,C,
+ECQ_D,Early Childhood,QUESTIONNAIRE,D,
+ECQ_E,Early Childhood,QUESTIONNAIRE,E,
+ECQ_F,Early Childhood,QUESTIONNAIRE,F,
+ECQ_G,Early Childhood,QUESTIONNAIRE,G,
+ECQ_H,Early Childhood,QUESTIONNAIRE,H,
+ECQ_I,Early Childhood,QUESTIONNAIRE,I,
+ECQ_J,Early Childhood,QUESTIONNAIRE,J,
+ENX_E,Exhaled Nitric Oxide,EXAM,E,p
+ENX_F,Exhaled Nitric Oxide,EXAM,F,p
+ENX_G,Exhaled Nitric Oxide,EXAM,G,p
+EPH_D,Environmental Phenols & Parabens,LABORATORY,D,e
+EPH_E,Environmental Phenols,LABORATORY,E,e
+EPH_F,Environmental Phenols,LABORATORY,F,e
+EPH_G,Environmental Phenols & Parabens,LABORATORY,G,e
+EPHPP_H,Personal Care and Consumer Product Chemicals and Metabolites,LABORATORY,H,e
+EPHPP_I,Personal Care and Consumer Product Chemicals and Metabolites,LABORATORY,I,e
+EPP_D,Erythrocyte Protoporphyrin,LABORATORY,D,p
+ETHOX_H,Ethylene Oxide,LABORATORY,H,e
+ETHOX_I,Ethylene Oxide,LABORATORY,I,e
+ETHOXS_H,Ethylene Oxide - Special Sample,LABORATORY,H,
+FAS_G,Fatty Acids - Serum,LABORATORY,G,p
+FASTQX_D,Fasting Questionnaire,LABORATORY,D,f
+FASTQX_E,Fasting Questionnaire,LABORATORY,E,f
+FASTQX_F,Fasting Questionnaire,LABORATORY,F,f
+FASTQX_G,Fasting Questionnaire,LABORATORY,G,f
+FASTQX_H,Fasting Questionnaire,LABORATORY,H,f
+FASTQX_I,Fasting Questionnaire,LABORATORY,I,f
+FASTQX_J,Fasting Questionnaire,LABORATORY,J,f
+FERTIN_D,Ferritin,LABORATORY,D,p
+FERTIN_E,Ferritin,LABORATORY,E,p
+FERTIN_F,Ferritin,LABORATORY,F,p
+FERTIN_I,Ferritin,LABORATORY,I,p
+FERTIN_J,Ferritin,LABORATORY,J,p
+FETIB_D,"Iron, Total Iron Binding Capacity (TIBC), & Transferrin Saturation",LABORATORY,D,p
+FETIB_J,Iron Status - Serum,LABORATORY,J,p
+FFQDC_C,Food Frequency Questionnaire - Output from DietCalc Software,DIET,C,
+FFQDC_D,Food Frequency Questionnaire - Output from DietCalc Software,DIET,D,
+FFQRAW_C,Food Frequency Questionnaire - Raw Questionnaire Responses,DIET,C,
+FFQRAW_D,Food Frequency Questionnaire - Raw Questionnaire Responses,DIET,D,
+FLDEP_H,Fluoride - Plasma,LABORATORY,H,e
+FLDEP_I,Fluoride - Plasma,LABORATORY,I,e
+FLDEW_H,Fluoride - Water,LABORATORY,H,e
+FLDEW_I,Fluoride - Water,LABORATORY,I,e
+FLXCLN_F,Fluorosis - Clinical,EXAM,F,
+FLXCLN_G,Fluorosis - Clinical,EXAM,G,
+FLXCLN_H,Fluorosis - Clinical,EXAM,H,
+FLXCLN_I,Fluorosis - Clinical,EXAM,I,
+FOLATE_D,Folate - RBC & Serum,LABORATORY,D,p
+FOLATE_E,Folate - RBC & Serum,LABORATORY,E,p
+FOLATE_F,Folate - RBC & Serum,LABORATORY,F,p
+FOLATE_G,Folate - RBC,LABORATORY,G,p
+FOLATE_H,Folate - RBC,LABORATORY,H,p
+FOLATE_I,Folate - RBC,LABORATORY,I,p
+FOLATE_J,Folate - RBC,LABORATORY,J,p
+FOLFMS_E,Folate Forms - Individual - Serum,LABORATORY,E,p
+FOLFMS_G,Folate Forms - Total & Individual - Serum,LABORATORY,G,p
+FOLFMS_H,Folate Forms - Total & Individual - Serum,LABORATORY,H,p
+FOLFMS_I,Folate Forms - Total & Individual - Serum,LABORATORY,I,p
+FOLFMS_J,Folate Forms - Total & Individual - Serum,LABORATORY,J,p
+FORMAL_H,Formaldehyde,LABORATORY,H,e
+FORMAL_I,Formaldehyde,LABORATORY,I,e
+FORMAS_H,Formaldehyde - Special Sample,LABORATORY,H,
+FR_J,Flame Retardants - Urine,LABORATORY,J,e
+FSQ,Food Security,QUESTIONNAIRE,A,
+FSQ_B,Food Security,QUESTIONNAIRE,B,
+FSQ_C,Food Security,QUESTIONNAIRE,C,
+FSQ_D,Food Security,QUESTIONNAIRE,D,
+FSQ_E,Food Security,QUESTIONNAIRE,E,
+FSQ_F,Food Security,QUESTIONNAIRE,F,
+FSQ_G,Food Security,QUESTIONNAIRE,G,
+FSQ_H,Food Security,QUESTIONNAIRE,H,
+FSQ_I,Food Security,QUESTIONNAIRE,I,
+FSQ_J,Food Security,QUESTIONNAIRE,J,
+GHB_D,Glycohemoglobin,LABORATORY,D,p
+GHB_E,Glycohemoglobin,LABORATORY,E,p
+GHB_F,Glycohemoglobin,LABORATORY,F,p
+GHB_G,Glycohemoglobin,LABORATORY,G,p
+GHB_H,Glycohemoglobin,LABORATORY,H,p
+GHB_I,Glycohemoglobin,LABORATORY,I,p
+GHB_J,Glycohemoglobin,LABORATORY,J,p
+GLU_D,Plasma Fasting Glucose & Insulin,LABORATORY,D,p
+GLU_E,Plasma Fasting Glucose & Insulin,LABORATORY,E,p
+GLU_F,Plasma Fasting Glucose & Insulin,LABORATORY,F,p
+GLU_G,Plasma Fasting Glucose & Insulin,LABORATORY,G,p
+GLU_H,Plasma Fasting Glucose,LABORATORY,H,p
+GLU_I,Plasma Fasting Glucose,LABORATORY,I,p
+GLU_J,Plasma Fasting Glucose,LABORATORY,J,p
+HCAA_H,Heterocyclic Aromatic Amines - Urine,LABORATORY,H,e
+HCAAS_H,Heterocyclic Aromatic Amines (HCAA) - Urine - Special Sample,LABORATORY,H,
+HCQ_B,Hepatitis C Follow Up,QUESTIONNAIRE,B,
+HCQ_C,Hepatitis C Follow Up,QUESTIONNAIRE,C,
+HCQ_D,Hepatitis C Follow Up,QUESTIONNAIRE,D,
+HCQ_E,Hepatitis C Follow Up,QUESTIONNAIRE,E,
+HCQ_F,Hepatitis C Follow Up,QUESTIONNAIRE,F,
+HCQ_G,Hepatitis C Follow Up,QUESTIONNAIRE,G,
+HCY_D,Homocysteine,LABORATORY,D,p
+HDL_D,Cholesterol - HDL,LABORATORY,D,p
+HDL_E,Cholesterol - HDL,LABORATORY,E,p
+HDL_F,Cholesterol - HDL,LABORATORY,F,p
+HDL_G,Cholesterol - HDL,LABORATORY,G,p
+HDL_H,Cholesterol - HDL,LABORATORY,H,p
+HDL_I,Cholesterol - High-Density Lipoprotein (HDL),LABORATORY,I,p
+HDL_J,Cholesterol - High - Density Lipoprotein (HDL),LABORATORY,J,p
+HEPA_D,Hepatitis A Antibody,LABORATORY,D,e
+HEPA_E,Hepatitis A Antibody,LABORATORY,E,e
+HEPA_F,Hepatitis A Antibody,LABORATORY,F,e
+HEPA_G,Hepatitis A Antibody,LABORATORY,G,e
+HEPA_H,Hepatitis A,LABORATORY,H,e
+HEPA_I,Hepatitis A,LABORATORY,I,e
+HEPA_J,Hepatitis A,LABORATORY,J,e
+HEPB_S_D,Hepatitis B Surface Antibody,LABORATORY,D,e
+HEPB_S_E,Hepatitis B Surface Antibody,LABORATORY,E,e
+HEPB_S_F,Hepatitis B Surface Antibody,LABORATORY,F,e
+HEPB_S_G,Hepatitis B Surface Antibody,LABORATORY,G,e
+HEPB_S_H,Hepatitis B: Surface Antibody,LABORATORY,H,e
+HEPB_S_I,Hepatitis B: Surface Antibody,LABORATORY,I,e
+HEPB_S_J,Hepatitis B: Surface Antibody,LABORATORY,J,e
+HEPBD_D,"Hepatitis B: Core Antibody, Surface Antigen; Hepatitis D Antibody",LABORATORY,D,e
+HEPBD_E,"Hepatitis B: Core Antibody, Surface Antigen; Hepatitis D Antibody",LABORATORY,E,e
+HEPBD_F,"Hepatitis B: Core Antibody, Surface Antigen; Hepatitis D Antibody",LABORATORY,F,e
+HEPBD_G,"Hepatitis B: Core Antibody, Surface Antigen; Hepatitis D Antibody",LABORATORY,G,e
+HEPBD_H,"Hepatitis B: core antibody, surface antigen, and Hepatitis D antibody",LABORATORY,H,e
+HEPBD_I,"Hepatitis B: Core antibody, Surface antigen, and Hepatitis D antibody",LABORATORY,I,e
+HEPBD_J,"Hepatitis B: Core antibody, Surface antigen, and Hepatitis D antibody",LABORATORY,J,e
+HEPC_D,"Hepatitis C: Confirmed Antibody, RNA (HCV-RNA), & Genotype",LABORATORY,D,e
+HEPC_E,"Hepatitis C: Confirmed Antibody, RNA (HCV-RNA), & Genotype",LABORATORY,E,e
+HEPC_F,"Hepatitis C: Confirmed Antibody, RNA (HCV-RNA), & Genotype",LABORATORY,F,e
+HEPC_G,"Hepatitis C: Confirmed Antibody, RNA (HCV-RNA), & Genotype",LABORATORY,G,e
+HEPC_H,Hepatitis C: RNA (HCV-RNA) and Hepatitis C Genotype,LABORATORY,H,e
+HEPC_I,Hepatitis C: RNA (HCV-RNA) and Hepatitis C Genotype,LABORATORY,I,e
+HEPC_J,"Hepatitis C: RNA (HCV-RNA), Confirmed Antibody (INNO-LIA), & Genotype",LABORATORY,J,e
+HEPE_F,Hepatitis E : IgG & IgM Antibodies,LABORATORY,F,e
+HEPE_G,Hepatitis E : IgG & IgM Antibodies,LABORATORY,G,e
+HEPE_H,Hepatitis E: IgG & IgM Antibodies,LABORATORY,H,e
+HEPE_I,Hepatitis E: IgG & IgM Antibodies,LABORATORY,I,e
+HEPE_J,Hepatitis E: IgG & IgM Antibodies,LABORATORY,J,e
+HEQ_H,Hepatitis,QUESTIONNAIRE,H,
+HEQ_I,Hepatitis,QUESTIONNAIRE,I,
+HEQ_J,Hepatitis,QUESTIONNAIRE,J,
+HIQ,Health Insurance,QUESTIONNAIRE,A,f
+HIQ_B,Health Insurance,QUESTIONNAIRE,B,f
+HIQ_C,Health Insurance,QUESTIONNAIRE,C,f
+HIQ_D,Health Insurance,QUESTIONNAIRE,D,f
+HIQ_E,Health Insurance,QUESTIONNAIRE,E,f
+HIQ_F,Health Insurance,QUESTIONNAIRE,F,f
+HIQ_G,Health Insurance,QUESTIONNAIRE,G,f
+HIQ_H,Health Insurance,QUESTIONNAIRE,H,f
+HIQ_I,Health Insurance,QUESTIONNAIRE,I,f
+HIQ_J,Health Insurance,QUESTIONNAIRE,J,f
+HIV_D,"HIV Antibody Test, CD4+ T Lymphocytes & CD8+ T Cells",LABORATORY,D,e
+HIV_E,HIV Antibody Test,LABORATORY,E,e
+HIV_F,HIV Antibody Test,LABORATORY,F,e
+HIV_G,HIV Antibody Test,LABORATORY,G,e
+HIV_H,HIV Antibody Test,LABORATORY,H,e
+HIV_I,HIV Antibody Test,LABORATORY,I,e
+HIV_J,HIV Antibody Test,LABORATORY,J,e
+HOQ,Housing Characteristics,QUESTIONNAIRE,A,e
+HOQ_B,Housing Characteristics,QUESTIONNAIRE,B,e
+HOQ_C,Housing Characteristics,QUESTIONNAIRE,C,e
+HOQ_D,Housing Characteristics,QUESTIONNAIRE,D,e
+HOQ_E,Housing Characteristics,QUESTIONNAIRE,E,e
+HOQ_F,Housing Characteristics,QUESTIONNAIRE,F,e
+HOQ_G,Housing Characteristics,QUESTIONNAIRE,G,e
+HOQ_H,Housing Characteristics,QUESTIONNAIRE,H,e
+HOQ_I,Housing Characteristics,QUESTIONNAIRE,I,e
+HOQ_J,Housing Characteristics,QUESTIONNAIRE,J,e
+HPVP_H,Human Papillomavirus (HPV) DNA Results from Penile Swab Samples: Roche Linear Array,LABORATORY,H,e
+HPVP_I,Human Papillomavirus (HPV) DNA - Penile Swabs: Roche Linear Array,LABORATORY,I,e
+HPVSER_D,"Human Papillomavirus (HPV) - 6, 11, 16 & 18 Antibody – Serum: 4-plex CLIA",LABORATORY,D,e
+HPVSER_E,"Human Papillomavirus (HPV) - 6, 11, 16 & 18 Antibody – Serum: 4-plex CLIA",LABORATORY,E,e
+HPVSER_F,"Human Papillomavirus (HPV) - 6, 11, 16 & 18 Antibody - Serum",LABORATORY,F,e
+HPVSRM_D,"Human Papillomavirus (HPV) - Multiplexed 6, 11, 16, 18, 31, 33, 45, 52 & 58 Antibody – Serum: 9-plex",LABORATORY,D,e
+HPVSWC_I,Human Papillomavirus (HPV) DNA - Vaginal Swab: Roche Cobas High-Risk,LABORATORY,I,e
+HPVSWR_D,Human Papillomavirus (HPV) DNA - Vaginal Swab: Digene Hybrid Capture & Roche Linear Array,LABORATORY,D,e
+HPVSWR_E,Human Papillomavirus (HPV) DNA - Vaginal Swab: Digene Hybrid Capture & Roche Linear Array,LABORATORY,E,e
+HPVSWR_F,Human Papillomavirus (HPV) DNA - Vaginal Swab: Digene Hybrid Capture & Roche Linear Array,LABORATORY,F,e
+HPVSWR_G,Human Papillomavirus (HPV) DNA - Vaginal Swab: Digene Hybrid Capture & Roche Linear Array,LABORATORY,G,e
+HPVSWR_H,Human Papillomavirus (HPV) DNA - Vaginal Swab: Roche Cobas & Roche Linear Array,LABORATORY,H,e
+HPVSWR_I,Human Papillomavirus (HPV) DNA - Vaginal Swab: Roche Linear Array,LABORATORY,I,e
+HSCRP_I,High-Sensitivity C-Reactive Protein (hs-CRP),LABORATORY,I,p
+HSCRP_J,High-Sensitivity C-Reactive Protein,LABORATORY,J,p
+HSQ,Current Health Status,QUESTIONNAIRE,A,f
+HSQ_B,Current Health Status,QUESTIONNAIRE,B,f
+HSQ_C,Current Health Status,QUESTIONNAIRE,C,f
+HSQ_D,Current Health Status,QUESTIONNAIRE,D,f
+HSQ_E,Current Health Status,QUESTIONNAIRE,E,f
+HSQ_F,Current Health Status,QUESTIONNAIRE,F,f
+HSQ_G,Current Health Status,QUESTIONNAIRE,G,f
+HSQ_H,Current Health Status,QUESTIONNAIRE,H,f
+HSQ_I,Current Health Status,QUESTIONNAIRE,I,f
+HSQ_J,Current Health Status,QUESTIONNAIRE,J,f
+HSV_D,Herpes Simplex Virus Type-1 & Type-2,LABORATORY,D,e
+HSV_E,Herpes Simplex Virus Type-1 & Type-2,LABORATORY,E,e
+HSV_F,Herpes Simplex Virus Type-1 & Type-2,LABORATORY,F,e
+HSV_G,Herpes Simplex Virus Type-1 & Type-2,LABORATORY,G,e
+HSV_H,Herpes Simplex Virus Type-1 & Type-2,LABORATORY,H,e
+HSV_I,Herpes Simplex Virus Type-1 & Type-2,LABORATORY,I,e
+HUQ,Hospital Utilization & Access to Care,QUESTIONNAIRE,A,f
+HUQ_B,Hospital Utilization & Access to Care,QUESTIONNAIRE,B,f
+HUQ_C,Hospital Utilization & Access to Care,QUESTIONNAIRE,C,f
+HUQ_D,Hospital Utilization & Access to Care,QUESTIONNAIRE,D,f
+HUQ_E,Hospital Utilization & Access to Care,QUESTIONNAIRE,E,f
+HUQ_F,Hospital Utilization & Access to Care,QUESTIONNAIRE,F,f
+HUQ_G,Hospital Utilization & Access to Care,QUESTIONNAIRE,G,f
+HUQ_H,Hospital Utilization & Access to Care,QUESTIONNAIRE,H,f
+HUQ_I,Hospital Utilization & Access to Care,QUESTIONNAIRE,I,f
+HUQ_J,Hospital Utilization & Access to Care,QUESTIONNAIRE,J,f
+IHg_D,Mercury: Inorganic - Blood,LABORATORY,D,e
+IHg_E,Mercury: Inorganic - Blood,LABORATORY,E,e
+IHg_F,Mercury: Inorganic - Blood,LABORATORY,F,e
+IHgEM_G,"Mercury: Inorganic, Ethyl and Methyl - Blood",LABORATORY,G,e
+IHGEM_H,"Mercury: Inorganic, Ethyl and Methyl - Blood",LABORATORY,H,e
+IHGEM_I,"Mercury: Inorganic, Ethyl and Methyl - Blood",LABORATORY,I,e
+IHGEM_J,"Mercury: Inorganic, Ethyl and Methyl - Blood",LABORATORY,J,e
+IMQ,Immunization,QUESTIONNAIRE,A,
+IMQ_B,Immunization,QUESTIONNAIRE,B,
+IMQ_C,Immunization,QUESTIONNAIRE,C,
+IMQ_D,Immunization,QUESTIONNAIRE,D,
+IMQ_E,Immunization,QUESTIONNAIRE,E,
+IMQ_F,Immunization,QUESTIONNAIRE,F,
+IMQ_G,Immunization,QUESTIONNAIRE,G,
+IMQ_H,Immunization,QUESTIONNAIRE,H,
+IMQ_I,Immunization,QUESTIONNAIRE,I,
+IMQ_J,Immunization,QUESTIONNAIRE,J,
+INQ_E,Income,QUESTIONNAIRE,E,e
+INQ_F,Income,QUESTIONNAIRE,F,e
+INQ_G,Income,QUESTIONNAIRE,G,e
+INQ_H,Income,QUESTIONNAIRE,H,e
+INQ_I,Income,QUESTIONNAIRE,I,e
+INQ_J,Income,QUESTIONNAIRE,J,e
+INS_H,Insulin,LABORATORY,H,
+INS_I,Insulin,LABORATORY,I,
+INS_J,Insulin,LABORATORY,J,
+KIQ,Kidney Conditions,QUESTIONNAIRE,A,
+KIQ_P_B,Prostate Conditions,QUESTIONNAIRE,B,
+KIQ_P_C,Prostate Conditions,QUESTIONNAIRE,C,
+KIQ_P_D,Prostate Conditions,QUESTIONNAIRE,D,
+KIQ_P_E,Prostate Conditions,QUESTIONNAIRE,E,
+KIQ_U_B,Kidney Conditions - Urology,QUESTIONNAIRE,B,
+KIQ_U_C,Kidney Conditions - Urology,QUESTIONNAIRE,C,
+KIQ_U_D,Kidney Conditions - Urology,QUESTIONNAIRE,D,
+KIQ_U_E,Kidney Conditions - Urology,QUESTIONNAIRE,E,
+KIQ_U_F,Kidney Conditions - Urology,QUESTIONNAIRE,F,
+KIQ_U_G,Kidney Conditions - Urology,QUESTIONNAIRE,G,
+KIQ_U_H,Kidney Conditions - Urology,QUESTIONNAIRE,H,
+KIQ_U_I,Kidney Conditions - Urology,QUESTIONNAIRE,I,
+KIQ_U_J,Kidney Conditions - Urology,QUESTIONNAIRE,J,
+L02_B,Hepatitis B: Core Antibody & Surface Antigen; Hepatitis C: Confirmed Antibody & RNA (HCV-RNA); Hepat,LABORATORY,B,e
+L02_C,Hepatitis B: Core Antibody & Surface Antigen; Hepatitis C: Confirmed Antibody & RNA (HCV-RNA); Hepat,LABORATORY,C,e
+L02HBS,Hepatitis B Surface Antibody,LABORATORY,A,e
+L02HBS_B,Hepatitis B Surface Antibody,LABORATORY,B,e
+L02HBS_C,Hepatitis B Surface Antibody,LABORATORY,C,e
+L02HPA_a,Hepatitis A Antibody,LABORATORY,a,e
+L02HPA_B,Hepatitis A Antibody,LABORATORY,B,e
+L02HPA_C,Hepatitis A Antibody,LABORATORY,C,e
+L03_B,"HIV Antibody Test, CD4+ T Lymphocytes & CD8+ T Cells",LABORATORY,B,e
+L03_C,"HIV Antibody Test, CD4+ T Lymphocytes & CD8+ T Cells",LABORATORY,C,e
+L04PER_C,Perchlorate - Urine,LABORATORY,C,e
+L04VOC_B,Volatile Organic Compounds - Blood & Water,LABORATORY,B,e
+L04VOC_C,"Volatile Organic Compounds - Blood, Water, & Related Questionnaire Items",LABORATORY,C,e
+L05_B,Chlamydia & Gonorrhea - Urine,LABORATORY,B,e
+L05_C,Chlamydia & Gonorrhea - Urine,LABORATORY,C,e
+L06_2_B,"Cadmium, Lead, Total Mercury, Ferritin, Serum Folate, RBC Folate, Vitamin B12, Homocysteine, Methylm",LABORATORY,B,e
+L06_B,"Cadmium, Lead, Mercury, Cotinine & Nutritional Biochemistries",LABORATORY,B,e
+L06AGE_C,Acrylamide & Glycidamide,LABORATORY,C,e
+L06BMT_C,"Cadmium, Lead, & Total Mercury - Blood",LABORATORY,C,e
+L06COT_C,Cotinine - Serum,LABORATORY,C,e
+L06HM_B,Metals - Urine,LABORATORY,B,e
+L06HM_C,Metals - Urine,LABORATORY,C,e
+L06MH_C,Methylmalonic acid & Homocysteine,LABORATORY,C,e
+L06NB_C,"Folate - RBC & Serum, and Vitamin B12",LABORATORY,C,e
+L06PHY_C,Phytoestrogens - Urine,LABORATORY,C,e
+L06TFR_C,Ferritin & Transferrin Receptor,LABORATORY,C,e
+L06UAS_C,Arsenics - Total & Speciated - Urine,LABORATORY,C,e
+L06UHG_C,Mercury: Inorganic - Urine,LABORATORY,C,e
+L06UIO_B,Iodine - Urine,LABORATORY,B,e
+L06UIO_C,Iodine - Urine,LABORATORY,C,e
+L06VID_B,Vitamin D,LABORATORY,B,e
+L06VID_C,Vitamin D,LABORATORY,C,e
+L06VIT_B,"Vitamin A, Vitamin E & Carotenoids",LABORATORY,B,e
+L06VIT_C,Vitamin C,LABORATORY,C,e
+l09_b,Herpes Simplex Virus Type-1 & Type-2,LABORATORY,b,e
+l09_c,Herpes Simplex Virus Type-1 & Type-2,LABORATORY,c,e
+L10_2_B,"Glycohemoglobin, Plasma Glucose, Serum C-peptide, & Insulin, Second Exam",LABORATORY,B,p
+L10_B,Glycohemoglobin,LABORATORY,B,p
+L10_C,Glycohemoglobin,LABORATORY,C,p
+L10AM_B,"Plasma Fasting Glucose, Serum C-peptide & Insulin",LABORATORY,B,p
+L10AM_C,"Plasma Fasting Glucose, Serum C-peptide & Insulin",LABORATORY,C,p
+L11_2_b,"C-Reactive Protein & Others, Second Exam",LABORATORY,b,p
+L11_B,"C-Reactive protein (CRP), Fibrinogen, Bone Alkaline Phosphatase & Urinary N-telopeptides",LABORATORY,B,p
+L11_C,"C-Reactive Protein (CRP), Bone Alkaline Phosphatase (BAP) & Parathyroid Hormone (PTH)",LABORATORY,C,p
+l11p_2_b,"Prostate-specific Antigen (PSA), Second Exam",LABORATORY,b,p
+L11PSA_B,Prostate specific antigen (PSA),LABORATORY,B,p
+L11PSA_C,Prostate Specific Antigen (PSA),LABORATORY,C,p
+l13_2_b,"Cholesterol - Total, HDL, LDL  & Triglycerides, Second Exam",LABORATORY,b,p
+l13_b,Cholesterol - Total & HDL,LABORATORY,b,p
+l13_c,Cholesterol - Total & HDL,LABORATORY,c,p
+L13AM_B,Cholesterol - LDL & Triglycerides,LABORATORY,B,p
+L13AM_C,Cholesterol - LDL & Triglycerides,LABORATORY,C,p
+L16_2_B,"Creatinine & Albumin - Urine, Second Exam",LABORATORY,B,p
+L16_B,Albumin & Creatinine - Urine,LABORATORY,B,p
+L16_C,Albumin & Creatinine - Urine,LABORATORY,C,e
+L17_B,"Toxoplasma (IgG), Toxoplasma (IgM),Toxoplasma (Dye),Toxoplasma Differential Agglutination, & Toxopla",LABORATORY,B,e
+L17_C,Toxoplasma (IgG) & Toxoplasma (IgM),LABORATORY,C,e
+L19_2_B,"Measles, Rubella, & Varicella, Second Exam",LABORATORY,B,e
+L19_B,"Measles, Rubella, & Varicella",LABORATORY,B,e
+L19_C,"Measles, Rubella, & Varicella",LABORATORY,C,e
+L20_B,Lead - Dust,LABORATORY,B,
+L20_C,Lead - Dust,LABORATORY,C,
+L24EPH_C,Environmental Phenols,LABORATORY,C,e
+L24PFC_C,Polyfluoroalkyl Chemicals,LABORATORY,C,e
+L24PH_C,Phthalates - Urine,LABORATORY,C,e
+L24PP_C,Pesticides - Environmental - Urine,LABORATORY,C,e
+l25_2_b,"Complete Blood Count with 5-part Differential - Whole Blood, Second Exam",LABORATORY,b,p
+L25_B,Complete Blood Count with 5-part Differential - Whole Blood,LABORATORY,B,p
+L25_C,Complete Blood Count with 5-part Differential - Whole Blood,LABORATORY,C,p
+L26OPD_C,Organophosphate Insecticides - Diakyl Phosphate Metabolites - Urine,LABORATORY,C,e
+l26PP_B,"Pesticides - Current Use - Urine (Formerly Priority Pesticides, Non-persistent Pesticide Metabolites",LABORATORY,B,e
+L26UPP_C,"Pesticides - Current Use - Urine (Formerly Priority Pesticides, Non-persistent Pesticide Metabolites",LABORATORY,C,e
+L28DFP_C,"Dioxins, Furans, & Coplanar PCBs",LABORATORY,C,e
+L28NPB_C,Non-dioxin-like Polychlorinated Biphenyls,LABORATORY,C,e
+L28OCP_C,Pesticides - Organochlorine Metabolites - Serum (Surplus),LABORATORY,C,e
+L28PBE_C,Brominated Flame Retardants (BFRs),LABORATORY,C,e
+L28POC_B,"Dioxins, Furans, & Coplanar PCBs",LABORATORY,B,e
+L31PAH_C,Polyaromatic Hydrocarbons (PAHs) - Urine,LABORATORY,C,e
+l34_b,Bacterial vaginosis (BV) & Trichomonas vaginalis,LABORATORY,b,e
+l34_c,Bacterial vaginosis (BV) & Trichomonas vaginalis,LABORATORY,c,e
+L35_B,Methicillin - Resistant Staphylococcus aureus (MRSA),LABORATORY,B,e
+L35_C,Methicillin - Resistant Staphylococcus aureus (MRSA),LABORATORY,C,e
+L36_B,"Syphilis-IgG, Syphilis Rapid Plasma Reagin (RPR) & Treponema pallidum Particle Agglutination (TP-PA)",LABORATORY,B,e
+L36_C,"Syphilis-IgG, Syphilis Rapid Plasma Reagin (RPR) & Treponema pallidum Particle Agglutination (TP-PA)",LABORATORY,C,e
+L37SWA_C,Human Papillomavirus (HPV) DNA - Vaginal Swab: Digene Hybrid Capture & Prototype Line Blot Assay,LABORATORY,C,e
+L37SWR_C,Human Papillomavirus (HPV) DNA - Vaginal Swab: Roche Linear Array,LABORATORY,C,e
+l39_2_b,Erythrocyte Protoporphyrin,LABORATORY,b,p
+L39_B,Erythrocyte Protoporphyrin,LABORATORY,B,p
+L39EPP_C,Erythrocyte Protoporphyrin & Selenium,LABORATORY,C,p
+L40_2_B,"Standard Biochemistry Profile, Follicle Stimulating Hormone & Luteinizing Hormone, Second Exam",LABORATORY,B,p
+L40_B,Standard Biochemistry Profile,LABORATORY,B,p
+L40_C,Standard Biochemistry Profile,LABORATORY,C,p
+L40FE_B,"Iron, Total Iron Binding Capacity (TIBC), & Transferrin Saturation",LABORATORY,B,p
+L40FE_C,"Iron, Total Iron Binding Capacity (TIBC), & Transferrin Saturation",LABORATORY,C,p
+L40T4_B,Thyroid - Stimulating Hormone & Thyroxine (TSH & T4),LABORATORY,B,p
+L43_C,Vitamin B6,LABORATORY,C,e
+L45VIT_C,"Vitamin A, Vitamin E & Carotenoids",LABORATORY,C,e
+L52SER_C,"Human Papillomavirus (HPV) - 6, 11, 16 & 18 Antibody - Serum: 4-plex CLIA",LABORATORY,C,e
+Lab02,Hepatitis B: Core Antibody & Surface Antigen; Hepatitis C: Confirmed Antibody & RNA (HCV-RNA); Hepat,LABORATORY,A,e
+LAB03,"HIV Antibody Test, CD4+ T Lymphocytes & CD8+ T Cells",LABORATORY,A,e
+LAB04,Volatile Organic Compounds - Blood & Water,LABORATORY,A,e
+LAB05,Chlamydia & Gonorrhea - Urine,LABORATORY,A,e
+LAB06,"Cadmium, Lead, Mercury, Cotinine & Nutritional Biochemistries",LABORATORY,A,e
+LAB06HM,Metals - Urine,LABORATORY,A,e
+LAB07,Latex,LABORATORY,A,e
+lab09,Herpes Simplex Virus Type-1 & Type-2,LABORATORY,A,e
+LAB10,Glycohemoglobin,LABORATORY,A,p
+LAB10AM,"Plasma Fasting Glucose, Serum C-peptide & Insulin",LABORATORY,A,p
+LAB11,C-Reactive Protein (CRP),LABORATORY,A,p
+Lab13,Cholesterol - Total & HDL,LABORATORY,A,p
+LAB13AM,Cholesterol - LDL & Triglycerides,LABORATORY,A,p
+LAB16,Albumin & Creatinine - Urine,LABORATORY,A,p
+LAB17,Cryptosporidum & Toxoplasma,LABORATORY,A,p
+LAB18,Standard Biochemistry Profile & Hormones,LABORATORY,A,p
+LAB18T4,Thyroid - Stimulating Hormone & Thyroxine (TSH & T4),LABORATORY,A,p
+LAB19,"Measles, Rubella, & Varicella",LABORATORY,A,e
+LAB20,Lead - Dust,LABORATORY,A,
+LAB21,Volatile Organic Compounds (VOC) - Personal Exposure Badge,LABORATORY,A,e
+LAB22,Mercury - Hair,LABORATORY,A,e
+LAB25,Complete Blood Count with 5-part Differential - Whole Blood,LABORATORY,A,p
+LAB26PP,"Pesticides - Current Use - Urine (Formerly Priority Pesticides, Non-persistent Pesticide Metabolites",LABORATORY,A,e
+LAB28POC,"Dioxins, Furans, & Coplanar PCBs",LABORATORY,A,e
+LEXAB_B,Lower Extremity Disease - Ankle Brachial Blood Pressure Index,EXAM,B,p
+LEXAB_C,Lower Extremity Disease - Ankle Brachial Blood Pressure Index,EXAM,C,p
+LEXABPI,Lower Extremity Disease - Ankle Brachial Blood Pressure Index,EXAM,A,
+LEXPN,Lower Extremity Disease - Peripheral Neuropathy,EXAM,A,
+LEXPN_B,Lower Extremity Disease - Peripheral Neuropathy,EXAM,B,
+LEXPN_C,Lower Extremity Disease - Peripheral Neuropathy,EXAM,C,
+LUX_J,Liver Ultrasound Transient Elastography,EXAM,J,p
+MCQ,Medical Conditions,QUESTIONNAIRE,A,f
+MCQ_B,Medical Conditions,QUESTIONNAIRE,B,f
+MCQ_C,Medical Conditions,QUESTIONNAIRE,C,f
+MCQ_D,Medical Conditions,QUESTIONNAIRE,D,f
+MCQ_E,Medical Conditions,QUESTIONNAIRE,E,f
+MCQ_F,Medical Conditions,QUESTIONNAIRE,F,f
+MCQ_G,Medical Conditions,QUESTIONNAIRE,G,f
+MCQ_H,Medical Conditions,QUESTIONNAIRE,H,f
+MCQ_I,Medical Conditions,QUESTIONNAIRE,I,f
+MCQ_J,Medical Conditions,QUESTIONNAIRE,J,f
+MGX_G,Muscle Strength - Grip Test,EXAM,G,
+MGX_H,Muscle Strength - Grip Test,EXAM,H,
+MMA_G,Methylmalonic Acid,LABORATORY,G,p
+MMA_H,Methylmalonic Acid,LABORATORY,H,p
+MMRV_F,"Measles, Mumps, Rubella & Varicella",LABORATORY,F,e
+MPQ,Miscellaneous Pain,QUESTIONNAIRE,A,
+MPQ_B,Miscellaneous Pain,QUESTIONNAIRE,B,
+MPQ_C,Miscellaneous Pain,QUESTIONNAIRE,C,
+MSX,Muscle Strength,EXAM,A,
+MSX_B,Muscle Strength,EXAM,B,
+OCQ,Occupation,QUESTIONNAIRE,A,
+OCQ_B,Occupation,QUESTIONNAIRE,B,
+OCQ_C,Occupation,QUESTIONNAIRE,C,
+OCQ_D,Occupation,QUESTIONNAIRE,D,
+OCQ_E,Occupation,QUESTIONNAIRE,E,
+OCQ_F,Occupation,QUESTIONNAIRE,F,
+OCQ_G,Occupation,QUESTIONNAIRE,G,
+OCQ_H,Occupation,QUESTIONNAIRE,H,
+OCQ_I,Occupation,QUESTIONNAIRE,I,
+OCQ_J,Occupation,QUESTIONNAIRE,J,
+OGTT_D,Oral Glucose Tolerance Test,LABORATORY,D,p
+OGTT_E,Oral Glucose Tolerance Test,LABORATORY,E,p
+OGTT_F,Oral Glucose Tolerance Test,LABORATORY,F,p
+OGTT_G,Oral Glucose Tolerance Test,LABORATORY,G,p
+OGTT_H,Oral Glucose Tolerance Test,LABORATORY,H,p
+OGTT_I,Oral Glucose Tolerance Test,LABORATORY,I,p
+OHQ,Oral Health,QUESTIONNAIRE,A,
+OHQ_B,Oral Health,QUESTIONNAIRE,B,
+OHQ_C,Oral Health,QUESTIONNAIRE,C,
+OHQ_D,Oral Health,QUESTIONNAIRE,D,
+OHQ_E,Oral Health,QUESTIONNAIRE,E,
+OHQ_F,Oral Health,QUESTIONNAIRE,F,
+OHQ_G,Oral Health,QUESTIONNAIRE,G,
+OHQ_H,Oral Health,QUESTIONNAIRE,H,
+OHQ_I,Oral Health,QUESTIONNAIRE,I,
+OHQ_J,Oral Health,QUESTIONNAIRE,J,
+OHX_D,Oral Health,EXAM,D,
+OHX_E,Oral Health,EXAM,E,
+OHXADD_C,Oral Health - Addendum,EXAM,C,
+OHXDEN_B,Oral Health - Dentition,EXAM,B,
+OHXDEN_C,Oral Health - Dentition,EXAM,C,
+OHXDEN_F,Oral Health - Dentition,EXAM,F,
+OHXDEN_G,Oral Health - Dentition,EXAM,G,
+OHXDEN_H,Oral Health - Dentition,EXAM,H,
+OHXDEN_I,Oral Health - Dentition,EXAM,I,
+OHXDEN_J,Oral Health - Dentition,EXAM,J,
+OHXDENT,Oral Health - Dentition,EXAM,A,
+OHXPER_F,Oral Health - Periodontal,EXAM,F,
+OHXPER_G,Oral Health - Periodontal,EXAM,G,
+OHXPER_H,Oral Health - Periodontal,EXAM,H,
+OHXPERIO,Oral Health - Periodontal,EXAM,A,
+OHXPRL_B,Oral Health - Periodontal/Lower,EXAM,B,
+OHXPRL_C,Oral Health - Periodontal/Lower,EXAM,C,
+OHXPRU_B,Oral Health - Periodontal/Upper,EXAM,B,
+OHXPRU_C,Oral Health - Periodontal/Upper,EXAM,C,
+OHXREF,Oral Health - Recommendation of Care,EXAM,A,
+OHXREF_B,Oral Health - Recommendation of Care,EXAM,B,
+OHXREF_C,Oral Health - Recommendation of Care,EXAM,C,
+OHXREF_F,Oral Health - Recommendation of Care,EXAM,F,
+OHXREF_G,Oral Health - Recommendation of Care,EXAM,G,
+OHXREF_H,Oral Health - Recommendation of Care,EXAM,H,
+OHXREF_I,Oral Health - Recommendation of Care,EXAM,I,
+OHXREF_J,Oral Health - Recommendation of Care,EXAM,J,
+OPD_D,Organophosphate Insecticides - Diakyl Phosphate Metabolites - Urine,LABORATORY,D,e
+OPD_E,Organophosphate Insecticides - Diakyl Phosphate Metabolites - Urine,LABORATORY,E,e
+OPD_G,Organophosphate Insecticides - Dialkyl Phosphate Metabolites - Urine,LABORATORY,G,e
+OPD_I,Organophosphate Insecticides - Dialkyl Phosphate Metabolites - Urine,LABORATORY,I,e
+OPD_J,Organophosphate Insecticides - Dialkyl Phosphate Metabolites - Urine,LABORATORY,J,e
+OPXFDT_D,Ophthalmology - Frequency Doubling Technology,EXAM,D,
+OPXFDT_E,Ophthalmology - Frequency Doubling Technology,EXAM,E,
+OPXRET_D,Ophthalmology - Retinal Imaging,EXAM,D,
+OPXRET_E,Ophthalmology - Retinal Imaging,EXAM,E,
+ORHPV_F,Human Papillomavirus (HPV) - Oral Rinse,LABORATORY,F,e
+ORHPV_G,Human Papillomavirus (HPV) - Oral Rinse,LABORATORY,G,e
+ORHPV_H,Human Papillomavirus (HPV) - Oral Rinse,LABORATORY,H,e
+ORHPV_I,Human Papillomavirus (HPV) - Oral Rinse,LABORATORY,I,e
+OSQ,Osteoporosis,QUESTIONNAIRE,A,
+OSQ_B,Osteoporosis,QUESTIONNAIRE,B,
+OSQ_C,Osteoporosis,QUESTIONNAIRE,C,
+OSQ_D,Osteoporosis,QUESTIONNAIRE,D,
+OSQ_E,Osteoporosis,QUESTIONNAIRE,E,
+OSQ_F,Osteoporosis,QUESTIONNAIRE,F,
+OSQ_H,Osteoporosis,QUESTIONNAIRE,H,
+OSQ_J,Osteoporosis,QUESTIONNAIRE,J,
+PAH_D,Polyaromatic Hydrocarbons (PAHs) - Urine,LABORATORY,D,e
+PAH_E,Polyaromatic Hydrocarbons (PAHs) - Urine,LABORATORY,E,e
+PAH_F,Polyaromatic Hydrocarbons -Urine,LABORATORY,F,e
+PAH_G,Polyaromatic Hydrocarbons (PAHs) - Urine,LABORATORY,G,e
+PAH_H,Polycyclic Aromatic Hydrocarbons (PAH) - Urine,LABORATORY,H,e
+PAH_I,Polycyclic Aromatic Hydrocarbons (PAH) - Urine,LABORATORY,I,e
+PAHS_G,Polyaromatic Hydrocarbons (PAHs)- Urine - Special Sample,LABORATORY,G,e
+PAHS_H,Polycyclic Aromatic Hydrocarbons (PAH) - Urine - Special Sample,LABORATORY,H,e
+PAHS_I,Polycyclic Aromatic Hydrocarbons (PAH) - Urine - Special Sample,LABORATORY,I,e
+PAQ,Physical Activity,QUESTIONNAIRE,A,e
+PAQ_B,Physical Activity,QUESTIONNAIRE,B,e
+PAQ_C,Physical Activity,QUESTIONNAIRE,C,e
+PAQ_D,Physical Activity,QUESTIONNAIRE,D,e
+PAQ_E,Physical Activity,QUESTIONNAIRE,E,e
+PAQ_F,Physical Activity,QUESTIONNAIRE,F,e
+PAQ_G,Physical Activity,QUESTIONNAIRE,G,e
+PAQ_H,Physical Activity,QUESTIONNAIRE,H,e
+PAQ_I,Physical Activity,QUESTIONNAIRE,I,e
+PAQ_J,Physical Activity,QUESTIONNAIRE,J,e
+PAQIAF,Physical Activity - Individual Activities,QUESTIONNAIRE,A,
+PAQIAF_B,Physical Activity - Individual Activities,QUESTIONNAIRE,B,
+PAQIAF_C,Physical Activity - Individual Activities,QUESTIONNAIRE,C,
+PAQIAF_D,Physical Activity - Individual Activities,QUESTIONNAIRE,D,
+PAQY_J,Physical Activity - Youth,QUESTIONNAIRE,J,
+PAXDAY_G,Physical Activity Monitor - Day,EXAM,G,
+PAXDAY_H,Physical Activity Monitor - Day,EXAM,H,
+PAXHD_G,Physical Activity Monitor - Header,EXAM,G,
+PAXHD_H,Physical Activity Monitor - Header,EXAM,H,
+PAXHR_G,Physical Activity Monitor - Hour,EXAM,G,
+PAXHR_H,Physical Activity Monitor - Hour,EXAM,H,
+PAXMIN_G,Physical Activity Monitor - Minute,EXAM,G,
+PAXMIN_H,Physical Activity Monitor - Minute,EXAM,H,
+PAXRAW_C,Physical Activity Monitor,EXAM,C,
+PAXRAW_D,Physical Activity Monitor,EXAM,D,
+PbCd_D,"Cadmium, Lead, & Total Mercury - Blood",LABORATORY,D,e
+PbCd_E,"Cadmium, Lead, & Total Mercury - Blood",LABORATORY,E,e
+PbCd_F,"Cadmium, Lead, & Total Mercury - Blood",LABORATORY,F,e
+PbCd_G,"Cadmium, Lead, Total Mercury, Selenium, & Manganese - Blood",LABORATORY,G,e
+PBCD_H,"Lead, Cadmium, Total Mercury, Selenium, and Manganese - Blood",LABORATORY,H,e
+PBCD_I,"Lead, Cadmium, Total Mercury, Selenium & Manganese - Blood",LABORATORY,I,e
+PBCD_J,"Lead, Cadmium, Total Mercury, Selenium, & Manganese - Blood",LABORATORY,J,e
+PCBPOL_D,Non-dioxin-like Polychlorinated Biphenyls & Mono-ortho-substituted Polychlorinated Biphenyls - Poole,LABORATORY,D,
+PCBPOL_E,Non-dioxin-like Polychlorinated Biphenyls & Mono-ortho-substituted Polychlorinated Biphenyls - Poole,LABORATORY,E,
+PCBPOL_F,Non-dioxin-like Polychlorinated Biphenyls & Mono-ortho-substituted Polychlorinated Biphenyls - Poole,LABORATORY,F,
+PCBPOL_G,Non-dioxin-like Polychlorinated Biphenyls & Mono-ortho-substituted Polychlorinated Biphenyls - Poole,LABORATORY,G,
+PCBPOL_H,Non-dioxin-like Polychlorinated Biphenyls & Mono-ortho-substituted Polychlorinated Biphenyls - Serum,LABORATORY,H,
+PCBPOL_I,Non-dioxin-like Polychlorinated Biphenyls & Mono-ortho-substituted Polychlorinated Biphenyls - Poole,LABORATORY,I,
+PERNT_D,"Perchlorate, Nitrate & Thiocyanate - Urine",LABORATORY,D,e
+PERNT_E,"Perchlorate, Nitrate & Thiocyanate - Urine",LABORATORY,E,e
+PERNT_F,"Perchlorate, Nitrate & Thiocyanate - Urine",LABORATORY,F,e
+PERNT_G,"Perchlorate, Nitrate & Thiocyanate - Urine",LABORATORY,G,e
+PERNT_H,"Perchlorate, Nitrate & Thiocyanate - Urine",LABORATORY,H,e
+PERNT_I,"Perchlorate, Nitrate & Thiocyanate - Urine",LABORATORY,I,e
+PERNT_J,"Perchlorate, Nitrate & Thiocyanate - Urine",LABORATORY,J,e
+PERNTS_G,"Perchlorate, Nitrate & Thiocyanate - Urine - Special Sample",LABORATORY,G,e
+PERNTS_H,"Perchlorate, Nitrate & Thiocyanate - Urine - Special Sample",LABORATORY,H,e
+PERNTS_I,"Perchlorate, Nitrate & Thiocyanate - Urine - Special Sample",LABORATORY,I,e
+PFAS_H,Perfluoroalkyl and Polyfluoroalkyl Substances (formerly Polyfluoroalkyl Chemicals - PFC),LABORATORY,H,e
+PFAS_I,Perfluoroalkyl and Polyfluoroalkyl,LABORATORY,I,e
+PFAS_J,Perfluoroalkyl and Polyfluoroalkyl Substances,LABORATORY,J,e
+PFC_D,Polyfluoroalkyl Chemicals,LABORATORY,D,e
+PFC_E,Polyfluoroalkyl Chemicals,LABORATORY,E,e
+PFC_F,Polyfluoroalkyl Chemicals,LABORATORY,F,e
+PFC_G,Polyfluoroalkyl Chemicals,LABORATORY,G,e
+PFQ,Physical Functioning,QUESTIONNAIRE,A,
+PFQ_B,Physical Functioning,QUESTIONNAIRE,B,
+PFQ_C,Physical Functioning,QUESTIONNAIRE,C,
+PFQ_D,Physical Functioning,QUESTIONNAIRE,D,
+PFQ_E,Physical Functioning,QUESTIONNAIRE,E,
+PFQ_F,Physical Functioning,QUESTIONNAIRE,F,
+PFQ_G,Physical Functioning,QUESTIONNAIRE,G,
+PFQ_H,Physical Functioning,QUESTIONNAIRE,H,
+PFQ_I,Physical Functioning,QUESTIONNAIRE,I,
+PFQ_J,Physical Functioning,QUESTIONNAIRE,J,
+PH,Fasting Questionnaire,LABORATORY,A,f
+PH_B,Fasting Questionnaire,LABORATORY,B,f
+PH_C,Fasting Questionnaire,LABORATORY,C,f
+PHPYPA,"Phthalates, Phytoestrogens & PAHs - Urine PHPYPA Urinary Phthalates",LABORATORY,A,e
+PHPYPA_B,"Phthalates, Phytoestrogens & PAHs - Urine",LABORATORY,B,e
+PHTHTE_D,Phthalates - Urine,LABORATORY,D,e
+PHTHTE_E,Phthalates - Urine,LABORATORY,E,e
+PHTHTE_F,Phthalates - Urine,LABORATORY,F,e
+PHTHTE_G,Phthalates & Plasticizers Metabolites - Urine,LABORATORY,G,e
+PHTHTE_H,Phthalates and Plasticizers Metabolites - Urine,LABORATORY,H,e
+PHTHTE_I,Phthalates and Plasticizers Metabolites - Urine,LABORATORY,I,e
+PHTHTE_J,Phthalates and Plasticizers Metabolites - Urine,LABORATORY,J,e
+PHYTO_D,Phytoestrogens - Urine,LABORATORY,D,e
+PHYTO_E,Phytoestrogens - Urine,LABORATORY,E,e
+PHYTO_F,Phytoestrogens - Urine,LABORATORY,F,e
+POOLTF_F,Pooled-Sample Technical Support File,LABORATORY,F,
+POOLTF_G,Pooled-Sample Technical Support File,LABORATORY,G,
+POOLTF_H,Pooled-Sample Technical Support File,LABORATORY,H,
+POOLTF_I,Pooled-Sample Technical Support File,LABORATORY,I,
+PP_D,Pesticides - Environmental - Urine,LABORATORY,D,e
+PP_E,Pesticides - Environmental - Urine,LABORATORY,E,e
+PP_F,Pesticides - Environmental - Urine,LABORATORY,F,e
+PP_G,Pesticides - Environmental - Urine,LABORATORY,G,e
+PSA_D,Prostate Specific Antigen (PSA),LABORATORY,D,p
+PSA_E,Prostate Specific Antigen (PSA),LABORATORY,E,p
+PSA_F,Prostate Specific Antigen (PSA),LABORATORY,F,p
+PSQ_C,Prostate Specific Antigen Follow-up,QUESTIONNAIRE,C,
+PSQ_D,Prostate Specific Antigen Follow-up,QUESTIONNAIRE,D,
+PSTPOL_D,Pesticides - Organochlorine Pesticides - Pooled Samples,LABORATORY,D,
+PSTPOL_E,Pesticides - Organochlorine Pesticides - Pooled Samples,LABORATORY,E,
+PSTPOL_F,Pesticides - Organochlorine Pesticides - Pooled Samples,LABORATORY,F,
+PSTPOL_G,Pesticides - Organochlorine Pesticides - Pooled Samples,LABORATORY,G,
+PSTPOL_H,Pesticides - Organochlorine Pesticides - Serum - Pooled Samples,LABORATORY,H,
+PSTPOL_I,Pesticides - Organochlorine Pesticides - Pooled Samples,LABORATORY,I,
+PTH_D,Parathyroid Hormone,LABORATORY,D,p
+PUQ,Pesticide Use,QUESTIONNAIRE,A,
+PUQ_B,Pesticide Use,QUESTIONNAIRE,B,
+PUQ_C,Pesticide Use,QUESTIONNAIRE,C,
+PUQMEC_D,Pesticide Use,QUESTIONNAIRE,D,
+PUQMEC_E,Pesticide Use,QUESTIONNAIRE,E,
+PUQMEC_F,Pesticide Use,QUESTIONNAIRE,F,
+PUQMEC_G,Pesticide Use,QUESTIONNAIRE,G,
+PUQMEC_H,Pesticide Use,QUESTIONNAIRE,H,
+PUQMEC_I,Pesticide Use,QUESTIONNAIRE,I,
+PUQMEC_J,Pesticide Use,QUESTIONNAIRE,J,
+RDQ,Respiratory Health,QUESTIONNAIRE,A,
+RDQ_B,Respiratory Health,QUESTIONNAIRE,B,
+RDQ_C,Respiratory Health,QUESTIONNAIRE,C,
+RDQ_D,Respiratory Health,QUESTIONNAIRE,D,
+RDQ_E,Respiratory Health,QUESTIONNAIRE,E,
+RDQ_F,Respiratory Health,QUESTIONNAIRE,F,
+RDQ_G,Respiratory Health,QUESTIONNAIRE,G,
+RHQ,Reproductive Health,QUESTIONNAIRE,A,f
+RHQ_B,Reproductive Health,QUESTIONNAIRE,B,f
+RHQ_C,Reproductive Health,QUESTIONNAIRE,C,f
+RHQ_D,Reproductive Health,QUESTIONNAIRE,D,f
+RHQ_E,Reproductive Health,QUESTIONNAIRE,E,f
+RHQ_F,Reproductive Health,QUESTIONNAIRE,F,f
+RHQ_G,Reproductive Health,QUESTIONNAIRE,G,f
+RHQ_H,Reproductive Health,QUESTIONNAIRE,H,f
+RHQ_I,Reproductive Health,QUESTIONNAIRE,I,f
+RHQ_J,Reproductive Health,QUESTIONNAIRE,J,f
+RXQ_ANA,Analgesic Pain Relievers,QUESTIONNAIRE,ANA,
+RXQ_RX,Prescription Medications,QUESTIONNAIRE,RX,
+RXQ_RX_B,Prescription Medications,QUESTIONNAIRE,B,
+RXQ_RX_C,Prescription Medications,QUESTIONNAIRE,C,
+RXQ_RX_D,Prescription Medications,QUESTIONNAIRE,D,
+RXQ_RX_E,Prescription Medications,QUESTIONNAIRE,E,
+RXQ_RX_F,Prescription Medications,QUESTIONNAIRE,F,
+RXQ_RX_G,Prescription Medications,QUESTIONNAIRE,G,
+RXQ_RX_H,Prescription Medications,QUESTIONNAIRE,H,
+RXQ_RX_I,Prescription Medications,QUESTIONNAIRE,I,
+RXQ_RX_J,Prescription Medications,QUESTIONNAIRE,J,
+RXQANA_B,Analgesic Pain Relievers,QUESTIONNAIRE,B,
+RXQANA_C,Analgesic Pain Relievers,QUESTIONNAIRE,C,
+RXQASA_G,Preventive Aspirin Use,QUESTIONNAIRE,G,
+RXQASA_H,Preventive Aspirin Use,QUESTIONNAIRE,H,
+RXQASA_I,Preventive Aspirin Use,QUESTIONNAIRE,I,
+RXQASA_J,Preventive Aspirin Use,QUESTIONNAIRE,J,
+SEQ,Shared Exclusion Questions,EXAM,A,
+SLQ_D,Sleep Disorders,QUESTIONNAIRE,D,
+SLQ_E,Sleep Disorders,QUESTIONNAIRE,E,
+SLQ_F,Sleep Disorders,QUESTIONNAIRE,F,
+SLQ_G,Sleep Disorders,QUESTIONNAIRE,G,
+SLQ_H,Sleep Disorders,QUESTIONNAIRE,H,
+SLQ_I,Sleep Disorders,QUESTIONNAIRE,I,
+SLQ_J,Sleep Disorders,QUESTIONNAIRE,J,
+SMQ,Smoking - Cigarette/Tobacco Use - Adult,QUESTIONNAIRE,A,e
+SMQ_B,Smoking - Cigarette/Tobacco Use - Adult,QUESTIONNAIRE,B,e
+SMQ_C,Smoking - Cigarette/Tobacco Use - Adult,QUESTIONNAIRE,C,e
+SMQ_D,Smoking - Cigarette Use,QUESTIONNAIRE,D,e
+SMQ_E,Smoking - Cigarette Use,QUESTIONNAIRE,E,e
+SMQ_F,Smoking - Cigarette Use,QUESTIONNAIRE,F,e
+SMQ_G,Smoking - Cigarette Use,QUESTIONNAIRE,G,e
+SMQ_H,Smoking - Cigarette Use,QUESTIONNAIRE,H,e
+SMQ_I,Smoking - Cigarette Use,QUESTIONNAIRE,I,e
+SMQ_J,Smoking - Cigarette Use,QUESTIONNAIRE,J,e
+SMQFAM,Smoking - Household Smokers,QUESTIONNAIRE,A,e
+SMQFAM_B,Smoking - Household Smokers,QUESTIONNAIRE,B,e
+SMQFAM_C,Smoking - Household Smokers,QUESTIONNAIRE,C,e
+SMQFAM_D,Smoking - Household Smokers,QUESTIONNAIRE,D,e
+SMQFAM_E,Smoking - Household Smokers,QUESTIONNAIRE,E,e
+SMQFAM_F,Smoking - Household Smokers,QUESTIONNAIRE,F,e
+SMQFAM_G,Smoking - Household Smokers,QUESTIONNAIRE,G,e
+SMQFAM_H,Smoking - Household Smokers,QUESTIONNAIRE,H,e
+SMQFAM_I,Smoking - Household Smokers,QUESTIONNAIRE,I,e
+SMQFAM_J,Smoking - Household Smokers,QUESTIONNAIRE,J,e
+SMQMEC,Smoking - Adult Recent Tobacco Use & Youth Cigarette/Tobacco Use,QUESTIONNAIRE,A,e
+SMQMEC_B,Smoking - Adult Recent Tobacco Use & Youth Cigarette/Tobacco Use,QUESTIONNAIRE,B,e
+SMQMEC_C,Smoking - Adult Recent Tobacco Use & Youth Cigarette/Tobacco Use,QUESTIONNAIRE,C,e
+SMQRTU_D,Smoking - Recent Tobacco Use,QUESTIONNAIRE,D,e
+SMQRTU_E,Smoking - Recent Tobacco Use,QUESTIONNAIRE,E,e
+SMQRTU_F,Smoking - Recent Tobacco Use,QUESTIONNAIRE,F,e
+SMQRTU_G,Smoking - Recent Tobacco Use,QUESTIONNAIRE,G,e
+SMQRTU_H,Smoking - Recent Tobacco Use,QUESTIONNAIRE,H,e
+SMQRTU_I,Smoking - Recent Tobacco Use,QUESTIONNAIRE,I,e
+SMQRTU_J,Smoking - Recent Tobacco Use,QUESTIONNAIRE,J,e
+SMQSHS_H,Smoking - Secondhand Smoke Exposure,QUESTIONNAIRE,H,e
+SMQSHS_I,Smoking - Secondhand Smoke Exposure,QUESTIONNAIRE,I,e
+SMQSHS_J,Smoking - Secondhand Smoke Exposure,QUESTIONNAIRE,J,e
+SPX_E,Spirometry - Pre and Post-Bronchodilator,EXAM,E,p
+SPX_F,Spirometry - Pre and Post-Bronchodilator,EXAM,F,p
+SPX_G,Spirometry - Pre and Post-Bronchodilator,EXAM,G,p
+SPXRAW_E,Spirometry - Raw Curve Data,EXAM,E,
+SPXRAW_F,Spirometry - Raw Curve Data,EXAM,F,
+SPXRAW_G,Spirometry - Raw Curve Data,EXAM,G,
+SSAFB_A,Aflatoxin B1-lysine - Serum (Surplus),LABORATORY,A,e
+SSAMH_A,Anti-Mullerian Hormone (AMH) & Inhibin-B (Surplus),LABORATORY,A,e
+SSAMH_B,Anti-Mullerian Hormone (AMH) & Inhibin-B (Surplus),LABORATORY,B,e
+SSAMH_C,Anti-Mullerian Hormone (AMH) & Inhibin-B (Surplus),LABORATORY,C,e
+SSANA2_G,Autoantibodies - Immunofluorescence Analyses (Surplus),LABORATORY,G,p
+SSBFR_B,Brominated Flame Retardants (BFRs) - Pooled Samples (Surplus),LABORATORY,B,e
+SSCA_B,Cancer antigen CA125 and CA15.3 - Serum (Surplus),LABORATORY,B,p
+SSCGA_B,"Cancer antigen CA125, CA15.3 and HE4 IgG antibodies - Serum (Surplus)",LABORATORY,B,p
+SSCHL_A,Sex Steroid Hormone - Men (Surplus),LABORATORY,A,p
+SSCHL_B,Sex Steroid Hormone - Men (Surplus),LABORATORY,B,p
+SSCHL_C,Sex Steroid Hormone - Men (Surplus),LABORATORY,C,p
+SSCMV_A,Cytomegalovirus Antibodies - Serum (Surplus),LABORATORY,A,e
+SSCMV_B,Cytomegalovirus Antibodies - Serum (Surplus),LABORATORY,B,e
+SSCMV_C,Cytomegalovirus Antibodies - Serum (Surplus),LABORATORY,C,e
+SSCT_H,Chlamydia Pgp3 (plasmid gene product 3) ELISA (enzyme linked immunosorbent assay) and multiplex bead,LABORATORY,H,e
+SSCT_I,Chlamydia Pgp3 (plasmid gene product 3) ELISA (enzyme linked immunosorbent assay) and multiplex bead,LABORATORY,I,e
+SSCYST_A,Cystatin C - Serum (Surplus),LABORATORY,A,p
+SSCYST_B,Cystatin C (Surplus),LABORATORY,B,p
+SSDEET_I,DEET Metabolites - Urine - Surplus,LABORATORY,I,e
+SSDFS_G,Autoantibodies - Anti-DFS70 Autoantibody Analyses (Surplus),LABORATORY,G,p
+SSEBV_C,Epstein-Barr Virus (VCA IgG) - Serum (Surplus),LABORATORY,C,p
+SSEBV_D,Epstein-Barr Virus (VCA IgG) - Serum (Surplus),LABORATORY,D,p
+SSEBV_E,Epstein-Barr Virus (VCA IgG) - Serum (Surplus),LABORATORY,E,p
+SSEBV_F,Epstein-Barr Virus (VCA IgG) - Serum (Surplus),LABORATORY,F,p
+SSFA_C,Fatty Acids - Plasma (Surplus),LABORATORY,C,p
+SSFLRT_H,Flame Retardant Metabolites - Urine (Surplus),LABORATORY,H,e
+SSFOL_A,Folic Acid - Unmetabolized (Surplus),LABORATORY,A,e
+SSFR_G,Flame Retardants - Urine  (Surplus),LABORATORY,G,e
+SSFR_I,Flame Retardants - Urine (Surplus),LABORATORY,I,e
+SSGLYP_H,Glyphosate (GLYP) - Urine,LABORATORY,H,e
+SSGLYP_I,Glyphosate (GLYP) - Urine (Surplus),LABORATORY,I,e
+SSHCVR_C,Hepatitis C RNA (HCV-RNA) & HCV Genotype (Surplus),LABORATORY,C,e
+SSHE4_B,Human epididymal secretory protein E4 (HE4) - Serum (Surplus),LABORATORY,B,p
+SSHEPC_H,Hepatitis C: Confirmed Antibody (INNO-LIA),LABORATORY,H,e
+SSHPV_F,Human Papillomavirus (HPV) Viral Load - Oral Rinse - Oral High-Risk HPV Infections (Surplus),LABORATORY,F,e
+SSHSV1_A,Herpes Simplex Virus Type-1 (Surplus),LABORATORY,A,e
+SSHSV1_B,Herpes Simplex Virus Type-1 (Surplus),LABORATORY,B,e
+SSKL_E,Klotho - Serum (Surplus),LABORATORY,E,p
+SSKL_F,Klotho - Serum (Surplus),LABORATORY,F,p
+SSKL_G,Klotho - Serum (Surplus),LABORATORY,G,p
+SSKL_H,Klotho - Serum (Surplus),LABORATORY,H,p
+SSKL_I,Klotho - Serum (Surplus),LABORATORY,I,p
+SSMEL_C,Melamine - Urine (Surplus),LABORATORY,C,e
+SSMHHT_I,"Mono-2-ethyl-5-hydroxyhexyl terephthalate, mono-2-ethyl-5-carboxypentyl terephthalate, and monooxois",LABORATORY,I,e
+SSMUMP_A,Mumps Antibody - Serum (Surplus),LABORATORY,A,e
+SSMUMP_B,Mumps Antibody - Serum (Surplus),LABORATORY,B,e
+SSMUMP_C,Mumps Antibody - Serum (Surplus),LABORATORY,C,e
+SSNEON_I,Neonicotinoids - Urine - Surplus,LABORATORY,I,e
+SSNO3P_B,"Perchlorate, Nitrate & Thiocyanate - Urine (Surplus)",LABORATORY,B,e
+SSNORO_A,Norovirus antibody - Serum,LABORATORY,A,e
+SSNORO_C,Norovirus antibody - Serum,LABORATORY,C,e
+SSOL_A,Monoclonal gammopathy of undetermined significance (MGUS) (Surplus),LABORATORY,A,p
+SSOL_B,Monoclonal gammopathy of undetermined significance (MGUS) (Surplus),LABORATORY,B,p
+SSOL_C,Monoclonal gammopathy of undetermined significance (MGUS) (Surplus),LABORATORY,C,p
+SSPCB_B,Non-dioxin-like Polychlorinated Biphenyls - Pooled Samples (Surplus Sera),LABORATORY,B,e
+SSPFAC_H,Perfluoroalkyl and Polyfluoroalkyl Substances in US children 3-11 Years of Age,LABORATORY,H,e
+SSPFAS_H,Perfluoroalkyl and Polyfluoroalkyl Substances - Linear and Branched PFOS and PFOA Isomers (Surplus),LABORATORY,H,e
+SSPFAS_J,Perfluoroalkyl and Polyfluoroalkyl Substances (Surplus),LABORATORY,J,e
+SSPFC_A,Perfluoroaokyl Chemicals - Serum (Surplus),LABORATORY,A,e
+SSPFSU_H,Perfluoroalkyl and Polyfluoroalkyl Substances,LABORATORY,H,e
+SSPHTE_H,Phthalates and Plasticizers Metabolites - Urine (Surplus),LABORATORY,H,e
+SSPOLI_F,"Poliovirus Serotypes 1, 2, & 3 Antibodies - Serum (Surplus)",LABORATORY,F,e
+SSPST_B,Pesticides - Organochlorine Metabolites - Serum - Pooled Samples (Surplus),LABORATORY,B,
+SSPT_I,Pertussis and tetanus – Serum (Surplus),LABORATORY,I,e
+SSQ,Social Support,QUESTIONNAIRE,A,
+SSQ_B,Social Support,QUESTIONNAIRE,B,
+SSQ_C,Social Support,QUESTIONNAIRE,C,
+SSQ_D,Social Support,QUESTIONNAIRE,D,
+SSQ_E,Social Support,QUESTIONNAIRE,E,
+SSQFEV_C,Coxiella Burnetii (Q Fever) Antibodies - Serum (Surplus),LABORATORY,C,e
+SSSAL_D,Salmonella & Campylobacter Antibodies (Surplus),LABORATORY,D,e
+SSSNFL_H,Serum Neurofilament Light Chain - Serum,LABORATORY,H,e
+SSTFR_A,Transferrin Receptor - Pregnant Women (Surplus),LABORATORY,A,
+SSTFR_B,Transferrin Receptor - Pregnant Women (Surplus),LABORATORY,B,
+SSTOCA_G,Antibody to Toxocara spp. (Surplus),LABORATORY,G,e
+SSTOCA_H,Antibody to Toxocara spp. (Surplus),LABORATORY,H,e
+SSTOXO_F,Toxoplasma Gondii Antibody - Serum (Surplus),LABORATORY,F,e
+SSTOXO_G,Toxoplasma gondii Antibody - Serum (Surplus),LABORATORY,G,e
+SSTOXO_H,Toxoplasma gondii Antibody - Serum (Surplus),LABORATORY,H,e
+SSUSG_E,Urine Specific Gravity Measurement (Surplus),LABORATORY,E,
+SSUVOC_D,Volatile Organic Compound (VOC) Metabolites - Urine (Surplus),LABORATORY,D,e
+SSUVOC_J,Volatile Organic Compound (VOC) Metabolites II - Urine (Surplus),LABORATORY,J,e
+SSVARI_A,Varicella-Zoster Virus Antibody (Surplus),LABORATORY,A,e
+SSVARI_B,Varicella-Zoster Virus Antibody (Surplus),LABORATORY,B,e
+SSVARI_C,Varicella-Zoster Virus Antibody (Surplus),LABORATORY,C,e
+SXQ,Sexual Behavior,QUESTIONNAIRE,A,
+SXQ_B,Sexual Behavior,QUESTIONNAIRE,B,
+SXQ_C,Sexual Behavior,QUESTIONNAIRE,C,
+SXQ_D,Sexual Behavior,QUESTIONNAIRE,D,
+SXQ_E,Sexual Behavior,QUESTIONNAIRE,E,
+SXQ_F,Sexual Behavior,QUESTIONNAIRE,F,
+SXQ_G,Sexual Behavior,QUESTIONNAIRE,G,
+SXQ_H,Sexual Behavior,QUESTIONNAIRE,H,
+SXQ_I,Sexual Behavior,QUESTIONNAIRE,I,
+TB,Tuberculosis,EXAM,A,e
+TB_G,Tuberculosis - Quantiferon_In_Gold,LABORATORY,G,e
+TBQ,Tuberculosis,QUESTIONNAIRE,A,e
+TBQ_G,Tuberculosis,QUESTIONNAIRE,G,e
+TBX_G,Tuberculosis,EXAM,G,e
+TCHOL_D,Cholesterol - Total,LABORATORY,D,p
+TCHOL_E,Cholesterol - Total,LABORATORY,E,p
+TCHOL_F,Cholesterol - Total,LABORATORY,F,p
+TCHOL_G,Cholesterol - Total,LABORATORY,G,p
+TCHOL_H,Cholesterol - Total,LABORATORY,H,p
+TCHOL_I,Cholesterol - Total,LABORATORY,I,p
+TCHOL_J,Cholesterol - Total,LABORATORY,J,p
+TELO_A,Telomere Mean and Standard Deviation (Surplus),LABORATORY,A,p
+TELO_B,Telomere Mean and Standard Deviation (Surplus),LABORATORY,B,p
+TFA_A,Trans Fatty Acids,LABORATORY,A,e
+TFA_F,Trans Fatty Acids,LABORATORY,F,e
+TFR_D,Transferrin Receptor,LABORATORY,D,p
+TFR_E,Transferrin Receptor,LABORATORY,E,p
+TFR_F,Transferrin Receptor,LABORATORY,F,p
+TFR_I,Transferrin Receptor,LABORATORY,I,p
+TFR_J,Transferrin Receptor,LABORATORY,J,p
+TGEMA_F,Tissue Transglutaminase Assay (IgA-TTG) & IgA Endomyseal Antibody Assay (IgA EMA),LABORATORY,F,e
+TGEMA_G,Tissue Transglutaminase Assay (IgA-TTG) & IgA Endomyseal Antibody Assay (IgA EMA),LABORATORY,G,e
+TGEMA_H,Tissue Transglutaminase Assay (IgA-TTG) & IgA Endomyseal Antibody Assay (IgA EMA),LABORATORY,H,e
+THYROD_E,Thyroid Profile,LABORATORY,E,p
+THYROD_F,Thyroid Profile,LABORATORY,F,p
+THYROD_G,Thyroid Profile,LABORATORY,G,p
+TRICH_H,Trichomonas - Urine,LABORATORY,H,e
+TRICH_I,Trichomonas - Urine,LABORATORY,I,e
+TRIGLY_D,"Cholesterol - LDL, Triglyceride & Apoliprotein (ApoB)",LABORATORY,D,p
+TRIGLY_E,Cholesterol - LDL & Triglycerides,LABORATORY,E,p
+TRIGLY_F,Cholesterol - LDL & Triglycerides,LABORATORY,F,p
+TRIGLY_G,Cholesterol - LDL & Triglycerides,LABORATORY,G,p
+TRIGLY_H,Cholesterol - LDL & Triglycerides,LABORATORY,H,p
+TRIGLY_I,Cholesterol - Low - Density Lipoprotein (LDL) & Triglycerides,LABORATORY,I,p
+TRIGLY_J,Cholesterol - Low-Density Lipoproteins (LDL) & Triglycerides,LABORATORY,J,p
+TSNA_H,Tobacco-specific Nitrosamines (TSNAs) - Urine,LABORATORY,H,e
+TST_G,Total Testosterone,LABORATORY,G,p
+TST_H,Sex Steroid Hormone - Serum,LABORATORY,H,p
+TST_I,Sex Steroid Hormone - Serum,LABORATORY,I,p
+UADM_I,Aromatic Diamines - Urine,LABORATORY,I,e
+UAM_E,Atrazine and Metabolites,LABORATORY,E,e
+UAS_D,Arsenics - Total & Speciated - Urine,LABORATORY,D,e
+UAS_E,Arsenics - Total & Speciated - Urine,LABORATORY,E,e
+UAS_F,Arsenics - Total & Speciated - Urine,LABORATORY,F,e
+UAS_G,Arsenics - Total & Speciated - Urine,LABORATORY,G,e
+UAS_H,Arsenics - Speciated - Urine,LABORATORY,H,e
+UAS_I,Speciated Arsenics - Urine,LABORATORY,I,e
+UAS_J,Arsenics - Speciated - Urine,LABORATORY,J,e
+UASS_G,Arsenics - Total & Speciated - Urine - Special Sample,LABORATORY,G,e
+UASS_H,Arsenics - Speciated - Urine - Special Sample,LABORATORY,H,e
+UASS_I,Speciated Arsenics - Urine - Special Sample,LABORATORY,I,e
+UC,Pregnancy Test - Urine,LABORATORY,A,f
+UC_B,Pregnancy Test - Urine,LABORATORY,B,f
+UC_C,Pregnancy Test - Urine,LABORATORY,C,f
+UCFLOW_F,Urine Flow Rate,LABORATORY,F,
+UCFLOW_G,Urine Flow Rate,LABORATORY,G,
+UCFLOW_H,Urine Flow Rate,LABORATORY,H,
+UCFLOW_I,Urine Flow Rate,LABORATORY,I,
+UCFLOW_J,Urine Flow Rate,LABORATORY,J,
+UCM_J,Chromium - Urine,LABORATORY,J,e
+UCOSMO_F,Osmolality - Urine,LABORATORY,F,
+UCOSMO_G,Osmolality - Urine,LABORATORY,G,
+UCOT_H,"Cotinine, Hydroxycotinine, & Other Nicotine Metabolites and Analogs - Urine",LABORATORY,H,e
+UCOT_I,"Cotinine, Hydroxycotinine, & Other Nicotine Metabolites and Analogs - Urine",LABORATORY,I,e
+UCOT_J,"Cotinine, Hydroxycotinine, & Other Nicotine Metabolites and Analogs - Urine",LABORATORY,J,e
+UCOTS_H,"Cotinine, Hydroxycotinine, & Other Nicotine Metabolites and Analogs - Urine - Special Sample",LABORATORY,H,
+UCOTS_I,"Cotinine, Hydroxycotinine, & Other Nicotine Metabolites and Analogs - Urine - Special Sample",LABORATORY,I,
+UCPREG_D,Pregnancy Test - Urine,LABORATORY,D,f
+UCPREG_E,Pregnancy Test - Urine,LABORATORY,E,f
+UCPREG_F,Pregnancy Test - Urine,LABORATORY,F,f
+UCPREG_G,Pregnancy Test - Urine,LABORATORY,G,f
+UCPREG_H,Pregnancy Test - Urine,LABORATORY,H,f
+UCPREG_I,Pregnancy Test - Urine,LABORATORY,I,f
+UCPREG_J,Urine Pregnancy Test,LABORATORY,J,f
+UFLDE_I,Fluoride - Urine,LABORATORY,I,e
+UHG_D,Mercury: Inorganic - Urine,LABORATORY,D,e
+UHG_E,Mercury: Inorganic - Urine,LABORATORY,E,e
+UHG_F,Mercury: Inorganic - Urine,LABORATORY,F,e
+UHG_G,Mercury: Inorganic - Urine,LABORATORY,G,e
+UHG_H,Mercury: Inorganic - Urine,LABORATORY,H,e
+UHG_I,Mercury: Inorganic - Urine,LABORATORY,I,e
+UHG_J,Mercury: Inorganic - Urine,LABORATORY,J,e
+UHM_D,Metals - Urine,LABORATORY,D,e
+UHM_E,Metals - Urine,LABORATORY,E,e
+UHM_F,Metals - Urine,LABORATORY,F,e
+UHM_G,Metals - Urine,LABORATORY,G,e
+UHMS_G,Metals - Urine - Special Sample,LABORATORY,G,e
+UIO_D,Iodine - Urine,LABORATORY,D,e
+UIO_E,Iodine - Urine,LABORATORY,E,e
+UIO_F,Iodine - Urine,LABORATORY,F,e
+UIO_G,Iodine - Urine,LABORATORY,G,e
+UIO_H,Iodine - Urine,LABORATORY,H,e
+UIO_I,Iodine - Urine,LABORATORY,I,e
+UIO_J,Iodine - Urine,LABORATORY,J,e
+UM_H,Metals - Urine,LABORATORY,H,e
+UM_I,Metals - Urine,LABORATORY,I,e
+UM_J,Metals - Urine,LABORATORY,J,e
+UMS_H,Metals - Urine - Special Sample,LABORATORY,H,
+UMS_I,Metals - Urine - Special Sample,LABORATORY,I,
+UNI_J,Nickel - Urine,LABORATORY,J,e
+UPHOPM_E,"Pyrethroids, Herbicides, & OP Metabolites - Urine",LABORATORY,E,e
+UPHOPM_F,"Pyrethroids, Herbicides, & OP Metabolites - Urine",LABORATORY,F,e
+UPHOPM_G,"Pyrethroids, Herbicides, & Organophosphorus Metabolites - Urine",LABORATORY,G,e
+UPHOPM_H,"Pyrethroids, Herbicides, & Organophosphorus Metabolites - Urine",LABORATORY,H,e
+UPP_D,"Pesticides - Current Use - Urine (Formerly Priority Pesticides, Non-persistent Pesticide Metabolites",LABORATORY,D,e
+UPP_E,"Pesticides - Current Use - Urine (Formerly Priority Pesticides, Non-persistent Pesticide Metabolites",LABORATORY,E,e
+UTAS_H,Arsenic - Total - Urine,LABORATORY,H,e
+UTAS_I,Arsenic - Total - Urine,LABORATORY,I,e
+UTAS_J,Arsenic - Total - Urine,LABORATORY,J,e
+UTASS_H,Arsenic - Total - Urine - Special Sample,LABORATORY,H,e
+UTASS_I,Arsenic - Total - Urine - Special Sample,LABORATORY,I,e
+UVOC_G,Volatile Organic Compound (VOC) Metabolites - Urine,LABORATORY,G,e
+UVOC_H,Volatile Organic Compound (VOC) Metabolites - Urine,LABORATORY,H,e
+UVOC_I,Volatile Organic Compound (VOC) Metabolites - Urine,LABORATORY,I,e
+UVOC_J,Volatile Organic Compound (VOC) Metabolites - Urine,LABORATORY,J,e
+UVOCS_G,Volatile Organic Compound (VOC) Metabolites - Urine - Special Sample,LABORATORY,G,
+UVOCS_H,Volatile Organic Compound (VOC) Metabolites - Urine - Special Sample,LABORATORY,H,
+UVOCS_I,Volatile Organic Compound (VOC) Metabolites - Urine - Special Sample,LABORATORY,I,
+VIC_D,Vitamin C,LABORATORY,D,e
+VIC_J,Vitamin C,LABORATORY,J,e
+VID_2_B,"Vitamin D, Second Exam",LABORATORY,B,e
+VID_B,Vitamin D,LABORATORY,B,e
+VID_C,Vitamin D,LABORATORY,C,e
+VID_D,Vitamin D,LABORATORY,D,e
+VID_E,Vitamin D,LABORATORY,E,e
+VID_F,Vitamin D,LABORATORY,F,e
+VID_G,Vitamin D,LABORATORY,G,e
+VID_H,Vitamin D,LABORATORY,H,e
+VID_I,Vitamin D,LABORATORY,I,e
+VID_J,Vitamin D,LABORATORY,J,e
+VIQ,Vision,QUESTIONNAIRE,A,
+VIQ_B,Vision,QUESTIONNAIRE,B,
+VIQ_C,Vision,QUESTIONNAIRE,C,
+VIQ_D,Vision,QUESTIONNAIRE,D,
+VIQ_E,Vision,QUESTIONNAIRE,E,
+VIT_2_B,"Vitamin A, Vitamin E, & Carotenoids, Second Exam",LABORATORY,B,e
+VIT_B6_D,Vitamin B6,LABORATORY,D,e
+VIT_B6_E,Vitamin B6,LABORATORY,E,e
+VIT_B6_F,Vitamin B6,LABORATORY,F,e
+VITAEC_D,"Vitamin A, Vitamin E & Carotenoids",LABORATORY,D,e
+VITAEC_J,"Vitamin A, Vitamin E & Carotenoids",LABORATORY,J,e
+VITB12_G,Vitamin B12,LABORATORY,G,e
+VITB12_H,Vitamin B12,LABORATORY,H,e
+VIX,Vision,EXAM,A,
+VIX_B,Vision,EXAM,B,
+VIX_C,Vision,EXAM,C,
+VIX_D,Vision,EXAM,D,
+VIX_E,Vision,EXAM,E,
+VNA_H,Volatile N-Nitrosamine Compounds (VNAs) - Urine,LABORATORY,H,e
+VNAS_H,Volatile N-Nitrosamine Compounds (VNAs) - Urine - Special Sample,LABORATORY,H,
+VOC_D,Volatile Organic Compounds - Water & Related Questionnaire Items,LABORATORY,D,
+VOC_E,Volatile Organic Compounds - Water & Related Questionnaire Items,LABORATORY,E,
+VOC_F,Volatile Organic Compounds (VOCs) - Water,LABORATORY,F,
+VOCMWB_E,Volatile Organic Compounds - Trihalomethanes/MTBE/Nitromethane - Blood,LABORATORY,E,e
+VOCMWB_F,Volatile Organic Compounds (VOCs) - Trihalomethanes/MTBE/Nitromethane - Blood,LABORATORY,F,e
+VOCMWB_G,Volatile Organic Compounds (VOCs) - Trihalomethanes/MTBE/Nitromethane - Blood,LABORATORY,G,e
+VOCWB_D,Volatile Organic Compounds - Blood & Related Questionnaire Items,LABORATORY,D,
+VOCWB_E,Volatile Organic Compounds - Blood & Related Questionnaire Items,LABORATORY,E,
+VOCWB_F,Volatile Organic Compounds (VOCs) - Blood,LABORATORY,F,e
+VOCWB_G,Volatile Organic Compounds (VOCs) - Blood,LABORATORY,G,e
+VOCWB_H,Volatile Organic Compounds and Trihalomethanes/MTBE - Blood,LABORATORY,H,e
+VOCWB_I,Volatile Organic Compounds and Trihalomethanes/MTBE - Blood,LABORATORY,I,e
+VOCWB_J,Volatile Organic Compounds and Trihalomethanes/MTBE - Blood,LABORATORY,J,e
+VOCWBS_H,Volatile Organic Compounds (VOCs) and Trihalomethanes/MTBE - Blood - Special Sample,LABORATORY,H,
+VOCWBS_I,Volatile Organic Compounds and Trihalomethanes/MTBE – Blood – Special Sample,LABORATORY,I,
+VTQ_F,Volatile Toxicant (Subsample),QUESTIONNAIRE,F,e
+VTQ_G,Volatile Toxicant (Subsample),QUESTIONNAIRE,G,e
+VTQ_H,Volatile Toxicant (Subsample),QUESTIONNAIRE,H,e
+VTQ_I,Volatile Toxicant,QUESTIONNAIRE,I,e
+VTQ_J,Volatile Toxicant,QUESTIONNAIRE,J,e
+WHQ,Weight History,QUESTIONNAIRE,A,
+WHQ_B,Weight History,QUESTIONNAIRE,B,
+WHQ_C,Weight History,QUESTIONNAIRE,C,
+WHQ_D,Weight History,QUESTIONNAIRE,D,
+WHQ_E,Weight History,QUESTIONNAIRE,E,
+WHQ_F,Weight History,QUESTIONNAIRE,F,
+WHQ_G,Weight History,QUESTIONNAIRE,G,
+WHQ_H,Weight History,QUESTIONNAIRE,H,
+WHQ_I,Weight History,QUESTIONNAIRE,I,
+WHQ_J,Weight History,QUESTIONNAIRE,J,
+WHQMEC_D,Weight History - Youth,QUESTIONNAIRE,D,
+WHQMEC_E,Weight History - Youth,QUESTIONNAIRE,E,
+WHQMEC_F,Weight History - Youth,QUESTIONNAIRE,F,
+WHQMEC_G,Weight History - Youth,QUESTIONNAIRE,G,
+WHQMEC_H,Weight History - Youth,QUESTIONNAIRE,H,
+WHQMEC_I,Weight History - Youth,QUESTIONNAIRE,I,
+WHQMEC_J,Weight History - Youth,QUESTIONNAIRE,J,
+WPIN_D,"Perchlorate, Nitrate & Iodide - Tap Water",LABORATORY,D,

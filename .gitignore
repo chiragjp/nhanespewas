@@ -1,0 +1,8 @@
+.Rhistory
+.DS_Store
+*.Rdata
+*.rds
+*.sqlite
+data/
+*.sh
+.Rproj.user

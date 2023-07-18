@@ -1,0 +1,40 @@
+---
+title: "Select Variables"
+output: html_document
+date: "2022-12-25"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r libraries}
+library(tidyverse)
+library(DBI)
+library(survey)
+library(dplyr)
+```
+
+```{r db}
+dbname <- "nhanes_122322.sqlite"
+con  <- dbConnect(RSQLite::SQLite(), dbname)
+```
+
+```{r select variable names and type count part 1}
+variable_names_pe <- tbl(con, "variable_names_epcf")
+table_names_pe <- tbl(con, "table_names_epcf") %>% select(c(Data.File.Name, series, epcf))
+variable_names_pe <- variable_names_pe %>% left_join(table_names_pe, by="Data.File.Name")
+
+variable_names_pe %>% group_by(Variable.Name, epcf) %>% dplyr::summarise(n=n())
+unique_variables <- variable_names_pe %>% group_by(Variable.Name) %>% dplyr::summarize(n=n()) %>% ungroup %>% as_tibble()
+unique_variables <- variable_names_pe %>% as_tibble() %>% group_by(Variable.Name) %>% select(Variable.Name, Variable.Description, Data.File.Name, Data.File.Description) %>% filter(row_number() ==1 ) %>% left_join(unique_variables)
+unique_variables %>% as_tibble() %>% write_csv(file="select_variables_1.csv")
+
+```
+
+
+
+
+

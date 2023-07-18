@@ -1,0 +1,39 @@
+---
+title: "sample_sizes"
+author: "Chirag Patel"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+sample_size_pe <- read_csv('./select/sample_size_pe.csv')
+sample_size_pe <- sample_size_pe |> filter(!is.na(n))
+e_variables <- read_csv('./select/select_expo_variables_2.csv')
+p_variables <- read_csv('./select/select_pheno_variables_2.csv')
+```
+
+
+```{r}
+p <- ggplot(sample_size_pe, aes(n))
+p <- p + stat_ecdf()
+p <- p + geom_vline(xintercept = c(500, 1000))
+p
+```
+
+
+
+```{r}
+opportunities_by_e <- sample_size_pe |> filter(n >= 1000) |> group_by(evarname) |> count()
+opportunities_by_p <- sample_size_pe |> filter(n >= 1000) |> group_by(pvarname) |> count()
+```
+

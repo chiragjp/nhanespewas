@@ -1,0 +1,88 @@
+---
+title: "Demographic baseline"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(DBI)
+library(ggsci)
+library(DT)
+library(ggrepel)
+library(cowplot)
+source('../quantpe.R')
+```
+
+```{r load demographic baseline}
+con <- DBI::dbConnect(RSQLite::SQLite(), dbname='../pe_summary_stats.sqlite')
+demo_break <- tbl(con, "demographic_breakdown") |> collect() |> rename(avg=mean)
+table_names <- tbl(con, "table_names_epcf") |> collect()
+demo_break <- demo_break |> left_join(table_names, by=c("phenotable"="Data.File.Name"))
+
+```
+
+```{r}
+new_labels <- c(
+  RIAGENDR = "FE",
+  RIDAGEYR = "AGE",
+  INDFMPIR = "PIR",
+  EDUCATION_LESS9 = "ed:<9",
+  EDUCATION_9_11 = "ed:9-11",
+  EDUCATION_HSGRAD = "ed:hsgrad",
+  EDUCATION_AA = "ed:c",
+  EDUCATION_COLLEGEGRAD = "ed:cgrad",
+  ETHNICITY_MEXICAN = "M",
+  ETHNICITY_NONHISPANICBLACK = "B",
+  ETHNICITY_NONHISPANICWHITE = "W",
+  ETHNICITY_OTHER = "OE",
+  ETHNICITY_OTHERHISPANIC = "OH",
+  A = "99",
+  B = "01",
+  C = "03",
+  D = "05",
+  E = "07",
+  F = "08",
+  G = "09",
+  H = "11",
+  I = "13",
+  J = "15",
+  K = "17",
+  L = "17"
+)
+```
+
+```{r}
+overall_summary <- demo_break |> group_by(varname, series) |> summarize(m_q10=quantile(avg, probs=.1), m_q25=quantile(avg, probs=.25), m_median=median(avg), m_q75=quantile(avg, probs=.75), m_q90=quantile(avg, probs=.9))
+
+overall_summary_across_surveys <- demo_break |> group_by(varname) |> summarize(m_q10=quantile(avg, probs=.1), m_q25=quantile(avg, probs=.25), m_median=median(avg), m_q75=quantile(avg, probs=.75), m_q90=quantile(avg, probs=.9))
+
+
+overall_summary_l <- overall_summary |> pivot_longer(cols=starts_with("m_"), names_to="q")
+
+
+plot_demographic_summary <- function(summary_data) {
+  p <- ggplot(summary_data, aes(series, value))
+  p <- p + geom_point() + facet_wrap(~varname, scales = "free", labeller = as_labeller(new_labels))
+  p <- p + geom_point(data=summary_data |> filter(q=='m_median'), aes(series, value), color='blue', size=3, shape=5)
+  p <- p + geom_point(data=summary_data |> filter(q=='m_q10' | q=='m_q90'), aes(series, value), color='red', size=1)
+  p <- p + xlab("NHANES Survey") + ylab("Percent or Value") + theme_bw()
+  p
+}
+
+
+p1 <- plot_demographic_summary(overall_summary_l |> filter(grepl("EDUCATION", varname))) + ylab("Percent")
+p2 <- plot_demographic_summary(overall_summary_l |> filter(grepl("ETHNICITY", varname))) + ylab("Percent")
+p3 <- plot_demographic_summary(overall_summary_l |> filter(varname %in% c("RIAGENDR", "RIDAGEYR", "INDFMPIR")))
+
+```
+
+```{r}
+
+
+
+p <- ggplot(demo_break, aes(avg))
+p <- p + stat_ecdf()
+p <- p + facet_grid(series~varname, scales="free", labeller = as_labeller(new_labels))
+p <- p + xlab("value") + ylab("quantile")
+p
+```

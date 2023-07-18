@@ -1,0 +1,163 @@
+---
+title: "Select part 2"
+author: "Chirag Patel"
+date: "2023-03-12"
+output: html_document
+---
+
+- figure out what is categorical 
+- which to add, which to remove
+
+
+```{r libraries}
+library(tidyverse)
+library(DBI)
+library(survey)
+library(dplyr)
+```
+
+
+```{r db}
+dbname <- "nhanes_122322.sqlite"
+con  <- dbConnect(RSQLite::SQLite(), dbname)
+```
+
+```{r select part 2}
+variable_information <- tbl(con, "variable_names_epcf")
+table_information <- tbl(con, "table_names_epcf") # c - control; e - exposure, f-filter; p - phenotype
+variable_information_joined <- variable_information |> left_join(table_information |> select(Data.File.Name , epcf), by="Data.File.Name")
+selected_variables <- read_csv("./select_variables_1.csv") |> filter(select == 1)
+variable_information_selected <- variable_information_joined |> collect() |> filter(Variable.Name %in% selected_variables$Variable.Name)
+```
+
+#  refer to bp_smq_paq_update.Rmd
+- add variables created there in the selected list
+
+```{r}
+updated_bpx_variables <- variable_information_joined |> filter(Variable.Name == "MSYSTOLIC" | Variable.Name == "MDIASTOLIC")
+updated_smq_variables <- variable_information_joined |> filter(Variable.Name == "SMQ_current_ever_never"  | Variable.Name ==  "SMQ_how_long_since_quit_years") 
+pa_names_ad <- c("walk_min_per_day", 
+               "PAQ_walk_days",
+               "PAQ_walk_days_per_week", 
+               "PAQ_walk_met",
+               "PAQ_home_week", 
+               "PAQ_home_met",
+               "PAQ_work_met",
+               "PAQ_strengthening_days",
+               "PAQ_strengthening_week", 
+               "PAQ_strengthening_met" ,
+               "PAQ_sedentary_activity_min_per_day",
+               "PAQ_leisure_met" , 
+               "PAQ_total_met")
+
+pa_names_ej <- c("PAQ_work_vigorous_week",
+                 "PAQ_work_moderate_week",
+                 "PAQ_walk_week",
+                 "PAQ_recreation_vigorous_week",
+                 "PAQ_recreation_moderate_week",
+                 "PAQ_work_vigorous_met" ,
+                 "PAQ_work_moderate_met",
+                 "PAQ_walk_met",
+                 "PAQ_recreation_vigorous_met" ,
+                 "PAQ_recreation_moderate_met",
+                 "PA_sedentary_activity_min_per_day",
+                 "PAQ_total_met")
+updated_paq_variables <- variable_information_joined |> filter(Variable.Name %in% c(pa_names_ad, pa_names_ej))
+
+updated_variables <- rbind(updated_bpx_variables |> collect(),updated_smq_variables |> collect(), updated_paq_variables |> collect()) 
+
+# remove the SMQ 
+# remove the PA variables
+smq_tables <- variable_information_joined |> filter(Variable.Name == "SMQ_current_ever_never") |> pull(Data.File.Name) |> unique()
+pa_tables <- variable_information_joined |> filter(Variable.Name == 'PAQ_total_met' ) |> pull(Data.File.Name) |> unique()
+variable_information_selected <- variable_information_selected |> filter(!(Data.File.Name %in% smq_tables))
+variable_information_selected <- variable_information_selected |> filter(!(Data.File.Name %in% pa_tables))
+variable_information_selected <- variable_information_selected |> rbind(updated_variables)
+
+```
+
+
+filter out variables that are not in the database
+```{r}
+in_db <- dbListTables(con)
+variable_information_selected <- variable_information_selected |> filter(Data.File.Name %in% in_db)
+```
+
+```{r}
+remove_vars <- c("DXASPNST", "BMDSADCM", "BPXDAR", "BMXSAD1", "BMXSAD2", "BMXSAD3", "BMXSAD4", "HIQ065" , "BPXDI1", "BPXDI2", "BPXDI3", "BPXDI4", "BPXSY1", "BPXSY2", "BPXSY3", "BPXSAR", "LBDSELSI", "LBDSY3", "LBDSY4")
+variable_information_selected <- variable_information_selected |> filter(!(Variable.Name %in% remove_vars))
+variable_information_selected <- variable_information_selected |> filter(!(Variable.Name == 'URXUCR' & epcf == 'e'))
+```
+
+
+## bookkeeping categorical: see categorical_levels_table.R
+
+```{r}
+e_variable_levels <- tbl(con, "e_variable_levels")
+```
+
+
+# Housing characteristics
+# HOQ065: --> 1: owned, 2: rented, 3: other arrangement, 7: refused
+
+
+#Income
+# IND310 - categorical variable that has 77 and 99 as refused, dont know, missing
+# INQ300 - categorical variable of family savings > 20k  -> 1 = yes, 2=no
+# Income from DEMO
+
+# HPV
+# HPV: 
+# keep LBDHPCR,ORXHPV,LBXHP2C  remove everything else
+# 1: Positive, 2: Negative
+
+```{r}
+hpv_variable_names <- c(
+  'LBDHPCR',
+  'LBDRPCR',
+  'ORXHPV',
+  'LBXHP2C',
+  'LBX06', # - HPV 06 result
+  'LBX11', # - HPV 11 result
+  'LBX16', # - HPV 16 result
+  'LBX18' # - HPV 18 result
+)
+hpv_rows <- variable_information_selected |> filter(Variable.Name %in% hpv_variable_names)
+# remove the tables 
+hpv_tables <- variable_information_selected |> filter(Variable.Name %in% hpv_variable_names) %>% pull(Data.File.Name)
+variable_information_selected <- variable_information_selected |> filter(!(Data.File.Name %in% hpv_tables))
+variable_information_selected <- variable_information_selected |> rbind(hpv_rows)
+  
+```
+
+```{r}
+to_remove <- c('LBDSY4', 'LBXBVPH', 'LBXHIV1', 'LBXHIV2', 'LBXHNAT')
+variable_information_selected <- variable_information_selected |> filter(!(Variable.Name %in% to_remove))
+```
+
+# S. Aureus
+# LBXMS1
+```{r}
+saur_table_names <- variable_information_selected |> filter(Variable.Name == 'LBXMS1') |> pull(Data.File.Name) |> unique()
+saur_rows <- variable_information_selected |> filter(Variable.Name == 'LBXMS1')
+variable_information_selected <- variable_information_selected |> filter(!(Data.File.Name %in% saur_table_names))
+variable_information_selected <- variable_information_selected |> rbind(saur_rows)
+
+```
+
+remove SS for now
+```{r}
+variable_information_selected <- variable_information_selected |> filter(!grepl('^SS', Data.File.Name))
+```
+
+```{r}
+variable_information_selected |> filter(epcf == 'p') |> arrange(Variable.Name) |> write_csv(file="select_pheno_variables_2.csv")
+variable_information_selected |> filter(epcf == 'e') |> arrange(Variable.Name) |> write_csv(file="select_expo_variables_2.csv")
+```
+
+## may want to analyze BNP
+
+# Education
+# DMDEDUC2 - new version
+# DMDEDUC3 - for kids
+

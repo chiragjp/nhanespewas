@@ -1,0 +1,43 @@
+---
+title: "PxE"
+author: "Chirag Patel"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+
+
+## analysis:
+
+-   adjustment by age,age2, education, race, marital status, born in US? - static factors - done
+-   consistency of association in sign and pvalue - done
+-   difference between adjusted vs. unadjusted model in R2 and beta - done
+-   differences in adjusted models in the different domains - need to put in domains - done
+-   for 15 exposures show time change of association - done
+-   average age, sex percentage, ethncity percentage, and average income to poverty per association - table todo
+
+
+
+## data examples
+
+-   add death
+-   add in oral microbiome - done
+-   prediction across domains - done
+-   diet - done
+-   heavy metals - done
+-   PFOA
+
+## coding:
+
+-   meta-analysis code - done
+-   clustering of exposome risk and phenotypes by meta-analysis - done
+-   shiny app - volcano, raw data browser - plotting of the raw data box plot - done
+-   database of summary statistics - done
+-  API of summary stats
+-   meta-analysis across surveys:restrict to surveys > 1? - done
+-   separate out by categorical vs. scale - done
+-   correlation between exposures? - done
+-  package
+
+
+
