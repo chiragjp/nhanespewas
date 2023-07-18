@@ -1,8 +1,7 @@
 # Benchmarking exposome research: An atlas of exposome-phenome associations
 
-Chirag J Patel (@chiragjp)
-
-Arjun K Manrai (@manrai)
+- [@chiragjp](https://twitter.com/chiragjp)
+- [@arjunmanrai](https://twitter.com/arjunmanrai)
 
 06/07/2023
 
