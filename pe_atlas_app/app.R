@@ -5,10 +5,7 @@
 # 6/7/23
 
 ## todo
-# about page  - after abstract
-# download data - done
 # label categorical variables
-# exposure vs. phenotype scatterplot? 
 # 
 
 library(tidyverse)

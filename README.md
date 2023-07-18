@@ -14,10 +14,10 @@ We build a comprehensive "atlas" of correlations between 278 phenotypes (e.g., b
 
 Specifically, the atlas provides a comprehensive list of exposure-phenome associations across the cohort, document statistical approaches used to associate exposures with phenotype, and systematically assesses replicability across independent cohorts.
 
-![Pipeline: combining tables in NHANES for PE-WAS.](img/pe.png){width="500"}
+<img src="img/pe.png" width="70%" height="70%" />
 
 ## Phenome-Exposome Atlas and Browser
 
--   [Web Application](http://chiragjp.shinyapps.io/)
+-   [PE Browsable Atlas](https://chiragjp.shinyapps.io/pe_atlas/)
 -   [Phenotype by Exposure Associations](rmd/pe.html)
 -   [Consistency of Exposome Associations](rmd/consistency.html)
