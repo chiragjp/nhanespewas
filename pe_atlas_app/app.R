@@ -44,8 +44,8 @@ ui <- navbarPage("Phenome-Exposome Atlas",
                 p("How much variation do exposures explain in phenotype?"),
                 p("This is an atlas of 127K correlations between 278 phenotypes (e.g., body mass index, glucose, height, creatinine) and 651 exposures and behaviors (e.g., self-reported nutrient intake; blood lead levels; urinary phthalates; blood PFOA) across the National Health and Nutrition Examination Surveys (NHANES) in individuals from 1999-2017. For each survey, we associate the phenotype and exposure, and summarize the association size across the surveys. We assess the robustness of associations by estimating the false discovery rate, consistency with adjustments, and concordance across multiple waves of the surveys."),
                 img(src="pe.png",height="650px"),
-                h2("Contact Us:"),
-                p(a("Chirag Patel", href="mailto:chirag@hms")),
+                h3("GitHub Repository:"),
+                p(a("nhanes_pewas", href="https://github.com/chiragjp/nhanes_pewas"))
                 )
     ),
     tabPanel("Browse By Phenotype", 

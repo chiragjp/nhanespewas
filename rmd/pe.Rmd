@@ -5,8 +5,8 @@ date: "`r Sys.Date()`"
 output: html_document
 ---
 
-# Systematic Associations Between Clinical Phenotypes and Environmental Exposures: Benchmarking Exposomic Research
-
+# Systematic Associations Between Phenotypes and Environmental Exposures: Benchmarking Exposomic Research
+## NHANES
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -27,6 +27,8 @@ library(ggsci)
 library(DT)
 library(ggrepel)
 library(cowplot)
+library(reactable)
+library(gt)
 source('../quantpe.R')
 
 ```
@@ -39,6 +41,11 @@ ep_assoc_summary_across_models <- function(summary_stats, glanced_stats) {
   adj_vs_base <- adj_vs_base |> mutate(rsq_adjusted_base_diff=rsq_adjusted-rsq_base, rsq_adjusted_diff = rsq_adjusted-rsq_unadjusted)
   summary_stats_wide |> left_join(adj_vs_base, by=c("evarname", "pvarname", "exposure_table_name", "phenotype_table_name"))
 }
+
+remove_units_from_string <- function(vardesc) {
+  gsub(" \\(.*\\)","", vardesc)
+}
+
 ```
 
 ```{r connect to db}
@@ -120,19 +127,12 @@ n_pvars <- length(unique(adjusted_meta_2$pvarname))
 # Sample sizes within and across all surveys
 
 ```{r sample sizes}
-
-p <- ggplot(expos_wide, aes(factor(Begin.Year), nobs_adjusted))
-p <- p + geom_boxplot() + ylab("Sample Sizes for P-E association") + xlab("Survey Year")
-p
-
 sample_size_per_pair <- expos_wide |> filter(term == 'expo' | term== 'expo1') |> group_by(evarname, pvarname) |> summarize(total_n=sum(nobs_adjusted), n_surveys=n(), median_n=median(nobs_adjusted))
-
-
 ```
 
 # Summary of the summary stats
 
-```{r}
+```{r fig.height=5, fig.width=10}
 adjusted_meta_2 <- adjusted_meta_2 |> ungroup() |>  mutate(pval_BY=p.adjust(p.value, method="BY"), pvalue_bonferroni=p.adjust(p.value, method="bonferroni"))
 adjusted_meta_2 <- adjusted_meta_2 |> mutate(sig_levels = case_when(
   pvalue_bonferroni < 0.05 ~ 'Bonf.<0.05',
@@ -144,6 +144,31 @@ bonf_thresh <- 0.05/nrow(adjusted_meta_2)
 quantile(adjusted_meta_2$p.value, probs=c(0.01, .05, .1, .2, .3, .4, .5, .6, .7, .8, .9, .95, .99), na.rm = T)
 quantile(adjusted_meta_2$estimate, probs=c(0.01, .05, .1, .2, .3, .4, .5, .6, .7, .8, .9, .95, .99), na.rm = T)
 sum(adjusted_meta_2$pvalue_bonferroni < 0.05)/nrow(adjusted_meta_2) 
+
+adjusted_meta_2 |> group_by(sig_levels) |> count()
+adjusted_meta_2 |> filter(sig_levels == 'BY<0.05') |> arrange(-p.value) |> head()
+
+## qqplot
+pval_qq <- data.frame(observed = sort(adjusted_meta_2$p.value), expected = (1:nrow(adjusted_meta_2))/nrow(adjusted_meta_2))
+qq_p <- ggplot(pval_qq, aes(-log10(expected), -log10(observed)))
+qq_p <- qq_p + geom_point()
+##
+
+p <- ggplot(pval_qq, aes(observed))
+p <- p + geom_density() + theme_bw()
+p <- p + geom_hline(yintercept = 1, color='blue')
+p <- p + xlab("P-E association pvalue")
+
+p <- ggplot(adjusted_meta_2, aes(p.value))
+p <- p + geom_density() + theme_bw() + facet_grid(~ecategory)
+p1 <- p + xlab("P-E association pvalue")
+
+
+p <- ggplot(adjusted_meta_2, aes(p.value))
+p <- p + geom_density() + theme_bw() + facet_grid(~pcategory)
+p2 <- p + xlab("P-E association pvalue")
+
+plot_grid(p1, p2, nrow=2, labels=c("A", "B"))
 
 ```
 
@@ -186,25 +211,95 @@ e_group_summary <- adjusted_meta_2 |> unite(e_scategory, c(ecategory, esubcatego
             max_estimate=first(estimate), max_p.value=first(p.value)) |> mutate(n_sig_pct=n_sig/n_tests)
 
 
+
+
+
 ```
 
-```{r volcano}
+```{r}
+e_group_summary <- adjusted_meta_2 |> unite(e_scategory, c(ecategory, esubcategory)) |> group_by(e_scategory) |> arrange(pvalue_bonferroni) |>  
+  summarize(
+            #median_r2=mean(mean_adjusted_base_r2_diff, na.rm=T),  
+            #median_abs_estimate=median(abs(estimate), na.rm=T),
+            n_sig=sum(pvalue_bonferroni < 0.05, na.rm=T), 
+            n_tests=sum(!is.na(pvalue_bonferroni)),  
+            #median_i.squared=median(i.squared, na.rm=T),
+            max_r2=first(mean_adjusted_base_r2_diff), 
+            max_pvarname=remove_units_from_string(first(pvardesc)),
+            max_evarname=remove_units_from_string(first(evardesc)),
+            max_estimate=first(estimate), max_p.value=first(p.value), max_i.squared=first(i.squared)) |> mutate(n_sig_pct=n_sig/n_tests)
+
+e_bonf_group_summary <- adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05') |> unite(e_scategory, c(ecategory, esubcategory)) |> group_by(e_scategory) |> arrange(pvalue_bonferroni) |>  
+  summarize(median_bonf_r2=mean(mean_adjusted_base_r2_diff, na.rm=T),  
+            median_bonf_abs_estimate=median(abs(estimate), na.rm=T),
+            median_bonf_pvalue=median(pvalue_bonferroni, na.rm=T), 
+            median_bonf_i.squared=median(i.squared, na.rm=T),
+            median_bonf_r2=median(mean_adjusted_base_r2_diff))
+
+## merge
+e_group_summary <- e_group_summary |> left_join(e_bonf_group_summary, by='e_scategory')
+
+e_group_summary <- e_group_summary |> filter(n_sig > 1) |> write_csv(file="e_group_summary.csv")
+
+
+reactable(e_group_summary, defaultPageSize = 25,columns=list(
+    e_scategory=colDef(name="Exposure Group"),
+    #median_r2 = colDef(name="Median R2", format=colFormat(digits=3)),
+    #median_abs_estimate=colDef(name="Median Effect Size", format=colFormat(digits=3)),
+    #median_i.squared=colDef(name="Median I2", format=colFormat(digits=1)),
+    n_sig=colDef(name="N (p<Bonf)"),
+    n_sig_pct=colDef(name="% (p<Bonf)", format=colFormat(digits=1)),
+    median_bonf_r2=colDef(name="Median R2 (p<Bonf)", format=colFormat(digits=3)),
+    median_bonf_abs_estimate=colDef(name="Median Effect Size (p<Bonf)", format=colFormat(digits=3)),
+    median_bonf_pvalue=colDef(name="Median P.value (p<Bonf)", format=colFormat(digits=3)),
+    median_bonf_i.squared=colDef(name="Median i2 (p<Bonf)", format=colFormat(digits=1)),
+    max_pvarname=colDef(name="Phenotype (lowest p)"),
+    max_evarname=colDef(name="Exposure (lowest p)"),
+    max_r2 = colDef(name="R2 (lowest p)", format=colFormat(digits=3)),
+    max_estimate = colDef("Effect Size (lowest p)", format=colFormat(digits=3)),
+    max_p.value = colDef("Lowest p", format=colFormat(digits=3)),
+    max_i.squared = colDef("I2 (lowest p)", format=colFormat(digits=1))
+  )
+)
+
+
+
+
+```
+
+```{r}
+p_group_summary %>% reactable()
+```
+
+```{r volcano, fig.height=8, fig.width=8}
 adjusted_meta_2 <- adjusted_meta_2 |> mutate(p_cap = ifelse(p.value < 1e-30, 1e-30, p.value))
 p <- ggplot(adjusted_meta_2 |> filter(ecategory != 'autoantibody'), aes(estimate, -log10(p_cap)))
 p <- p + geom_point(shape='.') + scale_x_continuous(limits=c(-1, 1))
 p <- p + facet_grid(ecategory ~ .) + scale_color_npg()
 p <- p + geom_hline(yintercept = -log10(.05/nrow(adjusted_meta_2)), color='lightblue')
 p <- p + theme_minimal() + theme(legend.position = "none") +ylab('p.value') + xlab("estimate")
-p
+p1 <- p
 
-adjusted_meta_2 <- adjusted_meta_2 |> mutate(p_cap = ifelse(p.value < 1e-30, 1e-30, p.value))
+## uBiome only
 p <- ggplot(adjusted_meta_2 |> filter(pcategory == 'microbiome'), aes(estimate, -log10(p_cap)))
 p <- p + geom_point(shape='.') + scale_x_continuous(limits=c(-1, 1))
 p <- p + facet_grid(ecategory ~ .) + scale_color_npg()
 p <- p + geom_hline(yintercept = -log10(.05/nrow(adjusted_meta_2)), color='lightblue')
 p <- p + theme_minimal() + theme(legend.position = "none") +ylab('p.value') + xlab("estimate")
-p
 
+
+p <- ggplot(adjusted_meta_2, aes(estimate, -log10(p_cap)))
+p <- p + geom_point(shape='.') + scale_x_continuous(limits=c(-1, 1))
+p <- p + facet_grid(pcategory ~ .) + scale_color_npg()
+p <- p + geom_hline(yintercept = -log10(.05/nrow(adjusted_meta_2)), color='lightblue')
+p <- p + theme_minimal() + theme(legend.position = "none") +ylab('p.value') + xlab("estimate")
+p2 <-p
+
+plot_grid(p1, p2, ncol=2, labels=c("A", "B"))
+```
+
+
+```{r}
 e_effect_sizes_per <- adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05') |> group_by(ecategory, esubcategory, sign(estimate)) |> summarize(median_pvalue=median(p.value), number_signficant=n(), mean_estimate=mean((estimate))) |> arrange(-mean_estimate)
 
 e_effect_sizes_per <- e_effect_sizes_per |> mutate(esubcategory = ifelse(is.na(esubcategory), ecategory, esubcategory))
