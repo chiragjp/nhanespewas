@@ -33,13 +33,13 @@ install_github("chiragjp/nhanespewas")
 
 ```{r}
 # 
-library(nhnaespewas)
+library(nhanespewas)
 ## todo
 ```
 
 #### Browse Summary Statistics
 
 ```{r}
-source('quantpe.R')
+library(nhanespewas)
 ## todo
 ```
