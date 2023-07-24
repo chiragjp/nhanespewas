@@ -23,10 +23,17 @@ Specifically, the atlas provides a comprehensive list of exposure-phenome associ
 
 ## Get Started
 
+#### Installation
+```{r}
+library(devtools)
+install_github("chiragjp/nhanespewas")=
+```
+
 #### E-P Association
 
 ```{r}
-source('quantpe.R')
+# 
+library(nhnaespewas)
 ## todo
 ```
 
