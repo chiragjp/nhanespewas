@@ -29,7 +29,8 @@ library(ggrepel)
 library(cowplot)
 library(reactable)
 library(gt)
-source('../quantpe.R')
+library(broom)
+
 
 ```
 

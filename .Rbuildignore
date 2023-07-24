@@ -1,4 +1,10 @@
-README.md
+^README.md$
 ^nhanespewas\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
+^out
+^download
+^data
+^nhanes_122322.sqllite$
+^pe_summary_stats.sqllite$
+^pe_summary_*

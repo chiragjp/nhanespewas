@@ -10,9 +10,13 @@
 library(getopt)
 library(this.path)
 setwd(this.dir())
-source('pe_rsq.R')
-path_to_nhanes <- './nhanes_122322.sqlite'
-path_to_summary_stats <- './pe_summary_stats.sqlite'
+#source('pe_rsq.R')
+library(devtools)
+load_all("..")
+source('db_paths.R')
+
+#path_to_nhanes <- './nhanes_122322.sqlite'
+#path_to_summary_stats <- './pe_summary_stats.sqlite'
 
 spec <- matrix(c(
   'pvarname', 'p', 1, "character"

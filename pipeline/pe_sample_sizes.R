@@ -1,12 +1,15 @@
 ## Get the sample sizes per correlation and survey year
 
-source('quantpe.R')
+library(devtools)
+load_all("..")
+
 library(corrr)
 library(future)
+source('db_paths.R')
 
-con <- DBI::dbConnect(RSQLite::SQLite(), dbname='nhanes_122322.sqlite')
-e_variables <- read_csv('./select/select_expo_variables_3.csv')
-p_variables <- read_csv('./select/select_pheno_variables_3.csv')
+con <- DBI::dbConnect(RSQLite::SQLite(), dbname=path_to_nhanes)
+e_variables <- read_csv('../select/select_expo_variables_3.csv')
+p_variables <- read_csv('../select/select_pheno_variables_3.csv')
 
 #p_variables <- read_csv("./select/select_ubiome_pheno_variables.csv") |> mutate(epcf='p')
 
@@ -25,7 +28,7 @@ sample_size_for_table <- function(m_table, evars, pvars) {
   sample_size_pair <- sample_size_pair |> dice(all_of(vars)) |> stretch(na.rm=F) |> rename(n=r)
   sample_size_pair <- sample_size_pair |> filter(x %in% evars, y %in% pvars) |> rename(evarname=x, pvarname=y)
   sample_size_pair
-} 
+}
 
 sample_size_for_ep_tables <- function(con, eTable, pTable, variable_information) {
   log_info("Working on { eTable } x {pTable}")

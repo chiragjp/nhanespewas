@@ -3,11 +3,14 @@
 ## 05/15/23
 
 library(furrr)
-library(this.path)
-setwd(this.dir())
-source('pe_rsq.R')
-path_to_nhanes <- './nhanes_122322.sqlite'
-path_to_summary_stats <- './pe_summary_stats.sqlite'
+#library(this.path)
+#setwd(this.dir())
+#source('pe_rsq.R')
+library(devtools)
+load_all("..")
+source('db_paths.R')
+#path_to_nhanes <- '../nhanes_122322.sqlite'
+#path_to_summary_stats <- '../pe_summary_stats.sqlite'
 
 nhanes_con <- DBI::dbConnect(RSQLite::SQLite(), dbname=path_to_nhanes)
 summary_stats_con <- DBI::dbConnect(RSQLite::SQLite(), dbname=path_to_summary_stats)
@@ -25,13 +28,13 @@ r2s <- future_map_dfr(evars_for_ps$pvarname, function(pvarname) {
   dbDisconnect(summary_stats_con)
   svy_r2 <- svy_weighted_r2(pvarname,combined_dat$evars, adjustmentVariables, dat=combined_dat$selected_data, weight_name = combined_dat$weight_to_use$weight_name)
   tibble(pvarname=pvarname,
-         n_evars=length(combined_dat$evars), 
+         n_evars=length(combined_dat$evars),
          n=combined_dat$selected_data |> nrow(),
          base_rsq=svy_r2$base$rsq,base_adj_rsq=svy_r2$base$adj.r2,mve_rsq = svy_r2$mve$rsq,mve_adj_rsq=svy_r2$mve$adj.r2)
 }, .options = furrr_options(seed = TRUE))
 
 
-write_rds(r2s, file='./pe_summary_060623/mvr2.rds')
+write_rds(r2s, file='pe_summary_060623/mvr2.rds')
 
 dbWriteTable(summary_stats_con, 'mvr2', r2s, overwrite=T)
 dbDisconnect(nhanes_con)

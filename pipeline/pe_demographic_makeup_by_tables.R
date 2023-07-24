@@ -3,9 +3,9 @@
 
 
 library(getopt)
-library(this.path)
-setwd(this.dir())
-source('quantpe.R')
+library(devtools)
+load_all("..")
+source('db_paths.R')
 
 TEST <- F
 spec <- matrix(c(
@@ -18,8 +18,8 @@ spec <- matrix(c(
 opt <- getopt(spec)
 
 sample_size_threshold <- 500
-adjustmentVariables <- c("RIDAGEYR", "AGE_SQUARED", 
-                         "RIAGENDR", 
+adjustmentVariables <- c("RIDAGEYR", "AGE_SQUARED",
+                         "RIAGENDR",
                          "INDFMPIR",
                          "EDUCATION_LESS9","EDUCATION_9_11","EDUCATION_AA","EDUCATION_COLLEGEGRAD",
                          "ETHNICITY_MEXICAN", "ETHNICITY_OTHERHISPANIC","ETHNICITY_OTHER", "ETHNICITY_NONHISPANICBLACK")
@@ -38,9 +38,9 @@ adjustmentVariables <- c("RIDAGEYR", "AGE_SQUARED",
 
 
 #ss_file <- './select/sample_size_pe.csv'  #opt$sample_size_pairs_list_file
-ss_file <- './select/sample_size_pe_category_060623.csv'
-path_to_db <- './nhanes_122322.sqlite'
-path_out <- './out'
+ss_file <- '../select/sample_size_pe_category_060623.csv'
+path_to_db <- path_to_nhanes #'../nhanes_122322.sqlite'
+path_out <- '../out'
 
 if(!TEST) {
   phenotype_table <- opt$phenotype_table
@@ -69,9 +69,9 @@ for(ii in 1:nrow(to_do)) {
   log_info("{ii} out of {nrow(to_do)}; expo: {rw$evarname}; pheno: {rw$pvarname} ")
   pheno <-  rw$pvarname
   expo <- rw$evarname
-  
+
   dat <- m_table$merged_tab |> filter(!is.na(wt), wt > 0, !is.na(pheno), !is.na(expo), if_all(all_of(adjustmentVariables), ~!is.na(.)))
-  dsn <- create_svydesign(dat)  
+  dsn <- create_svydesign(dat)
   demo_breakdowns[[ii]] <- demographic_breakdown(dsn) |> mutate(varname_expo=expo, varname_pheno=pheno)
 }
 demo_breakdowns <- demo_breakdowns |> bind_rows() |> mutate(phenotable=phenotype_table, expotable=exposure_table)
