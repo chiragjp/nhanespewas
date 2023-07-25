@@ -10,11 +10,10 @@ library(ggsci)
 library(DT)
 library(ggrepel)
 library(cowplot)
-source('../quantpe.R')
 ```
 
 ```{r load demographic baseline}
-con <- DBI::dbConnect(RSQLite::SQLite(), dbname='../pe_summary_stats.sqlite')
+con <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/pe_summary_stats.sqlite')
 demo_break <- tbl(con, "demographic_breakdown") |> collect() |> rename(avg=mean)
 table_names <- tbl(con, "table_names_epcf") |> collect()
 demo_break <- demo_break |> left_join(table_names, by=c("phenotable"="Data.File.Name"))

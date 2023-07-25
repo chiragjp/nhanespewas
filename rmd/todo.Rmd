@@ -37,7 +37,7 @@ output: html_document
 -   meta-analysis across surveys:restrict to surveys > 1? - done
 -   separate out by categorical vs. scale - done
 -   correlation between exposures? - done
--  package
+-  package - done
 
 
 

@@ -50,7 +50,7 @@ remove_units_from_string <- function(vardesc) {
 ```
 
 ```{r connect to db}
-con <- DBI::dbConnect(RSQLite::SQLite(), dbname='../pe_summary_stats.sqlite')
+con <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/pe_summary_stats.sqlite')
 varnames <- tbl(con, "variable_names_epcf")
 adjusted_meta <- tbl(con, "adjusted_meta")
 unadjusted_meta <- tbl(con, "unadjusted_meta")
@@ -73,7 +73,10 @@ expos_wide <- expos_wide |> select(-Use.Constraints) |> rename(e_data_file_desc=
                                                                p_variable_description=Variable.Description.y
                                                                )
 expos_wide <- expos_wide |> collect()
-expos_wide_summary <- expos_wide |> filter(term == 'expo' | term == 'expo1') |> group_by(evarname, pvarname) |> summarize(mean_adjusted_base_r2_diff = mean(rsq_adjusted_base_diff), mean_unadjusted_r2_diff=mean(rsq_adjusted_diff), total_n = sum(nobs_adjusted)) |> ungroup()
+#expos_wide_summary <- expos_wide |> filter(term == 'expo' | term == 'expo1') |> group_by(evarname, pvarname) |> summarize(mean_adjusted_base_r2_diff = mean(rsq_adjusted_base_diff), mean_unadjusted_r2_diff=mean(rsq_adjusted_diff), total_n = sum(nobs_adjusted)) |> ungroup()
+
+expos_wide_summary <- expos_wide |> filter(term == 'expo' | term == 'expo1' | term == 'expo2') |> group_by(evarname, pvarname) |> summarize(mean_adjusted_base_r2_diff = mean(rsq_adjusted_base_diff), mean_unadjusted_r2_diff=mean(rsq_adjusted_diff), total_n = sum(nobs_adjusted)) |> ungroup()
+
 adjusted_meta <- adjusted_meta |> collect() |> left_join(expos_wide_summary, by=c("evarname", "pvarname"))
 
 
@@ -217,8 +220,11 @@ e_group_summary <- adjusted_meta_2 |> unite(e_scategory, c(ecategory, esubcatego
 
 ```
 
+
+# Tables 1 and 2
 ```{r}
-e_group_summary <- adjusted_meta_2 |> unite(e_scategory, c(ecategory, esubcategory)) |> group_by(e_scategory) |> arrange(pvalue_bonferroni) |>  
+## 
+e_group_summary <- adjusted_meta_2 |> filter(expo_name %in% c('expo', 'expo1', 'expo2', 'expo3')) |> filter(mean_adjusted_base_r2_diff <= .1) |> unite(e_scategory, c(ecategory, esubcategory)) |> group_by(e_scategory) |> arrange(pvalue_bonferroni,mean_adjusted_base_r2_diff) |>  
   summarize(
             #median_r2=mean(mean_adjusted_base_r2_diff, na.rm=T),  
             #median_abs_estimate=median(abs(estimate), na.rm=T),
@@ -226,50 +232,90 @@ e_group_summary <- adjusted_meta_2 |> unite(e_scategory, c(ecategory, esubcatego
             n_tests=sum(!is.na(pvalue_bonferroni)),  
             #median_i.squared=median(i.squared, na.rm=T),
             max_r2=first(mean_adjusted_base_r2_diff), 
+            max_termname=remove_units_from_string(first(expo_name)),
             max_pvarname=remove_units_from_string(first(pvardesc)),
             max_evarname=remove_units_from_string(first(evardesc)),
             max_estimate=first(estimate), max_p.value=first(p.value), max_i.squared=first(i.squared)) |> mutate(n_sig_pct=n_sig/n_tests)
 
-e_bonf_group_summary <- adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05') |> unite(e_scategory, c(ecategory, esubcategory)) |> group_by(e_scategory) |> arrange(pvalue_bonferroni) |>  
-  summarize(median_bonf_r2=mean(mean_adjusted_base_r2_diff, na.rm=T),  
-            median_bonf_abs_estimate=median(abs(estimate), na.rm=T),
-            median_bonf_pvalue=median(pvalue_bonferroni, na.rm=T), 
-            median_bonf_i.squared=median(i.squared, na.rm=T),
-            median_bonf_r2=median(mean_adjusted_base_r2_diff))
+#e_bonf_group_summary <- adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05') |> unite(e_scategory, c(ecategory, esubcategory)) |> group_by(e_scategory) |> arrange(pvalue_bonferroni) |>  
+#  summarize(median_bonf_r2=median(mean_adjusted_base_r2_diff, na.rm=T),  
+#            median_bonf_abs_estimate=median(abs(estimate), na.rm=T),
+#            median_bonf_pvalue=median(pvalue_bonferroni, na.rm=T), 
+#            median_bonf_i.squared=median(i.squared, na.rm=T))
+
+e_bonf_group_summary <- adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05') |> 
+  unite(e_scategory, c(ecategory, esubcategory)) |>
+  mutate(sgn=ifelse(sign(estimate) <0, 'neg', 'pos')) |> group_by(e_scategory, sgn) |> arrange(pvalue_bonferroni) |>  
+  summarize(median_bonf_r2=median(mean_adjusted_base_r2_diff, na.rm=T),  
+            q25_bonf_estimate=quantile(estimate, probs=.25, na.rm=T),
+            median_bonf_estimate=median((estimate), na.rm=T),
+            q75_bonf_estimate=quantile(estimate, probs=.75, na.rm=T)
+  )
+
+e_bonf_group_summary <- e_bonf_group_summary |> pivot_wider(names_from=sgn, values_from=(c(median_bonf_r2, q25_bonf_estimate, median_bonf_estimate, q75_bonf_estimate)))
 
 ## merge
 e_group_summary <- e_group_summary |> left_join(e_bonf_group_summary, by='e_scategory')
+e_group_summary <- e_group_summary |> separate(col=e_scategory, into=c("escategory", "esubcategory"), sep="_")
+e_group_summary <- e_group_summary |> filter(n_sig > 1)
 
-e_group_summary <- e_group_summary |> filter(n_sig > 1) |> write_csv(file="e_group_summary.csv")
+e_group_summary<- e_group_summary |> gt() |> 
+  fmt_number(columns = c(starts_with("q"), starts_with("med")), decimals = 3) |>
+  fmt_number(columns = c(max_r2, max_estimate), decimals = 3) |>
+  fmt_number(columns = c(n_sig_pct), decimals = 2) |>
+  fmt_number(columns = c(max_i.squared), decimals = 0) |>
+  fmt_scientific(columns = max_p.value, decimals = 0)
 
-
-reactable(e_group_summary, defaultPageSize = 25,columns=list(
-    e_scategory=colDef(name="Exposure Group"),
-    #median_r2 = colDef(name="Median R2", format=colFormat(digits=3)),
-    #median_abs_estimate=colDef(name="Median Effect Size", format=colFormat(digits=3)),
-    #median_i.squared=colDef(name="Median I2", format=colFormat(digits=1)),
-    n_sig=colDef(name="N (p<Bonf)"),
-    n_sig_pct=colDef(name="% (p<Bonf)", format=colFormat(digits=1)),
-    median_bonf_r2=colDef(name="Median R2 (p<Bonf)", format=colFormat(digits=3)),
-    median_bonf_abs_estimate=colDef(name="Median Effect Size (p<Bonf)", format=colFormat(digits=3)),
-    median_bonf_pvalue=colDef(name="Median P.value (p<Bonf)", format=colFormat(digits=3)),
-    median_bonf_i.squared=colDef(name="Median i2 (p<Bonf)", format=colFormat(digits=1)),
-    max_pvarname=colDef(name="Phenotype (lowest p)"),
-    max_evarname=colDef(name="Exposure (lowest p)"),
-    max_r2 = colDef(name="R2 (lowest p)", format=colFormat(digits=3)),
-    max_estimate = colDef("Effect Size (lowest p)", format=colFormat(digits=3)),
-    max_p.value = colDef("Lowest p", format=colFormat(digits=3)),
-    max_i.squared = colDef("I2 (lowest p)", format=colFormat(digits=1))
-  )
-)
-
-
-
-
+e_group_summary |> gtsave('./e_group_summary.html')
+e_group_summary
 ```
 
 ```{r}
-p_group_summary %>% reactable()
+## 
+p_group_summary <- adjusted_meta_2 |> filter(expo_name %in% c('expo', 'expo1', 'expo2', 'expo3')) |> filter(mean_adjusted_base_r2_diff <= .1) |> unite(p_scategory, c(pcategory, psubcategory)) |> group_by(p_scategory) |> arrange(pvalue_bonferroni,mean_adjusted_base_r2_diff) |>  
+  summarize(
+            #median_r2=mean(mean_adjusted_base_r2_diff, na.rm=T),  
+            #median_abs_estimate=median(abs(estimate), na.rm=T),
+            n_sig=sum(pvalue_bonferroni < 0.05, na.rm=T), 
+            n_tests=sum(!is.na(pvalue_bonferroni)),  
+            #median_i.squared=median(i.squared, na.rm=T),
+            max_r2=first(mean_adjusted_base_r2_diff), 
+            max_termname=remove_units_from_string(first(expo_name)),
+            max_pvarname=remove_units_from_string(first(pvardesc)),
+            max_evarname=remove_units_from_string(first(evardesc)),
+            max_estimate=first(estimate), max_p.value=first(p.value), max_i.squared=first(i.squared)) |> mutate(n_sig_pct=n_sig/n_tests)
+
+#e_bonf_group_summary <- adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05') |> unite(e_scategory, c(ecategory, esubcategory)) |> group_by(e_scategory) |> arrange(pvalue_bonferroni) |>  
+#  summarize(median_bonf_r2=median(mean_adjusted_base_r2_diff, na.rm=T),  
+#            median_bonf_abs_estimate=median(abs(estimate), na.rm=T),
+#            median_bonf_pvalue=median(pvalue_bonferroni, na.rm=T), 
+#            median_bonf_i.squared=median(i.squared, na.rm=T))
+
+p_bonf_group_summary <- adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05') |> 
+  unite(p_scategory, c(pcategory, psubcategory)) |>
+  mutate(sgn=ifelse(sign(estimate) <0, 'neg', 'pos')) |> group_by(p_scategory, sgn) |> arrange(pvalue_bonferroni) |>  
+  summarize(median_bonf_r2=median(mean_adjusted_base_r2_diff, na.rm=T),  
+            q25_bonf_estimate=quantile(estimate, probs=.25, na.rm=T),
+            median_bonf_estimate=median((estimate), na.rm=T),
+            q75_bonf_estimate=quantile(estimate, probs=.75, na.rm=T)
+  )
+
+p_bonf_group_summary <- p_bonf_group_summary |> pivot_wider(names_from=sgn, values_from=(c(median_bonf_r2, q25_bonf_estimate, median_bonf_estimate, q75_bonf_estimate)))
+
+## merge
+p_group_summary <- p_group_summary |> left_join(p_bonf_group_summary, by='p_scategory')
+p_group_summary <- p_group_summary |> separate(col=p_scategory, into=c("pscategory", "psubcategory"), sep="_")
+p_group_summary <- p_group_summary |> filter(n_sig > 1)
+
+p_group_summary<- p_group_summary |> gt() |> 
+  fmt_number(columns = c(starts_with("q"), starts_with("med")), decimals = 3) |>
+  fmt_number(columns = c(max_r2, max_estimate), decimals = 3) |>
+  fmt_number(columns = c(n_sig_pct), decimals = 2) |>
+  fmt_number(columns = c(max_i.squared), decimals = 0) |>
+  fmt_scientific(columns = max_p.value, decimals = 0)
+
+p_group_summary |> gtsave('./p_group_summary.html')
+p_group_summary
 ```
 
 ```{r volcano, fig.height=8, fig.width=8}
@@ -363,12 +409,12 @@ adjusted_meta_2 <- adjusted_meta_2 |> mutate(evarname = fct_reorder(evarname, ab
 
 ## I2 across number of surveys for P-E pair
 
-# 
-
 ```{r i2}
+## reorder sig_levels
+adjusted_meta_2 <- adjusted_meta_2 |> mutate(sig_levels=fct_relevel(sig_levels, c("> BY & Bonf.","BY<0.05", "Bonf.<0.05")))
 p <- ggplot(adjusted_meta_2, aes(factor(nobs), i.squared,color=sig_levels))
-p <- p + geom_boxplot() + xlab("Number of Surveys for PE Association") + ylab("I^2") + theme(legend.position="bottom") + scale_color_aaas()
-p <- p + theme_bw() + theme(legend.position="bottom") 
+p <- p + geom_boxplot() + xlab("Number of Surveys for PE Association") + theme(legend.position="bottom") + scale_color_aaas()
+p <- p + theme_bw() + theme(legend.position="bottom") + ylab("i-squared")
 p
 
 ```
