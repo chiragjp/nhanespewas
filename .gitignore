@@ -2,7 +2,11 @@
 .DS_Store
 *.Rdata
 *.rds
-*.sqlite
+#*.sqlite
+db/pe_summary_stats.sqlite
+db/nhanes_122322.sqlite
+db/nhanes_122322_backup.sqlite
+pe_atlas_app/pe_summary_stats_shiny.sqlite
 data/
 *.sh
 .Rproj.user
