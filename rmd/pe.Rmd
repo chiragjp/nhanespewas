@@ -44,7 +44,7 @@ ep_assoc_summary_across_models <- function(summary_stats, glanced_stats) {
 }
 
 remove_units_from_string <- function(vardesc) {
-  gsub(" \\(.*\\)","", vardesc)
+  gsub("\\(.*\\)$","", vardesc)
 }
 
 ```
@@ -116,7 +116,7 @@ num_tests <- map_df(n_obss, function(n) {
   tibble(n_expos=n_e, n_phenos=n_p, n_pxe=nn)
 })
 
-num_tests  |> mutate(n_surveys=n_obss) |> print(n=11)
+num_tests  |> mutate(n_surveys=n_obss) |> gt()
 
 ```
 
@@ -237,12 +237,6 @@ e_group_summary <- adjusted_meta_2 |> filter(expo_name %in% c('expo', 'expo1', '
             max_evarname=remove_units_from_string(first(evardesc)),
             max_estimate=first(estimate), max_p.value=first(p.value), max_i.squared=first(i.squared)) |> mutate(n_sig_pct=n_sig/n_tests)
 
-#e_bonf_group_summary <- adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05') |> unite(e_scategory, c(ecategory, esubcategory)) |> group_by(e_scategory) |> arrange(pvalue_bonferroni) |>  
-#  summarize(median_bonf_r2=median(mean_adjusted_base_r2_diff, na.rm=T),  
-#            median_bonf_abs_estimate=median(abs(estimate), na.rm=T),
-#            median_bonf_pvalue=median(pvalue_bonferroni, na.rm=T), 
-#            median_bonf_i.squared=median(i.squared, na.rm=T))
-
 e_bonf_group_summary <- adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05') |> 
   unite(e_scategory, c(ecategory, esubcategory)) |>
   mutate(sgn=ifelse(sign(estimate) <0, 'neg', 'pos')) |> group_by(e_scategory, sgn) |> arrange(pvalue_bonferroni) |>  
@@ -259,12 +253,22 @@ e_group_summary <- e_group_summary |> left_join(e_bonf_group_summary, by='e_scat
 e_group_summary <- e_group_summary |> separate(col=e_scategory, into=c("escategory", "esubcategory"), sep="_")
 e_group_summary <- e_group_summary |> filter(n_sig > 1)
 
+e_group_summary <- e_group_summary |> select(escategory, esubcategory, n_tests, n_sig_pct, median_bonf_r2_neg, median_bonf_r2_pos, q25_bonf_estimate_neg, median_bonf_estimate_neg, q75_bonf_estimate_neg, q25_bonf_estimate_pos, median_bonf_estimate_pos, q75_bonf_estimate_pos, 
+max_pvarname, max_evarname, max_estimate, max_r2, max_p.value, max_i.squared)
+
 e_group_summary<- e_group_summary |> gt() |> 
   fmt_number(columns = c(starts_with("q"), starts_with("med")), decimals = 3) |>
   fmt_number(columns = c(max_r2, max_estimate), decimals = 3) |>
   fmt_number(columns = c(n_sig_pct), decimals = 2) |>
   fmt_number(columns = c(max_i.squared), decimals = 0) |>
   fmt_scientific(columns = max_p.value, decimals = 0)
+
+e_group_summary <- e_group_summary |> 
+  tab_spanner(label = "Effect Sizes < 0",columns = ends_with("neg")) |>
+  tab_spanner(label = "Effect Sizes > 0",columns = ends_with("pos"))
+
+e_group_summary <- e_group_summary |> 
+  tab_spanner(label = "Example P-E Association (lowest p.value for E domain)",columns = starts_with("max"))
 
 e_group_summary |> gtsave('./e_group_summary.html')
 e_group_summary
@@ -285,12 +289,6 @@ p_group_summary <- adjusted_meta_2 |> filter(expo_name %in% c('expo', 'expo1', '
             max_evarname=remove_units_from_string(first(evardesc)),
             max_estimate=first(estimate), max_p.value=first(p.value), max_i.squared=first(i.squared)) |> mutate(n_sig_pct=n_sig/n_tests)
 
-#e_bonf_group_summary <- adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05') |> unite(e_scategory, c(ecategory, esubcategory)) |> group_by(e_scategory) |> arrange(pvalue_bonferroni) |>  
-#  summarize(median_bonf_r2=median(mean_adjusted_base_r2_diff, na.rm=T),  
-#            median_bonf_abs_estimate=median(abs(estimate), na.rm=T),
-#            median_bonf_pvalue=median(pvalue_bonferroni, na.rm=T), 
-#            median_bonf_i.squared=median(i.squared, na.rm=T))
-
 p_bonf_group_summary <- adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05') |> 
   unite(p_scategory, c(pcategory, psubcategory)) |>
   mutate(sgn=ifelse(sign(estimate) <0, 'neg', 'pos')) |> group_by(p_scategory, sgn) |> arrange(pvalue_bonferroni) |>  
@@ -307,12 +305,22 @@ p_group_summary <- p_group_summary |> left_join(p_bonf_group_summary, by='p_scat
 p_group_summary <- p_group_summary |> separate(col=p_scategory, into=c("pscategory", "psubcategory"), sep="_")
 p_group_summary <- p_group_summary |> filter(n_sig > 1)
 
+p_group_summary <- p_group_summary |> select(pscategory, psubcategory, n_tests, n_sig_pct, q25_bonf_estimate_neg, median_bonf_estimate_neg, q75_bonf_estimate_neg, q25_bonf_estimate_pos, median_bonf_estimate_pos, q75_bonf_estimate_pos, 
+max_pvarname, max_evarname, max_estimate, max_r2, max_p.value, max_i.squared)
+
 p_group_summary<- p_group_summary |> gt() |> 
   fmt_number(columns = c(starts_with("q"), starts_with("med")), decimals = 3) |>
   fmt_number(columns = c(max_r2, max_estimate), decimals = 3) |>
   fmt_number(columns = c(n_sig_pct), decimals = 2) |>
   fmt_number(columns = c(max_i.squared), decimals = 0) |>
   fmt_scientific(columns = max_p.value, decimals = 0)
+
+p_group_summary <- p_group_summary |> 
+  tab_spanner(label = "Effect Sizes < 0",columns = ends_with("neg")) |>
+  tab_spanner(label = "Effect Sizes > 0",columns = ends_with("pos"))
+
+p_group_summary <- p_group_summary |> 
+  tab_spanner(label = "Example P-E Association (lowest p.value for E domain)",columns = starts_with("max"))
 
 p_group_summary |> gtsave('./p_group_summary.html')
 p_group_summary
@@ -380,6 +388,9 @@ p
 
 
 ecdf_for_sig <- adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05') |> pull(mean_adjusted_base_r2_diff) |> ecdf()
+ecdf_for_non_sig <- adjusted_meta_2 |> filter(sig_levels == '> BY & Bonf.') |> pull(mean_adjusted_base_r2_diff) |> ecdf()
+
+
 p_effect_sizes_per <- p_effect_sizes_per |> mutate(q = ecdf_for_sig(mean_r2), sig_levels ='Bonf.<0.05')
 p_effect_sizes_per <- p_effect_sizes_per |> mutate(p_cat = ifelse(is.na(psubcategory), pcategory, psubcategory))
 p <- ggplot(adjusted_meta_2, aes(mean_adjusted_base_r2_diff, color=sig_levels))
@@ -412,10 +423,13 @@ adjusted_meta_2 <- adjusted_meta_2 |> mutate(evarname = fct_reorder(evarname, ab
 ```{r i2}
 ## reorder sig_levels
 adjusted_meta_2 <- adjusted_meta_2 |> mutate(sig_levels=fct_relevel(sig_levels, c("> BY & Bonf.","BY<0.05", "Bonf.<0.05")))
+
 p <- ggplot(adjusted_meta_2, aes(factor(nobs), i.squared,color=sig_levels))
 p <- p + geom_boxplot() + xlab("Number of Surveys for PE Association") + theme(legend.position="bottom") + scale_color_aaas()
 p <- p + theme_bw() + theme(legend.position="bottom") + ylab("i-squared")
 p
+
+i2_medians <- adjusted_meta_2 |> group_by(sig_levels) |> summarize(i2_median=median(i.squared))
 
 ```
 
@@ -442,23 +456,20 @@ het_pairs <- adjusted_meta_3 |> filter(pvalue_bonferroni < 0.05, n_pvalue_lt >= 
 
 adjusted_meta_3 |> filter(pvalue_bonferroni < 0.05) |> group_by(ecategory) |> count()
 
-#super_filtered <- adjusted_meta_3 |> filter(pvalue_bonferroni < 0.05, n_pvalue_lt >= 2, i.squared < .5, mean_adjusted_base_r2_diff > .005)
-#super_filtered |> group_by(evarname) |> count() |> arrange(-n)
-#super_filtered |> group_by(pvarname) |> count() |> arrange(-n)
-
 ## non-heterogeneous example
 
 plot_pair <- function(evarname_str, pvarname_str, estimate_limits=c(0.01,.35)) {
   test_1 <- expos_wide |> filter(evarname == evarname_str, pvarname == pvarname_str) |> select(Begin.Year,  exposure_table_name, phenotype_table_name, e_variable_description, p_variable_description, estimate_adjusted, std.error_adjusted, p.value_adjusted) 
-  exposure_name <- test_1$e_variable_description[1]
-  phenotype_name <- test_1$p_variable_description[1]
-  test_1 <- test_1 |> select(Begin.Year, estimate_adjusted, std.error_adjusted) |> rename(estimate=estimate_adjusted, std.error = std.error_adjusted, Survey=Begin.Year)
-meta_test_1 <- adjusted_meta_2 |> filter(evarname == evarname_str, pvarname == pvarname_str) |> mutate(Survey = 'overall') |> select(Survey, estimate, std.error)
+  exposure_name <- remove_units_from_string(test_1$e_variable_description[1])
+  phenotype_name <- remove_units_from_string(test_1$p_variable_description[1])
+  test_1 <- test_1 |> select(Begin.Year, estimate_adjusted, std.error_adjusted) |> rename(estimate=estimate_adjusted, std.error = std.error_adjusted, Survey=Begin.Year) |> mutate(i.squared = NA, i.squared_text='')
+meta_test_1 <- adjusted_meta_2 |> filter(evarname == evarname_str, pvarname == pvarname_str) |> mutate(Survey = 'overall') |> select(Survey, estimate, std.error, i.squared) |> mutate(i.squared_text = sprintf("%i%%", round(i.squared)))
   test_1 <- test_1 |> rbind(meta_test_1) 
   test_1 <- test_1 |> mutate(point_shape = ifelse(Survey == 'overall', 23, 21)) |> mutate(point_shape = as.integer(point_shape)) 
   test_1 <- test_1 |> mutate(point_size = ifelse(Survey == 'overall', 7, 2)) 
   p <- ggplot(test_1, aes(Survey, estimate))
   p <- p + geom_point(aes(shape=point_shape, size=point_size, fill=point_shape)) + scale_shape_identity() + scale_size_identity()
+  p <- p + geom_text(data=meta_test_1, aes(Survey, estimate, label=i.squared_text), size=3, color="black", nudge_x=.6) 
   p <- p + geom_errorbar(aes(ymin=estimate-1.96*std.error, ymax=estimate+1.96*std.error), width=.1) + scale_x_discrete(limits=rev)
   p <- p + scale_y_continuous(limits=estimate_limits)
   p <- p + coord_flip()  + theme_bw() + theme(legend.position = "none")
@@ -478,6 +489,50 @@ p4 <- plot_pair('LBXCOT', 'BPXPLS', c()) # 33% i2
 
 #expos_wide |> filter(evarname == 'LBXPFOS', pvarname == 'LBXSAL') 
 plot_grid(p1, p2, p3, p4, ncol=2,labels = c('A', 'B', "C", "D"), label_size = 12)
+
+```
+
+ # Examples for paper of top hits
+```{r}
+p1 <- plot_pair('LBXPFHS', 'LBXSAL') + ylab("Association Estimate")
+## heterogeneous example
+p2 <- plot_pair('LBXGTC', 'LBXTC') + ylab("Association Estimate")
+
+p3 <- plot_pair('LBXBPB', 'BMXWT', c(-.3, 0)) + ylab("Association Estimate")
+
+p4 <- plot_pair('LBXCOT', 'LBDNENO')+ ylab("Association Estimate")
+
+plot_grid(p1, p2, p3, p4, ncol=2,labels = c('A', 'B', "C", "D"), label_size = 12)
+
+```
+
+```{r}
+library(ggridges)
+## show histogram of associations for all top findings for  LBXGTC, "LBXBPB", "LBXPFHS", "LBXCOT"
+ep_candidates <-  tibble(evarname = c("LBXGTC", "LBXBPB", "LBXPFHS", "LBXCOT"), 
+                         pvarname = c("LBXTC", "BMXWT", "LBXSAL", "LBDNENO"))
+exposure_dist <- adjusted_meta_2 |> filter(evarname %in% ep_candidates$evarname) |> filter(sig_levels == "Bonf.<0.05") |> mutate(evardesc = remove_units_from_string(evardesc))
+
+## collect Survey specific associations
+survey_exposure_pts <- vector(mode = "list", length=nrow(ep_candidates))
+for(rw_num in 1:nrow(ep_candidates)) {
+  survey_exposure_pts[[rw_num]] <- expos_wide |> filter(evarname == ep_candidates$evarname[rw_num], pvarname == ep_candidates$pvarname[rw_num]) |> 
+  select(Begin.Year,  evarname, pvarname, exposure_table_name, phenotype_table_name, e_variable_description, p_variable_description, estimate_adjusted, std.error_adjusted, p.value_adjusted) 
+}
+
+survey_exposure_pts <- survey_exposure_pts |> bind_rows() |> mutate(evardesc=remove_units_from_string(e_variable_description))
+
+exposure_dist <- exposure_dist |> mutate(evarname = substr(evarname, 4, 8)) 
+survey_exposure_pts <- survey_exposure_pts |> mutate(pvarname = substr(pvarname, 4, 8), evarname = substr(evarname, 4, 8))
+
+p <- ggplot(exposure_dist, aes(y=evarname, x=estimate, fill=evarname))
+p <- p + geom_density_ridges()+ scale_fill_jama(guide="none") #+ scale_colour_continuous(guide = "none")
+p <- p + geom_point(data=survey_exposure_pts, aes(y=evarname, x=estimate_adjusted, color=factor(Begin.Year))) + scale_color_aaas(name = "")
+pheno_het <- p + theme_bw()  + theme(legend.position='bottom') + ylab("Exposure Name") + xlab("Association Estimate")
+
+survey_het <- plot_grid(p1, p2, p3, p4, ncol=2,labels = c('A', 'B', "C", "D"), label_size = 12)
+
+p <- plot_grid(survey_het, pheno_het, ncol=2, labels=c("", "E"), label_size = 12)
 
 ```
 
@@ -506,7 +561,7 @@ p
 
 -   estimate the association globally between adjusted and non-adjusted models
 
-```{r}
+```{r fig.height=6, fig.width=9}
 p <- ggplot(expos_wide, aes(estimate_unadjusted, estimate_adjusted))
 p <- p + geom_point(shape='.') + scale_x_continuous(limits=c(-2, 2)) + scale_y_continuous(limits=c(-2, 2)) + xlab("Adjusted [Exposure + Demographics]") + ylab("Unadjusted [Exposure]") + geom_abline()
 p <- p + geom_smooth(method="lm")
@@ -543,12 +598,14 @@ p
 
 tidy(lm(estimate ~ estimate_unadjusted, adjusted_meta_2))
 tidy(lm(estimate ~ estimate_unadjusted, adjusted_meta_2 |> filter(pvalue_bonferroni < .05)))
+tidy(lm(estimate ~ estimate_unadjusted, adjusted_meta_2 |> filter(sig_levels == '> BY & Bonf.')))
+tidy(lm(estimate ~ estimate_unadjusted, adjusted_meta_2 |> filter(sig_levels == 'BY<0.05')))
 
 
 p <- ggplot(adjusted_meta_2 , aes(estimate_unadjusted, estimate, color=ecategory))
 p <- p + geom_point(shape='.') + scale_x_continuous(limits=c(-1, 1)) + scale_y_continuous(limits=c(-1, 1)) + scale_color_aaas()
 p <- p + geom_abline()
-p <- p + facet_grid(sig_levels~ecategory) + xlab("Adjusted model estimate [Exposure + Demographics]") + ylab("Unadjusted estimate [Exposure]")
+p <- p + facet_grid(~ecategory) + ylab("Adjusted model estimate [Exposure + Demographics]") + xlab("Unadjusted estimate [Exposure]")
 p <- p + geom_smooth(method="lm")
 p <- p + theme_bw() +theme(legend.position = "none")
 p
