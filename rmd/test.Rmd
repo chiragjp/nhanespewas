@@ -9,7 +9,7 @@ output: html_document
 
 ```{r}
 
-source('./quantpe.R')
+
 adjustmentVariables <- c("RIDAGEYR", "AGE_SQUARED", 
                          "RIAGENDR", 
                          "INDFMPIR",
