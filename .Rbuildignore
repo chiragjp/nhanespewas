@@ -5,6 +5,8 @@
 ^out
 ^download
 ^data
-^nhanes_122322.sqllite$
-^pe_summary_stats.sqllite$
+^data/pe_summary_stats.sqlite$
+^db/nhanes_122322.sqlite$
+^db/nhanes_122322_backup.sqlite$
+^db/pe_summary_stats.sqlite$
 ^pe_summary_*

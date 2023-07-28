@@ -29,7 +29,7 @@ library(devtools)
 install_github("chiragjp/nhanespewas")
 ```
 
-#### E-P Association
+#### Execute an E-P Association
 
 ```{r}
 # 
@@ -37,9 +37,3 @@ library(nhanespewas)
 ## todo
 ```
 
-#### Browse Summary Statistics
-
-```{r}
-library(nhanespewas)
-## todo
-```
