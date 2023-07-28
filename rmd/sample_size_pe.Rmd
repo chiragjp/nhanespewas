@@ -16,10 +16,10 @@ library(tidyverse)
 ```
 
 ```{r}
-sample_size_pe <- read_csv('./select/sample_size_pe.csv')
+sample_size_pe <- read_csv('../select/sample_size_pe.csv')
 sample_size_pe <- sample_size_pe |> filter(!is.na(n))
-e_variables <- read_csv('./select/select_expo_variables_2.csv')
-p_variables <- read_csv('./select/select_pheno_variables_2.csv')
+e_variables <- read_csv('../select/select_expo_variables_2.csv')
+p_variables <- read_csv('../select/select_pheno_variables_2.csv')
 ```
 
 

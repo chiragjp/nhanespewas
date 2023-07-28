@@ -5,8 +5,14 @@
 ^out
 ^download
 ^data
-^data/pe_summary_stats.sqlite$
+^db/pe_summary_stats.sqlite$
 ^db/nhanes_122322.sqlite$
 ^db/nhanes_122322_backup.sqlite$
 ^db/pe_summary_stats.sqlite$
 ^pe_summary_*
+^pe_atlas_app
+^pipeline
+^rmd
+^scripts
+^select
+^srun_meta.sh$

@@ -13,7 +13,7 @@ library(cowplot)
 ```
 
 ```{r load demographic baseline}
-con <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/pe_summary_stats.sqlite')
+con <- DBI::dbConnect(RSQLite::SQLite(), dbname='../data/pe_summary_stats.sqlite')
 demo_break <- tbl(con, "demographic_breakdown") |> collect() |> rename(avg=mean)
 table_names <- tbl(con, "table_names_epcf") |> collect()
 demo_break <- demo_break |> left_join(table_names, by=c("phenotable"="Data.File.Name"))

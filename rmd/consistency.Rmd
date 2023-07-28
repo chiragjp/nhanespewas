@@ -42,7 +42,7 @@ ep_assoc_summary_across_models <- function(summary_stats, glanced_stats) {
 ```
 
 ```{r connect to db}
-con <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/pe_summary_stats.sqlite')
+con <- DBI::dbConnect(RSQLite::SQLite(), dbname='../data/pe_summary_stats.sqlite')
 varnames <- tbl(con, "variable_names_epcf")
 adjusted_meta <- tbl(con, "adjusted_meta")
 unadjusted_meta <- tbl(con, "unadjusted_meta")

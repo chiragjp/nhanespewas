@@ -11,7 +11,7 @@
 
 <meta name="author" content="Chirag Patel" />
 
-<meta name="date" content="2023-07-26" />
+<meta name="date" content="2023-07-28" />
 
 <title>Consistency of Associations</title>
 
@@ -358,7 +358,7 @@ display: none;
 
 <h1 class="title toc-ignore">Consistency of Associations</h1>
 <h4 class="author">Chirag Patel</h4>
-<h4 class="date">2023-07-26</h4>
+<h4 class="date">2023-07-28</h4>
 
 </div>
 
@@ -392,7 +392,7 @@ library(cowplot)</code></pre>
   adj_vs_base &lt;- adj_vs_base |&gt; mutate(rsq_adjusted_base_diff=rsq_adjusted-rsq_base, rsq_adjusted_diff = rsq_adjusted-rsq_unadjusted)
   summary_stats_wide |&gt; left_join(adj_vs_base, by=c(&quot;evarname&quot;, &quot;pvarname&quot;, &quot;exposure_table_name&quot;, &quot;phenotype_table_name&quot;))
 }</code></pre>
-<pre class="r"><code>con &lt;- DBI::dbConnect(RSQLite::SQLite(), dbname=&#39;../db/pe_summary_stats.sqlite&#39;)
+<pre class="r"><code>con &lt;- DBI::dbConnect(RSQLite::SQLite(), dbname=&#39;../data/pe_summary_stats.sqlite&#39;)
 varnames &lt;- tbl(con, &quot;variable_names_epcf&quot;)
 adjusted_meta &lt;- tbl(con, &quot;adjusted_meta&quot;)
 unadjusted_meta &lt;- tbl(con, &quot;unadjusted_meta&quot;)
