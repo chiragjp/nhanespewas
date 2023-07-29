@@ -21,7 +21,7 @@ This function retrieves and merges tables from a database based on provided tabl
 }
 \examples{
 \dontrun{
-conn <- dbConnect(...)
-results <- get_mv_expo_pheno_tables(conn, "phenotype_table", c("exposure_table1", "exposure_table2"))
+conn <- connect_pewas_data()
+results <- get_mv_expo_pheno_tables(conn, "L10AM_C", c("L45VIT_C", "L06COT_C"))
 }
 }

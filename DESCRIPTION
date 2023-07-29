@@ -1,6 +1,6 @@
 Package: nhanespewas
 Title: Execute Phenotype x Exposome Association Studies in NHANES
-Version: 0.0.0.9000
+Version: 0.0.1.0
 Authors@R: 
     person("Chirag", "Patel", , "chirag_patel@hms.harvard.edu", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-8756-8525"))

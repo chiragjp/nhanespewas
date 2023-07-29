@@ -66,8 +66,8 @@ adjustmentVariables <- c("RIDAGEYR", "AGE_SQUARED",
 
 
 #test <- pe("LBXGLU", "LBXGTC", adjustmentVariables, "C", con, logxform_p = F, logxform_e = T, scale_e = F, scale_p = F, quantile_expo=c(0, .25, .5, .75, 1))
-con <- DBI::dbConnect(RSQLite::SQLite(), dbname='nhanes_122322.sqlite')
-test <- pe("BMXBMI", "LBXGTC", adjustmentVariables, "C", con)
+#con <- DBI::dbConnect(RSQLite::SQLite(), dbname='nhanes_122322.sqlite')
+#test <- pe("BMXBMI", "LBXGTC", adjustmentVariables, "C", con)
 #test <- pe("BMXWAIST", "LBXGTC", adjustmentVariables, "C", con, logxform_p = F, logxform_e = T, scale_e = T, scale_p = T)
 #test <- pe("LBXCRP", "LBXBEC", adjustmentVariables, "A", con)
 #test <- pe("LBXCRP", "LBXBEC", adjustmentVariables, "A", con)

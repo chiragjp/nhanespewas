@@ -24,8 +24,8 @@ Once the weight column is identified, a new column "wt" is added to the merged t
 }
 \examples{
 \dontrun{
-conn <- dbConnect(...)
-get_tables_results <- get_tables("phenotype_var", "exposure_var", "series_name", conn, "phenotype_table", "exposure_table")
+conn <- connect_pewas_data()
+get_tables_results <- get_tables("LBXGLU", "LBXGTC", "C", conn, "L10AM_C", "L45VIT_C")
 weighted_tables <- figure_out_weight(get_tables_results)
 }
 }

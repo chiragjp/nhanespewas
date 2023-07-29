@@ -32,7 +32,7 @@ pe(
 
 \item{series}{A variable related to series}
 
-\item{con}{Connection object for the database}
+\item{con}{Connection object for the NHANES database}
 
 \item{logxform_p}{Logical, if TRUE, a log transformation is applied to pheno variable. Default is TRUE.}
 
@@ -61,7 +61,10 @@ running models, and computing demographic breakdowns.
 }
 \examples{
 \dontrun{
-pe_result <- pe(pheno="BMI", exposure="smoke", adjustment_variables=c("age", "sex"), series="series1", con=connection, logxform_p=T, logxform_e=T, scale_e=T, scale_p=F, pheno_table_name="pheno_table", expo_table_name="expo_table", quantile_expo=NULL, exposure_levels=NULL)
+connection <- connect_pewas_data()
+adjustments <-c("RIDAGEYR", "RIAGENDR", "INDFMPIR", "ETHNICITY_MEXICAN", "ETHNICITY_NONHISPANICBLACK", "ETHNICITY_OTHER", "EDUCATION_LESS9", "EDUCATION_9_11","EDUCATION_AA", "EDUCATION_COLLEGEGRAD")
+pe_result <- pe(pheno="BMXBMI", exposure="LBXGTC", adjustment_variables=adjustments, series="C", con=connection, logxform_p=T, logxform_e=T, scale_e=T, scale_p=F)
+pe_result$adjusted_model$tidied
 }
 
 }

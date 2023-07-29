@@ -31,6 +31,14 @@ seriesBeginYearMap <- function(seriesName) {
 }
 
 
+adjustment_variables <- function() {
+  varnames <- c("RIDAGEYR", "RIAGENDR", "INDFMPIR", "ETHNICITY_MEXICAN",
+                "ETHNICITY_OTHERHISPANIC", "ETHNICITY_OTHER",
+                "ETHNICITY_NONHISPANICBLACK", "ETHNICITY_NONHISPANICWHITE",
+                "EDUCATION_LESS9", "EDUCATION_9_11", "EDUCATION_HSGRAD",
+                "EDUCATION_AA", "EDUCATION_COLLEGEGRAD")
+}
+
 get_path_to_extdata_database<- function() {
   path_to_db <- system.file("extdata", "nhanes_pewas_a-d.sqlite", package = "nhanespewas")
 }
@@ -38,9 +46,9 @@ get_path_to_extdata_database<- function() {
 
 #' Connect to the PEWAS NHANES database
 #'
-#' This function establishes a connection to the PEWAS NHANES database using SQLite.
+#' This function establishes a connection to the PEWAS NHANES database .
 #'
-#' @param path_to_data The file path to the SQLite database
+#' @param path_to_data The file path to the participant-level NHANES data. Each table in the database corresponds to a table in the NHANES.
 #'
 #' @return A DBI connection object to the NHANES database.
 #' @export
@@ -79,7 +87,7 @@ connect_pewas_data <- function(path_to_data = NULL) {
 #' @export
 #' @examples
 #' \dontrun{
-#' disconnect_pewas_data(con)
+#' disconnect_pewas_data(dbConn, ...)
 #' }
 #' @importFrom DBI dbDisconnect
 disconnect_pewas_data <- function(dbConn, ...) {
@@ -99,7 +107,7 @@ disconnect_pewas_data <- function(dbConn, ...) {
 #' @examples
 #' \dontrun{
 #' conn <- connect_pewas_data(...)
-#' results <- get_tables("LBXGLU", "LBXGTC", "C", conn, "phenotype_table", "exposure_table")
+#' tables <- get_tables("LBXGLU", "LBXGTC", "C", conn, "L10AM_C", "L45VIT_C")
 #' }
 #' @export
 get_tables <- function(pvarname, evarname, seriesName, con, pheno_table_name=NULL, expo_table_name=NULL) {
@@ -152,8 +160,8 @@ get_tables <- function(pvarname, evarname, seriesName, con, pheno_table_name=NUL
 #' @return A list containing the merged table, the exposure table, the phenotype table, and the series name.
 #' @examples
 #' \dontrun{
-#' conn <- dbConnect(...)
-#' results <- get_expo_pheno_tables(conn, "phenotype_table", "exposure_table")
+#' conn <- connect_pewas_data()
+#' results <- get_expo_pheno_tables(conn, pheno_table_name="L10AM_C", expo_table_name="L45VIT_C")
 #' }
 #' @export
 get_expo_pheno_tables <- function(con, pheno_table_name, expo_table_name) {
@@ -187,10 +195,9 @@ get_expo_pheno_tables <- function(con, pheno_table_name, expo_table_name) {
 #' @return A list containing the merged table, the final exposure table after joining all exposure tables, the phenotype table, and the series name.
 #' @examples
 #' \dontrun{
-#' conn <- dbConnect(...)
-#' results <- get_mv_expo_pheno_tables(conn, "phenotype_table", c("exposure_table1", "exposure_table2"))
+#' conn <- connect_pewas_data()
+#' results <- get_mv_expo_pheno_tables(conn, "L10AM_C", c("L45VIT_C", "L06COT_C"))
 #' }
-#' @export
 get_mv_expo_pheno_tables <- function(con, pheno_table_name, expo_table_names) {
   table_names <- tbl(con, "table_names_epcf")
   seriesName <- table_names |> filter(Data.File.Name == pheno_table_name) |> pull(series)
@@ -238,8 +245,8 @@ get_mv_expo_pheno_tables <- function(con, pheno_table_name, expo_table_names) {
 #' @return The input list object with an additional column "wt" in the merged table (merged_tab) corresponding to the identified weight column.
 #' @examples
 #' \dontrun{
-#' conn <- dbConnect(...)
-#' get_tables_results <- get_tables("phenotype_var", "exposure_var", "series_name", conn, "phenotype_table", "exposure_table")
+#' conn <- connect_pewas_data()
+#' get_tables_results <- get_tables("LBXGLU", "LBXGTC", "C", conn, "L10AM_C", "L45VIT_C")
 #' weighted_tables <- figure_out_weight(get_tables_results)
 #' }
 #' @export
@@ -368,7 +375,6 @@ addToBase <- function(base_formula, adjustingVariables) {
 #' analysisObj <- list(survey.design = dsn, residuals = resid, y = y)
 #' results <- svyrsquared(analysisObj)
 #' }
-#' @export
 svyrsquared <- function(analysisObj) {
   ## returns rsquared and adjusted rsquared for a linear model
   dsn <- analysisObj$survey.design
@@ -510,7 +516,7 @@ name_and_xform_pheno <- function(pheno, table_object, logxform_p=T) {
 #' @param exposure A variable related to exposure
 #' @param adjustment_variables A vector of variables to adjust for in the models. They have to be in the demo table.
 #' @param series A variable related to series
-#' @param con Connection object for the database
+#' @param con Connection object for the NHANES database
 #' @param logxform_p Logical, if TRUE, a log transformation is applied to pheno variable. Default is TRUE.
 #' @param logxform_e Logical, if TRUE, a log transformation is applied to exposure variable. Default is TRUE.
 #' @param scale_e Logical, if TRUE, exposure variable is scaled. Default is TRUE.
@@ -524,7 +530,10 @@ name_and_xform_pheno <- function(pheno, table_object, logxform_p=T) {
 #'
 #' @examples
 #' \dontrun{
-#' pe_result <- pe(pheno="BMI", exposure="smoke", adjustment_variables=c("age", "sex"), series="series1", con=connection, logxform_p=T, logxform_e=T, scale_e=T, scale_p=F, pheno_table_name="pheno_table", expo_table_name="expo_table", quantile_expo=NULL, exposure_levels=NULL)
+#' connection <- connect_pewas_data()
+#' adjustments <-c("RIDAGEYR", "RIAGENDR", "INDFMPIR", "ETHNICITY_MEXICAN", "ETHNICITY_NONHISPANICBLACK", "ETHNICITY_OTHER", "EDUCATION_LESS9", "EDUCATION_9_11","EDUCATION_AA", "EDUCATION_COLLEGEGRAD")
+#' pe_result <- pe(pheno="BMXBMI", exposure="LBXGTC", adjustment_variables=adjustments, series="C", con=connection, logxform_p=T, logxform_e=T, scale_e=T, scale_p=F)
+#' pe_result$adjusted_model$tidied
 #' }
 #'
 #' @export
@@ -564,7 +573,7 @@ pe <- function(pheno, exposure, adjustment_variables, series, con,
 
 #' PE by Table
 #'
-#' This function operates similarly to the 'pe' function, but takes a pre-processed table object as input instead of separate phenotype and exposure tables. It is designed to help users scale up the pe associations by executing all possible associations between the P and E tables
+#' This function operates similarly to the 'pe' function, but takes a pre-processed table object as input instead of separate phenotype and exposure tables. It is designed to help analysts scale up the pe associations by sepearting the "get_tables" procedure from runnin an association.
 #'
 #' @param tab_obj A pre-processed table object including both phenotype and exposure information
 #' @param pvar A variable related to phenotype
@@ -581,7 +590,9 @@ pe <- function(pheno, exposure, adjustment_variables, series, con,
 #'
 #' @examples
 #' \dontrun{
-#' pe_result <- pe_by_table(tab_obj=table_object, pvar="BMI", evar="smoke", adjustment_variables=c("age", "sex"), logxform_p=T, logxform_e=T, scale_e=T, scale_p=F, quantile_expo=NULL, exposure_levels=NULL)
+#' con <- connect_pewas_data()
+#' table_object <- get_tables("LBXGLU", "LBXGTC", "C", con, "L10AM_C", "L45VIT_C")
+#' pe_result <- pe_by_table(tab_obj=table_object, pvar="LBXGLU", evar="LBXGTC", adjustment_variables=c("RIDAGEYR", "RIAGENDR"), logxform_p=T, logxform_e=T, scale_e=T, scale_p=F, quantile_expo=NULL, exposure_levels=NULL)
 #' }
 #'
 #' @export
@@ -625,12 +636,7 @@ pe_by_table <- function(tab_obj, pvar, evar,
 demographic_breakdown <- function(svy_dsn) {
   ## for a merged table, provide the summary of the demovars
 
-  varnames <- c("RIDAGEYR", "RIAGENDR", "INDFMPIR", "ETHNICITY_MEXICAN",
-                "ETHNICITY_OTHERHISPANIC", "ETHNICITY_OTHER",
-                "ETHNICITY_NONHISPANICBLACK", "ETHNICITY_NONHISPANICWHITE",
-                "EDUCATION_LESS9", "EDUCATION_9_11", "EDUCATION_HSGRAD",
-                "EDUCATION_AA", "EDUCATION_COLLEGEGRAD")
-
+  varnames <- adjustment_variables()
   # Check for presence of variables
   dataset_vars <- names(svy_dsn$variables)
   missing_vars <- setdiff(varnames, dataset_vars)
@@ -646,49 +652,6 @@ demographic_breakdown <- function(svy_dsn) {
   ret
 }
 
-
-#' PME - multivariate regression: P ~ E1 + E2 + ...
-#'
-#' This function performs a multivariate exposure (multiple exposures) regression analysis on a pre-processed table object. The phenotype can be log-transformed and scaled if desired, and the model can be adjusted for specified variables.
-#'
-#' @param tab_obj A pre-processed table object including both phenotype and exposure information.
-#' @param pvar A variable related to phenotype.
-#' @param evars A vector of variables related to multiple exposures.
-#' @param adjustment_variables A vector of variables to adjust for in the models.
-#' @param logxform_p Logical, if TRUE, a log transformation is applied to phenotype variable. Default is TRUE.
-#' @param scale_p Logical, if TRUE, phenotype variable is scaled. Default is FALSE.
-#'
-#' @return A list containing: the svydesign object, log transformation status for phenotype, scaling status for phenotype, unweighted number of observations, phenotype, series, exposures, unadjusted model, adjusted model, and base model.
-#'
-#' @examples
-#' \dontrun{
-#' pme_result <- pme(tab_obj=table_object, pvar="BMI", evars=c("smoke", "age"), adjustment_variables=c("sex"), logxform_p=T, scale_p=F)
-#' }
-#'
-#' @export
-
-pme <- function(tab_obj, pvar, evars,
-                        adjustment_variables,
-                        logxform_p=T, scale_p=F) {
-  pheno <- pvar
-  tab_obj <- name_and_xform_pheno(pheno, tab_obj, logxform_p)
-  ## create svydesign
-  dat <- tab_obj$merged_tab |> filter(!is.na(wt), wt > 0, !is.na(pheno), if_all(all_of(evars), ~!is.na(.)), if_all(all_of(adjustment_variables), ~!is.na(.)))
-  dsn <- create_svydesign(dat)
-  ## run models
-  to_formula <- sprintf('pheno ~ %s', paste(evars, collapse="+"))
-  baseformula <- as.formula(to_formula)
-  baseadjusted <- addToBase(baseformula, adjustingVariables = adjustment_variables)
-  basebase <- as.formula(sprintf("pheno ~ %s", paste(adjustment_variables, collapse="+")))
-  ##
-  unadjusted_mod <- run_mv_model(baseformula, dsn,scale_p)
-  adjusted_mod <- run_mv_model(baseadjusted, dsn, scale_p)
-  base_mod <- run_mv_model(basebase, dsn, scale_p)
-  n <- dsn |> nrow()
-  ## return mods
-  list(dsn=dsn, log_p = logxform_p, scaled_p = scale_p, unweighted_n=n, phenotype=pheno, series=tab_obj$series, exposures=evars, unadjusted_model=unadjusted_mod, adjusted_model=adjusted_mod, base_mod=base_mod)
-
-}
 
 
 

@@ -34,7 +34,7 @@ Retrieve and merge tables from a database based on the series name, exposure var
 }
 \examples{
 \dontrun{
-conn <- dbConnect(...)
-results <- get_tables("phenotype_var", "exposure_var", "series_name", conn, "phenotype_table", "exposure_table")
+conn <- connect_pewas_data(...)
+tables <- get_tables("LBXGLU", "LBXGTC", "C", conn, "L10AM_C", "L45VIT_C")
 }
 }

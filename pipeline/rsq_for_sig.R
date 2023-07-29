@@ -34,7 +34,7 @@ r2s <- future_map_dfr(evars_for_ps$pvarname, function(pvarname) {
 }, .options = furrr_options(seed = TRUE))
 
 
-write_rds(r2s, file='pe_summary_060623/mvr2.rds')
+write_rds(r2s, file='../pe_summary_060623/mvr2.rds')
 
 dbWriteTable(summary_stats_con, 'mvr2', r2s, overwrite=T)
 dbDisconnect(nhanes_con)

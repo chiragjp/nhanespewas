@@ -19,8 +19,7 @@ and the selected data (\code{selected_data}).
 }
 \description{
 Assumes that findings have already been associated with a phenotype: |> filter(sig_levels == 'Bonf.<0.05')
-}
-\details{
+Not exported yet
 This function queries individual level data from a provided database connection
 based on specific parameters and performs several operations including joining,
 filtering, summarizing, and selecting of data, before returning the final processed data.

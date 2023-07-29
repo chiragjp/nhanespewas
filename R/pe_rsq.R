@@ -25,16 +25,6 @@
 # svy_weighted_r2 function
 # This function calculates the R-squared value for two linear models as in the unweighted_r2 function, but it takes into account the survey design by using the survey package in R to calculate a weighted R-squared.
 
-# source('quantpe.R')
-#adjustmentVariables <- c("RIDAGEYR", "AGE_SQUARED",
-#                         "RIAGENDR",
-#                         "INDFMPIR",
-#                         "EDUCATION_LESS9","EDUCATION_9_11","EDUCATION_AA","EDUCATION_COLLEGEGRAD",
-                         #"BORN_INUSA",
-#                         "ETHNICITY_MEXICAN", "ETHNICITY_OTHERHISPANIC","ETHNICITY_OTHER", "ETHNICITY_NONHISPANICBLACK")
-
-#surveyVariables <- c('WTMEC2YR', 'WTMEC4YR', 'SDMVPSU', 'SDMVSTRA', 'SDDSRVYR', 'SDDSRVYR')
-#surveyVariables <- c('WTMEC2YR', 'SDMVPSU', 'SDMVSTRA', 'SDDSRVYR', 'SDDSRVYR')
 
 
 
@@ -51,7 +41,6 @@
 #' @return A list containing the final merged table (`merged_tab`), the exposure table (`e_table`),
 #' the phenotype table (`p_table`), the series name (`series`), and a tibble containing information
 #' about the table weights (`table_weights`).
-#' @export
 #' @examples
 #' \dontrun{
 #' result <- get_mv_expo_pheno_tables_for_big_table(con, "pheno_table", c("expo_table1", "expo_table2"))
@@ -105,7 +94,7 @@ get_mv_expo_pheno_tables_for_big_table <- function(con, pheno_table_name, expo_t
 #' Retrieve individual level data table based on a set of a variables
 #'
 #' Assumes that findings have already been associated with a phenotype: |> filter(sig_levels == 'Bonf.<0.05')
-#'
+#' Not exported yet
 #' This function queries individual level data from a provided database connection
 #' based on specific parameters and performs several operations including joining,
 #' filtering, summarizing, and selecting of data, before returning the final processed data.
@@ -116,7 +105,8 @@ get_mv_expo_pheno_tables_for_big_table <- function(con, pheno_table_name, expo_t
 #'
 #' @return A list containing the final selected variables (`evars`), the selected weight to use (`weight_to_use`),
 #' and the selected data (`selected_data`).
-#' @export
+#'
+#'
 #' @examples
 #' \dontrun{
 #' result <- get_individual_level_table(summary_stats_con, nhanes_con, "varname")
@@ -209,3 +199,48 @@ svy_weighted_r2 <- function(pvarname, evarnames, adjustment_variables, dat, weig
   r2evars <- svyrsquared(modevars)
   return(list(base=r2base, mve=r2evars))
 }
+
+
+#' PME - multivariate regression: P ~ E1 + E2 + ...
+#'
+#' This function performs a multivariate exposure (multiple exposures) regression analysis on a pre-processed table object. The phenotype can be log-transformed and scaled if desired, and the model can be adjusted for specified variables.
+#'
+#' @param tab_obj A pre-processed table object including both phenotype and exposure information.
+#' @param pvar A variable related to phenotype.
+#' @param evars A vector of variables related to multiple exposures.
+#' @param adjustment_variables A vector of variables to adjust for in the models.
+#' @param logxform_p Logical, if TRUE, a log transformation is applied to phenotype variable. Default is TRUE.
+#' @param scale_p Logical, if TRUE, phenotype variable is scaled. Default is FALSE.
+#'
+#' @return A list containing: the svydesign object, log transformation status for phenotype, scaling status for phenotype, unweighted number of observations, phenotype, series, exposures, unadjusted model, adjusted model, and base model.
+#'
+#' @examples
+#' \dontrun{
+#' table_object <- get_mv_expo_pheno_tables(conn, "L10AM_C", c("L45VIT_C", "L06COT_C"))
+#' table_object <- figure_out_weight(table_object)
+#' pme_result <- pme(tab_obj=table_object, pvar="LBXGLU", evars=c("LBXCOT", "LBXGTC"), adjustment_variables=adjustment_variables(), logxform_p=T, scale_p=F)
+#' }
+#'
+pme <- function(tab_obj, pvar, evars,
+                adjustment_variables,
+                logxform_p=T, scale_p=F) {
+  pheno <- pvar
+  tab_obj <- name_and_xform_pheno(pheno, tab_obj, logxform_p)
+  ## create svydesign
+  dat <- tab_obj$merged_tab |> filter(!is.na(wt), wt > 0, !is.na(pheno), if_all(all_of(evars), ~!is.na(.)), if_all(all_of(adjustment_variables), ~!is.na(.)))
+  dsn <- create_svydesign(dat)
+  ## run models
+  to_formula <- sprintf('pheno ~ %s', paste(evars, collapse="+"))
+  baseformula <- as.formula(to_formula)
+  baseadjusted <- addToBase(baseformula, adjustingVariables = adjustment_variables)
+  basebase <- as.formula(sprintf("pheno ~ %s", paste(adjustment_variables, collapse="+")))
+  ##
+  unadjusted_mod <- run_mv_model(baseformula, dsn,scale_p)
+  adjusted_mod <- run_mv_model(baseadjusted, dsn, scale_p)
+  base_mod <- run_mv_model(basebase, dsn, scale_p)
+  n <- dsn |> nrow()
+  ## return mods
+  list(dsn=dsn, log_p = logxform_p, scaled_p = scale_p, unweighted_n=n, phenotype=pheno, series=tab_obj$series, exposures=evars, unadjusted_model=unadjusted_mod, adjusted_model=adjusted_mod, base_mod=base_mod)
+
+}
+

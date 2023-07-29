@@ -21,7 +21,7 @@ Retrieve and merge demographic, exposure, and phenotype tables from a database
 }
 \examples{
 \dontrun{
-conn <- dbConnect(...)
-results <- get_expo_pheno_tables(conn, "phenotype_table", "exposure_table")
+conn <- connect_pewas_data()
+results <- get_expo_pheno_tables(conn, pheno_table_name="L10AM_C", expo_table_name="L45VIT_C")
 }
 }
