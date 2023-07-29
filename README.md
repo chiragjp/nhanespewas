@@ -34,6 +34,14 @@ install_github("chiragjp/nhanespewas")
 ```{r}
 # 
 library(nhanespewas)
+# connect to nhanes data, built for PE analysis
+pedata_con <- connect_pewas_data()
+
+# conduct an association
 ## todo
+
+# clean up
+disconnect_pewas_data(pedata_con)
+
 ```
 

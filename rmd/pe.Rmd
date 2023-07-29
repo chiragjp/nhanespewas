@@ -30,8 +30,6 @@ library(cowplot)
 library(reactable)
 library(gt)
 library(broom)
-
-
 ```
 
 ```{r combine within survey and glanced stats}
@@ -50,7 +48,7 @@ remove_units_from_string <- function(vardesc) {
 ```
 
 ```{r connect to db}
-con <- DBI::dbConnect(RSQLite::SQLite(), dbname='../data/pe_summary_stats.sqlite')
+con <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/pe_summary_stats.sqlite')
 varnames <- tbl(con, "variable_names_epcf")
 adjusted_meta <- tbl(con, "adjusted_meta")
 unadjusted_meta <- tbl(con, "unadjusted_meta")
@@ -494,6 +492,19 @@ plot_grid(p1, p2, p3, p4, ncol=2,labels = c('A', 'B', "C", "D"), label_size = 12
 
  # Examples for paper of top hits
 ```{r}
+
+rbind(
+  adjusted_meta_2 |> filter(evarname == 'LBXPFHS', pvarname == 'LBXSAL') |> select(tau.squared),
+  adjusted_meta_2 |> filter(evarname == 'LBXGTC', pvarname == 'LBXTC') |> select(tau.squared),
+  adjusted_meta_2 |> filter(evarname == 'LBXBPB', pvarname == 'BMXWT') |> select(tau.squared),
+  adjusted_meta_2 |> filter(evarname == 'LBXCOT', pvarname == 'LBDNENO') |> select(tau.squared)
+)
+
+adjusted_meta_2 |> filter(evarname == 'LBXPFHS') |> group_by(sig_levels) |> summarize(sd_estimate=sd(estimate))
+adjusted_meta_2 |> filter(evarname == 'LBXGTC') |> group_by(sig_levels) |> summarize(sd_estimate=sd(estimate))
+adjusted_meta_2 |> filter(evarname == 'LBXBPB') |> group_by(sig_levels) |> summarize(sd_estimate=sd(estimate))
+adjusted_meta_2 |> filter(evarname == 'LBXCOT') |> group_by(sig_levels) |> summarize(sd_estimate=sd(estimate))
+
 p1 <- plot_pair('LBXPFHS', 'LBXSAL') + ylab("Association Estimate")
 ## heterogeneous example
 p2 <- plot_pair('LBXGTC', 'LBXTC') + ylab("Association Estimate")
@@ -636,7 +647,7 @@ bias_per_pcategory |> select(-mod) |> select(pcategory, term, estimate, p.value)
 ```{r r2}
 p <- ggplot(mvr2, aes(n_evars, mv))
 p <- p + geom_point() + theme_bw()
-p <- p + geom_text(data=mvr2 |> filter(n_evars > 40),aes(n_evars, mv, label=pvarname) )
+p <- p + geom_text_repel(data=mvr2 |> filter(n_evars > 50),aes(n_evars, mv, label=pvarname) )
 p <- p + xlab("Number of Exposome Variables in Model") + ylab("R-squared")
 p
 

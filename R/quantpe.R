@@ -31,46 +31,59 @@ seriesBeginYearMap <- function(seriesName) {
 }
 
 
+get_path_to_extdata_database<- function() {
+  path_to_db <- system.file("extdata", "nhanes_pewas_a-d.sqlite", package = "nhanespewas")
+}
+
+
 #' Connect to the PEWAS NHANES database
 #'
 #' This function establishes a connection to the PEWAS NHANES database using SQLite.
 #'
-#' @param path_to_database The file path to the SQLite database
+#' @param path_to_data The file path to the SQLite database
 #'
-#' @return A DBI connection object to the SQLite database.
+#' @return A DBI connection object to the NHANES database.
 #' @export
 #' @examples
 #' \dontrun{
-#' con <- connect_pewas_nhanes_database("/path/to/database.sqlite")
+#' con <- connect_pewas_data("/path/to/database.sqlite")
 #' }
 #' @importFrom DBI dbConnect
 #' @importFrom RSQLite SQLite
-connect_pewas_nhanes_database <- function(path_to_database) {
-  
+connect_pewas_data <- function(path_to_data = NULL) {
+
   ## check if the database exists
-  if(!file.exists(path_to_database)) {
-    stop(".sqllite file does not exist")
+  if (is.null(path_to_data)) {
+    path_to_data <- get_path_to_extdata_database()
+  } else if(!file.exists(path_to_data)) {
+    stop("nhanes pewas database does not exist")
   }
-  con <- DBI::dbConnect(RSQLite::SQLite(), dbname=path_to_database)
+  con <- DBI::dbConnect(RSQLite::SQLite(), dbname=path_to_data)
   # check version date and type of database (e.g., summary stats or NHANES raw)
-  
+  if(dbExistsTable(con, "description")) {
+    desc <- tbl(con, "description")
+    return(con)
+  } else{
+    stop("nhanes pewas database is not in correct format")
+  }
+
 }
 
-#' Disconnect from a database
+#' Disconnect from a NHANES database
 #'
 #' This function disconnects from a database given a DBI connection object.
 #'
-#' @param dbConn A DBI connection object.
+#' @param dbConn A NHANES DBI connection object.
 #'
 #' @return Invisible NULL. The connection will be completely severed.
 #' @export
 #' @examples
 #' \dontrun{
-#' disconnect_database(con)
+#' disconnect_pewas_data(con)
 #' }
 #' @importFrom DBI dbDisconnect
-disconnect_database <- function(dbConn) {
-  dbDisconnect(dbConn)
+disconnect_pewas_data <- function(dbConn, ...) {
+  dbDisconnect(dbConn, ...)
 }
 
 #' Retrieve and merge tables from a database based on the series name, exposure variable name, and phenotype variable name
@@ -85,8 +98,8 @@ disconnect_database <- function(dbConn) {
 #' @return A list containing the merged table, the exposure table, the phenotype table, and the series name.
 #' @examples
 #' \dontrun{
-#' conn <- dbConnect(...)
-#' results <- get_tables("phenotype_var", "exposure_var", "series_name", conn, "phenotype_table", "exposure_table")
+#' conn <- connect_pewas_data(...)
+#' results <- get_tables("LBXGLU", "LBXGTC", "C", conn, "phenotype_table", "exposure_table")
 #' }
 #' @export
 get_tables <- function(pvarname, evarname, seriesName, con, pheno_table_name=NULL, expo_table_name=NULL) {
@@ -94,10 +107,10 @@ get_tables <- function(pvarname, evarname, seriesName, con, pheno_table_name=NUL
   table_names <- tbl(con, "table_names_epcf")
   series_begin_year <- seriesBeginYearMap(seriesName)
   demo_table_name <- table_names |> filter(series == seriesName & component == 'DEMO') |> collect()
-  demo <- tbl(con, demo_table_name$Data.File.Name) 
+  demo <- tbl(con, demo_table_name$Data.File.Name)
   ## get table for the phenotype
   log_info("Getting tables for {pvarname} ~ {evarname}")
-  
+
   p_table <- tibble()
   if(!is.null(pheno_table_name)) {
     #p_table_name <- p_table_name |> filter(Data.File.Name == pheno_table_name)
@@ -105,9 +118,9 @@ get_tables <- function(pvarname, evarname, seriesName, con, pheno_table_name=NUL
   } else{
     p_table_name <- variables |> filter(Variable.Name == pvarname & Begin.Year == series_begin_year) |> collect()
     pheno_table_name <- p_table_name$Data.File.Name
-    p_table <- tbl(con, pheno_table_name)  
+    p_table <- tbl(con, pheno_table_name)
   }
-  
+
   log_info("Pheno table {pheno_table_name} has {p_table |> count() |> pull(n) } rows")
   ## get table for exposure
   e_table <- tibble()
@@ -118,11 +131,11 @@ get_tables <- function(pvarname, evarname, seriesName, con, pheno_table_name=NUL
     expo_table_name <- e_table_name$Data.File.Name
     e_table <- tbl(con, expo_table_name)
   }
-  
+
   if(expo_table_name == pheno_table_name) {
     p_table <- p_table |> select(SEQN, pvarname)
   }
-  
+
   log_info("Exposure table {expo_table_name} has {e_table |> count() |> pull(n) } rows")
   small_tab <- demo |> inner_join(p_table, by="SEQN") |> inner_join(e_table, by="SEQN") |> collect()
   log_info("Merged table has {small_tab |> count() |> pull(n) } rows")
@@ -185,11 +198,11 @@ get_mv_expo_pheno_tables <- function(con, pheno_table_name, expo_table_names) {
   demo_table_name <- table_names |> filter(component == 'DEMO', series==seriesName) |> collect() |> pull(Data.File.Name)
   log_info("Demographics table is { demo_table_name } ")
   demo <- tbl(con, demo_table_name) |> collect()
-  
+
   e_table <- NULL
   for(ii in 1:length(expo_table_names)) {
     e_table_lcl <- tbl(con, expo_table_names[ii]) |> collect()
-    log_info("Exposure table {expo_table_names[ii]} has {e_table_lcl |> count() |> pull(n) } rows")  
+    log_info("Exposure table {expo_table_names[ii]} has {e_table_lcl |> count() |> pull(n) } rows")
     if(ii == 1) {
       e_table <- e_table_lcl
       next;
@@ -198,15 +211,15 @@ get_mv_expo_pheno_tables <- function(con, pheno_table_name, expo_table_names) {
     cols_to_keep <- c(setdiff(colnames(e_table_lcl), prev_colnames), "SEQN")
     e_table <- e_table |> inner_join(e_table_lcl |> select(all_of(cols_to_keep)), by="SEQN")
   }
-  
-  #log_info("New exposure table has {e_table |> collect() |> count() |> pull(n) } rows")  
-  
+
+  #log_info("New exposure table has {e_table |> collect() |> count() |> pull(n) } rows")
+
   p_table <- tbl(con, pheno_table_name) |> collect()
-  
+
   log_info("Pheno table {pheno_table_name} has {p_table |> count() |> pull(n) } rows")
   small_tab <- demo |> inner_join(p_table, by="SEQN") |> inner_join(e_table, by="SEQN")
   log_info("Merged table has { small_tab |> count() |> pull(n) } rows")
-  
+
   return(list(merged_tab=small_tab, e_table=e_table, p_table=p_table, series=seriesName))
 }
 
@@ -235,16 +248,16 @@ figure_out_weight <- function(get_tables_obj) {
   weight_name_demo <- 'WTMEC2YR'
   e_table <- get_tables_obj$e_table
   p_table <- get_tables_obj$p_table
-  
+
   weight_name_e <- colnames(e_table)[grep("^WT", colnames(e_table))]
   weight_name_p <- colnames(p_table)[grep("^WT", colnames(p_table))]
-  
+
   ## filter here for a single weight
   ## if e_weight is empty, move on
   ## if e_weight  has dietary weight (wtdrd1), select that (vs. the 2 day weight)
-  ## else if e_weight has 2yr weight select that 
+  ## else if e_weight has 2yr weight select that
   ## else select the first weight
-  
+
   if(length(weight_name_e) > 1) {
     if('WTDRD1' %in% weight_name_e) { ## dietary variable
       weight_name_e <- 'WTDRD1'
@@ -254,7 +267,7 @@ figure_out_weight <- function(get_tables_obj) {
       weight_name_e <- weight_name_e[1]
     }
   }
-  
+
   if(length(weight_name_p) > 1) {
     if('WTDRD1' %in% weight_name_p) {
       weight_name_p <- 'WTDRD1'
@@ -264,28 +277,28 @@ figure_out_weight <- function(get_tables_obj) {
       weight_name_p <- weight_name_p[1]
     }
   }
-  
+
   log_info("p weight name: { weight_name_p }")
   log_info("e weight name: { weight_name_e }")
   etable_nrows <- e_table |> count() |> pull(n)
   ptable_nrows <- p_table |> count() |> pull(n)
-  
+
   if(is_empty(weight_name_e) & is_empty(weight_name_p)) {
     log_info("no weights in e or p table")
     weight_name <- weight_name_demo
   } else if(!is_empty(weight_name_e) & !is_empty(weight_name_p)) {
     log_info("weights in both e and p table")
-    
+
     if(etable_nrows < ptable_nrows) {
       weight_name <-  weight_name_e
     } else {
       weight_name <-  weight_name_p
     }
-    
+
     if(weight_name_e == weight_name_p) {
       weight_name <- sprintf('%s.y', weight_name)
     }
-    
+
   } else if(!is_empty(weight_name_p)) {
     log_info("weight in p table")
     weight_name <- weight_name_p
@@ -335,9 +348,9 @@ addToBase <- function(base_formula, adjustingVariables) {
 
 #' Calculate R-squared and adjusted R-squared for a survey-weighted linear model
 #'
-#' This function calculates the R-squared and adjusted R-squared values for a 
-#' linear model based on an analysis object which contains a survey design, 
-#' residuals, and a response variable. The calculation is conducted using 
+#' This function calculates the R-squared and adjusted R-squared values for a
+#' linear model based on an analysis object which contains a survey design,
+#' residuals, and a response variable. The calculation is conducted using
 #' survey-weighted means, totals, and residuals.
 #'
 #' @param analysisObj A list containing the components necessary for the calculation.
@@ -378,15 +391,15 @@ svyrsquared <- function(analysisObj) {
 
 #' Run a model with options for scaling and quantile-based categorization of exposure and phenotype variables
 #'
-#' This function runs a survey-weighted generalized linear model based on the given formula and design, 
-#' with options for scaling the exposure and phenotype variables and for categorizing the exposure variable 
+#' This function runs a survey-weighted generalized linear model based on the given formula and design,
+#' with options for scaling the exposure and phenotype variables and for categorizing the exposure variable
 #' based on quantiles or given levels.
 #'
 #' @param formu A formula specifying the model to be run.
 #' @param dsn A survey design object.
 #' @param scale_expo Logical, if TRUE, the exposure variable is scaled by its standard deviation.
 #' @param scale_pheno Logical, if TRUE, the phenotype variable is scaled by its standard deviation.
-#' @param quantile_expo Numeric vector, quantiles to use for categorizing the exposure variable. 
+#' @param quantile_expo Numeric vector, quantiles to use for categorizing the exposure variable.
 #' If not NULL, this overwrites the scale_expo argument.
 #' @param expo_levels A vector of levels to categorize the exposure variable.
 #' If not NULL, this overwrites the quantile_expo and scale_expo arguments.
@@ -425,31 +438,31 @@ run_model <- function(formu, dsn, scale_expo=T, scale_pheno=F, quantile_expo=NUL
     log_info("Exposure as a categorical variable with levels { paste(expo_levels, collapse=';') }")
     dsn <- update(dsn, expo=factor(expo, levels=expo_levels))
   }
-  
+
   if(scale_pheno) {
     s <- sqrt(mean(svyvar(~pheno, dsn, na.rm = T)))
     mn <- mean(svymean(~pheno, dsn, na.rm=T))
     dsn <- update(dsn, pheno=(pheno-mn)/s)
   }
-  
+
   mod <- svyglm(formu,dsn)
   ti <- tidy(mod)
   gl <- glance(mod)
   r2 <- svyrsquared(mod)
-  list(model=mod, 
-       glanced=gl, tidied=ti, r2=r2, 
-       scale_pheno=scale_pheno, scale_expo=scale_expo, 
+  list(model=mod,
+       glanced=gl, tidied=ti, r2=r2,
+       scale_pheno=scale_pheno, scale_expo=scale_expo,
        q_cut_points=cut_points, quantiles=quantile_expo, expo_levels=expo_levels, dsn=dsn)
 }
 
 run_mv_model <- function(formu, dsn, scale_pheno=F) {
-  
+
   if(scale_pheno) {
     s <- sqrt(mean(svyvar(~pheno, dsn, na.rm = T)))
     mn <- mean(svymean(~pheno, dsn, na.rm=T))
     dsn <- update(dsn, pheno=(pheno-mn)/s)
   }
-  
+
   mod <- svyglm(formu,dsn)
   ti <- tidy(mod)
   gl <- glance(mod)
@@ -460,26 +473,26 @@ run_mv_model <- function(formu, dsn, scale_pheno=F) {
 
 
 name_and_xform_pheno_expo <- function(pheno, exposure, table_object, logxform_p=T, logxform_e=T) {
-  
+
   if(logxform_p) {
-    table_object$merged_tab <- table_object$merged_tab |> mutate(pheno=log10_xform_variable(!!as.name(pheno)))  
+    table_object$merged_tab <- table_object$merged_tab |> mutate(pheno=log10_xform_variable(!!as.name(pheno)))
   } else {
     table_object$merged_tab <- table_object$merged_tab |> mutate(pheno=!!as.name(pheno))
   }
   if(logxform_e) {
-    ## 
-    table_object$merged_tab <- table_object$merged_tab |> mutate(expo=(log10_xform_variable(!!as.name(exposure))))  
+    ##
+    table_object$merged_tab <- table_object$merged_tab |> mutate(expo=(log10_xform_variable(!!as.name(exposure))))
   } else {
-    table_object$merged_tab <- table_object$merged_tab |> mutate(expo=(!!as.name(exposure)))  
+    table_object$merged_tab <- table_object$merged_tab |> mutate(expo=(!!as.name(exposure)))
   }
-  
+
   table_object
 }
 
 name_and_xform_pheno <- function(pheno, table_object, logxform_p=T) {
-  
+
   if(logxform_p) {
-    table_object$merged_tab <- table_object$merged_tab |> mutate(pheno=log10_xform_variable(!!as.name(pheno)))  
+    table_object$merged_tab <- table_object$merged_tab |> mutate(pheno=log10_xform_variable(!!as.name(pheno)))
   } else {
     table_object$merged_tab <- table_object$merged_tab |> mutate(pheno=!!as.name(pheno))
   }
@@ -489,7 +502,7 @@ name_and_xform_pheno <- function(pheno, table_object, logxform_p=T) {
 
 
 #' Execute an association between a P and E variable
-#' This function performs a series of operations including fetching tables, 
+#' This function performs a series of operations including fetching tables,
 #' applying weight adjustments, performing log transformations, creating survey designs,
 #' running models, and computing demographic breakdowns.
 #'
@@ -506,25 +519,25 @@ name_and_xform_pheno <- function(pheno, table_object, logxform_p=T) {
 #' @param expo_table_name Optional, name of the exposure table
 #' @param quantile_expo Optional, if specified, exposure variable will be cut by these quantiles
 #' @param exposure_levels Optional, if specified, exposure variable will be treated as a categorical variable with these levels
-#' 
+#'
 #' @return A list containing: the svydesign object, unweighted number of observations, phenotype, exposure, series, unadjusted model, adjusted model, base model, and demographic breakdown.
-#' 
+#'
 #' @examples
 #' \dontrun{
 #' pe_result <- pe(pheno="BMI", exposure="smoke", adjustment_variables=c("age", "sex"), series="series1", con=connection, logxform_p=T, logxform_e=T, scale_e=T, scale_p=F, pheno_table_name="pheno_table", expo_table_name="expo_table", quantile_expo=NULL, exposure_levels=NULL)
 #' }
-#' 
+#'
 #' @export
 
-pe <- function(pheno, exposure, adjustment_variables, series, con, 
-               logxform_p=T, logxform_e=T, scale_e=T, scale_p=F, 
-               pheno_table_name=NULL, expo_table_name=NULL, 
+pe <- function(pheno, exposure, adjustment_variables, series, con,
+               logxform_p=T, logxform_e=T, scale_e=T, scale_p=F,
+               pheno_table_name=NULL, expo_table_name=NULL,
                quantile_expo=NULL, exposure_levels=NULL) {
-  ## adjustment_variables has to be in the demo table   
-  
+  ## adjustment_variables has to be in the demo table
+
   ## get tables
   tab_obj <- get_tables(pheno, exposure, series, con, pheno_table_name, expo_table_name)
-  ## weight 
+  ## weight
   tab_obj <- figure_out_weight(tab_obj)
   ## do logxforms and rename variables "expo" and "pheno"
   tab_obj <- name_and_xform_pheno_expo(pheno, exposure, tab_obj, logxform_p, logxform_e)
@@ -534,22 +547,22 @@ pe <- function(pheno, exposure, adjustment_variables, series, con,
   ## run models
   baseformula <- as.formula("pheno ~ expo")
   baseadjusted <- addToBase(baseformula, adjustingVariables = adjustment_variables)
-  basebase <- as.formula(sprintf("pheno ~ %s", paste(adjustment_variables, collapse="+"))) 
+  basebase <- as.formula(sprintf("pheno ~ %s", paste(adjustment_variables, collapse="+")))
   ##
-  unadjusted_mod <- run_model(baseformula, dsn, scale_expo = scale_e, scale_pheno = scale_p,  quantile_expo=quantile_expo, expo_levels =  exposure_levels) 
+  unadjusted_mod <- run_model(baseformula, dsn, scale_expo = scale_e, scale_pheno = scale_p,  quantile_expo=quantile_expo, expo_levels =  exposure_levels)
   adjusted_mod <- run_model(baseadjusted, dsn, scale_expo = scale_e, scale_pheno = scale_p, quantile_expo=quantile_expo, expo_levels = exposure_levels)
   base_mod <- run_model(basebase, dsn, scale_expo = scale_e, scale_pheno = scale_p, quantile_expo=quantile_expo, expo_levels = exposure_levels)
   n <- dsn |> nrow()
   ## demographic breakdown
   demo_break_tbl <- demographic_breakdown(dsn)
-  ## return mods 
-  list(dsn=dsn, unweighted_n=n, phenotype=pheno, exposure=exposure, series=series, unadjusted_model=unadjusted_mod, adjusted_model=adjusted_mod, base_mod=base_mod, demo_breakdown=demo_break_tbl)  
+  ## return mods
+  list(dsn=dsn, unweighted_n=n, phenotype=pheno, exposure=exposure, series=series, unadjusted_model=unadjusted_mod, adjusted_model=adjusted_mod, base_mod=base_mod, demo_breakdown=demo_break_tbl)
 }
 
 
-## 
+##
 
-#' PE by Table 
+#' PE by Table
 #'
 #' This function operates similarly to the 'pe' function, but takes a pre-processed table object as input instead of separate phenotype and exposure tables. It is designed to help users scale up the pe associations by executing all possible associations between the P and E tables
 #'
@@ -563,19 +576,19 @@ pe <- function(pheno, exposure, adjustment_variables, series, con,
 #' @param scale_p Logical, if TRUE, phenotype variable is scaled. Default is FALSE.
 #' @param quantile_expo Optional, if specified, exposure variable will be cut by these quantiles
 #' @param exposure_levels Optional, if specified, exposure variable will be treated as a categorical variable with these levels
-#' 
+#'
 #' @return A list containing: the svydesign object, log transformation status for phenotype and exposure, scaling status for phenotype and exposure, unweighted number of observations, phenotype, series, exposure, unadjusted model, adjusted model, base model, and demographic breakdown.
-#' 
+#'
 #' @examples
 #' \dontrun{
 #' pe_result <- pe_by_table(tab_obj=table_object, pvar="BMI", evar="smoke", adjustment_variables=c("age", "sex"), logxform_p=T, logxform_e=T, scale_e=T, scale_p=F, quantile_expo=NULL, exposure_levels=NULL)
 #' }
-#' 
+#'
 #' @export
 
-pe_by_table <- function(tab_obj, pvar, evar, 
-                  adjustment_variables, 
-                  logxform_p=T, logxform_e=T, scale_e=T, scale_p=F, 
+pe_by_table <- function(tab_obj, pvar, evar,
+                  adjustment_variables,
+                  logxform_p=T, logxform_e=T, scale_e=T, scale_p=F,
                   quantile_expo=NULL, exposure_levels=NULL) {
   pheno <- pvar
   exposure <- evar
@@ -586,46 +599,46 @@ pe_by_table <- function(tab_obj, pvar, evar,
   ## run models
   baseformula <- as.formula("pheno ~ expo")
   baseadjusted <- addToBase(baseformula, adjustingVariables = adjustment_variables)
-  basebase <- as.formula(sprintf("pheno ~ %s", paste(adjustment_variables, collapse="+"))) 
+  basebase <- as.formula(sprintf("pheno ~ %s", paste(adjustment_variables, collapse="+")))
   demo_break_tbl <- demographic_breakdown(dsn)
   ##
-  unadjusted_mod <- run_model(baseformula, dsn, scale_expo = scale_e, scale_pheno = scale_p,  quantile_expo=quantile_expo, expo_levels =  exposure_levels) 
+  unadjusted_mod <- run_model(baseformula, dsn, scale_expo = scale_e, scale_pheno = scale_p,  quantile_expo=quantile_expo, expo_levels =  exposure_levels)
   adjusted_mod <- run_model(baseadjusted, dsn, scale_expo = scale_e, scale_pheno = scale_p, quantile_expo=quantile_expo, expo_levels = exposure_levels)
   base_mod <- run_model(basebase, dsn, scale_expo = scale_e, scale_pheno = scale_p, quantile_expo=quantile_expo, expo_levels = exposure_levels)
   n <- dsn |> nrow()
-  ## return mods 
-  list(dsn=dsn, log_p = logxform_p, log_e = logxform_e, scaled_p = scale_p, scaled_e=scale_e, unweighted_n=n, phenotype=pheno, series=tab_obj$series, exposure=exposure, unadjusted_model=unadjusted_mod, adjusted_model=adjusted_mod, base_mod=base_mod, demographic_breakdown=demo_break_tbl)  
+  ## return mods
+  list(dsn=dsn, log_p = logxform_p, log_e = logxform_e, scaled_p = scale_p, scaled_e=scale_e, unweighted_n=n, phenotype=pheno, series=tab_obj$series, exposure=exposure, unadjusted_model=unadjusted_mod, adjusted_model=adjusted_mod, base_mod=base_mod, demographic_breakdown=demo_break_tbl)
 }
 
 
 
 #' Provide a demographic breakdown for a survey design object
 #'
-#' This function calculates the mean for several hard-coded demographic variables in the survey design object. 
-#' The demographic variables are: RIDAGEYR, RIAGENDR, INDFMPIR, ETHNICITY_MEXICAN, ETHNICITY_OTHERHISPANIC, 
-#' ETHNICITY_OTHER, ETHNICITY_NONHISPANICBLACK, ETHNICITY_NONHISPANICWHITE, EDUCATION_LESS9, EDUCATION_9_11, 
+#' This function calculates the mean for several hard-coded demographic variables in the survey design object.
+#' The demographic variables are: RIDAGEYR, RIAGENDR, INDFMPIR, ETHNICITY_MEXICAN, ETHNICITY_OTHERHISPANIC,
+#' ETHNICITY_OTHER, ETHNICITY_NONHISPANICBLACK, ETHNICITY_NONHISPANICWHITE, EDUCATION_LESS9, EDUCATION_9_11,
 #' EDUCATION_HSGRAD, EDUCATION_AA, and EDUCATION_COLLEGEGRAD.
 #'
 #' @param svy_dsn A survey design object.
 #' @return A tibble containing the mean for each demographic variable in the survey design object.
 #' @export
 demographic_breakdown <- function(svy_dsn) {
-  ## for a merged table, provide the summary of the demovars 
-  
-  varnames <- c("RIDAGEYR", "RIAGENDR", "INDFMPIR", "ETHNICITY_MEXICAN", 
-                "ETHNICITY_OTHERHISPANIC", "ETHNICITY_OTHER", 
-                "ETHNICITY_NONHISPANICBLACK", "ETHNICITY_NONHISPANICWHITE", 
-                "EDUCATION_LESS9", "EDUCATION_9_11", "EDUCATION_HSGRAD", 
+  ## for a merged table, provide the summary of the demovars
+
+  varnames <- c("RIDAGEYR", "RIAGENDR", "INDFMPIR", "ETHNICITY_MEXICAN",
+                "ETHNICITY_OTHERHISPANIC", "ETHNICITY_OTHER",
+                "ETHNICITY_NONHISPANICBLACK", "ETHNICITY_NONHISPANICWHITE",
+                "EDUCATION_LESS9", "EDUCATION_9_11", "EDUCATION_HSGRAD",
                 "EDUCATION_AA", "EDUCATION_COLLEGEGRAD")
-  
+
   # Check for presence of variables
   dataset_vars <- names(svy_dsn$variables)
   missing_vars <- setdiff(varnames, dataset_vars)
-  
+
   if(length(missing_vars) > 0) {
     stop(paste("The following variables are missing: ", paste(missing_vars, collapse = ", ")))
   }
-  
+
   mn_obj <- svymean(~RIDAGEYR+I(RIAGENDR-1)+INDFMPIR+ETHNICITY_MEXICAN+ETHNICITY_OTHERHISPANIC+ETHNICITY_OTHER+ETHNICITY_NONHISPANICBLACK+ETHNICITY_NONHISPANICWHITE+EDUCATION_LESS9+EDUCATION_9_11+EDUCATION_HSGRAD+EDUCATION_AA+EDUCATION_COLLEGEGRAD, design=svy_dsn)
   varnames <- mn_obj |> names()
   varnames[grepl("RIAGENDR", varnames)] <- "RIAGENDR"
@@ -636,7 +649,7 @@ demographic_breakdown <- function(svy_dsn) {
 
 #' PME - multivariate regression: P ~ E1 + E2 + ...
 #'
-#' This function performs a multivariate exposure (multiple exposures) regression analysis on a pre-processed table object. The phenotype can be log-transformed and scaled if desired, and the model can be adjusted for specified variables. 
+#' This function performs a multivariate exposure (multiple exposures) regression analysis on a pre-processed table object. The phenotype can be log-transformed and scaled if desired, and the model can be adjusted for specified variables.
 #'
 #' @param tab_obj A pre-processed table object including both phenotype and exposure information.
 #' @param pvar A variable related to phenotype.
@@ -644,18 +657,18 @@ demographic_breakdown <- function(svy_dsn) {
 #' @param adjustment_variables A vector of variables to adjust for in the models.
 #' @param logxform_p Logical, if TRUE, a log transformation is applied to phenotype variable. Default is TRUE.
 #' @param scale_p Logical, if TRUE, phenotype variable is scaled. Default is FALSE.
-#' 
+#'
 #' @return A list containing: the svydesign object, log transformation status for phenotype, scaling status for phenotype, unweighted number of observations, phenotype, series, exposures, unadjusted model, adjusted model, and base model.
-#' 
+#'
 #' @examples
 #' \dontrun{
 #' pme_result <- pme(tab_obj=table_object, pvar="BMI", evars=c("smoke", "age"), adjustment_variables=c("sex"), logxform_p=T, scale_p=F)
 #' }
-#' 
+#'
 #' @export
 
-pme <- function(tab_obj, pvar, evars, 
-                        adjustment_variables, 
+pme <- function(tab_obj, pvar, evars,
+                        adjustment_variables,
                         logxform_p=T, scale_p=F) {
   pheno <- pvar
   tab_obj <- name_and_xform_pheno(pheno, tab_obj, logxform_p)
@@ -666,15 +679,15 @@ pme <- function(tab_obj, pvar, evars,
   to_formula <- sprintf('pheno ~ %s', paste(evars, collapse="+"))
   baseformula <- as.formula(to_formula)
   baseadjusted <- addToBase(baseformula, adjustingVariables = adjustment_variables)
-  basebase <- as.formula(sprintf("pheno ~ %s", paste(adjustment_variables, collapse="+"))) 
+  basebase <- as.formula(sprintf("pheno ~ %s", paste(adjustment_variables, collapse="+")))
   ##
   unadjusted_mod <- run_mv_model(baseformula, dsn,scale_p)
   adjusted_mod <- run_mv_model(baseadjusted, dsn, scale_p)
   base_mod <- run_mv_model(basebase, dsn, scale_p)
   n <- dsn |> nrow()
-  ## return mods 
-  list(dsn=dsn, log_p = logxform_p, scaled_p = scale_p, unweighted_n=n, phenotype=pheno, series=tab_obj$series, exposures=evars, unadjusted_model=unadjusted_mod, adjusted_model=adjusted_mod, base_mod=base_mod)  
-  
+  ## return mods
+  list(dsn=dsn, log_p = logxform_p, scaled_p = scale_p, unweighted_n=n, phenotype=pheno, series=tab_obj$series, exposures=evars, unadjusted_model=unadjusted_mod, adjusted_model=adjusted_mod, base_mod=base_mod)
+
 }
 
 

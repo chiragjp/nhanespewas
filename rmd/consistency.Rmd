@@ -42,7 +42,7 @@ ep_assoc_summary_across_models <- function(summary_stats, glanced_stats) {
 ```
 
 ```{r connect to db}
-con <- DBI::dbConnect(RSQLite::SQLite(), dbname='../data/pe_summary_stats.sqlite')
+con <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/pe_summary_stats.sqlite')
 varnames <- tbl(con, "variable_names_epcf")
 adjusted_meta <- tbl(con, "adjusted_meta")
 unadjusted_meta <- tbl(con, "unadjusted_meta")
@@ -73,6 +73,8 @@ p <- p + ylab("Effect Size Estimate (Day 2)") + facet_grid(~sig_levels_DS1) +sca
 p <- p  +  theme_bw() + theme(legend.title=element_blank()) 
 p
 
+ds |> group_by(sig_levels_DS1) |> summarize(cr = cor(estimate_DS1, estimate_DS2, use="pairwise.complete.obs"))
+
 ```
 
 
@@ -97,8 +99,11 @@ lbx_urx <- lbx_dat |> inner_join(urx_dat, by=c("urx_lbx_name", "pvarname"), suff
 p <- ggplot(lbx_urx, aes(estimate_lbx, estimate_urx, color=sig_levels_lbx))
 p <- p + geom_point() 
 p <- p + geom_abline() + geom_hline(yintercept=0) + geom_vline(xintercept =0) + facet_grid(urx_lbx_name~sig_levels_lbx) +scale_color_aaas()
-p <- p +  theme_bw() + theme(legend.title=element_blank()) + xlab("Effect Size of Blood Biomarker") + ylab("Effect Size of Urinary Biomarker")
-p
+p <- p +  theme_bw() + theme(legend.title=element_blank()) + xlab("Effect Size Estimate of Blood Biomarker") + ylab("Effect Size Estimate of Urinary Biomarker")
+
+
+
+lbx_urx |> group_by(urx_lbx_name, sig_levels_lbx) |> summarize(cr=cor(estimate_lbx, estimate_urx))
 
 ```
 
@@ -117,7 +122,10 @@ lbx_sr <- lbx2_dat |> inner_join(sr_dat, by=c("lbx_sr_name", "pvarname"), suffix
 p <- ggplot(lbx_sr, aes(estimate_lbx, estimate_sr, color=sig_levels_lbx))
 p <- p + geom_point() 
 p <- p + geom_abline() + geom_hline(yintercept=0) + geom_vline(xintercept =0) + facet_grid(lbx_sr_name~sig_levels_lbx) +scale_color_aaas()
-p <- p +  theme_bw() + theme(legend.title=element_blank())  + xlab("Effect Size of Blood Biomarker") + ylab("Effect Size of Self-Report Exposure")
+p <- p +  theme_bw() + theme(legend.title=element_blank())  + xlab("Effect Size Estimate of Blood Biomarker") + ylab("Effect Size Estimate of Self-Report Exposure")
 p
+
+
+lbx_sr |> group_by(sig_levels_lbx) |> summarize(cr=cor(estimate_lbx,estimate_sr))
 
 ```
