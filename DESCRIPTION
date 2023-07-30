@@ -16,7 +16,13 @@ Imports:
     RSQLite,
     dplyr,
     tidyr,
-    survey
+    survey, 
+    stats,
+    tibble,
+    broom,
+    rlang,
+    tidyselect,
+    logger
 Suggests:
     ggplot2,
     metafor

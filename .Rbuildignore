@@ -5,6 +5,8 @@
 ^out
 ^download
 ^data
+^db$
+^img$
 ^db/pe_summary_stats.sqlite$
 ^db/nhanes_122322.sqlite$
 ^db/nhanes_122322_backup.sqlite$

@@ -4,7 +4,7 @@
 \alias{disconnect_pewas_data}
 \title{Disconnect from a NHANES database}
 \usage{
-disconnect_pewas_data(dbConn, ...)
+disconnect_pewas_data(dbConn)
 }
 \arguments{
 \item{dbConn}{A NHANES DBI connection object.}
@@ -17,6 +17,6 @@ This function disconnects from a database given a DBI connection object.
 }
 \examples{
 \dontrun{
-disconnect_pewas_data(dbConn, ...)
+disconnect_pewas_data(dbConn)
 }
 }
