@@ -7,7 +7,7 @@
 surveyVariables <- c('WTMEC2YR', 'WTMEC4YR', 'SDMVPSU', 'SDMVSTRA', 'SDDSRVYR')
 
 seriesBeginYearMap <- function(seriesName) {
-    seriesBeginYear <- case_when(
+    seriesBeginYear <- dplyr::case_when(
     seriesName == 'A' ~ 1999,
     seriesName == 'B' ~ 2001,
     seriesName == 'C' ~ 2003,
@@ -63,7 +63,7 @@ connect_pewas_data <- function(path_to_data = NULL) {
   }
   con <- DBI::dbConnect(RSQLite::SQLite(), dbname=path_to_data)
   # check version date and type of database (e.g., summary stats or NHANES raw)
-  if(dbExistsTable(con, "description")) {
+  if(DBI::dbExistsTable(con, "description")) {
     desc <- dplyr::tbl(con, "description")
     return(con)
   } else{
@@ -219,7 +219,7 @@ get_mv_expo_pheno_tables <- function(con, pheno_table_name, expo_table_names) {
   p_table <- dplyr::tbl(con, pheno_table_name) |> dplyr::collect()
 
   logger::log_info("Pheno table {pheno_table_name} has {p_table |> count() |> pull(n) } rows")
-  small_tab <- demo |> logger::inner_join(p_table, by="SEQN") |> logger::inner_join(e_table, by="SEQN")
+  small_tab <- demo |> dplyr::inner_join(p_table, by="SEQN") |> dplyr::inner_join(e_table, by="SEQN")
   logger::log_info("Merged table has { small_tab |> count() |> pull(n) } rows")
 
   return(list(merged_tab=small_tab, e_table=e_table, p_table=p_table, series=seriesName))
@@ -282,8 +282,8 @@ figure_out_weight <- function(get_tables_obj) {
 
   logger::log_info("p weight name: { weight_name_p }")
   logger::log_info("e weight name: { weight_name_e }")
-  etable_nrows <- e_table |> count() |> pull(n)
-  ptable_nrows <- p_table |> count() |> pull(n)
+  etable_nrows <- e_table |> dplyr::count() |> pull(n)
+  ptable_nrows <- p_table |> dplyr::count() |> pull(n)
 
   if(rlang::is_empty(weight_name_e) & rlang::is_empty(weight_name_p)) {
     logger::log_info("no weights in e or p table")
@@ -301,10 +301,10 @@ figure_out_weight <- function(get_tables_obj) {
       weight_name <- sprintf('%s.y', weight_name)
     }
 
-  } else if(!is_empty(weight_name_p)) {
+  } else if(!rlang::is_empty(weight_name_p)) {
     logger::log_info("weight in p table")
     weight_name <- weight_name_p
-  } else if (!is_empty(weight_name_e)) {
+  } else if (!rlang::is_empty(weight_name_e)) {
     logger::log_info("weight in e table")
     weight_name <- weight_name_e
   } else {
@@ -376,10 +376,10 @@ svyrsquared <- function(analysisObj) {
   dsn <- analysisObj$survey.design
   resid <- analysisObj$residuals
   yy <- analysisObj$y
-  dsn <- survey::update(dsn, y=yy)
+  dsn <- stats::update(dsn, y=yy)
   ymean <- survey::svymean(~y, dsn)[1]
-  dsn <- survey::update(dsn, ydiff=(yy-ymean)^2)
-  dsn <- survey::update(dsn, residual=resid^2)
+  dsn <- stats::update(dsn, ydiff=(yy-ymean)^2)
+  dsn <- stats::update(dsn, residual=resid^2)
   SSE <- survey::svytotal(~residual, dsn)
   SST <- survey::svytotal(~ydiff, dsn)
   rsquared <- 1 - (SSE[1] /SST[1])
@@ -426,25 +426,25 @@ svyrsquared <- function(analysisObj) {
 run_model <- function(formu, dsn, scale_expo=T, scale_pheno=F, quantile_expo=NULL, expo_levels=NULL) {
   cut_points <- NA
   if(scale_expo) {
-    log_info("Exposure as scaled")
+    logger::log_info("Exposure as scaled")
     s <- sqrt(mean(survey::svyvar(~expo, dsn, na.rm = T)))
     mn <- mean(survey::svymean(~expo, dsn, na.rm=T))
-    dsn <- survey::update(dsn, expo=(expo-mn)/s)
+    dsn <- stats::update(dsn, expo=(expo-mn)/s)
   } else if(!is.null(quantile_expo)) {
     logger::log_info("Exposure as a cut variable by quantiles")
     q <- survey::svyquantile(~expo, quantiles=quantile_expo, design = dsn)
     cut_points <- coef(q)
     labs <- paste("q", 1:(length(cut_points)-1), sep = "")
-    dsn <- survey::update(dsn, expo=cut(expo, breaks=cut_points, labels = labs))
+    dsn <- stats::update(dsn, expo=cut(expo, breaks=cut_points, labels = labs))
   } else if(!is.null(expo_levels)) {
     logger::log_info("Exposure as a categorical variable with levels { paste(expo_levels, collapse=';') }")
-    dsn <- survey::update(dsn, expo=factor(expo, levels=expo_levels))
+    dsn <- stats::update(dsn, expo=factor(expo, levels=expo_levels))
   }
 
   if(scale_pheno) {
     s <- sqrt(mean(survey::svyvar(~pheno, dsn, na.rm = T)))
     mn <- mean(survey::svymean(~pheno, dsn, na.rm=T))
-    dsn <- survey::update(dsn, pheno=(pheno-mn)/s)
+    dsn <- stats::update(dsn, pheno=(pheno-mn)/s)
   }
 
   mod <- survey::svyglm(formu,dsn)
@@ -462,7 +462,7 @@ run_mv_model <- function(formu, dsn, scale_pheno=F) {
   if(scale_pheno) {
     s <- sqrt(mean(survey::svyvar(~pheno, dsn, na.rm = T)))
     mn <- mean(survey::svymean(~pheno, dsn, na.rm=T))
-    dsn <- survey::update(dsn, pheno=(pheno-mn)/s)
+    dsn <- stats::update(dsn, pheno=(pheno-mn)/s)
   }
 
   mod <- survey::svyglm(formu,dsn)
@@ -547,7 +547,7 @@ pe <- function(pheno, exposure, adjustment_variables, series, con,
   ## do logxforms and rename variables "expo" and "pheno"
   tab_obj <- name_and_xform_pheno_expo(pheno, exposure, tab_obj, logxform_p, logxform_e)
   ## create svydesign
-  dat <- tab_obj$merged_tab |> dplyr::filter(!is.na(wt), wt > 0, !is.na(expo), !is.na(pheno), if_all(all_of(adjustment_variables), ~!is.na(.)))
+  dat <- tab_obj$merged_tab |> dplyr::filter(!is.na(wt), wt > 0, !is.na(expo), !is.na(pheno), dplyr::if_all(tidyselect::all_of(adjustment_variables), ~!is.na(.)))
   dsn <- create_svydesign(dat)
   ## run models
   baseformula <- stats::as.formula("pheno ~ expo")

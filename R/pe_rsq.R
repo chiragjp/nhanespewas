@@ -49,18 +49,18 @@
 #' @importFrom dplyr tbl filter pull collect select full_join inner_join left_join mutate_if
 #' @importFrom tidyr tibble
 get_mv_expo_pheno_tables_for_big_table <- function(con, pheno_table_name, expo_table_names) {
-  table_names <- tbl(con, "table_names_epcf")
-  seriesName <- table_names |> filter(Data.File.Name == pheno_table_name) |> pull(series)
-  log_info("Series of phenotype is { seriesName } ")
-  demo_table_name <- table_names |> filter(component == 'DEMO', series==seriesName) |> collect() |> pull(Data.File.Name)
-  log_info("Demographics table is { demo_table_name } ")
-  demo <- tbl(con, demo_table_name) |> collect()
+  table_names <- dplyr::tbl(con, "table_names_epcf")
+  seriesName <- table_names |> dplyr::filter(Data.File.Name == pheno_table_name) |> dplyr::pull(series)
+  logger::log_info("Series of phenotype is { seriesName } ")
+  demo_table_name <- table_names |> dplyr::filter(component == 'DEMO', series==seriesName) |> dplyr::collect() |> dplyr::pull(Data.File.Name)
+  logger::log_info("Demographics table is { demo_table_name } ")
+  demo <- dplyr::tbl(con, demo_table_name) |> dplyr::collect()
 
   e_table <- NULL
-  table_weight_names <- tibble()
+  table_weight_names <- tibble::tibble()
   for(ii in 1:length(expo_table_names)) {
-    e_table_lcl <- tbl(con, expo_table_names[ii]) |> collect()
-    log_info("Exposure table {expo_table_names[ii]} has {e_table_lcl |> count() |> pull(n) } rows")
+    e_table_lcl <- dplyr::tbl(con, expo_table_names[ii]) |> dplyr::collect()
+    logger::log_info("Exposure table {expo_table_names[ii]} has {e_table_lcl |> count() |> pull(n) } rows")
     if(ii == 1) {
       e_table <- e_table_lcl
       nme <- search_colnames_for_weights(e_table_lcl)
@@ -71,10 +71,10 @@ get_mv_expo_pheno_tables_for_big_table <- function(con, pheno_table_name, expo_t
     prev_colnames <- colnames(e_table)
     nme <- search_colnames_for_weights(e_table_lcl)
     n <- length(unique(e_table_lcl$SEQN))
-    table_weight_names <- rbind(table_weight_names, tibble(table_name=expo_table_names[ii], weight_name=nme, sample_size=n))
+    table_weight_names <- rbind(table_weight_names, tibble::tibble(table_name=expo_table_names[ii], weight_name=nme, sample_size=n))
 
     cols_to_keep <- c(setdiff(colnames(e_table_lcl), prev_colnames), "SEQN")
-    e_table <- e_table |> full_join(e_table_lcl |> select(all_of(cols_to_keep)), by="SEQN")
+    e_table <- e_table |> dplyr::full_join(e_table_lcl |> dplyr::select(dplyr::all_of(cols_to_keep)), by="SEQN")
   }
 
   #log_info("New exposure table has {e_table |> collect() |> count() |> pull(n) } rows")
@@ -82,12 +82,12 @@ get_mv_expo_pheno_tables_for_big_table <- function(con, pheno_table_name, expo_t
   p_table <- tbl(con, pheno_table_name) |> collect()
   nme <-  search_colnames_for_weights(p_table)
   n <- length(unique(p_table$SEQN))
-  table_weight_names <- rbind(table_weight_names, tibble(table_name=expo_table_names[ii], weight_name=nme, sample_size=n))
-  log_info("Pheno table {pheno_table_name} has {p_table |> count() |> pull(n) } rows")
-  small_tab <- demo |> inner_join(p_table, by="SEQN") |> left_join(e_table, by="SEQN")
-  log_info("Merged table has { small_tab |> count() |> pull(n) } rows")
+  table_weight_names <- rbind(table_weight_names, tibble::tibble(table_name=expo_table_names[ii], weight_name=nme, sample_size=n))
+  logger::log_info("Pheno table {pheno_table_name} has {p_table |> count() |> pull(n) } rows")
+  small_tab <- demo |> inner_join(p_table, by="SEQN") |> dplyr::left_join(e_table, by="SEQN")
+  logger::log_info("Merged table has { small_tab |> count() |> pull(n) } rows")
 
-  small_tab <- small_tab |> mutate_if(is.not.numeric, as.numeric)
+  small_tab <- small_tab |> dplyr::mutate_if(is.not.numeric, as.numeric)
   return(list(merged_tab=small_tab, e_table=e_table, p_table=p_table, series=seriesName, table_weights=table_weight_names))
 }
 
@@ -115,44 +115,44 @@ get_mv_expo_pheno_tables_for_big_table <- function(con, pheno_table_name, expo_t
 #' @importFrom dplyr tbl filter select inner_join group_by summarize collect rowwise mutate ungroup pull bind_rows arrange
 #' @importFrom tidyr unnest_wider gather
 get_individual_level_table <- function(summary_stats_con, nhanes_con, pvarname_to_query) {
-  adjusted_meta_2 <- tbl(summary_stats_con, "adjusted_meta_2")
-  expos_wide <- tbl(summary_stats_con, "expos_wide")
-  evars_for_p <- adjusted_meta_2 |> filter(pvarname == pvarname_to_query) |> filter(sig_levels == 'Bonf.<0.05')  # evariables
-  table_list <- expos_wide |> filter(pvarname == pvarname_to_query) # |>  filter(term == 'expo')
-  table_list <- table_list |> inner_join(evars_for_p |> select(evarname)) |> select(evarname, pvarname, exposure_table_name, ecategory,pcategory, phenotype_table_name, nobs_adjusted)
+  adjusted_meta_2 <- dplyr::tbl(summary_stats_con, "adjusted_meta_2")
+  expos_wide <- dplyr::tbl(summary_stats_con, "expos_wide")
+  evars_for_p <- adjusted_meta_2 |> filter(pvarname == pvarname_to_query) |> dplyr::filter(sig_levels == 'Bonf.<0.05')  # evariables
+  table_list <- expos_wide |> dplyr::filter(pvarname == pvarname_to_query) # |>  filter(term == 'expo')
+  table_list <- table_list |> dplyr::inner_join(evars_for_p |> dplyr::select(evarname)) |> dplyr::select(evarname, pvarname, exposure_table_name, ecategory,pcategory, phenotype_table_name, nobs_adjusted)
 
 
-  ep_tables <- table_list |> collect() |> select(exposure_table_name, phenotype_table_name) |> unique() |> group_by(phenotype_table_name) |> summarize(exposure_table_names=list(exposure_table_name))
-  ep_tables <- ep_tables|> rowwise() |>
-    mutate(m_struct=list(get_mv_expo_pheno_tables_for_big_table(nhanes_con, phenotype_table_name, exposure_table_names)))
+  ep_tables <- table_list |> dplyr::collect() |> dplyr::select(exposure_table_name, phenotype_table_name) |> unique() |> dplyr::group_by(phenotype_table_name) |> dplyr::summarize(exposure_table_names=list(exposure_table_name))
+  ep_tables <- ep_tables|> dplyr::rowwise() |>
+    dplyr::mutate(m_struct=list(get_mv_expo_pheno_tables_for_big_table(nhanes_con, phenotype_table_name, exposure_table_names)))
 
-  ep_tables <- ep_tables |> ungroup() |> unnest_wider(m_struct)
+  ep_tables <- ep_tables |> dplyr::ungroup() |> tidyr::unnest_wider(m_struct)
 
-  weights <- ep_tables |> pull(table_weights) |> bind_rows()
-  uniq_weights <- weights |> group_by(weight_name) |> summarize(combined_sample_size=sum(sample_size))
+  weights <- ep_tables |> dplyr::pull(table_weights) |> dplyr::bind_rows()
+  uniq_weights <- weights |> dplyr::group_by(weight_name) |> dplyr::summarize(combined_sample_size=sum(sample_size))
 
-  ss_per_variable <- table_list |> group_by(evarname) |> summarize(total_n=sum(nobs_adjusted))
-  the_big_one <- ep_tables |> pull(merged_tab) |> bind_rows()
+  ss_per_variable <- table_list |> dplyr::group_by(evarname) |> dplyr::summarize(total_n=sum(nobs_adjusted))
+  the_big_one <- ep_tables |> dplyr::pull(merged_tab) |> dplyr::bind_rows()
 
-  big_samples <- ss_per_variable |> filter(total_n >= 10000)
+  big_samples <- ss_per_variable |> dplyr::filter(total_n >= 10000)
 
-  big_cc <- the_big_one |> select(
-    SEQN, all_of(pvarname_to_query), all_of(surveyVariables), all_of(uniq_weights$weight_name),
-    all_of(adjustmentVariables), all_of( big_samples |> pull(evarname))) |> filter(!is.na(get(pvarname_to_query)))
+  big_cc <- the_big_one |> dplyr::select(
+    SEQN, tidyselect::all_of(pvarname_to_query), tidyselect::all_of(surveyVariables), tidyselect::all_of(uniq_weights$weight_name),
+    tidyselect::all_of(adjustmentVariables), tidyselect::all_of( big_samples |> dplyr::pull(evarname))) |> dplyr::filter(!is.na(get(pvarname_to_query)))
 
 
   missingness <- big_cc |>
-    summarise_all(~(sum(is.na(.))/length(.)*100)) |> gather(variable, missing_perc) |> arrange(missing_perc)
-  selected_vars <- missingness |> filter(missing_perc < 30) |> pull(variable)
-  selected_data <- big_cc |> select(all_of(selected_vars)) |> stats::na.omit()
+    dplyr::summarise_all(~(sum(is.na(.))/length(.)*100)) |> tidyr::gather(variable, missing_perc) |> dplyr::arrange(missing_perc)
+  selected_vars <- missingness |> dplyr::filter(missing_perc < 30) |> dplyr::pull(variable)
+  selected_data <- big_cc |> dplyr::select(tidyselect::all_of(selected_vars)) |> stats::na.omit()
 
   selected_weights <- intersect(selected_vars, uniq_weights$weight_name)
-  weight_to_use <- uniq_weights |> filter(weight_name %in% selected_weights) |> slice_min(combined_sample_size)
+  weight_to_use <- uniq_weights |> dplyr::filter(weight_name %in% selected_weights) |> dplyr::slice_min(combined_sample_size)
 
-  log_info("MV table has {selected_data |> count() |> pull(n) } rows")
+  logger::log_info("MV table has {selected_data |> count() |> pull(n) } rows")
   evars_final <- setdiff(selected_vars, c(pvarname_to_query, "SEQN", selected_weights, surveyVariables, adjustmentVariables))
-  log_info("MV table has {evars_final |> length() } number of E")
-  log_info("MV table SDDSRVYR: {unique(selected_data$SDDSRVYR) }")
+  logger::log_info("MV table has {evars_final |> length() } number of E")
+  logger::log_info("MV table SDDSRVYR: {unique(selected_data$SDDSRVYR) }")
   list(evars=evars_final, weight_to_use=weight_to_use, selected_data=selected_data)
 }
 
@@ -180,21 +180,21 @@ is.not.numeric <- function(x, ...) {
 
 
 unweighted_r2 <- function(pvarname, evarnames, adjustment_variables, data) {
-  baseformula <- as.formula(sprintf("%s ~ %s", pvarname, paste(adjustment_variables, collapse="+")))
+  baseformula <- stats::as.formula(sprintf("%s ~ %s", pvarname, paste(adjustment_variables, collapse="+")))
   baseevars <- addToBase(baseformula, adjustingVariables = evarnames)
-  gl1 <- glance(lm(baseformula , selected_data))
-  gl2 <- glance(lm(baseevars, selected_data))
+  gl1 <- broom::glance(stats::lm(baseformula , selected_data))
+  gl2 <- broom::glance(stats::lm(baseevars, selected_data))
   return(list(base=gl1, mve=gl2))
 }
 
 svy_weighted_r2 <- function(pvarname, evarnames, adjustment_variables, dat, weight_name="WTMEC2YR") {
-  dat <- dat |> mutate(wt = !!sym(weight_name)) |> mutate(wt = wt / length(dat$SDDSRVYR)) # assume 1999 and 2001 are not being analyzed
+  dat <- dat |> dplyr::mutate(wt = !!sym(weight_name)) |> dplyr::mutate(wt = wt / length(dat$SDDSRVYR)) # assume 1999 and 2001 are not being analyzed
 
-  dsn <- svydesign(ids=~SDMVPSU, strata=~SDMVSTRA, weights=~wt, nest=T, data = dat |> filter(wt > 0))
-  baseformula <- as.formula(sprintf("%s ~ %s", pvarname, paste(adjustment_variables, collapse="+")))
+  dsn <- survey::svydesign(ids=~SDMVPSU, strata=~SDMVSTRA, weights=~wt, nest=T, data = dat |> filter(wt > 0))
+  baseformula <- stats::as.formula(sprintf("%s ~ %s", pvarname, paste(adjustment_variables, collapse="+")))
   baseevars <- addToBase(baseformula, adjustingVariables = evarnames)
-  modbase <- svyglm(baseformula, dsn)
-  modevars <- svyglm(baseevars, dsn)
+  modbase <- survey::svyglm(baseformula, dsn)
+  modevars <- survey::svyglm(baseevars, dsn)
   r2base <- svyrsquared(modbase)
   r2evars <- svyrsquared(modevars)
   return(list(base=r2base, mve=r2evars))
@@ -227,13 +227,13 @@ pme <- function(tab_obj, pvar, evars,
   pheno <- pvar
   tab_obj <- name_and_xform_pheno(pheno, tab_obj, logxform_p)
   ## create svydesign
-  dat <- tab_obj$merged_tab |> filter(!is.na(wt), wt > 0, !is.na(pheno), if_all(all_of(evars), ~!is.na(.)), if_all(all_of(adjustment_variables), ~!is.na(.)))
+  dat <- tab_obj$merged_tab |> dplyr::filter(!is.na(wt), wt > 0, !is.na(pheno), dplyr::if_all(tidyselect::all_of(evars), ~!is.na(.)), dplyr::if_all(tidyselect::all_of(adjustment_variables), ~!is.na(.)))
   dsn <- create_svydesign(dat)
   ## run models
   to_formula <- sprintf('pheno ~ %s', paste(evars, collapse="+"))
-  baseformula <- as.formula(to_formula)
+  baseformula <- stats::as.formula(to_formula)
   baseadjusted <- addToBase(baseformula, adjustingVariables = adjustment_variables)
-  basebase <- as.formula(sprintf("pheno ~ %s", paste(adjustment_variables, collapse="+")))
+  basebase <- stats::as.formula(sprintf("pheno ~ %s", paste(adjustment_variables, collapse="+")))
   ##
   unadjusted_mod <- run_mv_model(baseformula, dsn,scale_p)
   adjusted_mod <- run_mv_model(baseadjusted, dsn, scale_p)
