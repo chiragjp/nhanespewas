@@ -43,7 +43,8 @@
 #' about the table weights (`table_weights`).
 #' @examples
 #' \dontrun{
-#' result <- get_mv_expo_pheno_tables_for_big_table(con, "pheno_table", c("expo_table1", "expo_table2"))
+#' result <- get_mv_expo_pheno_tables_for_big_table(con, "pheno_table",
+#' c("expo_table1", "expo_table2"))
 #' }
 #' @importFrom DBI dbGetQuery
 #' @importFrom dplyr tbl filter pull collect select full_join inner_join left_join mutate_if
@@ -218,7 +219,8 @@ svy_weighted_r2 <- function(pvarname, evarnames, adjustment_variables, dat, weig
 #' \dontrun{
 #' table_object <- get_mv_expo_pheno_tables(conn, "L10AM_C", c("L45VIT_C", "L06COT_C"))
 #' table_object <- figure_out_weight(table_object)
-#' pme_result <- pme(tab_obj=table_object, pvar="LBXGLU", evars=c("LBXCOT", "LBXGTC"), adjustment_variables=adjustment_variables(), logxform_p=T, scale_p=F)
+#' pme_result <- pme(tab_obj=table_object, pvar="LBXGLU", evars=c("LBXCOT", "LBXGTC"),
+#' adjustment_variables=adjustment_variables(), logxform_p=T, scale_p=F)
 #' }
 #'
 pme <- function(tab_obj, pvar, evars,

@@ -1,6 +1,5 @@
 # Benchmarking exposome research: An atlas of exposome-phenome associations
 
-
 06/07/2023
 
 ## Summary
@@ -17,21 +16,18 @@ Specifically, the atlas provides a comprehensive list of exposure-phenome associ
 -   [Phenotype by Exposure Associations](rmd/pe.html)
 -   [Consistency of Exposome Associations](rmd/consistency.html)
 
-## Data
+## nhanespewas: run your own P-E Associations
 
--   link to S3 Bucket
+### Installation
 
-## Get Started
+```         
+## todo
 
-#### Installation
-```{r}
-library(devtools)
-install_github("chiragjp/nhanespewas")
 ```
 
-#### Execute an E-P Association
+### Execute an E-P Association
 
-```{r}
+```         
 # 
 library(nhanespewas)
 # connect to nhanes data, built for PE analysis
@@ -42,6 +38,9 @@ pedata_con <- connect_pewas_data()
 
 # clean up
 disconnect_pewas_data(pedata_con)
-
 ```
 
+## PEWAS Data
+
+-   [Participant-level data](https://www.dropbox.com/s/fvdd60k0nnm8qjb/nhanes_122322.sqlite?dl=0)
+-   [Summary statistics](https://www.dropbox.com/s/w84s77cbpifp7fy/pe_summary_stats.sqlite?dl=0)

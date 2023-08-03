@@ -29,7 +29,8 @@ This function performs a multivariate exposure (multiple exposures) regression a
 \dontrun{
 table_object <- get_mv_expo_pheno_tables(conn, "L10AM_C", c("L45VIT_C", "L06COT_C"))
 table_object <- figure_out_weight(table_object)
-pme_result <- pme(tab_obj=table_object, pvar="LBXGLU", evars=c("LBXCOT", "LBXGTC"), adjustment_variables=adjustment_variables(), logxform_p=T, scale_p=F)
+pme_result <- pme(tab_obj=table_object, pvar="LBXGLU", evars=c("LBXCOT", "LBXGTC"),
+adjustment_variables=adjustment_variables(), logxform_p=T, scale_p=F)
 }
 
 }

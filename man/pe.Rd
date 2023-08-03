@@ -62,8 +62,9 @@ running models, and computing demographic breakdowns.
 \examples{
 \dontrun{
 connection <- connect_pewas_data()
-adjustments <-c("RIDAGEYR", "RIAGENDR", "INDFMPIR", "ETHNICITY_MEXICAN", "ETHNICITY_NONHISPANICBLACK", "ETHNICITY_OTHER", "EDUCATION_LESS9", "EDUCATION_9_11","EDUCATION_AA", "EDUCATION_COLLEGEGRAD")
-pe_result <- pe(pheno="BMXBMI", exposure="LBXGTC", adjustment_variables=adjustments, series="C", con=connection, logxform_p=T, logxform_e=T, scale_e=T, scale_p=F)
+adjustments <- adjustment_variables()
+pe_result <- pe(pheno="BMXBMI", exposure="LBXGTC", adjustment_variables=adjustments, series="C",
+con=connection, logxform_p=T, logxform_e=T, scale_e=T, scale_p=F)
 pe_result$adjusted_model$tidied
 }
 

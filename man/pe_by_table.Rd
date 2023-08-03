@@ -48,7 +48,10 @@ This function operates similarly to the 'pe' function, but takes a pre-processed
 \dontrun{
 con <- connect_pewas_data()
 table_object <- get_tables("LBXGLU", "LBXGTC", "C", con, "L10AM_C", "L45VIT_C")
-pe_result <- pe_by_table(tab_obj=table_object, pvar="LBXGLU", evar="LBXGTC", adjustment_variables=c("RIDAGEYR", "RIAGENDR"), logxform_p=T, logxform_e=T, scale_e=T, scale_p=F, quantile_expo=NULL, exposure_levels=NULL)
+pe_result <- pe_by_table(tab_obj=table_object, pvar="LBXGLU", evar="LBXGTC",
+adjustment_variables=c("RIDAGEYR", "RIAGENDR"),
+logxform_p=T, logxform_e=T, scale_e=T, scale_p=F,
+quantile_expo=NULL, exposure_levels=NULL)
 }
 
 }

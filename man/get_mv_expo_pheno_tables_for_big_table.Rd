@@ -25,6 +25,7 @@ the final processed tables and relevant information.
 }
 \examples{
 \dontrun{
-result <- get_mv_expo_pheno_tables_for_big_table(con, "pheno_table", c("expo_table1", "expo_table2"))
+result <- get_mv_expo_pheno_tables_for_big_table(con, "pheno_table",
+c("expo_table1", "expo_table2"))
 }
 }

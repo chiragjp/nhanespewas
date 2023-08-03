@@ -87,6 +87,8 @@ adjusted_meta <- adjusted_meta |> left_join(e_variable_domain, by=c("evarname"="
 expos_wide <- expos_wide |> left_join(p_variable_domain, by=c("pvarname"="Variable.Name"))
 expos_wide <- expos_wide |> left_join(e_variable_domain, by=c("evarname"="Variable.Name"))
 
+mvr2 <- mvr2 |> collect() |> left_join(p_variable_domain, by=c("pvarname"="Variable.Name"))
+
 ```
 
 # Number of unique exposures and phenotypes
@@ -645,13 +647,33 @@ bias_per_pcategory |> select(-mod) |> select(pcategory, term, estimate, p.value)
 # Multivariate R2 of the exposome
 
 ```{r r2}
-p <- ggplot(mvr2, aes(n_evars, mv))
+p <- ggplot(mvr2, aes(n_evars, mv*100))
 p <- p + geom_point() + theme_bw()
-p <- p + geom_text_repel(data=mvr2 |> filter(n_evars > 50),aes(n_evars, mv, label=pvarname) )
-p <- p + xlab("Number of Exposome Variables in Model") + ylab("R-squared")
-p
+p <- p + geom_text_repel(data=mvr2 |> filter(mv > .1),aes(n_evars, mv*100, label=substr(pvarname, 4, 10) ), max.overlaps = 20)
+p <- p + xlab("Number of Exposome Variables in Model") + ylab("R-squared (%)")
+p1 <- p
 
-mvr2 |> collect() |> summarize(mean_sample_size=mean(n), median_r2=median(mv), q25_r2=quantile(mv, probs=.25), q75_r2=quantile(mv, probs=.75))
+p <- ggplot(mvr2, aes(base_adj_rsq, mve_rsq))
+p <- p + geom_point() + theme_bw()
+p <- p + geom_text_repel(data=mvr2 |> filter(mv > .1),aes(base_adj_rsq, mve_rsq, label=substr(pvarname, 4, 10) ), max.overlaps = 20)
+p <- p + xlab("R2 (Demographic Model)") + ylab("R2 (Full Model)")
+p2 <- p
+
+p3 <- ggplot(mvr2, aes(n_evars, mve_rsq))
+p3 <- p3 + geom_point(aes(n_evars, base_adj_rsq))
+p3 <- p3 + geom_segment(aes(x=n_evars, y=base_adj_rsq, xend=n_evars, yend=mve_rsq),arrow = arrow(length = unit(0.01, "npc")))
+p3 <- p3 + geom_text_repel(data=mvr2 |> filter(mv > .1), aes(n_evars, mve_rsq, label=substr(pvarname, 4, 10) ), max.overlaps = 20)
+p3 <- p3 + theme_bw()
+p3
+
+
+mvr2 |> summarize(mean_sample_size=mean(n), median_r2=median(mv), q25_r2=quantile(mv, probs=.25), q75_r2=quantile(mv, probs=.75))
+mvr2 |> summarize(n_min=min(n), n_max=max(n), n_evars_min=min(n_evars), n_evars_max=max(n_evars))
+
+mvr2 |> arrange(-n_evars) |> filter(mv > .1) |> mutate(pvarname=substr(pvarname, 4, 8)) |> select(pvarname, pvardesc)  |> unite("index", pvarname, pvardesc, sep=":")  |> print(n=26)
+
+
+p <- plot_grid(p1, p2, ncol=2, labels=c("A", "B"))
 
 ```
 
