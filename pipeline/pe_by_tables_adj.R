@@ -4,11 +4,10 @@
 library(getopt)
 library(tidyverse)
 library(logger)
-source('db_paths.R')
-#library(nhanespewas)
+#source('db_paths.R')
 devtools::load_all("..")
 
-TEST <- T
+TEST <- F
 spec <- matrix(c(
   'phenotype_table', 'p', 1, "character",
   'exposure_table', 'e', 1, "character",
@@ -20,23 +19,24 @@ opt <- getopt(spec)
 
 sample_size_threshold <- 500
 
+
+########### debug stuff
 phenotype_table <- 'BPX'
 #phenotype_table <- 'BMX_E'
 #phenotype_table <- 'BIOPRO_F'
+#exposure_table <- 'DRXTOT'
 #exposure_table <- 'L02HBS'
-#exposure_table <- 'PHPYPA'
+exposure_table <- 'PHPYPA'
 #exposure_table <- 'LAB06'
 #exposure_table <- 'VOCWB_F'
 #exposure_table <- 'PAQ_E'
-#exposure_table <- 'DS1TOT_E'
-exposure_table <- 'PAQ'
+#exposure_table <- 'DR1TOT_E'
+#exposure_table <- 'PAQ'
 #phenotype_table <- 'BMX_E'
 #exposure_table <- 'DS2TOT_E'
-
-
 #ss_file <- './select/sample_size_pe.csv'  #opt$sample_size_pairs_list_file
-ss_file <- '../select/sample_size_pe_category_041823.csv'
-path_to_db <- path_to_nhanes # '../nhanes_122322.sqlite'
+ss_file <- '../select/sample_size_pe_category_060623.csv'
+path_to_db <-   '../db/nhanes_012224.sqlite' # '../nhanes_122322.sqlite'
 path_out <- '../out'
 
 if(!TEST) {
@@ -47,23 +47,15 @@ if(!TEST) {
   path_out <- opt$path_out
 }
 
-#adjustmentVariables <- c("RIDAGEYR", "RIAGENDR", "INDFMPIR")
-adjustmentVariables <- c("RIDAGEYR", "AGE_SQUARED",
-                          "RIAGENDR",
-                          "INDFMPIR",
-                          "EDUCATION_LESS9","EDUCATION_9_11","EDUCATION_AA","EDUCATION_COLLEGEGRAD",
-                          "ETHNICITY_MEXICAN", "ETHNICITY_OTHERHISPANIC","ETHNICITY_OTHER", "ETHNICITY_NONHISPANICBLACK")
+############### end DEBUG
+
+
+
 con <- DBI::dbConnect(RSQLite::SQLite(), dbname=path_to_db)
-
-
-
 to_do <- read_csv(ss_file) |> filter(e_table_name == exposure_table, p_table_name == phenotype_table, n >= sample_size_threshold)
-
 m_table <- get_expo_pheno_tables(con, phenotype_table, exposure_table) |> figure_out_weight()
-
 expo_levels <- tbl(con, 'e_variable_levels') |> filter(Data.File.Name == exposure_table) |> collect()
-
-pe_safely <- safely(pe_by_table)
+pe_safely <- safely(nhanespewas::pe_by_table_flex_adjust)
 tidied <- vector("list", length = nrow(to_do))
 glanced <- vector("list", length = nrow(to_do))
 
@@ -76,9 +68,7 @@ check_if_e_categorical <- function(varname) {
   return(NULL)
 }
 
-check_e_data_type <- function(varname)
-
-  {
+check_e_data_type <- function(varname) {
   ret <- list(vartype="continuous", varlevels=NULL)
   elvl <- expo_levels |> filter(Variable.Name == varname, !is.na(values)) |> pull(values)
 
@@ -100,6 +90,29 @@ check_e_data_type <- function(varname)
   return(ret)
 }
 
+adjustment_scenario_for_variable <- function(evarname, pvarname) {
+  first_three <- substr(evarname, 1, 3)
+  first_two <- substr(evarname, 1, 2)
+  first_two_p <- substr(pvarname, 1, 2)
+  if(first_three == 'DRX') {
+    log_info("Adjusting by total calories")
+    return(adjustment_models_diet_x)
+  } else if(first_three == 'DR1') {
+    log_info("Adjusting by total calories")
+    return(adjustment_models_diet_1)
+  } else if(first_three == 'DR2') {
+    log_info("Adjusting by total calories")
+    return(adjustment_models_diet_2)
+  } else if(first_two == 'UR' & first_two_p != 'UR') {
+    log_info("Adjusting by creatinine")
+    return(adjustment_models_ucr)
+  }else {
+    log_info("Default adjustments")
+    return(adjustment_models)
+  }
+
+}
+
 
 log_info("Process ID: {Sys.getpid()}")
 log_info("num pairs: {nrow(to_do)}")
@@ -110,69 +123,50 @@ if(nrow(to_do) == 0) {
   stop("No pairs to execute")
 }
 
-for(ii in 1:nrow(to_do)) {
+
+models <- vector("list", nrow(to_do))
+N <- nrow(to_do)
+for(ii in 1:N) {
   rw <- to_do |> slice(ii)
   log_info("{ii} out of {nrow(to_do)}; expo: {rw$evarname}; pheno: {rw$pvarname} ")
 
   ## how to transform the phenotype and the exposure - log the phenotype
 
-  #e_levels <- check_if_e_categorical(rw$evarname) ### categorical, rank, or none
   e_levels <- check_e_data_type(rw$evarname)
-
+  adjustment_model_for_e <- adjustment_scenario_for_variable(rw$evarname, rw$pvarname)
+  #print(adjustment_model_for_e)
   log_info("{ii} e_levels { e_levels$vartype } ")
   mod <- NULL
   if(e_levels$vartype == 'continuous') {
-    log_info("{ii} doing { rw$evarname } ")
-    mod <- pe_safely(m_table, rw$pvarname, rw$evarname, adjustmentVariables,
-                       logxform_p=F, logxform_e=T, scale_e=T, scale_p=T,
-                       quantile_expo=NULL, exposure_levels=NULL)
+    log_info("{ii} continuous { rw$evarname } ")
+    mod <- pe_safely(m_table, rw$pvarname, rw$evarname, adjustment_model_for_e,
+                     logxform_p=F, logxform_e=T, scale_e=T, scale_p=T,
+                     quantile_expo=NULL, exposure_levels=NULL)
 
   } else if(e_levels$vartype == 'categorical') {
     log_info("{ii} categorizing { rw$evarname } ")
-    mod <- pe_safely(m_table, rw$pvarname, rw$evarname, adjustmentVariables,
-                       logxform_p=F, logxform_e=F, scale_e=F, scale_p=T,
-                       quantile_expo=NULL, exposure_levels=e_levels$varlevels)
+    mod <- pe_safely(m_table, rw$pvarname, rw$evarname, adjustment_model_for_e,
+                     logxform_p=F, logxform_e=F, scale_e=F, scale_p=T,
+                     quantile_expo=NULL, exposure_levels=e_levels$varlevels)
 
   } else if(e_levels$vartype == 'continuous-rank') {
     log_info("{ii} as is { rw$evarname } ")
-    mod <- pe_safely(m_table, rw$pvarname, rw$evarname, adjustmentVariables,
+    mod <- pe_safely(m_table, rw$pvarname, rw$evarname, adjustment_model_for_e,
                      logxform_p=F, logxform_e=F, scale_e=T, scale_p=T,
                      quantile_expo=NULL, exposure_levels=NULL)
 
   }
-
-  if(is.null(mod$result)) {
-    tidied[[ii]] <- NULL
-    glanced[[ii]] <- NULL
-    log_error('{ii}: { mod$error }')
-    next;
+  if(is.null(mod$error)) {
+    #tidied <- mod$result$models |>
   }
 
-  mod <- mod$result
-
-  tidy_save <-  rbind(
-    mod$adjusted$tidied |> mutate(evarname = rw$evarname, pvarname = rw$pvarname, model_type='adjusted', vartype=e_levels$vartype),
-    mod$unadjusted$tidied |> mutate(evarname = rw$evarname, pvarname = rw$pvarname, model_type='unadjusted',vartype=e_levels$vartype),
-    mod$base$tidied |> mutate(evarname = rw$evarname, pvarname = rw$pvarname, model_type='base',vartype=e_levels$vartype)
-  )
-
-  glance_save <-  rbind(
-    mod$adjusted$glanced |> mutate(evarname = rw$evarname, pvarname = rw$pvarname, model_type='adjusted') |> cbind(mod$adjusted_model$r2 |> as_tibble()),
-    mod$unadjusted$glanced |> mutate(evarname = rw$evarname, pvarname = rw$pvarname, model_type='unadjusted') |> cbind(mod$unadjusted_model$r2 |> as_tibble()),
-    mod$base$glanced |> mutate(evarname = rw$evarname, pvarname = rw$pvarname, model_type='base') |> cbind(mod$base$r2 |> as_tibble())
-  )
-  tidied[[ii]] <- tidy_save
-  glanced[[ii]] <- glance_save
+  models[[ii]] <- mod ## each iteration contains a pair, and a data struct of all the models
 }
-
-outstruct <- list(pe_tidied=tidied |> bind_rows() |> mutate(exposure_table_name = exposure_table, phenotype_table_name=phenotype_table),
-                  pe_glanced=glanced |> bind_rows() |> mutate(exposure_table_name = exposure_table, phenotype_table_name=phenotype_table))
-
 
 log_info("Done with PxE: { phenotype_table } x { exposure_table }")
 outfile_name <- sprintf('%s_%s.rds', phenotype_table, exposure_table)
 
-saveRDS(outstruct, file=file.path(path_out, outfile_name))
+saveRDS(models, file=file.path(path_out, outfile_name))
 
 
 
