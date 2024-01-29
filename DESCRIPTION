@@ -22,7 +22,9 @@ Imports:
     broom,
     rlang,
     tidyselect,
-    logger
+    logger,
+    readr,
+    purrr
 Suggests:
     ggplot2,
     metafor

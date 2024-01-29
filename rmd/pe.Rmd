@@ -152,6 +152,14 @@ sum(adjusted_meta_2$pvalue_bonferroni < 0.05)/nrow(adjusted_meta_2)
 adjusted_meta_2 |> group_by(sig_levels) |> count()
 adjusted_meta_2 |> filter(sig_levels == 'BY<0.05') |> arrange(-p.value) |> head()
 
+adjusted_meta_2 |> group_by(sig_levels) |> summarize(r2_25=quantile(mean_adjusted_base_r2_diff, probs=.25, na.rm = T),
+                                                     r2_50=quantile(mean_adjusted_base_r2_diff, probs=.5, na.rm = T),
+                                                     r2_75=quantile(mean_adjusted_base_r2_diff, probs=.75, na.rm = T),
+                                                      r2_100=max(mean_adjusted_base_r2_diff, na.rm = T))
+
+adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05') |> arrange(-mean_adjusted_base_r2_diff)
+
+
 ## qqplot
 pval_qq <- data.frame(observed = sort(adjusted_meta_2$p.value), expected = (1:nrow(adjusted_meta_2))/nrow(adjusted_meta_2))
 qq_p <- ggplot(pval_qq, aes(-log10(expected), -log10(observed)))
@@ -159,9 +167,18 @@ qq_p <- qq_p + geom_point()
 ##
 
 p <- ggplot(pval_qq, aes(observed))
-p <- p + geom_density() + theme_bw()
+p <- p + geom_histogram(bins=100) + theme_bw()
 p <- p + geom_hline(yintercept = 1, color='blue')
 p <- p + xlab("P-E association pvalue")
+p_hist <- p
+p_hist
+
+p <- ggplot(pval_qq |> filter(observed < 1e-3), aes(-log10(observed)))
+p <- p + geom_histogram(bins=200) + theme_bw() + scale_x_continuous(limits=c(0, 100))
+p <- p + geom_hline(yintercept = 1, color='blue')
+p <- p + xlab("P-E association pvalue")
+p_hist <- p
+p_hist
 
 p <- ggplot(adjusted_meta_2, aes(p.value))
 p <- p + geom_density() + theme_bw() + facet_grid(~ecategory)
@@ -175,6 +192,27 @@ p2 <- p + xlab("P-E association pvalue")
 plot_grid(p1, p2, nrow=2, labels=c("A", "B"))
 
 ```
+
+## zoom in the distribution
+```{r}
+
+p_plot <- adjusted_meta_2 |> select(ecategory, pcategory, p.value) 
+
+p <- ggplot(p_plot,aes(p.value))
+p <- p + geom_histogram(aes(y=..density..)) + geom_density()  + theme_bw() + facet_grid(~ecategory)
+p1 <- p + xlab("P-E association pvalue")
+
+
+p <- ggplot(p_plot, aes(p.value))
+p <- p + geom_histogram(aes(y=..density..)) + geom_density() + theme_bw() + facet_grid(~pcategory)
+p2 <- p + xlab("P-E association pvalue")
+
+plot_grid(p1, p2, nrow=2, labels=c("A", "B"))
+
+```
+
+
+
 
 # Association Size vs. -log10(pvalue)
 
@@ -353,6 +391,49 @@ p2 <-p
 plot_grid(p1, p2, ncol=2, labels=c("A", "B"))
 ```
 
+
+
+```{r}
+library(circlize)
+# create circos plot visualizing 5 phenotype associations from adjusted_meta_2
+pvarnames_to_circos <- c("BMXBMI", "MSYSTOLIC","LBXGLU", "TeloMean", "LBXTC")
+pcircos <- adjusted_meta_2 |> filter(pvarname %in% pvarnames_to_circos) |> filter(vartype == 'continuous') |> select(c("evarname", "ecategory", "esubcategory", "evardesc", "pvarname", "pval_BY", "estimate"))
+
+pcircos <- pcircos |> unite(ecategory_sub, ecategory, esubcategory, sep="_")
+
+evarname_per_sub <- pcircos |> group_by(ecategory_sub, evarname) |> count() |> ungroup() |> select(-n)
+#m_per_ecategory <- uevarname_per_sub |> ungroup() |> select(-n) |> group_by(ecategory_sub) |> count()
+
+evarname_per_sub <- evarname_per_sub |> group_by(ecategory_sub) |> mutate(index = match(evarname, unique(evarname)))
+#m_per_ecategory <- m_per_ecategory |> filter(ecategory_sub != 'pollutant_pyrethoid',
+#                                             ecategory_sub != 'allergy_NA',
+#                                             ecategory_sub != 'pollutant_amide',
+#                                             )
+pcircos_2 <- pcircos |> left_join(evarname_per_sub |> ungroup()) # this will give an index to each
+m_per_ecategory <- evarname_per_sub |> count()
+
+m_per_ecategory <- m_per_ecategory |> filter(n >= 10)
+
+xlims <- matrix(nrow=length(m_per_ecategory$ecategory_sub), data=0, ncol=1) |> cbind(matrix(nrow=length(m_per_ecategory$ecategory_sub), data=m_per_ecategory$n, ncol=1))
+
+#circos.par(cell.padding = c(0.02, 0, 0.02, 0))
+pcircos_3 <- pcircos_2 |> filter(ecategory_sub %in% m_per_ecategory$ecategory_sub)
+pcircos_3 <- pcircos_3 |> select(evarname, pvarname, estimate) |>  complete(evarname, pvarname)
+estimate_wide_tbl <- pcircos_3 |> pivot_wider(names_from = pvarname, values_from = estimate) |> left_join(pcircos_2 |> select(evarname, ecategory_sub) |> unique())
+estimate_wide_matr <- estimate_wide_tbl |> select(-evarname, -ecategory_sub) |> as.matrix()
+
+exposome_domains <- factor(estimate_wide_tbl$ecategory_sub)
+col_fun1 = colorRamp2(c(-.1, 0, .1), c("blue", "white", "red"))
+circos.clear()
+circos.par(gap.degree = 5)
+circos.heatmap.initialize(estimate_wide_matr,split=exposome_domains)
+circos.heatmap(estimate_wide_matr[,1], col=col_fun1)
+circos.heatmap(estimate_wide_matr[,2], col=col_fun1)
+circos.heatmap(estimate_wide_matr[,3], col=col_fun1)
+circos.heatmap(estimate_wide_matr[,4], col=col_fun1)
+circos.heatmap(estimate_wide_matr[,5], col=col_fun1)
+
+```
 
 ```{r}
 e_effect_sizes_per <- adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05') |> group_by(ecategory, esubcategory, sign(estimate)) |> summarize(median_pvalue=median(p.value), number_signficant=n(), mean_estimate=mean((estimate))) |> arrange(-mean_estimate)

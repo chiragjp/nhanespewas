@@ -156,17 +156,78 @@ for(ii in 1:N) {
                      quantile_expo=NULL, exposure_levels=NULL)
 
   }
-  if(is.null(mod$error)) {
-    #tidied <- mod$result$models |>
-  }
-
   models[[ii]] <- mod ## each iteration contains a pair, and a data struct of all the models
 }
+
+
+tidied_result <- function(models) {
+  final_result <- map_dfr(models, ~ {
+    # Check for the presence of an error
+    if (is.null(.x$error)) {
+      # If no error, proceed to extract and bind tibbles
+      lcl <- .x$result
+      m_index <- 1:length(.x$result$models)
+      map2_dfr(.x$result$models, m_index, ~ { ## loops over all adjustment scenarios
+        tidied_with_key <- mutate(.x$tidied,
+                                  model_number = .y,
+                                  series = lcl$series,
+                                  exposure = lcl$exposure,
+                                  phenotype= lcl$phenotype,
+                                  log_p= lcl$log_p,
+                                  log_e = lcl$log_e,
+                                  scaled_p = lcl$scaled_p,
+                                  scaled_e = lcl$scaled_e
+        )
+        return(tidied_with_key)
+      })
+    } else {
+      # Return an empty tibble if there's an error (or handle it differently as needed)
+      tibble()
+    }
+  })
+  final_result
+}
+
+
+glanced_result <-function(models) {
+  final_result <- map_dfr(models, ~ {
+    # Check for the presence of an error
+    if (is.null(.x$error)) {
+      # If no error, proceed to extract and bind tibbles
+      lcl <- .x$result
+      m_index <- 1:length(.x$result$models)
+      map2_dfr(.x$result$models, m_index, ~ { ## loops over all adjustment scenarios
+        tidied_with_key <- mutate(.x$glanced,
+                                  model_number = .y,
+                                  series = lcl$series,
+                                  exposure = lcl$exposure,
+                                  phenotype= lcl$phenotype,
+                                  log_p= lcl$log_p,
+                                  log_e = lcl$log_e,
+                                  scaled_p = lcl$scaled_p,
+                                  scaled_e = lcl$scaled_e
+        )
+        return(tidied_with_key)
+      })
+    } else {
+      # Return an empty tibble if there's an error (or handle it differently as needed)
+      tibble()
+    }
+  })
+  final_result
+}
+
+#test[[1]]$result$models[[1]]$glanced
+
+tidied <- tidied_result(models) |> mutate(exposure_table_name = exposure_table, phenotype_table_name = phenotype_table )
+glanced <- glanced_result(models) |> mutate(exposure_table_name = exposure_table, phenotype_table_name = phenotype_table )
+
+outstruct <- list(pe_tidied=tidied,pe_glanced=glanced)
 
 log_info("Done with PxE: { phenotype_table } x { exposure_table }")
 outfile_name <- sprintf('%s_%s.rds', phenotype_table, exposure_table)
 
-saveRDS(models, file=file.path(path_out, outfile_name))
+saveRDS(outstruct, file=file.path(path_out, outfile_name))
 
 
 

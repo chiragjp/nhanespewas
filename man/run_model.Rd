@@ -10,7 +10,8 @@ run_model(
   scale_expo = T,
   scale_pheno = F,
   quantile_expo = NULL,
-  expo_levels = NULL
+  expo_levels = NULL,
+  save_svymodel = F
 )
 }
 \arguments{
@@ -25,13 +26,15 @@ run_model(
 \item{quantile_expo}{Numeric vector, quantiles to use for categorizing the exposure variable.
 If not NULL, this overwrites the scale_expo argument.}
 
-\item{expo_levels}{A vector of levels to categorize the exposure variable.
+\item{expo_levels}{A vector of levels to categorize the exposure variable.}
+
+\item{save_dsn}{Logical, if TRUE, the desgin object for each model will be saved
 If not NULL, this overwrites the quantile_expo and scale_expo arguments.}
 }
 \value{
 A list containing:
 \itemize{
-\item model: The model object.
+\item model: The model object (if the parameter is set to T)
 \item glanced: A one-row data frame of model-level statistics from glance().
 \item tidied: A data frame of term-level statistics from tidy().
 \item r2: R-squared and adjusted R-squared from svyrsquared().
@@ -40,7 +43,6 @@ A list containing:
 \item q_cut_points: Cut points used for quantile-based categorization of the exposure variable.
 \item quantiles: The input quantiles for categorizing the exposure variable.
 \item expo_levels: The input levels for categorizing the exposure variable.
-\item dsn: The updated survey design object.
 }
 }
 \description{

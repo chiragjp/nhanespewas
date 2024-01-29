@@ -7,8 +7,13 @@ db/pe_summary_stats.sqlite
 db/nhanes_122322.sqlite
 db/nhanes_122322_backup.sqlite
 pe_atlas_app/pe_summary_stats_shiny.sqlite
-#data/
+db/nhanes_012324.sqlite
+db/nhanes_pewas_test.sqlite
 download/data
+download/mortality_data
 *.sh
 .Rproj.user
 img/pe_fig1.graffle
+download/Exposome T2D Feasbility
+download/Exposome U01 Feasbility
+
