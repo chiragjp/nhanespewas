@@ -17,7 +17,8 @@ ss_file <- '../select/sample_size_pe_category_060623.csv'
 use_sbatch <- FALSE
 path_out <- '../out/'
 #cmd_path <- './pe_by_tables.R'
-cmd_path <- './demographic_makeup_by_tables.R'
+cmd_path <- '../pipeline/pe_by_tables_adj.R'
+#cmd_path <- './demographic_makeup_by_tables.R'
 path_scripts_out <- '../scripts'
 sample_size_per_pair <- read_csv(ss_file)
 sample_size_threshold <- 500
@@ -35,7 +36,7 @@ pairs <- pairs |> mutate(index=index)
 cat_pairs <- function(table_pairs, sh_file_out) {
   cat("",file=sh_file_out)
   table_pairs |> transpose() |> walk(function(x) {
-    cmd <- sprintf('Rscript %s -p %s -e %s -l %s -i %s -o %s \n', file.path('..', cmd_path), x$p_table_name, x$e_table_name, file.path('.', ss_file), file.path('.', path_to_nhanes), file.path('.', path_out))
+    cmd <- sprintf('Rscript %s -p %s -e %s -l %s -i %s -o %s \n', file.path(cmd_path), x$p_table_name, x$e_table_name, file.path('.', ss_file), file.path('.', path_to_nhanes), file.path('.', path_out))
     cat(cmd, file = sh_file_out, append = T)
   })
 

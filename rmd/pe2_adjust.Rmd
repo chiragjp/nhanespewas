@@ -1,0 +1,68 @@
+---
+title: "PE Multi Adjustment"
+author: "Chirag Patel"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# adjustment 9 and 1
+```{r}
+library(tidyverse)
+library("cowplot")
+```
+
+
+```{r new data}
+adj_1 <- read_rds('../pe_summary_020424/pe_meta_model_1.rds')
+adj_2 <- read_rds('../pe_summary_020424/pe_meta_model_2.rds')
+adj_1 <- adj_1 |> select(-meta_model) |> ungroup() |> rename(term_name=term) |> unnest(tidied) |> unnest(glanced) 
+adj_2 <- adj_2 |> select(-meta_model) |> ungroup() |> rename(term_name=term) |> unnest(tidied) |> unnest(glanced) 
+adj <- adj_1 |> left_join(adj_2, by=c("term_name", "exposure", "phenotype"), suffix=c("_1", "_2"))
+adj <- adj |> filter(term_name %in% c('expo', 'expo1', 'expo2', 'expo3'))
+```
+
+```{r previous results connect to db}
+con <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/pe_summary_stats.sqlite')
+varnames <- tbl(con, "variable_names_epcf")
+adjusted_meta <- tbl(con, "adjusted_meta")
+unadjusted_meta <- tbl(con, "unadjusted_meta")
+adjusted_meta <- adjusted_meta |> left_join(unadjusted_meta |> select(evarname, pvarname, expo_name, vartype, estimate, p.value) |> rename(estimate_unadjusted=estimate, p.value_unadjusted=p.value), by=c("evarname", "pvarname", "expo_name", "vartype"))
+mvr2 <- tbl(con, 'mvr2') |> mutate(mv = mve_rsq-base_rsq)
+pe <- tbl(con, "pe")
+glanced <- tbl(con, "glanced")
+variable_domain <- tbl(con, "variable_domain")
+
+
+## 
+
+adjusted_meta_3 <- adj_2 |> left_join(adjusted_meta |> collect(), by=c('exposure'='evarname', 'phenotype'='pvarname', 'term_name'='expo_name'), suffix = c("", "_adj"))
+
+```
+
+
+```{r}
+adjusted_meta_3 <- adjusted_meta_3 |> mutate(est_diffs = estimate - estimate_adj, se_diff=std.error-std.error_adj, z_diff = statistic-statistic_adj)
+
+adjusted_meta_3 |> group_by(is.na(estimate_adj)) |> count()
+
+adjusted_meta_3 |> summarize(mean(est_diffs, na.rm = T), mean(se_diff, na.rm = T), mean)
+
+ggplot(adjusted_meta_3, aes(est_diffs)) + geom_histogram()
+ggplot(adjusted_meta_3, aes(z_diff)) + geom_histogram()
+
+p <- ggplot(adjusted_meta_3, aes(estimate, -log10(p.value)))
+p <- p + geom_point()
+p
+
+p2 <- ggplot(adjusted_meta_3, aes(estimate_adj, -log10(p.value_adj)))
+p2 <- p2 + geom_point()
+p2
+
+plot_grid(p, p2)
+
+```

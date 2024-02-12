@@ -1,0 +1,65 @@
+---
+title: "Quick start to connect to the PE database"
+author: "Chirag Patel"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(DBI)
+library(dbplyr)
+```
+
+```{r}
+path_to_dbname <- "./db/nhanes_012324.sqlite" ## change this to your path
+## connect:
+con <- DBI::dbConnect(RSQLite::SQLite(), dbname=path_to_dbname)
+## list tables:
+DBI::dbListTables(con)
+```
+
+```{r}
+## all the variable names:
+var_names <- tbl(con, "variable_names_epcf")
+## all the table names (aka Data.File.Name)
+table_names <- tbl(con, "table_names_epcf")
+table_names
+```
+
+```{r}
+## get sample table(s) for spirometry from the NHANES 2009-2010 (F)
+demo_f <- tbl(con, "DEMO_F")
+spx_f <- tbl(con, "SPX_F")
+
+spx_demo <- demo_f |> left_join(spx_f, by="SEQN")
+spx_demo
+
+spx_demo |> group_by(RIAGENDR) |> summarize(mean_fev1 = mean(SPXNFEV1))
+
+p <- ggplot(spx_demo, aes(RIDAGEYR, SPXNFEV1, color=factor(RIAGENDR)))
+p <- p + geom_point() + xlab("Age") + ylab("N_FEV1")
+p
+
+```
+
+```{r mortality}
+
+mortality <- tbl(con, "mortality")
+## merge with demo from 1999-2000
+mortality <- mortality |> left_join(tbl(con, "DEMO"), by="SEQN")
+mortality <- mortality |> mutate(death_age = RIDAGEYR + permth_exm/12)
+p <- ggplot(mortality |> filter(eligstat == 1), aes(RIDAGEYR, death_age, color=factor(RIAGENDR)))
+p <- p + geom_point() + xlab("Age") + ylab("Age at Death")
+p
+
+```
+
+
+```{r}
+dbDisconnect(con)
+```

@@ -480,14 +480,19 @@ run_mv_model <- function(formu, dsn, scale_pheno=F) {
 name_and_xform_pheno_expo <- function(pheno, exposure, table_object, logxform_p=T, logxform_e=T) {
 
   if(logxform_p) {
+    logger::log_info("Phenotype {pheno} being logged")
     table_object$merged_tab <- table_object$merged_tab |> dplyr::mutate(pheno=log10_xform_variable(!!as.name(pheno)))
   } else {
+    logger::log_info("Phenotype {pheno} being kept on the natural scale")
     table_object$merged_tab <- table_object$merged_tab |> dplyr::mutate(pheno=!!as.name(pheno))
   }
+
   if(logxform_e) {
     ##
+    logger::log_info("Exposure {exposure} being logged")
     table_object$merged_tab <- table_object$merged_tab |> dplyr::mutate(expo=(log10_xform_variable(!!as.name(exposure))))
   } else {
+    logger::log_info("Exposure {exposure} being kept on the natural scale")
     table_object$merged_tab <- table_object$merged_tab |> dplyr::mutate(expo=(!!as.name(exposure)))
   }
 
@@ -655,12 +660,14 @@ pe_by_table <- function(tab_obj, pvar, evar,
 #' @export
 pe_by_table_flex_adjust <- function(tab_obj, pvar, evar,
                         adjustment_variables, ## tibble, indexed by scenario and list of adjustment variables
-                        logxform_p=T, logxform_e=T, scale_e=T, scale_p=F,
+                        logxform_p=F, logxform_e=T, scale_e=T, scale_p=T,
                         quantile_expo=NULL, exposure_levels=NULL) {
 
   pheno <- pvar
   exposure <- evar
+  logger::log_info("about to transform!")
   tab_obj <- name_and_xform_pheno_expo(pheno, exposure, tab_obj, logxform_p, logxform_e)
+  logger::log_info("tranform done!")
   ## create svydesign
 
   potential_adjusters <- setdiff(unique(adjustment_variables$variables), NA)
@@ -688,6 +695,7 @@ pe_by_table_flex_adjust <- function(tab_obj, pvar, evar,
   }
   n <- dsn |> nrow()
   ## return mods
+  #list(dat=dat, log_p = logxform_p, log_e = logxform_e, scaled_p = scale_p, scaled_e=scale_e, unweighted_n=n, phenotype=pheno, series=tab_obj$series, exposure=exposure, models=models, adjustment_variables=adjustment_variables, demographic_breakdown=demo_break_tbl)
   list(log_p = logxform_p, log_e = logxform_e, scaled_p = scale_p, scaled_e=scale_e, unweighted_n=n, phenotype=pheno, series=tab_obj$series, exposure=exposure, models=models, adjustment_variables=adjustment_variables, demographic_breakdown=demo_break_tbl)
 }
 

@@ -1,0 +1,83 @@
+---
+title: "mortality"
+author: "Chirag Patel"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+library(tidyverse)
+library(DBI)
+library(survival)
+dbname <- '../db/nhanes_012324.sqlite'
+con <- dbConnect(RSQLite::SQLite(), dbname)
+```
+
+
+```{r}
+mortality <- tbl(con, "mortality") |> filter(!is.na(eligstat)) |> filter(eligstat == 1) |> collect()
+
+get_collect_demo <- function(demo_name) {
+  tbl(con, demo_name) |> select("SEQN", "RIDAGEYR", "RIDRETH1", "RIAGENDR", "INDFMPIR", "SDDSRVYR") |> collect()
+}
+
+## all demos
+demo <- rbind(
+  get_collect_demo("DEMO"),
+  get_collect_demo("DEMO_B"),
+  get_collect_demo("DEMO_C"),
+  get_collect_demo("DEMO_D"), 
+  get_collect_demo("DEMO_E"),
+  get_collect_demo("DEMO_F"), 
+  get_collect_demo("DEMO_G"), 
+  get_collect_demo("DEMO_H"), 
+  get_collect_demo("DEMO_I"),
+  get_collect_demo("DEMO_J") 
+)
+
+big_one <- demo |> right_join(mortality, by="SEQN")
+big_one <- big_one |> mutate(age_followup = permth_int/12 + RIDAGEYR)
+
+
+```
+
+ raw counts of deaths
+```{r}
+
+big_one |> group_by(RIDRETH1, mortstat) |> count()
+big_one |> group_by(RIAGENDR, mortstat) |> count()
+
+
+p <- ggplot(big_one |> filter(mortstat==1), aes(age_followup, color=factor(RIDRETH1)))
+p <- p + geom_histogram() + facet_grid(RIDRETH1 ~ RIAGENDR, scales="free_y")
+p
+
+```
+
+```{r}
+p <- ggplot(big_one |> filter(mortstat==1), aes(INDFMPIR, age_followup, color=factor(RIDRETH1)))
+p <- p + geom_point() + facet_grid(RIDRETH1 ~ RIAGENDR)
+p
+
+mod <- coxph(Surv(permth_int, mortstat) ~ RIDAGEYR + RIAGENDR, big_one)
+tidy(mod)
+glance(mod)
+
+mod <- coxph(Surv(permth_int, mortstat) ~ RIDAGEYR + RIAGENDR + INDFMPIR + factor(RIDRETH1, levels=c(3, 4, 5, 2, 1)), big_one)
+
+mod <- coxph(Surv(permth_int, mortstat) ~ RIDAGEYR + RIAGENDR + I(INDFMPIR >= 1) * factor(RIDRETH1, levels=c(3, 4, 5, 2, 1)), big_one)
+
+tidy(mod)
+
+
+```
+
+#sample size count; what domains to adjust by?
+
+```{r}
+```

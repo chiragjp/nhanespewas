@@ -7,7 +7,7 @@ library(logger)
 #source('db_paths.R')
 devtools::load_all("..")
 
-TEST <- F
+TEST <- T
 spec <- matrix(c(
   'phenotype_table', 'p', 1, "character",
   'exposure_table', 'e', 1, "character",
@@ -21,12 +21,12 @@ sample_size_threshold <- 500
 
 
 ########### debug stuff
-phenotype_table <- 'BPX'
+#phenotype_table <- 'BPX'
 #phenotype_table <- 'BMX_E'
 #phenotype_table <- 'BIOPRO_F'
 #exposure_table <- 'DRXTOT'
 #exposure_table <- 'L02HBS'
-exposure_table <- 'PHPYPA'
+#exposure_table <- 'PHPYPA'
 #exposure_table <- 'LAB06'
 #exposure_table <- 'VOCWB_F'
 #exposure_table <- 'PAQ_E'
@@ -34,10 +34,13 @@ exposure_table <- 'PHPYPA'
 #exposure_table <- 'PAQ'
 #phenotype_table <- 'BMX_E'
 #exposure_table <- 'DS2TOT_E'
+phenotype_table <- 'BMX_D'
+exposure_table <- 'VITAEC_D'
+
 #ss_file <- './select/sample_size_pe.csv'  #opt$sample_size_pairs_list_file
 ss_file <- '../select/sample_size_pe_category_060623.csv'
-path_to_db <-   '../db/nhanes_012224.sqlite' # '../nhanes_122322.sqlite'
-path_out <- '../out'
+path_to_db <-   '../db/nhanes_012324.sqlite' # '../nhanes_122322.sqlite'
+path_out <- '.'
 
 if(!TEST) {
   phenotype_table <- opt$phenotype_table
@@ -222,7 +225,13 @@ glanced_result <-function(models) {
 tidied <- tidied_result(models) |> mutate(exposure_table_name = exposure_table, phenotype_table_name = phenotype_table )
 glanced <- glanced_result(models) |> mutate(exposure_table_name = exposure_table, phenotype_table_name = phenotype_table )
 
-outstruct <- list(pe_tidied=tidied,pe_glanced=glanced)
+outstruct <- NULL
+if(TEST) {
+  outstruct <- list(pe_tidied=tidied,pe_glanced=glanced, modls=models)
+} else {
+  outstruct <- list(pe_tidied=tidied,pe_glanced=glanced)
+}
+
 
 log_info("Done with PxE: { phenotype_table } x { exposure_table }")
 outfile_name <- sprintf('%s_%s.rds', phenotype_table, exposure_table)
