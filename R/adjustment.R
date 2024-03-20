@@ -8,12 +8,12 @@ adjustmentVariables <- c("RIDAGEYR", "AGE_SQUARED",
 
 adjustment_models <- rbind(
   tibble(scenario="base", variables=NA),
-  tibble(scenario="age_sex_ethnicity_income_education", variables=adjustmentVariables),
-  tibble(scenario="age_sex", variables=c("RIDAGEYR", "AGE_SQUARED", "RIAGENDR")),
-  tibble(scenario="age", variables=c("RIDAGEYR", "AGE_SQUARED")),
-  tibble(scenario="sex", variables=c("RIAGENDR")),
+  tibble(scenario="age_sex_ethnicity_income_education", variables=adjustmentVariables), #5
+  tibble(scenario="age_sex", variables=c("RIDAGEYR", "AGE_SQUARED", "RIAGENDR")), #3
+  tibble(scenario="age", variables=c("RIDAGEYR", "AGE_SQUARED")), #2
+  tibble(scenario="sex", variables=c("RIAGENDR")), #1
   tibble(scenario="age_sex_ethnicity", variables=c("RIDAGEYR", "AGE_SQUARED", "RIAGENDR", "ETHNICITY_MEXICAN", "ETHNICITY_OTHERHISPANIC","ETHNICITY_OTHER", "ETHNICITY_NONHISPANICBLACK")),
-  tibble(scenario="age_sex_income_education", variables=c("RIDAGEYR", "AGE_SQUARED","RIAGENDR", "INDFMPIR", "EDUCATION_LESS9","EDUCATION_9_11","EDUCATION_AA","EDUCATION_COLLEGEGRAD")),
+  tibble(scenario="age_sex_income_education", variables=c("RIDAGEYR", "AGE_SQUARED","RIAGENDR", "INDFMPIR", "EDUCATION_LESS9","EDUCATION_9_11","EDUCATION_AA","EDUCATION_COLLEGEGRAD")), #4
   tibble(scenario="income_education", variables=c("INDFMPIR", "EDUCATION_LESS9","EDUCATION_9_11","EDUCATION_AA","EDUCATION_COLLEGEGRAD")),
   tibble(scenario="ethnicity", variables=c("ETHNICITY_MEXICAN", "ETHNICITY_OTHERHISPANIC","ETHNICITY_OTHER", "ETHNICITY_NONHISPANICBLACK"))
 ) |> mutate(domain = 'default')

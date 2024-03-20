@@ -14,13 +14,18 @@ rds_files <- dir(path_to_out, pattern = '*.rds')
 pe <- rds_files |> map_df(function(x) {
   dat <- read_rds(file.path(path_to_out, x))
   dat$pe_tidied
-}) 
+})
 
 glanced <- rds_files |> map_df(function(x) {
   dat <- read_rds(file.path(path_to_out, x))
   dat$pe_glanced
-}) 
+})
+
+rsq <- rds_files |> map_df(function(x) {
+  dat <- read_rds(file.path(path_to_out, x))
+  dat$rsq
+})
 
 file_out <- opt$path_to_gathered
-save(pe, glanced, file = file_out)
+save(pe, glanced, rsq, file = file_out)
 

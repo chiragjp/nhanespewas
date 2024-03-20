@@ -183,6 +183,41 @@ get_expo_pheno_tables <- function(con, pheno_table_name, expo_table_name) {
 }
 
 
+#' Retrieve and merge demographic, and any two tables from the nhanes database
+#'
+#' @param con The database connection.
+#' @param table_name1 Character. table name 1.
+#' @param table_name2 Character. table name 2
+#'
+#' @return A list containing the merged table, the table 1, the table 2, and the series name.
+#' @examples
+#' \dontrun{
+#' conn <- connect_pewas_data()
+#' results <- get_expo_pheno_tables(conn, pheno_table_name="L10AM_C", expo_table_name="L45VIT_C")
+#' }
+#' @export
+get_x_y_tables <- function(con, table_name1, table_name2) { ## this is for correlation between exposures or phenotypes
+  table_names <- dplyr::tbl(con, "table_names_epcf")
+  seriesName <- table_names |> dplyr::filter(Data.File.Name == table_name1) |> dplyr::pull(series)
+  logger::log_info("Series of exposure is { seriesName } ")
+  demo_table_name <- table_names |> dplyr::filter(component == 'DEMO', series==seriesName) |> dplyr::collect() |> dplyr::pull(Data.File.Name)
+  logger::log_info("Demographics table is { demo_table_name } ")
+  demo <- dplyr::tbl(con, demo_table_name)
+  table1 <- dplyr::tbl(con, table_name1)
+  table1_nrow <- table1 |> collect() |> nrow()
+  logger::log_info("Table 1 {table_name1} has { table1_nrow } rows")
+  table2 <- dplyr::tbl(con, table_name2)
+  if(table_name1 == table_name2) { # hack to preserve data structure
+    table2 <- table1 |> dplyr::select(SEQN)
+  }
+  table2_nrow <- table2 |> collect() |> nrow()
+  logger::log_info("Table 2 {table_name1} has {table2_nrow } rows")
+  small_tab <- demo |> dplyr::inner_join(table1, by="SEQN") |> dplyr::inner_join(table2, by="SEQN") |> dplyr::collect()
+  small_tab_nrow <- small_tab |> collect() |> nrow()
+  logger::log_info("Merged table has { small_tab_nrow } rows")
+  return(list(merged_tab=small_tab, table1=table1, table2=table2, series=seriesName))
+}
+
 #' Retrieve and merge demographic, multi-variable exposure, and phenotype tables from a database
 #'
 #' This function retrieves and merges tables from a database based on provided table names. Specifically, it merges demographic, multiple exposure variables and phenotype tables. The function logs the series of the phenotype, the name of the demographics table, the number of rows in each exposure and phenotype table, and finally the number of rows in the merged table.
@@ -665,11 +700,8 @@ pe_by_table_flex_adjust <- function(tab_obj, pvar, evar,
 
   pheno <- pvar
   exposure <- evar
-  logger::log_info("about to transform!")
   tab_obj <- name_and_xform_pheno_expo(pheno, exposure, tab_obj, logxform_p, logxform_e)
-  logger::log_info("tranform done!")
   ## create svydesign
-
   potential_adjusters <- setdiff(unique(adjustment_variables$variables), NA)
 
   dat <- tab_obj$merged_tab |> dplyr::filter(!is.na(wt), wt > 0, !is.na(expo), !is.na(pheno), dplyr::if_all(tidyselect::all_of(potential_adjusters), ~!is.na(.)))
@@ -678,8 +710,10 @@ pe_by_table_flex_adjust <- function(tab_obj, pvar, evar,
 
   ## run models
   baseformula <- stats::as.formula("pheno ~ expo")
+  basebase <- stats::as.formula("pheno ~ 1")
   uniq_model_scenarios <- unique(adjustment_variables$scenario)
   models <- vector(mode="list", length=length(uniq_model_scenarios))
+  base_models <- vector(mode="list", length=length(uniq_model_scenarios))
   logger::log_info("total models { length(uniq_model_scenarios)} " )
   for(mod_num in 1:length(uniq_model_scenarios)) {
     scene <- uniq_model_scenarios[mod_num]
@@ -687,16 +721,16 @@ pe_by_table_flex_adjust <- function(tab_obj, pvar, evar,
     adjust_variables_for_scene <- adjustment_variables |> filter(scenario==scene) |> dplyr::pull(variables)
     baseadjusted <- NA
     if(length(adjust_variables_for_scene) == 1 & is.na(adjust_variables_for_scene[1])) {
-      baseadjusted <-baseformula
+      baseadjusted <- baseformula
     } else {
       baseadjusted <- addToBase(baseformula, adjust_variables_for_scene)
+      basebaseadjusted <- addToBase(basebase, adjust_variables_for_scene)
+      base_models[[mod_num]] <- run_model(basebaseadjusted,dsn, scale_expo = scale_e, scale_pheno = scale_p,  quantile_expo=quantile_expo, expo_levels =  exposure_levels)
     }
     models[[mod_num]] <- run_model(baseadjusted,dsn, scale_expo = scale_e, scale_pheno = scale_p,  quantile_expo=quantile_expo, expo_levels =  exposure_levels)
   }
   n <- dsn |> nrow()
-  ## return mods
-  #list(dat=dat, log_p = logxform_p, log_e = logxform_e, scaled_p = scale_p, scaled_e=scale_e, unweighted_n=n, phenotype=pheno, series=tab_obj$series, exposure=exposure, models=models, adjustment_variables=adjustment_variables, demographic_breakdown=demo_break_tbl)
-  list(log_p = logxform_p, log_e = logxform_e, scaled_p = scale_p, scaled_e=scale_e, unweighted_n=n, phenotype=pheno, series=tab_obj$series, exposure=exposure, models=models, adjustment_variables=adjustment_variables, demographic_breakdown=demo_break_tbl)
+  list(log_p = logxform_p, log_e = logxform_e, scaled_p = scale_p, scaled_e=scale_e, unweighted_n=n, phenotype=pheno, series=tab_obj$series, exposure=exposure, models=models, base_models=base_models, adjustment_variables=adjustment_variables, demographic_breakdown=demo_break_tbl)
 }
 
 
@@ -707,7 +741,7 @@ pe_by_table_flex_adjust <- function(tab_obj, pvar, evar,
 #' ETHNICITY_OTHER, ETHNICITY_NONHISPANICBLACK, ETHNICITY_NONHISPANICWHITE, EDUCATION_LESS9, EDUCATION_9_11,
 #' EDUCATION_HSGRAD, EDUCATION_AA, and EDUCATION_COLLEGEGRAD.
 #'
-#' @param svy_dsn A survey design object dervied from the nhanes_pewas::get_*_tables() functions
+#' @param svy_dsn A survey design object derived from the nhanespewas::get_*_tables() functions
 #' @return A tibble containing the mean for each demographic variable in the survey design object.
 #' @export
 demographic_breakdown <- function(svy_dsn) {
@@ -731,5 +765,68 @@ demographic_breakdown <- function(svy_dsn) {
 
 
 
+#' XY by Table Flexible Adjustments
+#'
+#' This function operates similarly to the 'pe' function, but takes a pre-processed table object as input instead of separate phenotype and exposure tables. It is designed to help analysts scale up the pe associations by sepearting the "get_tables" procedure from runnin an association.
+#' It also takes a tibble for the adjustment variables to flexibly parameterize adjustments
+#' @param tab_obj A pre-processed table object including both phenotype and exposure information
+#' @param yvar A variable related to phenotype
+#' @param xvar A variable related to exposure
+#' @param adjustment_variables A tibble of variables to adjust for in the models (to consider multiple scenarios)
+#' @param logxform_y Logical, if TRUE, a log transformation is applied to phenotype variable. Default is TRUE.
+#' @param logxform_x Logical, if TRUE, a log transformation is applied to exposure variable. Default is TRUE.
+#' @param scale_y Logical, if TRUE, exposure variable is scaled. Default is TRUE.
+#' @param scale_y Logical, if TRUE, phenotype variable is scaled. Default is FALSE.
+
+#' @return A list containing: the svydesign object, log transformation status for phenotype and exposure, scaling status for phenotype and exposure, unweighted number of observations, phenotype, series, exposure, models (per adjustment) and demographic breakdown.
+#'
+#' @examples
+#' \dontrun{
+#' con <- connect_pewas_data()
+#' table_object <- get_tables("LBXGLU", "LBXGTC", "C", con, "L10AM_C", "L45VIT_C")
+#' pe_result <- xy_by_table_flex_adjust(tab_obj=table_object, yvar="LBXGLU", xvar="LBXGTC",
+#' adjustment_variables=c("RIDAGEYR", "RIAGENDR"), # tibble
+#' }
+#'
+#' @export
+
+xy_by_table_flex_adjust <- function(tab_obj, yvar, xvar,
+                                    adjustment_variables, ## tibble, indexed by scenario and list of adjustment variables
+                                    logxform_x=T, logxform_y=T, scale_x=T, scale_y=T) {
+
+  pheno <- yvar
+  exposure <- xvar
+  tab_obj <- name_and_xform_pheno_expo(pheno, exposure, tab_obj, logxform_y, logxform_x)
+  ## create svydesign
+  potential_adjusters <- setdiff(unique(adjustment_variables$variables), NA)
+
+  dat <- tab_obj$merged_tab |> dplyr::filter(!is.na(wt), wt > 0, !is.na(expo), !is.na(pheno), dplyr::if_all(tidyselect::all_of(potential_adjusters), ~!is.na(.)))
+  dsn <- create_svydesign(dat)
+  demo_break_tbl <- demographic_breakdown(dsn)
+
+  ## run models
+  baseformula <- stats::as.formula("pheno ~ expo")
+  basebase <- stats::as.formula("pheno ~ 1")
+  uniq_model_scenarios <- unique(adjustment_variables$scenario)
+  models <- vector(mode="list", length=length(uniq_model_scenarios))
+  base_models <- vector(mode="list", length=length(uniq_model_scenarios))
+  logger::log_info("total models { length(uniq_model_scenarios)} " )
+  for(mod_num in 1:length(uniq_model_scenarios)) {
+    scene <- uniq_model_scenarios[mod_num]
+    logger::log_info("running model {scene}" )
+    adjust_variables_for_scene <- adjustment_variables |> filter(scenario==scene) |> dplyr::pull(variables)
+    baseadjusted <- NA
+    if(length(adjust_variables_for_scene) == 1 & is.na(adjust_variables_for_scene[1])) {
+      baseadjusted <- baseformula
+    } else {
+      baseadjusted <- addToBase(baseformula, adjust_variables_for_scene)
+      basebaseadjusted <- addToBase(basebase, adjust_variables_for_scene)
+      base_models[[mod_num]] <- run_model(basebaseadjusted,dsn, scale_expo = scale_x, scale_pheno = scale_y)
+    }
+    models[[mod_num]] <- run_model(baseadjusted,dsn, scale_expo = scale_x, scale_pheno = scale_y)
+  }
+  n <- dsn |> nrow()
+  list(log_y = logxform_y, log_x = logxform_x, scaled_y = scale_y, scaled_x=scale_x, unweighted_n=n, yvar=yvar, series=tab_obj$series, xvar=xvar, models=models, base_models=base_models, adjustment_variables=adjustment_variables, demographic_breakdown=demo_break_tbl)
+}
 
 

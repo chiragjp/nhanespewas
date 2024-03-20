@@ -6,6 +6,8 @@
 db/pe_summary_stats.sqlite
 db/nhanes_122322.sqlite
 db/nhanes_122322_backup.sqlite
+db/pe_summary_stats_02_2024-v2.sqlite
+db/pe_summary_stats_02_2024.sqlite
 pe_atlas_app/pe_summary_stats_shiny.sqlite
 db/nhanes_012324.sqlite
 db/nhanes_pewas_test.sqlite

@@ -394,44 +394,44 @@ plot_grid(p1, p2, ncol=2, labels=c("A", "B"))
 
 
 ```{r}
-library(circlize)
-# create circos plot visualizing 5 phenotype associations from adjusted_meta_2
-pvarnames_to_circos <- c("BMXBMI", "MSYSTOLIC","LBXGLU", "TeloMean", "LBXTC")
-pcircos <- adjusted_meta_2 |> filter(pvarname %in% pvarnames_to_circos) |> filter(vartype == 'continuous') |> select(c("evarname", "ecategory", "esubcategory", "evardesc", "pvarname", "pval_BY", "estimate"))
-
-pcircos <- pcircos |> unite(ecategory_sub, ecategory, esubcategory, sep="_")
-
-evarname_per_sub <- pcircos |> group_by(ecategory_sub, evarname) |> count() |> ungroup() |> select(-n)
-#m_per_ecategory <- uevarname_per_sub |> ungroup() |> select(-n) |> group_by(ecategory_sub) |> count()
-
-evarname_per_sub <- evarname_per_sub |> group_by(ecategory_sub) |> mutate(index = match(evarname, unique(evarname)))
-#m_per_ecategory <- m_per_ecategory |> filter(ecategory_sub != 'pollutant_pyrethoid',
-#                                             ecategory_sub != 'allergy_NA',
-#                                             ecategory_sub != 'pollutant_amide',
-#                                             )
-pcircos_2 <- pcircos |> left_join(evarname_per_sub |> ungroup()) # this will give an index to each
-m_per_ecategory <- evarname_per_sub |> count()
-
-m_per_ecategory <- m_per_ecategory |> filter(n >= 10)
-
-xlims <- matrix(nrow=length(m_per_ecategory$ecategory_sub), data=0, ncol=1) |> cbind(matrix(nrow=length(m_per_ecategory$ecategory_sub), data=m_per_ecategory$n, ncol=1))
-
-#circos.par(cell.padding = c(0.02, 0, 0.02, 0))
-pcircos_3 <- pcircos_2 |> filter(ecategory_sub %in% m_per_ecategory$ecategory_sub)
-pcircos_3 <- pcircos_3 |> select(evarname, pvarname, estimate) |>  complete(evarname, pvarname)
-estimate_wide_tbl <- pcircos_3 |> pivot_wider(names_from = pvarname, values_from = estimate) |> left_join(pcircos_2 |> select(evarname, ecategory_sub) |> unique())
-estimate_wide_matr <- estimate_wide_tbl |> select(-evarname, -ecategory_sub) |> as.matrix()
-
-exposome_domains <- factor(estimate_wide_tbl$ecategory_sub)
-col_fun1 = colorRamp2(c(-.1, 0, .1), c("blue", "white", "red"))
-circos.clear()
-circos.par(gap.degree = 5)
-circos.heatmap.initialize(estimate_wide_matr,split=exposome_domains)
-circos.heatmap(estimate_wide_matr[,1], col=col_fun1)
-circos.heatmap(estimate_wide_matr[,2], col=col_fun1)
-circos.heatmap(estimate_wide_matr[,3], col=col_fun1)
-circos.heatmap(estimate_wide_matr[,4], col=col_fun1)
-circos.heatmap(estimate_wide_matr[,5], col=col_fun1)
+# library(circlize)
+# # create circos plot visualizing 5 phenotype associations from adjusted_meta_2
+# pvarnames_to_circos <- c("BMXBMI", "MSYSTOLIC","LBXGLU", "TeloMean", "LBXTC")
+# pcircos <- adjusted_meta_2 |> filter(pvarname %in% pvarnames_to_circos) |> filter(vartype == 'continuous') |> select(c("evarname", "ecategory", "esubcategory", "evardesc", "pvarname", "pval_BY", "estimate"))
+# 
+# pcircos <- pcircos |> unite(ecategory_sub, ecategory, esubcategory, sep="_")
+# 
+# evarname_per_sub <- pcircos |> group_by(ecategory_sub, evarname) |> count() |> ungroup() |> select(-n)
+# #m_per_ecategory <- uevarname_per_sub |> ungroup() |> select(-n) |> group_by(ecategory_sub) |> count()
+# 
+# evarname_per_sub <- evarname_per_sub |> group_by(ecategory_sub) |> mutate(index = match(evarname, unique(evarname)))
+# #m_per_ecategory <- m_per_ecategory |> filter(ecategory_sub != 'pollutant_pyrethoid',
+# #                                             ecategory_sub != 'allergy_NA',
+# #                                             ecategory_sub != 'pollutant_amide',
+# #                                             )
+# pcircos_2 <- pcircos |> left_join(evarname_per_sub |> ungroup()) # this will give an index to each
+# m_per_ecategory <- evarname_per_sub |> count()
+# 
+# m_per_ecategory <- m_per_ecategory |> filter(n >= 10)
+# 
+# xlims <- matrix(nrow=length(m_per_ecategory$ecategory_sub), data=0, ncol=1) |> cbind(matrix(nrow=length(m_per_ecategory$ecategory_sub), data=m_per_ecategory$n, ncol=1))
+# 
+# #circos.par(cell.padding = c(0.02, 0, 0.02, 0))
+# pcircos_3 <- pcircos_2 |> filter(ecategory_sub %in% m_per_ecategory$ecategory_sub)
+# pcircos_3 <- pcircos_3 |> select(evarname, pvarname, estimate) |>  complete(evarname, pvarname)
+# estimate_wide_tbl <- pcircos_3 |> pivot_wider(names_from = pvarname, values_from = estimate) |> left_join(pcircos_2 |> select(evarname, ecategory_sub) |> unique())
+# estimate_wide_matr <- estimate_wide_tbl |> select(-evarname, -ecategory_sub) |> as.matrix()
+# 
+# exposome_domains <- factor(estimate_wide_tbl$ecategory_sub)
+# col_fun1 = colorRamp2(c(-.1, 0, .1), c("blue", "white", "red"))
+# circos.clear()
+# circos.par(gap.degree = 5)
+# circos.heatmap.initialize(estimate_wide_matr,split=exposome_domains)
+# circos.heatmap(estimate_wide_matr[,1], col=col_fun1)
+# circos.heatmap(estimate_wide_matr[,2], col=col_fun1)
+# circos.heatmap(estimate_wide_matr[,3], col=col_fun1)
+# circos.heatmap(estimate_wide_matr[,4], col=col_fun1)
+# circos.heatmap(estimate_wide_matr[,5], col=col_fun1)
 
 ```
 
@@ -630,72 +630,23 @@ p <- plot_grid(survey_het, pheno_het, ncol=2, labels=c("", "E"), label_size = 12
 
 ```
 
-# R2 adjusted vs. non-adjusted
 
 ```{r}
-
-p <- ggplot(expos_wide, aes(rsq_base, rsq_adjusted))
-p <- p + geom_point(shape='.') + xlab("R2 Base [Demographics]") + ylab("R2 [Exposure + Demographics]")
-p <- p + theme_bw()
-p
-
-p <- ggplot(expos_wide, aes(rsq_adjusted, rsq_unadjusted))
-p <- p + geom_point(shape='.') + xlab("R2 Adjusted [Exposure + Demographics]") + ylab("R2 Unadjusted [Exposure]")
-p <- p + theme_bw() 
-p
-
-p <- ggplot(adjusted_meta_2, aes(mean_adjusted_base_r2_diff, i.squared))
-p <- p + geom_point(shape='.') + xlab("R2 Adjusted [Exposure + Demographics]") + ylab("i.squared") + scale_x_continuous(limits=c(0, .01))
-p <- p + theme_bw() + facet_grid(~sig_levels)
-p
-
-```
-
-# Estimate and P-values: adjusted vs. non-adjusted
-
--   estimate the association globally between adjusted and non-adjusted models
-
-```{r fig.height=6, fig.width=9}
-p <- ggplot(expos_wide, aes(estimate_unadjusted, estimate_adjusted))
-p <- p + geom_point(shape='.') + scale_x_continuous(limits=c(-2, 2)) + scale_y_continuous(limits=c(-2, 2)) + xlab("Adjusted [Exposure + Demographics]") + ylab("Unadjusted [Exposure]") + geom_abline()
-p <- p + geom_smooth(method="lm")
-p <- p + theme_bw()
-p
-
-## how much bias?
-tidy(lm(estimate_adjusted  ~ estimate_unadjusted, expos_wide)) # biased to be lower (intercept is negative, and slope is less than 1)
-# 
-
-
-p <- ggplot(expos_wide, aes(-log10(p.value_unadjusted), -log10(p.value_adjusted)))
-p <- p + geom_point(shape='.', alpha=.1) + xlab("Adjusted model pvalue [Exposure + Demographics]") + ylab("Unadjusted Pvalue [Exposure]")
-p <- p + geom_abline()
-p <- p + theme_bw()
-p
-
-
-p <- ggplot(expos_wide, aes(statistic_unadjusted, statistic_adjusted))
-p <- p + geom_point(shape='.', alpha=.1) + xlab("Adjusted model z [Exposure + Demographics]") + ylab("Unadjusted z [Exposure]")
-p <- p + geom_abline() + scale_y_continuous(limit=c(-20, 20)) + scale_x_continuous(limits=c(-20,20))
-p <- p + theme_bw()
-p
-
-p <- ggplot(adjusted_meta_2 , aes(estimate, estimate_unadjusted, color=sig_levels))
+p <- ggplot(adjusted_meta_2 , aes(estimate, estimate_unadjusted, color=sig_levels)) ## have to get this
 p <- p + geom_point(shape='.') + scale_x_continuous(limits=c(-1, 1)) + scale_y_continuous(limits=c(-1, 1)) + scale_color_aaas()
 p <- p + geom_abline()
 p <- p + facet_grid(~sig_levels) + xlab("Adjusted model estimate [Exposure + Demographics]") + ylab("Unadjusted estimate [Exposure]")
 p <- p + geom_smooth(method="lm")
 p <- p + theme_bw() +theme(legend.position = "none")
 p
-
-
-
+# 
+# 
+# 
 tidy(lm(estimate ~ estimate_unadjusted, adjusted_meta_2))
 tidy(lm(estimate ~ estimate_unadjusted, adjusted_meta_2 |> filter(pvalue_bonferroni < .05)))
 tidy(lm(estimate ~ estimate_unadjusted, adjusted_meta_2 |> filter(sig_levels == '> BY & Bonf.')))
 tidy(lm(estimate ~ estimate_unadjusted, adjusted_meta_2 |> filter(sig_levels == 'BY<0.05')))
-
-
+# 
 p <- ggplot(adjusted_meta_2 , aes(estimate_unadjusted, estimate, color=ecategory))
 p <- p + geom_point(shape='.') + scale_x_continuous(limits=c(-1, 1)) + scale_y_continuous(limits=c(-1, 1)) + scale_color_aaas()
 p <- p + geom_abline()

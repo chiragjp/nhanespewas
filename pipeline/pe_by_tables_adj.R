@@ -127,8 +127,8 @@ if(nrow(to_do) == 0) {
 }
 
 
-models <- vector("list", nrow(to_do))
 N <- nrow(to_do)
+models <- vector("list", length=N)
 for(ii in 1:N) {
   rw <- to_do |> slice(ii)
   log_info("{ii} out of {nrow(to_do)}; expo: {rw$evarname}; pheno: {rw$pvarname} ")
@@ -163,14 +163,22 @@ for(ii in 1:N) {
 }
 
 
-tidied_result <- function(models) {
+tidied_result <- function(models, aggregate_base_model = F) {
   final_result <- map_dfr(models, ~ {
     # Check for the presence of an error
     if (is.null(.x$error)) {
       # If no error, proceed to extract and bind tibbles
       lcl <- .x$result
       m_index <- 1:length(.x$result$models)
-      map2_dfr(.x$result$models, m_index, ~ { ## loops over all adjustment scenarios
+      to_do <- .x$result$models
+      if(aggregate_base_model) {
+        to_do <- .x$result$base_models
+      }
+
+      map2_dfr(to_do, m_index, ~ { ## loops over all adjustment scenarios
+        if(is.null(.x)) {
+          return(tibble())
+        }
         tidied_with_key <- mutate(.x$tidied,
                                   model_number = .y,
                                   series = lcl$series,
@@ -192,14 +200,23 @@ tidied_result <- function(models) {
 }
 
 
-glanced_result <-function(models) {
+glanced_result <-function(models, aggregate_base_model=F) {
   final_result <- map_dfr(models, ~ {
     # Check for the presence of an error
     if (is.null(.x$error)) {
       # If no error, proceed to extract and bind tibbles
       lcl <- .x$result
       m_index <- 1:length(.x$result$models)
-      map2_dfr(.x$result$models, m_index, ~ { ## loops over all adjustment scenarios
+
+      to_do <- .x$result$models
+      if(aggregate_base_model) {
+        to_do <- .x$result$base_models
+      }
+
+      map2_dfr(to_do, m_index, ~ { ## loops over all adjustment scenarios
+        if(is.null(.x)) {
+          return(tibble())
+        }
         tidied_with_key <- mutate(.x$glanced,
                                   model_number = .y,
                                   series = lcl$series,
@@ -220,16 +237,64 @@ glanced_result <-function(models) {
   final_result
 }
 
-#test[[1]]$result$models[[1]]$glanced
+r2_result <-function(models, aggregate_base_model=F) {
+  final_result <- map_dfr(models, ~ {
+    # Check for the presence of an error
+    if (is.null(.x$error)) {
+      # If no error, proceed to extract and bind tibbles
+      lcl <- .x$result
+      m_index <- 1:length(.x$result$models)
 
-tidied <- tidied_result(models) |> mutate(exposure_table_name = exposure_table, phenotype_table_name = phenotype_table )
-glanced <- glanced_result(models) |> mutate(exposure_table_name = exposure_table, phenotype_table_name = phenotype_table )
+      to_do <- .x$result$models
+      if(aggregate_base_model) {
+        to_do <- .x$result$base_models
+      }
+
+      map2_dfr(to_do, m_index, ~ { ## loops over all adjustment scenarios
+        if(is.null(.x)) {
+          return(tibble())
+        }
+        tidied_with_key <- mutate(.x$r2 |> as_tibble(),
+                                  model_number = .y,
+                                  series = lcl$series,
+                                  exposure = lcl$exposure,
+                                  phenotype= lcl$phenotype,
+                                  log_p= lcl$log_p,
+                                  log_e = lcl$log_e,
+                                  scaled_p = lcl$scaled_p,
+                                  scaled_e = lcl$scaled_e
+        )
+        return(tidied_with_key)
+      })
+    } else {
+      # Return an empty tibble if there's an error (or handle it differently as needed)
+      tibble()
+    }
+  })
+  final_result
+}
+
+
+tidied <- rbind(
+  tidied_result(models, F) |> mutate(aggregate_base_model = F),
+  tidied_result(models, T) |> mutate(aggregate_base_model = T)
+) |> mutate(exposure_table_name = exposure_table, phenotype_table_name = phenotype_table )
+glanced <- rbind(
+  glanced_result(models, F) |> mutate(aggregate_base_model = F),
+  glanced_result(models, T) |> mutate(aggregate_base_model = T)
+) |> mutate(exposure_table_name = exposure_table, phenotype_table_name = phenotype_table )
+
+rsq <- rbind(
+  r2_result(models, F) |> mutate(aggregate_base_model = F),
+  r2_result(models, T) |> mutate(aggregate_base_model = T)
+) |> mutate(exposure_table_name = exposure_table, phenotype_table_name = phenotype_table )
 
 outstruct <- NULL
 if(TEST) {
-  outstruct <- list(pe_tidied=tidied,pe_glanced=glanced, modls=models)
+  outstruct <- list(pe_tidied=tidied,pe_glanced=glanced, rsq=rsq,
+                    modls=models)
 } else {
-  outstruct <- list(pe_tidied=tidied,pe_glanced=glanced)
+  outstruct <- list(pe_tidied=tidied,pe_glanced=glanced, rsq=rsq, modls=models)
 }
 
 

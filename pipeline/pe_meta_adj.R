@@ -9,7 +9,7 @@ library(metafor)
 library(getopt)
 library(logger)
 library(this.path)
-library(furrr)
+
 
 spec <- matrix(c(
   'model_number', 'm', 1, "integer"
@@ -20,7 +20,7 @@ MODEL_NUMBER <- opt$model_number #'adjusted''
 
 log_info("Model number: {MODEL_NUMBER}")
 #load('pe_out_pscale.Rdata')
-load('../pe_summary_013024.Rdata')
+load('../pe_summary_020424/pe_summary_022524.Rdata')
 
 expos <- pe |> filter(grepl('expo', term)) |> filter(model_number == MODEL_NUMBER)
 expos_nested <- NULL

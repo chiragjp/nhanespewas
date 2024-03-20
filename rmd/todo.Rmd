@@ -20,7 +20,7 @@ output: html_document
 
 ## data examples
 
--   add death
+-   add death-   
 -   add in oral microbiome - done
 -   prediction across domains - done
 -   diet - done
