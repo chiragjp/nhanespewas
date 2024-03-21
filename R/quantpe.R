@@ -196,10 +196,10 @@ get_expo_pheno_tables <- function(con, pheno_table_name, expo_table_name) {
 #' results <- get_expo_pheno_tables(conn, pheno_table_name="L10AM_C", expo_table_name="L45VIT_C")
 #' }
 #' @export
-get_x_y_tables <- function(con, table_name1, table_name2) { ## this is for correlation between exposures or phenotypes
+get_x_y_tables <- function(con, table_name1, table_name2) { ##
   table_names <- dplyr::tbl(con, "table_names_epcf")
   seriesName <- table_names |> dplyr::filter(Data.File.Name == table_name1) |> dplyr::pull(series)
-  logger::log_info("Series of exposure is { seriesName } ")
+  logger::log_info("Series is { seriesName } ")
   demo_table_name <- table_names |> dplyr::filter(component == 'DEMO', series==seriesName) |> dplyr::collect() |> dplyr::pull(Data.File.Name)
   logger::log_info("Demographics table is { demo_table_name } ")
   demo <- dplyr::tbl(con, demo_table_name)
@@ -207,7 +207,7 @@ get_x_y_tables <- function(con, table_name1, table_name2) { ## this is for corre
   table1_nrow <- table1 |> collect() |> nrow()
   logger::log_info("Table 1 {table_name1} has { table1_nrow } rows")
   table2 <- dplyr::tbl(con, table_name2)
-  if(table_name1 == table_name2) { # hack to preserve data structure
+  if(table_name1 == table_name2) { # preserve the cols
     table2 <- table1 |> dplyr::select(SEQN)
   }
   table2_nrow <- table2 |> collect() |> nrow()
@@ -792,7 +792,8 @@ demographic_breakdown <- function(svy_dsn) {
 
 xy_by_table_flex_adjust <- function(tab_obj, yvar, xvar,
                                     adjustment_variables, ## tibble, indexed by scenario and list of adjustment variables
-                                    logxform_x=T, logxform_y=T, scale_x=T, scale_y=T) {
+                                    logxform_x=T, logxform_y=T, scale_x=T, scale_y=T,
+                                    quantile_expo=NULL, exposure_levels=NULL) {
 
   pheno <- yvar
   exposure <- xvar
@@ -821,9 +822,9 @@ xy_by_table_flex_adjust <- function(tab_obj, yvar, xvar,
     } else {
       baseadjusted <- addToBase(baseformula, adjust_variables_for_scene)
       basebaseadjusted <- addToBase(basebase, adjust_variables_for_scene)
-      base_models[[mod_num]] <- run_model(basebaseadjusted,dsn, scale_expo = scale_x, scale_pheno = scale_y)
+      base_models[[mod_num]] <- run_model(basebaseadjusted,dsn, scale_expo = scale_x, scale_pheno = scale_y,quantile_expo=quantile_expo, expo_levels =  exposure_levels)
     }
-    models[[mod_num]] <- run_model(baseadjusted,dsn, scale_expo = scale_x, scale_pheno = scale_y)
+    models[[mod_num]] <- run_model(baseadjusted,dsn, scale_expo = scale_x, scale_pheno = scale_y, quantile_expo=quantile_expo, expo_levels =  exposure_levels)
   }
   n <- dsn |> nrow()
   list(log_y = logxform_y, log_x = logxform_x, scaled_y = scale_y, scaled_x=scale_x, unweighted_n=n, yvar=yvar, series=tab_obj$series, xvar=xvar, models=models, base_models=base_models, adjustment_variables=adjustment_variables, demographic_breakdown=demo_break_tbl)
