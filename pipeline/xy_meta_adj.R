@@ -24,7 +24,7 @@ load('pp_summary_032024.Rdata')
 
 expos <- pe |> filter(grepl('expo', term)) |> filter(model_number == MODEL_NUMBER)
 expos_nested <- NULL
-expos_nested <- expos |> group_by(exposure, phenotype, term) |> nest()
+expos_nested <- expos |> group_by(xvar, yvar, term) |> nest()
 
 log_info("Models to run: {nrow(expos_nested)}")
 

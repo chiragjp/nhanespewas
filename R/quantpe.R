@@ -211,7 +211,7 @@ get_x_y_tables <- function(con, table_name1, table_name2) { ##
     table2 <- table1 |> dplyr::select(SEQN)
   }
   table2_nrow <- table2 |> collect() |> nrow()
-  logger::log_info("Table 2 {table_name1} has {table2_nrow } rows")
+  logger::log_info("Table 2 {table_name2} has {table2_nrow } rows")
   small_tab <- demo |> dplyr::inner_join(table1, by="SEQN") |> dplyr::inner_join(table2, by="SEQN") |> dplyr::collect()
   small_tab_nrow <- small_tab |> collect() |> nrow()
   logger::log_info("Merged table has { small_tab_nrow } rows")

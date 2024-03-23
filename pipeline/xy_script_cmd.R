@@ -9,7 +9,7 @@ source('db_paths.R')
 
 n_groups <- 100
 ss_file <- '../select/sample_size_pp_category_032024.csv'
-use_sbatch <- FALSE
+use_sbatch <- TRUE
 path_out <- '../out/'
 
 cmd_path <- '../pipeline/pp_by_tables_adj.R'
@@ -33,7 +33,7 @@ cat_pairs <- function(table_pairs, sh_file_out) {
     cmd <- sprintf('Rscript %s -y %s -x %s -l %s -i %s -o %s \n', file.path(cmd_path), x$y_table_name, x$x_table_name, file.path('.', ss_file), file.path('.', path_to_nhanes), file.path('.', path_out))
     cat(cmd, file = sh_file_out, append = T)
   })
-  
+
 }
 
 for(ii in 1:n_groups) {
@@ -49,7 +49,7 @@ main_out <- file.path(path_scripts_out, "srun_me.sh")
 cat("",file=main_out)
 for(ii in 1:n_groups) {
   if(use_sbatch) {
-    cat(sprintf("sbatch --exclude=compute-f-17-[09-16] -o %i.out -p short -t 02:59:00 -c 1 --mem=2000 --wrap=\"./%i.sh\"\n", ii, ii), file=main_out, append = T)
+    cat(sprintf("sbatch --exclude=compute-f-17-[09-16] -o %i.out -p short -t 08:59:00 -c 1 --mem=2000 --wrap=\"./%i.sh\"\n", ii, ii), file=main_out, append = T)
   } else {
     cat(sprintf("./%i.sh\n", ii), file=main_out, append = T)
   }

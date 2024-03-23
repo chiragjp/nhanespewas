@@ -7,7 +7,7 @@ library(logger)
 #source('db_paths.R')
 devtools::load_all("..")
 
-TEST <- T
+TEST <- F
 spec <- matrix(c(
   'y_table', 'y', 1, "character",
   'x_table', 'x', 1, "character",
@@ -25,6 +25,10 @@ sample_size_threshold <- 500
 #y_table <- 'DRXTOT'
 y_table <- 'AA_H'
 x_table <- 'PAH_H'
+
+y_table <- 'DR2TOT_F'
+x_table <- 'SMQ_F'
+
 ss_file <- '../select/sample_size_ee_category_032024.csv'
 path_to_db <-   '../db/nhanes_012324.sqlite' # '../nhanes_122322.sqlite'
 path_out <- '.'
@@ -42,11 +46,10 @@ if(!TEST) {
 con <- DBI::dbConnect(RSQLite::SQLite(), dbname=path_to_db)
 expo_levels <- tbl(con, 'e_variable_levels') |> filter(Data.File.Name == x_table) |> collect()
 to_do <- read_csv(ss_file) |> filter(x_table_name == x_table, y_table_name == y_table, n >= sample_size_threshold)
-m_table <- get_x_y_tables(con, x_table, y_table) 
+m_table <- get_x_y_tables(con, x_table, y_table)
 m_table$p_table <- m_table$table1
-m_table$e_table <- m_table$table2 
+m_table$e_table <- m_table$table2
 m_table <- m_table |> figure_out_weight()
-#ppcor_safely <- safely(nhanespewas::xy_by_table_flex_adjust)
 ppcor_safely <- safely(xy_by_table_flex_adjust)
 tidied <- vector("list", length = nrow(to_do))
 glanced <- vector("list", length = nrow(to_do))
@@ -54,7 +57,7 @@ glanced <- vector("list", length = nrow(to_do))
 
 ee_adjustment_models <- adjustment_models |> filter(
   scenario == 'base' |
-    scenario == 'age_sex_ethnicity_income_education' 
+    scenario == 'age_sex_ethnicity_income_education'
 )
 
 log_info("Process ID: {Sys.getpid()}")
@@ -70,15 +73,15 @@ if(nrow(to_do) == 0) {
 check_e_data_type <- function(varname) {
   ret <- list(vartype="continuous", varlevels=NULL)
   elvl <- expo_levels |> filter(Variable.Name == varname, !is.na(values)) |> pull(values)
-  
+
   if(grepl('CNT$', varname)) {
     return(list(vartype="continuous-rank", varlevels=elvl))
   }
-  
+
   if(grepl("^PAQ", varname)) {
     return(list(vartype="continuous", varlevels=NULL))
   }
-  
+
   if(length(elvl) == 1) {
     return(list(vartype="continuous", varlevels=NULL))
   } else if(any(elvl < 1 & elvl > 0) | any(round(elvl) != elvl)) {
@@ -94,27 +97,26 @@ models <- vector("list", length=N)
 for(ii in 1:N) {
   rw <- to_do |> slice(ii)
   log_info("{ii} out of {nrow(to_do)}; y: {rw$yvarname}; x: {rw$xvarname} ")
-  
+
   mod <- NULL
   e_levels <- check_e_data_type(rw$xvarname)
-  
   if(e_levels$vartype == 'continuous') {
-    log_info("{ii} continuous { rw$evarname } ")
-    mod <- ppcor_safely(m_table, rw$yvarname, rw$xvarname, ee_adjustment_models, logxform_x=T, logxform_y=T, scale_x=T, scale_y=T)  
+    log_info("{ii} continuous { rw$xvarname } ")
+    mod <- ppcor_safely(m_table, rw$yvarname, rw$xvarname, ee_adjustment_models, logxform_x=T, logxform_y=T, scale_x=T, scale_y=T)
   } else if(e_levels$vartype == 'categorical') {
     log_info("{ii} categorizing { rw$xvarname } ")
     mod <- ppcor_safely(m_table, rw$yvarname, rw$xvarname, ee_adjustment_models,
-                     logxform_p=F, logxform_e=F, scale_e=F, scale_p=T,
+                     logxform_y=T, logxform_x=F, scale_x=F, scale_y=T,
                      quantile_expo=NULL, exposure_levels=e_levels$varlevels)
-    
+
   } else if(e_levels$vartype == 'continuous-rank') {
-    log_info("{ii} as is { rw$evarname } ")
-    mod <- ppcor_safely(m_table, rw$pvarname, rw$evarname, ee_adjustment_models,
-                     logxform_p=F, logxform_e=F, scale_e=T, scale_p=T,
+    log_info("{ii} as is { rw$xvarname } ")
+    mod <- ppcor_safely(m_table, rw$yvarname, rw$xvarname, ee_adjustment_models,
+                      logxform_y=T, logxform_x=F, scale_x=F, scale_y=T,
                      quantile_expo=NULL, exposure_levels=NULL)
-    
+
   }
-  
+
   models[[ii]] <- mod ## each iteration contains a pair, and a data struct of all the models
 }
 
@@ -130,7 +132,7 @@ tidied_result <- function(models, aggregate_base_model = F) {
       if(aggregate_base_model) {
         to_do <- .x$result$base_models
       }
-      
+
       map2_dfr(to_do, m_index, ~ { ## loops over all adjustment scenarios
         if(is.null(.x)) {
           return(tibble())
@@ -163,12 +165,12 @@ glanced_result <-function(models, aggregate_base_model=F) {
       # If no error, proceed to extract and bind tibbles
       lcl <- .x$result
       m_index <- 1:length(.x$result$models)
-      
+
       to_do <- .x$result$models
       if(aggregate_base_model) {
         to_do <- .x$result$base_models
       }
-      
+
       map2_dfr(to_do, m_index, ~ { ## loops over all adjustment scenarios
         if(is.null(.x)) {
           return(tibble())
@@ -200,12 +202,12 @@ r2_result <-function(models, aggregate_base_model=F) {
       # If no error, proceed to extract and bind tibbles
       lcl <- .x$result
       m_index <- 1:length(.x$result$models)
-      
+
       to_do <- .x$result$models
       if(aggregate_base_model) {
         to_do <- .x$result$base_models
       }
-      
+
       map2_dfr(to_do, m_index, ~ { ## loops over all adjustment scenarios
         if(is.null(.x)) {
           return(tibble())
