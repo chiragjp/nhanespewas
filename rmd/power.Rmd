@@ -1,0 +1,148 @@
+---
+title: "Power in NHANES"
+author: "Chirag Patel"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+library(tidyverse)
+library(DBI)
+library(ggsci)
+library(DT)
+library(ggrepel)
+library(cowplot)
+library(reactable)
+library(gt)
+library(broom)
+library(pwr)
+```
+
+
+```{r connect to db}
+con <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/pe_summary_stats_02_2024-v2.sqlite')
+varnames <- tbl(con, "variable_names_epcf")
+adjusted_meta <- tbl(con, "adjusted_meta")
+#mvr2 <- tbl(con, 'mvr2') |> mutate(mv = mve_rsq-base_rsq)
+mvr2 <- read_rds('../pe_summary_060623/mvr2.rds') |> mutate(mv = mve_rsq-base_rsq)
+pe <- tbl(con, "pe")
+pe_r2 <- tbl(con, "rsq")
+glanced <- tbl(con, "glanced")
+glanced <- glanced |> left_join(pe_r2 |> select(exposure, phenotype, series, model_number,aggregate_base_model, rsq, adj.r2), by=c("exposure", "phenotype", "model_number", "aggregate_base_model", "series"))
+variable_domain <- tbl(con, "variable_domain")
+```
+
+
+```{r}
+expos <- pe |> filter(term %like% 'expo%') |> rename(evarname=exposure, pvarname=phenotype)
+expos_wide <- expos |> pivot_wider(names_from = "model_number", values_from = c("estimate", "std.error", "statistic", "p.value")) 
+glanced_wide <- glanced |> select(-c(adj.r2, df.residual, null.deviance, df.null, deviance)) |> pivot_wider(names_from=c("model_number", "aggregate_base_model"), values_from = c("rsq", "nobs", "AIC", "BIC")) |>  rename(evarname=exposure, pvarname=phenotype)
+
+glanced_wide <- glanced_wide |> mutate(rsq_adjusted_base_diff=rsq_2_0-rsq_2_1, rsq_adjusted_diff = rsq_2_0-rsq_1_0) 
+
+expos_wide <- expos_wide |> left_join(glanced_wide |> select(-c(series, log_p, log_e, scaled_p, scaled_e)), by=c("evarname", "pvarname", "exposure_table_name", "phenotype_table_name"))
+expos_wide <- expos_wide |> left_join(varnames, by=c("evarname"="Variable.Name", "exposure_table_name"="Data.File.Name"))
+expos_wide <- expos_wide |> left_join(varnames |> select(Variable.Name, Data.File.Name, Variable.Description, Data.File.Description), 
+                                      by=c("pvarname"="Variable.Name", "phenotype_table_name"="Data.File.Name"))
+
+
+expos_wide <- expos_wide |> collect() |> select(-Use.Constraints) |> rename(e_data_file_desc=Data.File.Description.x, p_data_file_desc=Data.File.Description.y,e_variable_description=Variable.Description.x, p_variable_description=Variable.Description.y)
+
+expos_wide_summary <- expos_wide |> filter(term == 'expo' | term == 'expo1' | term == 'expo2') |> group_by(evarname, pvarname) |> summarize(mean_adjusted_base_r2_diff = mean(rsq_adjusted_base_diff), mean_unadjusted_r2_diff=mean(rsq_adjusted_diff), total_n = sum(nobs_2_0)) |> ungroup()
+
+adjusted_meta_full <- adjusted_meta |> filter(model_number == 2) |> collect() |> left_join(expos_wide_summary, by=c("evarname", "pvarname")) ## fully adjusted model
+
+p_variable_domain <- variable_domain |> filter(epcf == 'p') |> collect() |> group_by(Variable.Name) |> summarise(pvardesc=first(Variable.Description),pcategory=first(category),psubcategory=first(subcategory))
+e_variable_domain <- variable_domain |> filter(epcf == 'e') |> collect() |> group_by(Variable.Name) |> summarise(evardesc=first(Variable.Description),ecategory=first(category),esubcategory=first(subcategory))
+
+adjusted_meta_full <- adjusted_meta_full |> left_join(p_variable_domain, by=c("pvarname"="Variable.Name"))
+adjusted_meta_full <- adjusted_meta_full |> left_join(e_variable_domain, by=c("evarname"="Variable.Name"))
+
+expos_wide <- expos_wide |> left_join(p_variable_domain, by=c("pvarname"="Variable.Name"))
+expos_wide <- expos_wide |> left_join(e_variable_domain, by=c("evarname"="Variable.Name"))
+
+mvr2 <- mvr2 |> collect() |> left_join(p_variable_domain, by=c("pvarname"="Variable.Name"))
+```
+
+
+
+# Power for each plausible R2
+# Range of R2 seen is 0.001-0.05
+
+```{r}
+
+power_from_r2 <- function(n, r2, u,pval) {
+  if(is.na(n) | is.na(r2)) {
+    return(NA)
+  }
+  v <- n - u - 1  
+  pr <- pwr.f2.test(u=u,v=v,f2=r2/(1-r2),sig.level=pval)  
+  pr$power
+}
+
+
+p.value <- 1e-6
+r2s <- c(0.001, 0.005, 0.006, 0.007, 0.008, 0.009, 0.01, 0.02, 0.03, 0.04, 0.05)
+n <- seq(200, 10000, by=100)
+u <- 1
+pwr_list <- vector("list", length(r2))
+for(i in 1:length(r2s)) {
+  pwr_list[[i]] <- tibble(r2=r2s[i], n=n, pwrs=map_dbl(n, ~power_r2(.x, r2s[i], u, p.value )))
+}
+
+
+pwr_df <- bind_rows(pwr_list)
+p <- ggplot(pwr_df, aes(n, pwrs, color=factor(r2)))
+p <- p + geom_point() + geom_line() + geom_vline(xintercept = 1000)
+p1 <- p + xlab("N") + ylab("Power") + theme_bw() + scale_color_aaas()
+p1
+
+p <- ggplot(adjusted_meta_full, aes(total_n))
+p2 <- p + stat_ecdf() + theme_bw() + scale_color_aaas()
+p2
+
+
+
+```
+
+
+```{r}
+
+pwr_01 <- map_dbl(adjusted_meta_full$total_n, ~power_from_r2(.x, .01, 1, p.value))
+pwr_001 <- map_dbl(adjusted_meta_full$total_n, ~power_from_r2(.x, .001, 1, p.value))
+pwr_005 <- map_dbl(adjusted_meta_full$total_n, ~power_from_r2(.x, .005, 1, p.value))
+
+adjusted_meta_full <- adjusted_meta_full |> mutate(power_01 = pwr_01, power_001 = pwr_001, power_005=pwr_005)
+
+
+p <- ggplot(adjusted_meta_full, aes(total_n, power_01))
+p <- p + geom_point(shape=1) + geom_rug(col=rgb(.5,0,0,alpha=.2)) + facet_wrap(~ecategory, ncol = 4) + geom_hline(yintercept = 0.8)
+p1 <- p + theme_bw()
+p1
+
+p <- ggplot(adjusted_meta_full, aes(total_n, power_01))
+p <- p + geom_point(shape=1) + geom_rug(col=rgb(.5,0,0,alpha=.2)) + facet_wrap(~pcategory, ncol = 4) + geom_hline(yintercept = 0.8)
+p2 <- p + theme_bw()
+p2
+
+
+p <- ggplot(adjusted_meta_full, aes(total_n, power_005))
+p <- p + geom_point(shape=1) + geom_rug(col=rgb(.5,0,0,alpha=.2)) + facet_wrap(~ecategory, ncol = 4) + geom_hline(yintercept = 0.8)
+p3 <- p + theme_bw()
+p3
+
+p <- ggplot(adjusted_meta_full, aes(total_n, power_005))
+p <- p + geom_point(shape=1) + geom_rug(col=rgb(.5,0,0,alpha=.2)) + facet_wrap(~pcategory, ncol = 4) + geom_hline(yintercept = 0.8)
+p4 <- p + theme_bw()
+p4
+
+plot_grid(p1, p2, p3, p4, labels = c("A. R2=0.01", "B. R2=0.01", "C. R2=0.005", "D. 0.005"), nrow=2)
+
+plot_grid(p1, p2)
+
+```

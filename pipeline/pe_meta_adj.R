@@ -20,7 +20,7 @@ MODEL_NUMBER <- opt$model_number #'adjusted''
 
 log_info("Model number: {MODEL_NUMBER}")
 #load('pe_out_pscale.Rdata')
-load('pp_summary_032024.Rdata')
+#load('pp_summary_032024.Rdata')
 
 expos <- pe |> filter(grepl('expo', term)) |> filter(model_number == MODEL_NUMBER)
 expos_nested <- NULL

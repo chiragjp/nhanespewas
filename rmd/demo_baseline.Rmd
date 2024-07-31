@@ -78,9 +78,6 @@ p3 <- plot_demographic_summary(overall_summary_l |> filter(varname %in% c("RIAGE
 ```
 
 ```{r}
-
-
-
 p <- ggplot(demo_break, aes(avg))
 p <- p + stat_ecdf()
 p <- p + facet_grid(series~varname, scales="free", labeller = as_labeller(new_labels))

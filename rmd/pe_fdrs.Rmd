@@ -1,0 +1,173 @@
+---
+title: "pe_fdrs.Rmd"
+author: "Chirag Patel"
+date: "`r Sys.Date()`"
+output: html_document
+---
+## PE with flexible adjustments 
+
+## test out several FDR scenarios before deployment
+
+```{r start anew}
+if(exists("con")) {
+  dbDisconnect(con)
+  remove(list=ls())
+}
+
+```
+
+```{r}
+library(tidyverse)
+library(DBI)
+library(ggsci)
+library(DT)
+library(ggrepel)
+library(cowplot)
+library(reactable)
+library(gt)
+library(broom)
+library(IHW)
+library(qvalue)
+```
+
+
+
+
+```{r connect to db}
+con <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/pe_summary_stats_02_2024-v2.sqlite')
+varnames <- tbl(con, "variable_names_epcf")
+adjusted_meta <- tbl(con, "adjusted_meta")
+#mvr2 <- tbl(con, 'mvr2') |> mutate(mv = mve_rsq-base_rsq)
+mvr2 <- read_rds('../pe_summary_060623/mvr2.rds') |> mutate(mv = mve_rsq-base_rsq)
+pe <- tbl(con, "pe")
+pe_r2 <- tbl(con, "rsq")
+glanced <- tbl(con, "glanced")
+glanced <- glanced |> left_join(pe_r2 |> select(exposure, phenotype, series, model_number,aggregate_base_model, rsq, adj.r2), by=c("exposure", "phenotype", "model_number", "aggregate_base_model", "series"))
+variable_domain <- tbl(con, "variable_domain")
+adjusted_meta_uwls <- tbl(con, "adjusted_meta_uwls")
+
+adjusted_meta <- adjusted_meta |> left_join(adjusted_meta_uwls |> rename(term_name=expo_name),  by = c("term_name", "evarname", "pvarname","model_number"))
+
+
+```
+
+
+```{r}
+expos <- pe |> filter(term %like% 'expo%') |> rename(evarname=exposure, pvarname=phenotype)
+expos_wide <- expos |> pivot_wider(names_from = "model_number", values_from = c("estimate", "std.error", "statistic", "p.value")) 
+glanced_wide <- glanced |> select(-c(adj.r2, df.residual, null.deviance, df.null, deviance)) |> pivot_wider(names_from=c("model_number", "aggregate_base_model"), values_from = c("rsq", "nobs", "AIC", "BIC")) |>  rename(evarname=exposure, pvarname=phenotype)
+
+glanced_wide <- glanced_wide |> mutate(rsq_adjusted_base_diff=rsq_2_0-rsq_2_1, rsq_adjusted_diff = rsq_2_0-rsq_1_0) 
+
+expos_wide <- expos_wide |> left_join(glanced_wide |> select(-c(series, log_p, log_e, scaled_p, scaled_e)), by=c("evarname", "pvarname", "exposure_table_name", "phenotype_table_name"))
+expos_wide <- expos_wide |> left_join(varnames, by=c("evarname"="Variable.Name", "exposure_table_name"="Data.File.Name"))
+expos_wide <- expos_wide |> left_join(varnames |> select(Variable.Name, Data.File.Name, Variable.Description, Data.File.Description), 
+                                      by=c("pvarname"="Variable.Name", "phenotype_table_name"="Data.File.Name"))
+
+
+expos_wide <- expos_wide |> collect() |> select(-Use.Constraints) |> rename(e_data_file_desc=Data.File.Description.x, p_data_file_desc=Data.File.Description.y,e_variable_description=Variable.Description.x, p_variable_description=Variable.Description.y)
+
+expos_wide_summary <- expos_wide |> filter(term == 'expo' | term == 'expo1' | term == 'expo2') |> group_by(evarname, pvarname) |> summarize(mean_adjusted_base_r2_diff = mean(rsq_adjusted_base_diff), mean_unadjusted_r2_diff=mean(rsq_adjusted_diff), total_n = sum(nobs_2_0)) |> ungroup()
+
+adjusted_meta_full <- adjusted_meta |> filter(model_number == 2) |> collect() |> left_join(expos_wide_summary, by=c("evarname", "pvarname")) ## fully adjusted model
+
+p_variable_domain <- variable_domain |> filter(epcf == 'p') |> collect() |> group_by(Variable.Name) |> summarise(pvardesc=first(Variable.Description),pcategory=first(category),psubcategory=first(subcategory))
+e_variable_domain <- variable_domain |> filter(epcf == 'e') |> collect() |> group_by(Variable.Name) |> summarise(evardesc=first(Variable.Description),ecategory=first(category),esubcategory=first(subcategory))
+
+adjusted_meta_full <- adjusted_meta_full |> left_join(p_variable_domain, by=c("pvarname"="Variable.Name"))
+adjusted_meta_full <- adjusted_meta_full |> left_join(e_variable_domain, by=c("evarname"="Variable.Name"))
+
+expos_wide <- expos_wide |> left_join(p_variable_domain, by=c("pvarname"="Variable.Name"))
+expos_wide <- expos_wide |> left_join(e_variable_domain, by=c("evarname"="Variable.Name"))
+
+mvr2 <- mvr2 |> collect() |> left_join(p_variable_domain, by=c("pvarname"="Variable.Name"))
+```
+
+
+# Number of unique exposures and phenotypes
+```{r}
+num_e <- length(unique(adjusted_meta_full$evarname))
+num_p <- length(unique(adjusted_meta_full$pvarname))
+num_e
+num_p
+num_e * num_p
+```
+
+
+# Number exposures and phenotypes and associations in X number of surveys
+
+```{r}
+#adjusted_meta <- adjusted_meta |> unnest(glanced) |> unnest(tidied)
+n_obss <- sort(unique(adjusted_meta_full$nobs))
+
+num_tests <- map_df(n_obss, function(n) {
+  n_e <- adjusted_meta_full |> filter(nobs == n) |> pull(evarname) |> unique() |> length()
+  n_p <- adjusted_meta_full |> filter(nobs == n) |> pull(pvarname) |> unique() |> length()
+  nn <- nrow(adjusted_meta_full |> filter(nobs == n))
+  tibble(n_expos=n_e, n_phenos=n_p, n_pxe=nn)
+})
+
+num_tests  |> mutate(n_surveys=n_obss) |> gt()
+
+```
+
+# Keep number of surveys is greater than 2
+
+```{r}
+adjusted_meta_2 <- adjusted_meta_full |> filter(nobs >= 2)
+n_evars <- length(unique(adjusted_meta_2$evarname))
+n_pvars <- length(unique(adjusted_meta_2$pvarname))
+```
+
+
+# Sample sizes within and across all surveys
+
+```{r sample sizes}
+sample_size_per_pair <- expos_wide |> filter(term == 'expo' | term== 'expo1') |> group_by(evarname, pvarname) |> summarize(total_n=sum(nobs_2_0), n_surveys=n(), median_n=median(nobs_2_0))
+```
+
+
+## correlation between summary statistics
+```{r}
+p <- ggplot(adjusted_meta_2 , aes(statistic, statistic.uwls))
+p <- p + geom_point(alpha=0.1) + scale_x_continuous(limits = c(-10, 10)) + scale_y_continuous(limits=c(-10,10))
+p
+
+```
+
+
+
+
+
+# Summary of the summary stats
+
+```{r}
+## Overall FDR using the UWLS pvalue
+adjusted_meta_2 <- adjusted_meta_2 |> ungroup() |>  mutate(pval_BY=p.adjust(p.value.uwls, method="BY"), pvalue_bonferroni=p.adjust(p.value.uwls, method="bonferroni"), pval_BH=p.adjust(p.value.uwls, method="BH"))
+adjusted_meta_2 <- adjusted_meta_2 |> mutate(sig_levels = case_when(
+  pvalue_bonferroni < 0.05 ~ 'Bonf.<0.05',
+  pval_BY < 0.05 ~ 'BY<0.05',
+  TRUE ~ '> BY & Bonf.'
+))
+
+
+
+ihwTest <- ihw(p.value.uwls ~ nobs,  data = adjusted_meta_2, alpha = 0.05)
+qvals <- qvalue(adjusted_meta_2$p.value.uwls)
+plot(qvals)
+adjusted_meta_2 <- adjusted_meta_2 |> mutate(pval_ihw = adj_pvalues(ihwTest))
+adjusted_meta_2 <- adjusted_meta_2 |> mutate(qval = qvalue(p.value.uwls)$qvalues)
+
+p <- ggplot(adjusted_meta_2 , aes(-log10(pval_ihw), -log10(pval_BY)))
+p <- p + geom_point() 
+p
+
+p <- ggplot(adjusted_meta_2 , aes(-log10(p.value.uwls), -log10(qval)))
+p <- p + geom_point() 
+p
+
+
+adjusted_meta_2 |> filter(pvarname == 'LBXGLU') |> arrange(qval) |> select(evarname, pvarname, estimate, std.error, std.error.uwls, p.value, p.value.stouffer, statistic.uwls, p.value.uwls, pval_BY, pval_BH, qval, pval_ihw) |> mutate(qval_pheno=qvalue(p.value.uwls)$qvalues, pval_BY_pheno=p.adjust(p.value.uwls, method="BY"))
+
+```
+ 

@@ -18,7 +18,7 @@ library(dbplyr)
 ```{r}
 path_to_dbname <- "./db/nhanes_012324.sqlite" ## change this to your path
 ## connect:
-con <- DBI::dbConnect(RSQLite::SQLite(), dbname=path_to_dbname)
+con <- DBI::dbConnect(RSQLite::SQLite(), dbname=path_to_dbname) 
 ## list tables:
 DBI::dbListTables(con)
 ```

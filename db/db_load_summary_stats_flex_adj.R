@@ -8,8 +8,6 @@ expo_levels <- tbl(con, "e_variable_levels") |> collect()
 tablenames <- tbl(con, "table_names_epcf") |> collect()
 dbDisconnect(con)
 
-#path_to_summary <- './pe_summary_051223/'
-
 path_to_summary <- '../pe_summary_020424/'
 load(file.path(path_to_summary, 'pe_summary_022524.Rdata'))
 

@@ -4,7 +4,6 @@
 library(getopt)
 library(tidyverse)
 library(logger)
-#source('db_paths.R')
 devtools::load_all("..")
 
 TEST <- F
@@ -21,8 +20,6 @@ sample_size_threshold <- 500
 
 
 ########### debug stuff
-#x_table <- 'DRXTOT'
-#y_table <- 'DRXTOT'
 y_table <- 'AA_H'
 x_table <- 'PAH_H'
 
@@ -30,7 +27,7 @@ y_table <- 'DR2TOT_F'
 x_table <- 'SMQ_F'
 
 ss_file <- '../select/sample_size_ee_category_032024.csv'
-path_to_db <-   '../db/nhanes_012324.sqlite' # '../nhanes_122322.sqlite'
+path_to_db <-   '../db/nhanes_012324.sqlite'
 path_out <- '.'
 
 if(!TEST) {

@@ -25,6 +25,7 @@ library(cowplot)
 library(reactable)
 library(gt)
 library(broom)
+library(IHW)
 ```
 
 
@@ -40,6 +41,11 @@ pe_r2 <- tbl(con, "rsq")
 glanced <- tbl(con, "glanced")
 glanced <- glanced |> left_join(pe_r2 |> select(exposure, phenotype, series, model_number,aggregate_base_model, rsq, adj.r2), by=c("exposure", "phenotype", "model_number", "aggregate_base_model", "series"))
 variable_domain <- tbl(con, "variable_domain")
+adjusted_meta_uwls <- tbl(con, "adjusted_meta_uwls")
+
+adjusted_meta <- adjusted_meta |> left_join(adjusted_meta_uwls |> rename(term_name=expo_name),  by = c("term_name", "evarname", "pvarname","model_number"))
+
+
 ```
 
 
@@ -116,15 +122,31 @@ n_pvars <- length(unique(adjusted_meta_2$pvarname))
 ```{r sample sizes}
 sample_size_per_pair <- expos_wide |> filter(term == 'expo' | term== 'expo1') |> group_by(evarname, pvarname) |> summarize(total_n=sum(nobs_2_0), n_surveys=n(), median_n=median(nobs_2_0))
 ```
+
+
+
+
 # Summary of the summary stats
 
-```{r fig.height=5, fig.width=10}
+```{r }
 adjusted_meta_2 <- adjusted_meta_2 |> ungroup() |>  mutate(pval_BY=p.adjust(p.value, method="BY"), pvalue_bonferroni=p.adjust(p.value, method="bonferroni"))
 adjusted_meta_2 <- adjusted_meta_2 |> mutate(sig_levels = case_when(
   pvalue_bonferroni < 0.05 ~ 'Bonf.<0.05',
   pval_BY < 0.05 ~ 'BY<0.05',
   TRUE ~ '> BY & Bonf.'
 ))
+
+#ihwTest <- ihw(p.value.uwls ~ nobs,  data = adjusted_meta_2, alpha = 0.05)
+#qvals <- qvalue(adjusted_meta_2$p.value.uwls)
+#plot(qvals)
+#adjusted_meta_2 <- adjusted_meta_2 |> mutate(pval_ihw = adj_pvalues(ihwTest))
+#adjusted_meta_2 <- adjusted_meta_2 |> mutate(qval = qvalue(p.value)$qvalues)
+
+
+```
+
+```{r fig.height=5, fig.width=10}
+
 
 bonf_thresh <- 0.05/nrow(adjusted_meta_2)
 quantile(adjusted_meta_2$p.value, probs=c(0.01, .05, .1, .2, .3, .4, .5, .6, .7, .8, .9, .95, .99), na.rm = T)
@@ -145,7 +167,7 @@ adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05') |> arrange(-mean_adjusted_
 ## qqplot
 pval_qq <- data.frame(observed = sort(adjusted_meta_2$p.value), expected = (1:nrow(adjusted_meta_2))/nrow(adjusted_meta_2))
 qq_p <- ggplot(pval_qq, aes(-log10(expected), -log10(observed)))
-qq_p <- qq_p + geom_point()
+qq_p <- qq_p + geom_point() + geom_abline()
 ##
 
 p <- ggplot(pval_qq, aes(observed))
@@ -174,6 +196,84 @@ p2 <- p + xlab("P-E association pvalue")
 plot_grid(p1, p2, nrow=2, labels=c("A", "B"))
 
 ```
+
+## percent found for each E or P variable for each category
+
+```{r}
+
+adjusted_meta_2 <- adjusted_meta_2 |> mutate(ecat=ifelse(is.na(esubcategory), ecategory, esubcategory))
+adjusted_meta_2 <- adjusted_meta_2 |> mutate(pcat=ifelse(is.na(psubcategory), pcategory, psubcategory))
+
+e_total_found <- adjusted_meta_2  |> group_by(ecat, sig_levels)  |> summarize(n=n(), mean.r2=mean(mean_adjusted_base_r2_diff, na.rm=T))
+e_total_found <- e_total_found |> ungroup() |> group_by(ecat) |> summarize(total_tests=sum(n)) |> left_join(e_total_found) |> mutate(pct_sig_per_category = n/total_tests, pct_sig_overall=n/sum(total_tests))
+
+p <- ggplot(e_total_found |> filter(sig_levels != "> BY & Bonf."), aes(ecat, pct_sig_overall))
+p <- p + geom_bar(stat = "identity")
+p
+
+p <- ggplot(e_total_found |> filter(sig_levels != "> BY & Bonf."), aes(ecat, mean.r2))
+p <- p + geom_bar(stat = "identity")
+p
+
+p <- ggplot(e_total_found |> filter(sig_levels == "BY<0.05"), aes(ecat, mean.r2))
+p <- p + geom_bar(stat = "identity")
+p
+
+p <- ggplot(e_total_found |> filter(sig_levels == "BY<0.05"), aes(pct_sig_overall, mean.r2, label=ecat))
+p <- p + geom_point() + theme_bw() + geom_text_repel() 
+p
+
+ep_total_found <- adjusted_meta_2  |> group_by(ecat, pcat, sig_levels)  |> summarize(n=n(), mean.r2=mean(mean_adjusted_base_r2_diff, na.rm=T))
+ep_total_found <- ep_total_found |> ungroup() |> group_by(ecat,pcat) |> summarize(total_tests=sum(n)) |> left_join(ep_total_found) |> mutate(pct_sig_per_category = n/total_tests, pct_sig_overall=n/sum(total_tests))
+
+p <- ggplot(ep_total_found |> filter(sig_levels == "BY<0.05"), aes(pct_sig_overall, mean.r2, label=ecat))
+p <- p + geom_point() + facet_wrap(~pcat) + theme_bw() + geom_text_repel() 
+p
+
+
+p_total_found <- adjusted_meta_2 |> group_by(pcat, sig_levels) |> summarize(n=n(), mean.r2=mean(mean_adjusted_base_r2_diff, na.rm=T))
+p_total_found <- p_total_found |> ungroup() |> group_by(pcat) |> summarize(total_tests=sum(n)) |> left_join(p_total_found) |> mutate(pct_sig_per_category = n/total_tests, pct_sig_overall=n/sum(total_tests))
+
+p <- ggplot(p_total_found |> filter(sig_levels == "BY<0.05"), aes(pct_sig_overall*100, mean.r2*100, label=pcat))
+p <- p + geom_point() + theme_bw() + geom_text_repel()  + xlab("Less than BY 5% (%)") + ylab("R-squared (%)")
+p
+
+p <- ggplot(p_total_found |> filter(sig_levels == "BY<0.05"), aes(pct_sig_per_category*100, mean.r2*100, label=pcat))
+p <- p + geom_point() + theme_bw() + geom_text_repel()  + xlab("Less than BY 5% (% of all tests in category)") + ylab("R-squared (%)")
+p
+
+```
+
+
+```{r power}
+library(pwr)
+power_from_r2 <- function(n, r2, u,pval) {
+  if(is.na(n) | is.na(r2)) {
+    return(NA)
+  }
+  v <- n - u - 1  
+  pr <- pwr.f2.test(u=u,v=v,f2=r2/(1-r2),sig.level=pval)  
+  pr$power
+}
+pwr_01 <- map_dbl(adjusted_meta_2$total_n, ~power_from_r2(.x, .01, 1, bonf_thresh))
+pwr_001 <- map_dbl(adjusted_meta_2$total_n, ~power_from_r2(.x, .001, 1, bonf_thresh))
+pwr_005 <- map_dbl(adjusted_meta_2$total_n, ~power_from_r2(.x, .005, 1, bonf_thresh))
+adjusted_meta_2 <- adjusted_meta_2 |> mutate(power_01 = pwr_01, power_001 = pwr_001, power_005=pwr_005)
+
+p <- ggplot(adjusted_meta_2, aes(total_n, power_01))
+p <- p + geom_point(shape=1) + geom_rug(col=rgb(.5,0,0,alpha=.2)) + facet_wrap(~ecategory, ncol = 4) + geom_hline(yintercept = 0.8)
+p1 <- p + theme_bw()
+
+p <- ggplot(adjusted_meta_2, aes(total_n, power_01))
+p <- p + geom_point(shape=1) + geom_rug(col=rgb(.5,0,0,alpha=.2)) + facet_wrap(~pcategory, ncol = 4) + geom_hline(yintercept = 0.8)
+p2 <- p + theme_bw()
+
+
+plot_grid(p1, p2)
+```
+
+
+
 
 ## zoom in the distribution
 ```{r}
@@ -232,9 +332,10 @@ e_group_summary <- adjusted_meta_2 |> unite(e_scategory, c(ecategory, esubcatego
 
 
 
-
-
 ```
+
+
+
 # Tables 1 and 2
 ```{r}
 ## 
@@ -374,6 +475,21 @@ p2 <-p
 
 plot_grid(p1, p2, ncol=2, labels=c("A", "B"))
 
+adjusted_meta_2 <- adjusted_meta_2 |> mutate(p_cap = ifelse(p.value < 1e-30, 1e-30, p.value))
+p <- ggplot(adjusted_meta_2 |> filter(ecategory != 'autoantibody'), aes(mean_adjusted_base_r2_diff, -log10(p_cap)))
+p <- p + geom_point(shape='.') + scale_x_continuous(limits=c(0, .2))
+p <- p + facet_grid(ecategory ~ .) + scale_color_npg()
+p <- p + geom_hline(yintercept = -log10(.05/nrow(adjusted_meta_2)), color='lightblue')
+p <- p + theme_minimal() + theme(legend.position = "none") +ylab('p.value') + xlab("estimate")
+p1 <- p
+
+p <- ggplot(adjusted_meta_2, aes(mean_adjusted_base_r2_diff, -log10(p_cap)))
+p <- p + geom_point(shape='.') + scale_x_continuous(limits=c(0, .2))
+p <- p + facet_grid(pcategory ~ .) + scale_color_npg()
+p <- p + geom_hline(yintercept = -log10(.05/nrow(adjusted_meta_2)), color='lightblue')
+p <- p + theme_minimal() + theme(legend.position = "none") +ylab('p.value') + xlab("estimate")
+p2 <-p
+plot_grid(p1, p2, ncol=2, labels=c("A", "B"))
 ```
 
 
@@ -388,9 +504,17 @@ p <- p + theme_bw() + xlab("Average(Estimate) within exposome groups") + ylab("M
 p <- p + theme(legend.position = "bottom")
 p
 
-p_effect_sizes_per <- adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05') |> group_by(pcategory, psubcategory) |> summarize(mean_r2 = mean(mean_adjusted_base_r2_diff, na.rm=T))
+p_effect_sizes_per <- adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05') |> group_by(pcategory, psubcategory) |> summarize(median_pvalue=median(p.value), number_signficant=n(), mean_r2=mean((mean_adjusted_base_r2_diff))) 
+
+p <- ggplot(p_effect_sizes_per, aes(mean_r2, -log10(median_pvalue), label=psubcategory))
+p <- p + geom_point(aes(size=number_signficant)) + geom_text_repel() + geom_vline(xintercept = 0)
+p <- p + theme_bw() + xlab("Average(Estimate) within Phenome groups") + ylab("Median log10(pvalue)")
+p <- p + theme(legend.position = "bottom")
+p
 
 ```
+
+
 ```{r cdfs}
 
 adjusted_meta_2 <- adjusted_meta_2 |> mutate(vartype = ifelse(term_name == 'expo', 'continuous', 'categorical'))
@@ -424,8 +548,20 @@ p <- p + xlab("R^2 (adjusted-base model)") + ylab("percentile")
 p <- p + theme_bw() + theme(legend.position="bottom") 
 p
 
+```
+
+
+# number found at different power
+
+```{r sig and power}
+adjusted_meta_2 <- adjusted_meta_2 |> mutate(power_groups_01=cut(power_01, breaks=c(0, .4, .8, 1)))
+adjusted_meta_2 <- adjusted_meta_2 |> mutate(power_groups_005=cut(power_005, breaks=c(0, .4, .8, 1)))
+discovery_by_power_01 <- adjusted_meta_2 |> filter(!is.na(power_01)) |> group_by(sig_levels, power_groups_01) |> count()
+discovery_by_power_005 <- adjusted_meta_2 |> filter(!is.na(power_005)) |> group_by(sig_levels, power_groups_005) |> count()
 
 ```
+
+
 ```{r i2}
 ## reorder sig_levels
 adjusted_meta_2 <- adjusted_meta_2 |> mutate(sig_levels=fct_relevel(sig_levels, c("> BY & Bonf.","BY<0.05", "Bonf.<0.05")))
@@ -567,6 +703,12 @@ p <- p + geom_point(shape='.') + xlab("R2 Base [Demographics]") + ylab("R2 [Expo
 p <- p + theme_bw()
 p
 
+p <- ggplot(expos_wide, aes(rsq_2_1))
+p <- p + geom_histogram() + xlab("R2 Base [Demographics]")
+p <- p + theme_bw()
+p
+
+
 p <- ggplot(expos_wide, aes(rsq_2_0, rsq_1_0))
 p <- p + geom_point(shape='.') + xlab("R2 Adjusted [Exposure + Demographics]") + ylab("R2 Unadjusted [Exposure]")
 p <- p + theme_bw() 
@@ -639,16 +781,25 @@ adjusted_meta_full <- adjusted_meta_2 |> rename(estimate_adjusted=estimate, p.va
 adjusted_meta_tp <- adjusted_meta_tp  |> left_join(adjusted_meta_full, by=c("evarname", "pvarname", "term_name"))
 adjusted_meta_tp <- adjusted_meta_tp  |> left_join(adjustment_number_order |> select(c(model_number, scenario, order_number)), by="model_number")
 
+adjusted_meta_tp |> group_by(scenario) |> summarize(sd_estimate = sd(estimate-estimate_adjusted, na.rm=T))
+
 p <- ggplot(adjusted_meta_tp, aes(statistic_adjusted, statistic))
 p <- p + geom_point(shape='.') + facet_wrap(~scenario) + geom_abline(slope=1, intercept = 0) + theme_bw()
 p 
 
-p <- ggplot(adjusted_meta_tp, aes(estimate_adjusted, estimate))
-p <- p + geom_point(shape='.') + facet_wrap(~scenario) + theme_bw()
+
+
+p <- ggplot(adjusted_meta_tp |> filter( scenario != 'age_sex_ethnicity_income_education') |> mutate(scenario = fct_relevel(scenario, "base", "age", "sex", "age_sex", "ethnicity", "income_education", "age_sex_income_education", "age_sex_ethnicity", "age_sex_ethnicity_income_education")), aes(estimate_adjusted, estimate))
+p <- p + geom_point(shape='.') + facet_wrap(~scenario, ncol = 4) + theme_bw()
 p
 
+p <- ggplot(adjusted_meta_tp, aes(estimate-estimate_adjusted))
+p <- p + geom_histogram() + facet_wrap(~scenario) + theme_bw() + scale_x_continuous(limits=c(-.1, .1))
+p
+
+
 ```
-```{r}
+```{r fig.height=7, fig.width=9}
 
 # adjusted_meta_tp 
 am2 <- adjusted_meta_tp |> filter(model_number == 1) |> filter(!is.na(sig_levels))
@@ -676,6 +827,13 @@ p <- p + theme_bw() +theme(legend.position = "none")
 p
 
 
+p <- ggplot(adjusted_meta_tp |> filter(model_number == 1, !is.na(ecategory)) , aes(estimate-estimate_adjusted, color=ecategory))
+p <- p + geom_histogram() + scale_x_continuous(limits=c(-1, 1)) + scale_color_aaas()
+p <- p + facet_grid(~ecategory) 
+p <- p + theme_bw() +theme(legend.position = "none")
+p
+
+
 p <- ggplot(adjusted_meta_tp |> filter(model_number == 1, !is.na(pcategory)) , aes(estimate, estimate_adjusted, color=pcategory))
 p <- p + geom_point(shape='.') + scale_x_continuous(limits=c(-1, 1)) + scale_y_continuous(limits=c(-1, 1)) + scale_color_aaas()
 p <- p + geom_abline()
@@ -686,3 +844,5 @@ p
 
 
 ```
+
+

@@ -1,360 +1,12 @@
 ## Chirag J Patel
 ## 07/14/23
-## quantpe.R
-## machinery to associate a real-valued outcome with a categorical or real-valued exposure
+## pe.R --> consider renaming to pe.R
+## machinery to associate phenotypes with a categorical or real-valued exposure
 
 
-surveyVariables <- c('WTMEC2YR', 'WTMEC4YR', 'SDMVPSU', 'SDMVSTRA', 'SDDSRVYR')
-
-seriesBeginYearMap <- function(seriesName) {
-    seriesBeginYear <- dplyr::case_when(
-    seriesName == 'A' ~ 1999,
-    seriesName == 'B' ~ 2001,
-    seriesName == 'C' ~ 2003,
-    seriesName == 'D' ~ 2005,
-    seriesName == 'E' ~ 2007,
-    seriesName == 'F' ~ 2009,
-    seriesName == 'G' ~ 2011,
-    seriesName == 'H' ~ 2013,
-    seriesName == 'I' ~ 2015,
-    seriesName == 'J' ~ 2017,
-    seriesName == 'K' ~ 2019,
-    seriesName == 'L' ~ 2021,
-    TRUE ~ NA_real_
-  )
-  seriesBeginYear
+xysvydesign <- function(get_tables_obj) {
+  create_svydesign(get_tables_obj$merged_tab)
 }
-
-
-adjustment_variables <- function() {
-  varnames <- c("RIDAGEYR", "RIAGENDR", "INDFMPIR", "ETHNICITY_MEXICAN",
-                "ETHNICITY_OTHERHISPANIC", "ETHNICITY_OTHER",
-                "ETHNICITY_NONHISPANICBLACK", "ETHNICITY_NONHISPANICWHITE",
-                "EDUCATION_LESS9", "EDUCATION_9_11", "EDUCATION_HSGRAD",
-                "EDUCATION_AA", "EDUCATION_COLLEGEGRAD")
-}
-
-get_path_to_extdata_database<- function() {
-  path_to_db <- system.file("extdata", "nhanes_pewas_a-d.sqlite", package = "nhanespewas")
-}
-
-
-#' Connect to the PEWAS NHANES database
-#'
-#' This function establishes a connection to the PEWAS NHANES database .
-#'
-#' @param path_to_data The file path to the participant-level NHANES data. Each table in the database corresponds to a table in the NHANES.
-#'
-#' @return A DBI connection object to the NHANES database.
-#' @export
-#' @examples
-#' \dontrun{
-#' con <- connect_pewas_data("/path/to/database.sqlite")
-#' }
-#' @importFrom DBI dbConnect
-#' @importFrom RSQLite SQLite
-connect_pewas_data <- function(path_to_data = NULL) {
-
-  ## check if the database exists
-  if (is.null(path_to_data)) {
-    path_to_data <- get_path_to_extdata_database()
-  } else if(!file.exists(path_to_data)) {
-    stop("nhanes pewas database does not exist")
-  }
-  con <- DBI::dbConnect(RSQLite::SQLite(), dbname=path_to_data)
-  # check version date and type of database (e.g., summary stats or NHANES raw)
-  if(DBI::dbExistsTable(con, "description")) {
-    desc <- dplyr::tbl(con, "description")
-    return(con)
-  } else{
-    stop("nhanes pewas database is not in correct format")
-  }
-
-}
-
-#' Disconnect from a NHANES database
-#'
-#' This function disconnects from a database given a DBI connection object.
-#'
-#' @param dbConn A NHANES DBI connection object.
-#'
-#' @return Invisible NULL. The connection will be completely severed.
-#' @export
-#' @examples
-#' \dontrun{
-#' disconnect_pewas_data(dbConn)
-#' }
-#' @importFrom DBI dbDisconnect
-disconnect_pewas_data <- function(dbConn) {
-  DBI::dbDisconnect(dbConn)
-}
-
-#' Retrieve and merge tables from a database based on the series name, exposure variable name, and phenotype variable name
-#'
-#' @param pvarname Character. The phenotype variable name.
-#' @param evarname Character. The exposure variable name.
-#' @param seriesName Character. The series name.
-#' @param con The database connection.
-#' @param pheno_table_name Character. The optional phenotype table name. If NULL (default), the function will attempt to find the table based on the `pvarname`.
-#' @param expo_table_name Character. The optional exposure table name. If NULL (default), the function will attempt to find the table based on the `evarname`.
-#'
-#' @return A list containing the merged table, the exposure table, the phenotype table, and the series name.
-#' @examples
-#' \dontrun{
-#' conn <- connect_pewas_data(...)
-#' tables <- get_tables("LBXGLU", "LBXGTC", "C", conn, "L10AM_C", "L45VIT_C")
-#' }
-#' @export
-get_tables <- function(pvarname, evarname, seriesName, con, pheno_table_name=NULL, expo_table_name=NULL) {
-  variables <- dplyr::tbl(con, "variable_names_epcf")
-  table_names <- dplyr::tbl(con, "table_names_epcf")
-  series_begin_year <- seriesBeginYearMap(seriesName)
-  demo_table_name <- table_names |> dplyr::filter(series == seriesName & component == 'DEMO') |> dplyr::collect()
-  demo <- dplyr::tbl(con, demo_table_name$Data.File.Name)
-  ## get table for the phenotype
-  logger::log_info("Getting tables for {pvarname} ~ {evarname}")
-
-  p_table <- tibble::tibble()
-  if(!is.null(pheno_table_name)) {
-    #p_table_name <- p_table_name |> filter(Data.File.Name == pheno_table_name)
-    p_table <- tbl(con, pheno_table_name)
-  } else{
-    p_table_name <- variables |> dplyr::filter(Variable.Name == pvarname & Begin.Year == series_begin_year) |> dplyr::collect()
-    pheno_table_name <- p_table_name$Data.File.Name
-    p_table <- dplyr::tbl(con, pheno_table_name)
-  }
-
-  logger::log_info("Pheno table {pheno_table_name} has {p_table |> count() |> pull(n) } rows")
-  ## get table for exposure
-  e_table <- tibble::tibble()
-  if(!is.null(expo_table_name)) {
-    e_table <- dplyr::tbl(con, expo_table_name)
-  } else {
-    e_table_name <- variables |> dplyr::filter(Variable.Name == evarname & Begin.Year == series_begin_year) |> dplyr::collect()
-    expo_table_name <- e_table_name$Data.File.Name
-    e_table <- dplyr::tbl(con, expo_table_name)
-  }
-
-  if(expo_table_name == pheno_table_name) {
-    p_table <- p_table |> dplyr::select(SEQN, pvarname)
-  }
-
-  etable_nr <- e_table |> dplyr::count() |> dplyr::pull(n)
-  logger::log_info("Exposure table {expo_table_name} has {etable_nr} rows")
-  small_tab <- demo |> dplyr::inner_join(p_table, by="SEQN") |> dplyr::inner_join(e_table, by="SEQN") |> dplyr::collect()
-  logger::log_info("Merged table has {small_tab |> count() |> pull(n) } rows")
-  return(list(merged_tab=small_tab, e_table=e_table, p_table=p_table, series=seriesName))
-}
-
-
-#' Retrieve and merge demographic, exposure, and phenotype tables from a database
-#'
-#' @param con The database connection.
-#' @param pheno_table_name Character. The phenotype table name.
-#' @param expo_table_name Character. The exposure table name.
-#'
-#' @return A list containing the merged table, the exposure table, the phenotype table, and the series name.
-#' @examples
-#' \dontrun{
-#' conn <- connect_pewas_data()
-#' results <- get_expo_pheno_tables(conn, pheno_table_name="L10AM_C", expo_table_name="L45VIT_C")
-#' }
-#' @export
-get_expo_pheno_tables <- function(con, pheno_table_name, expo_table_name) {
-  table_names <- dplyr::tbl(con, "table_names_epcf")
-  seriesName <- table_names |> dplyr::filter(Data.File.Name == pheno_table_name) |> dplyr::pull(series)
-  logger::log_info("Series of phenotype is { seriesName } ")
-  demo_table_name <- table_names |> dplyr::filter(component == 'DEMO', series==seriesName) |> dplyr::collect() |> dplyr::pull(Data.File.Name)
-  logger::log_info("Demographics table is { demo_table_name } ")
-  demo <- dplyr::tbl(con, demo_table_name)
-  e_table <- dplyr::tbl(con, expo_table_name)
-  e_table_nrow <- e_table |> collect() |> nrow()
-  logger::log_info("Exposure table {expo_table_name} has { e_table_nrow } rows")
-  p_table <- dplyr::tbl(con, pheno_table_name)
-  if(pheno_table_name == expo_table_name) { # hack to preserve data structure
-    p_table <- p_table |> dplyr::select(SEQN)
-  }
-  p_table_nrow <- p_table |> collect() |> nrow()
-  logger::log_info("Pheno table {pheno_table_name} has {p_table_nrow } rows")
-  small_tab <- demo |> dplyr::inner_join(p_table, by="SEQN") |> dplyr::inner_join(e_table, by="SEQN") |> dplyr::collect()
-  small_tab_nrow <- small_tab |> collect() |> nrow()
-  logger::log_info("Merged table has { small_tab_nrow } rows")
-  return(list(merged_tab=small_tab, e_table=e_table, p_table=p_table, series=seriesName))
-}
-
-
-#' Retrieve and merge demographic, and any two tables from the nhanes database
-#'
-#' @param con The database connection.
-#' @param table_name1 Character. table name 1.
-#' @param table_name2 Character. table name 2
-#'
-#' @return A list containing the merged table, the table 1, the table 2, and the series name.
-#' @examples
-#' \dontrun{
-#' conn <- connect_pewas_data()
-#' results <- get_expo_pheno_tables(conn, pheno_table_name="L10AM_C", expo_table_name="L45VIT_C")
-#' }
-#' @export
-get_x_y_tables <- function(con, table_name1, table_name2) { ##
-  table_names <- dplyr::tbl(con, "table_names_epcf")
-  seriesName <- table_names |> dplyr::filter(Data.File.Name == table_name1) |> dplyr::pull(series)
-  logger::log_info("Series is { seriesName } ")
-  demo_table_name <- table_names |> dplyr::filter(component == 'DEMO', series==seriesName) |> dplyr::collect() |> dplyr::pull(Data.File.Name)
-  logger::log_info("Demographics table is { demo_table_name } ")
-  demo <- dplyr::tbl(con, demo_table_name)
-  table1 <- dplyr::tbl(con, table_name1)
-  table1_nrow <- table1 |> collect() |> nrow()
-  logger::log_info("Table 1 {table_name1} has { table1_nrow } rows")
-  table2 <- dplyr::tbl(con, table_name2)
-  if(table_name1 == table_name2) { # preserve the cols
-    table2 <- table1 |> dplyr::select(SEQN)
-  }
-  table2_nrow <- table2 |> collect() |> nrow()
-  logger::log_info("Table 2 {table_name2} has {table2_nrow } rows")
-  small_tab <- demo |> dplyr::inner_join(table1, by="SEQN") |> dplyr::inner_join(table2, by="SEQN") |> dplyr::collect()
-  small_tab_nrow <- small_tab |> collect() |> nrow()
-  logger::log_info("Merged table has { small_tab_nrow } rows")
-  return(list(merged_tab=small_tab, table1=table1, table2=table2, series=seriesName))
-}
-
-#' Retrieve and merge demographic, multi-variable exposure, and phenotype tables from a database
-#'
-#' This function retrieves and merges tables from a database based on provided table names. Specifically, it merges demographic, multiple exposure variables and phenotype tables. The function logs the series of the phenotype, the name of the demographics table, the number of rows in each exposure and phenotype table, and finally the number of rows in the merged table.
-#'
-#' @param con The database connection.
-#' @param pheno_table_name Character. The name of the phenotype table.
-#' @param expo_table_names Character vector. The names of the exposure tables.
-#'
-#' @return A list containing the merged table, the final exposure table after joining all exposure tables, the phenotype table, and the series name.
-#' @examples
-#' \dontrun{
-#' conn <- connect_pewas_data()
-#' results <- get_mv_expo_pheno_tables(conn, "L10AM_C", c("L45VIT_C", "L06COT_C"))
-#' }
-get_mv_expo_pheno_tables <- function(con, pheno_table_name, expo_table_names) {
-  table_names <- dplyr::tbl(con, "table_names_epcf")
-  seriesName <- table_names |> dplyr::filter(Data.File.Name == pheno_table_name) |> dplyr::pull(series)
-  logger::log_info("Series of phenotype is { seriesName } ")
-  demo_table_name <- table_names |> dplyr::filter(component == 'DEMO', series==seriesName) |> dplyr::collect() |> dplyr::pull(Data.File.Name)
-  logger::log_info("Demographics table is { demo_table_name } ")
-  demo <- dplyr::tbl(con, demo_table_name) |> dplyr::collect()
-
-  e_table <- NULL
-  for(ii in 1:length(expo_table_names)) {
-    e_table_lcl <- dplyr::tbl(con, expo_table_names[ii]) |> dplyr::collect()
-    logger::log_info("Exposure table {expo_table_names[ii]} has {e_table_lcl |> count() |> pull(n) } rows")
-    if(ii == 1) {
-      e_table <- e_table_lcl
-      next;
-    }
-    prev_colnames <- colnames(e_table)
-    cols_to_keep <- c(setdiff(colnames(e_table_lcl), prev_colnames), "SEQN")
-    e_table <- e_table |> dplyr::inner_join(e_table_lcl |> dplyr::select(tidyselect::all_of(cols_to_keep)), by="SEQN")
-  }
-
-  #log_info("New exposure table has {e_table |> collect() |> count() |> pull(n) } rows")
-
-  p_table <- dplyr::tbl(con, pheno_table_name) |> dplyr::collect()
-
-  logger::log_info("Pheno table {pheno_table_name} has {p_table |> count() |> pull(n) } rows")
-  small_tab <- demo |> dplyr::inner_join(p_table, by="SEQN") |> dplyr::inner_join(e_table, by="SEQN")
-  logger::log_info("Merged table has { small_tab |> count() |> pull(n) } rows")
-
-  return(list(merged_tab=small_tab, e_table=e_table, p_table=p_table, series=seriesName))
-}
-
-
-
-#' Identify the appropriate weight column from the exposure and phenotype tables
-#'
-#' This function identifies the appropriate weight column from the exposure (e_table) and phenotype (p_table) tables, contained within the list object produced by the `get_tables()` function. The weight column is determined based on the following criteria:
-#' 1. If a column named "WTDRD1" exists, it is selected.
-#' 2. If not, and a column ending in "2YR" exists, that is selected.
-#' 3. If neither of the above conditions are met, the first weight column is selected.
-#' If there is no weight column in either table, a default weight column ("WTMEC2YR") is used.
-#' Once the weight column is identified, a new column "wt" is added to the merged table (merged_tab), which is equivalent to the weight column.
-#'
-#' @param get_tables_obj A list object produced by the `get_tables()` function. Contains the exposure table (e_table), phenotype table (p_table), merged table (merged_tab), and series name.
-#' @return The input list object with an additional column "wt" in the merged table (merged_tab) corresponding to the identified weight column.
-#' @examples
-#' \dontrun{
-#' conn <- connect_pewas_data()
-#' get_tables_results <- get_tables("LBXGLU", "LBXGTC", "C", conn, "L10AM_C", "L45VIT_C")
-#' weighted_tables <- figure_out_weight(get_tables_results)
-#' }
-#' @export
-figure_out_weight <- function(get_tables_obj) {
-  ##  need to select weights that are not the bootstrap weights
-  weight_name_demo <- 'WTMEC2YR'
-  e_table <- get_tables_obj$e_table
-  p_table <- get_tables_obj$p_table
-
-  weight_name_e <- colnames(e_table)[grep("^WT", colnames(e_table))]
-  weight_name_p <- colnames(p_table)[grep("^WT", colnames(p_table))]
-
-  ## filter here for a single weight
-  ## if e_weight is empty, move on
-  ## if e_weight  has dietary weight (wtdrd1), select that (vs. the 2 day weight)
-  ## else if e_weight has 2yr weight select that
-  ## else select the first weight
-
-  if(length(weight_name_e) > 1) {
-    if('WTDRD1' %in% weight_name_e) { ## dietary variable
-      weight_name_e <- 'WTDRD1'
-    } else if(any(grepl('2YR$', weight_name_e))) {
-      weight_name_e <- weight_name_e[grep('2YR$', weight_name_e)]
-    } else {
-      weight_name_e <- weight_name_e[1]
-    }
-  }
-
-  if(length(weight_name_p) > 1) {
-    if('WTDRD1' %in% weight_name_p) {
-      weight_name_p <- 'WTDRD1'
-    } else if(any(grepl('2YR$', weight_name_p))) {
-      weight_name_p <- weight_name_p[grep('2YR$', weight_name_p)]
-    } else {
-      weight_name_p <- weight_name_p[1]
-    }
-  }
-
-  logger::log_info("p weight name: { weight_name_p }")
-  logger::log_info("e weight name: { weight_name_e }")
-  etable_nrows <- e_table |> dplyr::count() |> pull(n)
-  ptable_nrows <- p_table |> dplyr::count() |> pull(n)
-
-  if(rlang::is_empty(weight_name_e) & rlang::is_empty(weight_name_p)) {
-    logger::log_info("no weights in e or p table")
-    weight_name <- weight_name_demo
-  } else if(!rlang::is_empty(weight_name_e) & !rlang::is_empty(weight_name_p)) {
-    logger::log_info("weights in both e and p table")
-
-    if(etable_nrows < ptable_nrows) {
-      weight_name <-  weight_name_e
-    } else {
-      weight_name <-  weight_name_p
-    }
-
-    if(weight_name_e == weight_name_p) {
-      weight_name <- sprintf('%s.y', weight_name)
-    }
-
-  } else if(!rlang::is_empty(weight_name_p)) {
-    logger::log_info("weight in p table")
-    weight_name <- weight_name_p
-  } else if (!rlang::is_empty(weight_name_e)) {
-    logger::log_info("weight in e table")
-    weight_name <- weight_name_e
-  } else {
-    weight_name <- weight_name_demo
-  }
-  logger::log_info("final weight name: { weight_name }")
-  get_tables_obj$merged_tab <- get_tables_obj$merged_tab |> dplyr::mutate(wt = !!as.name(weight_name))
-  get_tables_obj
-}
-
-
 
 log10_xform_variable <- function(x) {
   # are there zeros?
@@ -376,6 +28,8 @@ create_svydesign <- function(data) {
   options(survey.lonely.psu="adjust")
   survey::svydesign(ids=~SDMVPSU, strata=~SDMVSTRA, weights=~wt, nest=T, data=data)
 }
+
+
 
 addToBase <- function(base_formula, adjustingVariables) {
   form <- base_formula
@@ -545,7 +199,8 @@ name_and_xform_pheno <- function(pheno, table_object, logxform_p=T) {
 }
 
 
-
+#' P-E association by a single survey
+#'
 #' Execute an association between a P and E variable
 #' This function performs a series of operations including fetching tables,
 #' applying weight adjustments, performing log transformations, creating survey designs,
@@ -578,7 +233,7 @@ name_and_xform_pheno <- function(pheno, table_object, logxform_p=T) {
 #'
 #' @export
 
-pe <- function(pheno, exposure, adjustment_variables, series, con,
+pe_by_survey_series <- function(pheno, exposure, adjustment_variables, series, con,
                logxform_p=T, logxform_e=T, scale_e=T, scale_p=F,
                pheno_table_name=NULL, expo_table_name=NULL,
                quantile_expo=NULL, exposure_levels=NULL) {
@@ -606,6 +261,101 @@ pe <- function(pheno, exposure, adjustment_variables, series, con,
   demo_break_tbl <- demographic_breakdown(dsn)
   ## return mods
   list(dsn=dsn, unweighted_n=n, phenotype=pheno, exposure=exposure, series=series, unadjusted_model=unadjusted_mod, adjusted_model=adjusted_mod, base_mod=base_mod, demo_breakdown=demo_break_tbl)
+}
+
+
+pe <- function(pheno, exposure, adjustment_variables,con, series=NULL,
+               logxform_p=T, logxform_e=T, scale_e=T, scale_p=F,
+               pheno_table_name=NULL, expo_table_name=NULL,
+               quantile_expo=NULL, exposure_levels=NULL) {
+  ## adjustment_variables has to be in the demo table
+  if(is.null(series) & length(series) == 1) {
+    return(pe_by_survey_series(pheno,exposure, adjustment_variables, con, series, logxform_p, logxform_e, scale_e, scale_p, pheno_table_name, expo_table_name, quantile_expo, exposure_levels))
+  }
+  ## get tables
+  ptables <- get_table_names_for_varname(con, varname = pheno, series) |> rename(p_name = Data.File.Name)
+  etables <- get_table_names_for_varname(con, varname = exposure, series) |> rename(e_name = Data.File.Name)
+  table_set <- ptables |> inner_join(etables, by = "Begin.Year")
+  if(nrow(table_set) == 0) {
+    stop("Y and X variables not collected in the same survey")
+  }
+
+  ## get table names for each series
+  tab_obj <- get_x_y_tables_as_list(con,table_set$p_name,table_set$e_name)
+
+  ## weight
+  tab_obj <- figure_out_multiyear_weight(tab_obj)
+  ## then merge tables
+
+  ## do logxforms and rename variables "expo" and "pheno"
+  tab_obj <- name_and_xform_pheno_expo(pheno, exposure, tab_obj, logxform_p, logxform_e)
+  ## create svydesign
+  dat <- tab_obj$merged_tab |> dplyr::filter(!is.na(wt), wt > 0, !is.na(expo), !is.na(pheno), dplyr::if_all(tidyselect::all_of(adjustment_variables), ~!is.na(.)))
+  dsn <- create_svydesign(dat)
+  ## run models
+  baseformula <- stats::as.formula("pheno ~ expo")
+  baseadjusted <- addToBase(baseformula, adjustingVariables = adjustment_variables)
+  basebase <- stats::as.formula(sprintf("pheno ~ %s", paste(adjustment_variables, collapse="+")))
+  ##
+  unadjusted_mod <- run_model(baseformula, dsn, scale_expo = scale_e, scale_pheno = scale_p,  quantile_expo=quantile_expo, expo_levels =  exposure_levels)
+  adjusted_mod <- run_model(baseadjusted, dsn, scale_expo = scale_e, scale_pheno = scale_p, quantile_expo=quantile_expo, expo_levels = exposure_levels)
+  base_mod <- run_model(basebase, dsn, scale_expo = scale_e, scale_pheno = scale_p, quantile_expo=quantile_expo, expo_levels = exposure_levels)
+  n <- dsn |> nrow()
+  ## demographic breakdown
+  demo_break_tbl <- demographic_breakdown(dsn)
+  ## return mods
+  list(dsn=dsn, unweighted_n=n, phenotype=pheno, exposure=exposure, series=series, unadjusted_model=unadjusted_mod, adjusted_model=adjusted_mod, base_mod=base_mod, demo_breakdown=demo_break_tbl)
+}
+
+##
+pe_flex_adjust <- function(pheno, exposure, adjustment_variables,con, series=NULL,
+                           logxform_p=T, logxform_e=T, scale_e=T, scale_p=F,
+                           pheno_table_name=NULL, expo_table_name=NULL,
+                           quantile_expo=NULL, exposure_levels=NULL) {
+
+  ptables <- get_table_names_for_varname(con, varname = pheno, series) |> rename(p_name = Data.File.Name)
+  etables <- get_table_names_for_varname(con, varname = exposure, series) |> rename(e_name = Data.File.Name)
+  table_set <- ptables |> inner_join(etables, by = "Begin.Year")
+  if(nrow(table_set) == 0) {
+    stop("Y and X variables not collected in the same survey")
+  }
+
+  ## get table names for each series
+  tab_obj <- get_x_y_tables_as_list(con,table_set$p_name,table_set$e_name)
+
+  ## weight
+  tab_obj <- figure_out_multiyear_weight(tab_obj)
+
+  tab_obj <- name_and_xform_pheno_expo(pheno, exposure, tab_obj, logxform_p, logxform_e)
+
+  potential_adjusters <- setdiff(unique(adjustment_variables$variables), NA)
+  dat <- tab_obj$merged_tab |> dplyr::filter(!is.na(wt), wt > 0, !is.na(expo), !is.na(pheno), dplyr::if_all(tidyselect::all_of(potential_adjusters), ~!is.na(.)))
+  dsn <- create_svydesign(dat)
+  demo_break_tbl <- demographic_breakdown(dsn)
+
+  ## run models
+  baseformula <- stats::as.formula("pheno ~ expo")
+  basebase <- stats::as.formula("pheno ~ 1")
+  uniq_model_scenarios <- unique(adjustment_variables$scenario)
+  models <- vector(mode="list", length=length(uniq_model_scenarios))
+  base_models <- vector(mode="list", length=length(uniq_model_scenarios))
+  logger::log_info("total models { length(uniq_model_scenarios)} " )
+  for(mod_num in 1:length(uniq_model_scenarios)) {
+    scene <- uniq_model_scenarios[mod_num]
+    logger::log_info("running model {scene}" )
+    adjust_variables_for_scene <- adjustment_variables |> filter(scenario==scene) |> dplyr::pull(variables)
+    baseadjusted <- NA
+    if(length(adjust_variables_for_scene) == 1 & is.na(adjust_variables_for_scene[1])) {
+      baseadjusted <- baseformula
+    } else {
+      baseadjusted <- addToBase(baseformula, adjust_variables_for_scene)
+      basebaseadjusted <- addToBase(basebase, adjust_variables_for_scene)
+      base_models[[mod_num]] <- run_model(basebaseadjusted,dsn, scale_expo = scale_e, scale_pheno = scale_p,  quantile_expo=quantile_expo, expo_levels =  exposure_levels)
+    }
+    models[[mod_num]] <- run_model(baseadjusted,dsn, scale_expo = scale_e, scale_pheno = scale_p,  quantile_expo=quantile_expo, expo_levels =  exposure_levels)
+  }
+  n <- dsn |> nrow()
+  list(log_p = logxform_p, log_e = logxform_e, scaled_p = scale_p, scaled_e=scale_e, unweighted_n=n, phenotype=pheno, series=tab_obj$series, exposure=exposure, models=models, base_models=base_models, adjustment_variables=adjustment_variables, demographic_breakdown=demo_break_tbl)
 }
 
 
@@ -641,9 +391,9 @@ pe <- function(pheno, exposure, adjustment_variables, series, con,
 #' @export
 
 pe_by_table <- function(tab_obj, pvar, evar,
-                  adjustment_variables,
-                  logxform_p=T, logxform_e=T, scale_e=T, scale_p=F,
-                  quantile_expo=NULL, exposure_levels=NULL) {
+                        adjustment_variables,
+                        logxform_p=T, logxform_e=T, scale_e=T, scale_p=F,
+                        quantile_expo=NULL, exposure_levels=NULL) {
   pheno <- pvar
   exposure <- evar
   tab_obj <- name_and_xform_pheno_expo(pheno, exposure, tab_obj, logxform_p, logxform_e)
@@ -694,9 +444,9 @@ pe_by_table <- function(tab_obj, pvar, evar,
 #'
 #' @export
 pe_by_table_flex_adjust <- function(tab_obj, pvar, evar,
-                        adjustment_variables, ## tibble, indexed by scenario and list of adjustment variables
-                        logxform_p=F, logxform_e=T, scale_e=T, scale_p=T,
-                        quantile_expo=NULL, exposure_levels=NULL) {
+                                    adjustment_variables, ## tibble, indexed by scenario and list of adjustment variables
+                                    logxform_p=F, logxform_e=T, scale_e=T, scale_p=T,
+                                    quantile_expo=NULL, exposure_levels=NULL) {
 
   pheno <- pvar
   exposure <- evar
@@ -745,9 +495,16 @@ pe_by_table_flex_adjust <- function(tab_obj, pvar, evar,
 #' @return A tibble containing the mean for each demographic variable in the survey design object.
 #' @export
 demographic_breakdown <- function(svy_dsn) {
-  ## for a merged table, provide the summary of the demovars3
+  ## for a merged table, provide the summary of the demovars
+  demographic_variables <- function() {
+    varnames <- c("RIDAGEYR", "RIAGENDR", "INDFMPIR", "ETHNICITY_MEXICAN",
+                  "ETHNICITY_OTHERHISPANIC", "ETHNICITY_OTHER",
+                  "ETHNICITY_NONHISPANICBLACK", "ETHNICITY_NONHISPANICWHITE",
+                  "EDUCATION_LESS9", "EDUCATION_9_11", "EDUCATION_HSGRAD",
+                  "EDUCATION_AA", "EDUCATION_COLLEGEGRAD")
+  }
 
-  varnames <- adjustment_variables()
+  varnames <- demographic_variables()
   # Check for presence of variables
   dataset_vars <- names(svy_dsn$variables)
   missing_vars <- setdiff(varnames, dataset_vars)
@@ -762,6 +519,7 @@ demographic_breakdown <- function(svy_dsn) {
   ret <- mn_obj |> tibble::as_tibble() |> dplyr::mutate(varname=varnames)
   ret
 }
+
 
 
 
@@ -829,5 +587,6 @@ xy_by_table_flex_adjust <- function(tab_obj, yvar, xvar,
   n <- dsn |> nrow()
   list(log_y = logxform_y, log_x = logxform_x, scaled_y = scale_y, scaled_x=scale_x, unweighted_n=n, yvar=yvar, series=tab_obj$series, xvar=xvar, models=models, base_models=base_models, adjustment_variables=adjustment_variables, demographic_breakdown=demo_break_tbl)
 }
+
 
 
