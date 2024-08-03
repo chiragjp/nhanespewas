@@ -170,4 +170,5 @@ jack <- pe_flex_adjust("BMXBMI", "LBXBCD", adjustment_models, con, scale_p=T)
 toc()
 
 jack <- pe_flex_adjust("BMXBMI", "LBXBCD", adjustment_models, con, scale_p=T)
+jack2 <- pe_flex_adjust("LBXCRP", "LBXGTC", adjustment_models, con, scale_p=T)
 ```

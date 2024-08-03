@@ -7,7 +7,7 @@
 demographic_breakdown(svy_dsn)
 }
 \arguments{
-\item{svy_dsn}{A survey design object dervied from the nhanes_pewas::get_*_tables() functions}
+\item{svy_dsn}{A survey design object derived from the nhanespewas::get_*_tables() functions}
 }
 \value{
 A tibble containing the mean for each demographic variable in the survey design object.

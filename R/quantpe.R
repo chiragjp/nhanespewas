@@ -232,7 +232,6 @@ name_and_xform_pheno <- function(pheno, table_object, logxform_p=T) {
 #' }
 #'
 #' @export
-
 pe_by_survey_series <- function(pheno, exposure, adjustment_variables, series, con,
                logxform_p=T, logxform_e=T, scale_e=T, scale_p=F,
                pheno_table_name=NULL, expo_table_name=NULL,
@@ -264,6 +263,55 @@ pe_by_survey_series <- function(pheno, exposure, adjustment_variables, series, c
 }
 
 
+#' Phenotype and Exposure Analysis
+#'
+#' This function performs analysis of phenotype and exposure with adjustment variables. It handles the retrieval of necessary data, weighting, and running of models, and provides a demographic breakdown.
+#'
+#' @param pheno A character string specifying the phenotype variable.
+#' @param exposure A character string specifying the exposure variable.
+#' @param adjustment_variables A character vector of adjustment variables that must be present in the demographic table.
+#' @param con A database connection object.
+#' @param series A character vector specifying the series to consider (default is NULL).
+#' @param logxform_p Logical, whether to log-transform the phenotype variable (default is TRUE).
+#' @param logxform_e Logical, whether to log-transform the exposure variable (default is TRUE).
+#' @param scale_e Logical, whether to scale the exposure variable (default is TRUE).
+#' @param scale_p Logical, whether to scale the phenotype variable (default is FALSE).
+#' @param pheno_table_name Optional character string specifying the phenotype table name (default is NULL).
+#' @param expo_table_name Optional character string specifying the exposure table name (default is NULL).
+#' @param quantile_expo Optional vector specifying quantiles for the exposure variable (default is NULL).
+#' @param exposure_levels Optional vector specifying levels for the exposure variable (default is NULL).
+#' @return A list containing the following elements:
+#' \itemize{
+#'   \item `dsn`: The survey design object.
+#'   \item `unweighted_n`: The number of unweighted observations.
+#'   \item `phenotype`: The phenotype variable.
+#'   \item `exposure`: The exposure variable.
+#'   \item `series`: The series information.
+#'   \item `unadjusted_model`: The unadjusted model.
+#'   \item `adjusted_model`: The adjusted model.
+#'   \item `base_mod`: The base model adjusted for the adjustment variables.
+#'   \item `demo_breakdown`: A table with demographic breakdown of the survey design.
+#' }
+#' @details
+#' The function performs the following steps:
+#' \itemize{
+#'   \item If a single series is provided, calls `pe_by_survey_series` for analysis.
+#'   \item Retrieves table names for the phenotype and exposure variables.
+#'   \item Ensures the phenotype and exposure variables are collected in the same survey.
+#'   \item Gets table names for each series and binds the tables.
+#'   \item Handles weights by calling `figure_out_multiyear_weight`.
+#'   \item Transforms and names the phenotype and exposure variables if specified.
+#'   \item Filters data and creates a survey design object.
+#'   \item Performs demographic breakdown of the survey design.
+#'   \item Runs unadjusted, adjusted, and base models for the analysis.
+#' }
+#' @examples
+#' \dontrun{
+#' con <- DBI::dbConnect(RSQLite::SQLite(), dbname = "nhanes.db")
+#' adjustment_vars <- c("AGE", "SEX")
+#' result <- pe(pheno = "BMI", exposure = "SMOKING", adjustment_variables = adjustment_vars, con = con)
+#' }
+#' @export
 pe <- function(pheno, exposure, adjustment_variables,con, series=NULL,
                logxform_p=T, logxform_e=T, scale_e=T, scale_p=F,
                pheno_table_name=NULL, expo_table_name=NULL,
@@ -307,7 +355,59 @@ pe <- function(pheno, exposure, adjustment_variables,con, series=NULL,
   list(dsn=dsn, unweighted_n=n, phenotype=pheno, exposure=exposure, series=series, unadjusted_model=unadjusted_mod, adjusted_model=adjusted_mod, base_mod=base_mod, demo_breakdown=demo_break_tbl)
 }
 
-##
+
+
+#' Phenotype and Exposure Analysis under different modeling scenarios
+#'
+#' This function performs flexible adjustment for phenotype and exposure analysis using specified adjustment variables. It retrieves necessary data, handles weighting, and runs models based on the specified scenarios.
+#'
+#' @param pheno A character string specifying the phenotype variable.
+#' @param exposure A character string specifying the exposure variable.
+#' @param adjustment_variables A data frame containing adjustment variables and scenarios. It should have columns `variables` and `scenario`.
+#' @param con A database connection object.
+#' @param series A character vector specifying the series to consider (default is NULL).
+#' @param logxform_p Logical, whether to log-transform the phenotype variable (default is TRUE).
+#' @param logxform_e Logical, whether to log-transform the exposure variable (default is TRUE).
+#' @param scale_e Logical, whether to scale the exposure variable (default is TRUE).
+#' @param scale_p Logical, whether to scale the phenotype variable (default is FALSE).
+#' @param pheno_table_name Optional character string specifying the phenotype table name (default is NULL).
+#' @param expo_table_name Optional character string specifying the exposure table name (default is NULL).
+#' @param quantile_expo Optional vector specifying quantiles for the exposure variable (default is NULL).
+#' @param exposure_levels Optional vector specifying levels for the exposure variable (default is NULL).
+#' @return A list containing the following elements:
+#' \itemize{
+#'   \item `log_p`: Logical, whether the phenotype was log-transformed.
+#'   \item `log_e`: Logical, whether the exposure was log-transformed.
+#'   \item `scaled_p`: Logical, whether the phenotype was scaled.
+#'   \item `scaled_e`: Logical, whether the exposure was scaled.
+#'   \item `unweighted_n`: The number of unweighted observations.
+#'   \item `phenotype`: The phenotype variable.
+#'   \item `series`: The series information from the data.
+#'   \item `exposure`: The exposure variable.
+#'   \item `models`: A list of models run based on the scenarios.
+#'   \item `base_models`: A list of base models run for comparison.
+#'   \item `adjustment_variables`: The adjustment variables used in the models, a tibble: see adjustment_models
+#'   \item `demographic_breakdown`: A table with demographic breakdown of the survey design.
+#' }
+#' @details
+#' The function performs the following steps:
+#' \itemize{
+#'   \item Retrieves table names for the phenotype and exposure variables.
+#'   \item Ensures the phenotype and exposure variables are collected in the same survey.
+#'   \item Gets table names for each series and binds the tables.
+#'   \item Handles weights by calling `figure_out_multiyear_weight`.
+#'   \item Transforms and names the phenotype and exposure variables if specified.
+#'   \item Filters data and creates a survey design object.
+#'   \item Performs demographic breakdown of the survey design.
+#'   \item Runs models based on the specified scenarios and adjustment variables.
+#' }
+#' @examples
+#' \dontrun{
+#' con <- DBI::dbConnect(RSQLite::SQLite(), dbname = "nhanes.db")
+#' adjustment_vars <- data.frame(variables = c("AGE", "SEX"), scenario = c("A", "A"))
+#' result <- pe_flex_adjust(pheno = "BMXBMI", exposure = "LBXCOT", adjustment_variables = adjustment_vars, con = con)
+#' }
+#' @export
 pe_flex_adjust <- function(pheno, exposure, adjustment_variables,con, series=NULL,
                            logxform_p=T, logxform_e=T, scale_e=T, scale_p=F,
                            pheno_table_name=NULL, expo_table_name=NULL,
@@ -319,6 +419,7 @@ pe_flex_adjust <- function(pheno, exposure, adjustment_variables,con, series=NUL
   if(nrow(table_set) == 0) {
     stop("Y and X variables not collected in the same survey")
   }
+
 
   ## get table names for each series
   tab_obj <- get_x_y_tables_as_list(con,table_set$p_name,table_set$e_name)
