@@ -6,7 +6,7 @@ library(getopt)
 library(tidyverse)
 library(logger)
 devtools::load_all("..")
-
+#Error in check_e_data_type(rw$evarname) : object 'elvl' not found
 TEST <- F
 spec <- matrix(c(
   'phenotype', 'p', 1, "character",
@@ -51,7 +51,7 @@ check_e_data_type <- function(varname) {
   ret <- list(vartype="continuous", varlevels=NULL)
 
   if(grepl('CNT$', varname)) {
-    return(list(vartype="continuous-rank", varlevels=elvl))
+    return(list(vartype="continuous-rank", varlevels=NULL))
   }
 
   if(grepl("^PAQ", varname)) {
