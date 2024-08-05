@@ -1,11 +1,10 @@
 # Chirag
 # August 2024
-# exwas
+# exwas.R: perform ExWAS for a phenotype
 
 library(getopt)
 library(tidyverse)
 library(logger)
-#source('db_paths.R')
 devtools::load_all("..")
 
 TEST <- F
@@ -27,6 +26,8 @@ ss_file <- '../select/sample_size_pe_category_060623.csv'
 path_to_db <-   '../db/nhanes_012324.sqlite' # '../nhanes_122322.sqlite'
 path_out <- '.'
 
+
+
 if(!TEST) {
   phenotype <- opt$phenotype
   ss_file <- opt$sample_size_pairs_list_file
@@ -44,8 +45,6 @@ to_do <- to_do |> filter(num_surveys >=2, total_n >= sample_size_threshold)
 pe_safely <- safely(nhanespewas::pe_flex_adjust)
 tidied <- vector("list", length = nrow(to_do))
 glanced <- vector("list", length = nrow(to_do))
-
-print(to_do)
 
 
 check_e_data_type <- function(varname) {
@@ -96,7 +95,9 @@ adjustment_scenario_for_variable <- function(evarname, pvarname) {
 
 
 log_info("Process ID: {Sys.getpid()}")
-log_info("num pairs: {nrow(to_do)}")
+log_info("Number of Exposures: {nrow(to_do)}")
+
+
 
 if(nrow(to_do) == 0) {
   done <- dbDisconnect(con)
