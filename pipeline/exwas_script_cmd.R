@@ -21,7 +21,7 @@ for(ii in 1:nrow(to_do)) {
   rcmd <- sprintf("Rscript %s -p %s -l %s -i %s -o %s", file.path(cmd_path) , pvar, ss_file, path_to_nhanes, path_out)
   
   if(use_sbatch) {
-    cat(sprintf("sbatch --exclude=compute-f-17-[09-16] -o %s%s.out -p short -t 10:59:00 -c 1 --mem=10G --wrap=\"%s\"\n", file.path(path_out), pvar, rcmd),
+    cat(sprintf("sbatch --exclude=compute-f-17-[09-16] -o %s/%s.out -p short -t 10:59:00 -c 1 --mem=10G --wrap=\"%s\"\n", file.path(path_out), pvar, rcmd),
         file=main_out, append = T)
   } else {
     cat(sprintf("%s\n", rcmd), file=main_out, append = T)
