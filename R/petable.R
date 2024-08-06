@@ -198,7 +198,7 @@ get_table_names_for_varname <- function(con, varname, series=NULL) {
         if(!(tab_name %in% dbListTables(con))) {
           next;
         }
-        nrows <- tbl(con, tab_name) |> filter(!is.na(varname)) |> collect() |> nrow()
+        nrows <- tbl(con, tab_name) |> filter(!is.na(varname)) |> tally() |> pull(n)
         logger::log_info("Number of rows in { tab_name }: { nrows } ")
         nrow_per_table[[i]] <- tibble(Data.File.Name=tab_name, nrows_in_table=nrows)
       }
