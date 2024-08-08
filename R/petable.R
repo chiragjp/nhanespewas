@@ -202,7 +202,8 @@ get_table_names_for_varname <- function(con, varname, series=NULL) {
         logger::log_info("Number of rows in { tab_name }: { nrows } ")
         nrow_per_table[[i]] <- tibble(Data.File.Name=tab_name, nrows_in_table=nrows)
       }
-      table_names[[table_name_row]] <- nrow_per_table |> dplyr::bind_rows() |> filter(nrows_in_table == max(nrows_in_table)) |> select(Data.File.Name) |> mutate(Begin.Year = yr)
+      table_names[[table_name_row]] <- nrow_per_table |> dplyr::bind_rows() |> filter(nrows_in_table == max(nrows_in_table)) |>
+        slice_head() |> select(Data.File.Name) |> mutate(Begin.Year = yr)
     }
   }
   return(table_names |> dplyr::bind_rows())

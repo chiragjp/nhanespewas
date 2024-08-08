@@ -5,6 +5,7 @@
 library(getopt)
 library(tidyverse)
 library(logger)
+library(tools)
 devtools::load_all("..")
 #Error in check_e_data_type(rw$evarname) : object 'elvl' not found
 TEST <- F
@@ -12,7 +13,8 @@ spec <- matrix(c(
   'phenotype', 'p', 1, "character",
   'sample_size_pairs_list_file', 'l', 1, "character", # file that lists the sample sizes for each pair
   'path_to_db', 'i', 1, "character",
-  'path_out', 'o', 1, "character"
+  'path_out', 'o', 1, "character",
+  'exposures', 'e', 2, "character"
 ), byrow=TRUE, ncol=4);
 opt <- getopt(spec)
 
@@ -26,8 +28,6 @@ ss_file <- '../select/sample_size_pe_category_060623.csv'
 path_to_db <-   '../db/nhanes_012324.sqlite' # '../nhanes_122322.sqlite'
 path_out <- '.'
 
-
-
 if(!TEST) {
   phenotype <- opt$phenotype
   ss_file <- opt$sample_size_pairs_list_file
@@ -40,14 +40,21 @@ if(!TEST) {
 
 
 con <- DBI::dbConnect(RSQLite::SQLite(), dbname=path_to_db)
+
 to_do <- read_csv(ss_file) |> filter(pvarname == phenotype) |> group_by(evarname) |> summarize(total_n=sum(n), num_surveys = n()) |> mutate(pvarname = phenotype)
 to_do <- to_do |> filter(num_surveys >=2, total_n >= sample_size_threshold)
+
+if(!is.null(opt$exposures)) {
+  exposures <- read_csv(opt$exposures, col_names=F)
+  to_do <- to_do |> inner_join(exposures |> rename(evarname=X1), by="evarname")
+}
+
 pe_safely <- safely(nhanespewas::pe_flex_adjust)
 tidied <- vector("list", length = nrow(to_do))
 glanced <- vector("list", length = nrow(to_do))
 
 
-check_e_data_type <- function(varname) {
+check_e_data_type <- function(varname, con) {
   ret <- list(vartype="continuous", varlevels=NULL)
 
   if(grepl('CNT$', varname)) {
@@ -58,9 +65,9 @@ check_e_data_type <- function(varname) {
     return(list(vartype="continuous", varlevels=NULL))
   }
 
-  elvl <- tbl(con, 'e_variable_levels') |>  filter(Variable.Name == varname, !is.na(values)) |> pull(values)
+  elvl <- tbl(con, 'e_variable_levels') |>  filter(Variable.Name == varname, !is.na(values)) |> pull(values) |> unique()
 
-  if(sum(elvl == 0) >= 1) {
+  if(length(elvl) == 1) {
     return(list(vartype="continuous", varlevels=NULL))
   } else if(any(elvl < 1 & elvl > 0) | any(round(elvl) != elvl)) {
     return(list(vartype="continuous-rank", varlevels=sort(elvl)))
@@ -97,8 +104,6 @@ adjustment_scenario_for_variable <- function(evarname, pvarname) {
 log_info("Process ID: {Sys.getpid()}")
 log_info("Number of Exposures: {nrow(to_do)}")
 
-
-
 if(nrow(to_do) == 0) {
   done <- dbDisconnect(con)
   log_info("0 pairs, quitting")
@@ -116,7 +121,7 @@ for(ii in 1:N) {
 
   ## how to transform the phenotype and the exposure - log the phenotype
 
-  e_levels <- check_e_data_type(rw$evarname)
+  e_levels <- check_e_data_type(rw$evarname, con)
   adjustment_model_for_e <- adjustment_scenario_for_variable(rw$evarname, rw$pvarname)
   #print(adjustment_model_for_e)
   log_info("{ii} e_levels { e_levels$vartype } ")
@@ -288,7 +293,15 @@ if(TEST) {
 done <- dbDisconnect(con)
 
 log_info("Done with ExWAS for { phenotype }")
-outfile_name <- sprintf('%s.rds', phenotype)
+
+outfile_name <- NULL
+if(is.null(opt$exposures)) {
+  outfile_name <- sprintf('%s.rds', phenotype)
+} else {
+  exp_name <- file_path_sans_ext(basename(opt$exposures))
+  outfile_name <- sprintf('%s_%s.rds', phenotype, exp_name)
+}
+
 
 saveRDS(outstruct, file=file.path(path_out, outfile_name))
 
