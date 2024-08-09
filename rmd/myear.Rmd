@@ -28,12 +28,12 @@ devtools::load_all("..")
 
 ```{r connect}
 con <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/nhanes_012324.sqlite')
+country <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/nhanes_012324.sqlite')
 varnames <- dplyr::tbl(con, "variable_names_epcf") |> collect()
 
 ```
 
 ```{r testing code}
-con <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/nhanes_012324.sqlite')
 ## get LBXBEC tables
 varnames <- dplyr::tbl(con, "variable_names_epcf") |> collect()
 varnames |> filter(Variable.Name == 'LBXBEC') |> select(Data.File.Name)
@@ -169,6 +169,8 @@ tic()
 jack <- pe_flex_adjust("BMXBMI", "LBXBCD", adjustment_models, con, scale_p=T)
 toc()
 
-jack <- pe_flex_adjust("BMXBMI", "LBXBCD", adjustment_models, con, scale_p=T)
-jack2 <- pe_flex_adjust("LBXCRP", "LBXGTC", adjustment_models, con, scale_p=T)
+jack <- pe_flex_adjust("BMXBMI", "LBXBCD", adjustment_models, country, scale_p=T)
+test <- pe_flex_adjust("URXUCL", "URXUCR", adjustment_models, country, scale_p=T, scale_e=F, exposure_levels = c(1,2))
+#jack2 <- pe_flex_adjust("LBXCRP", "LBXGTC", adjustment_models, con, scale_p=T)
+## pick a table if tied
 ```

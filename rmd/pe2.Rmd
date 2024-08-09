@@ -34,17 +34,17 @@ library(IHW)
 con <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/pe_summary_stats_02_2024-v2.sqlite')
 varnames <- tbl(con, "variable_names_epcf")
 adjusted_meta <- tbl(con, "adjusted_meta")
-#mvr2 <- tbl(con, 'mvr2') |> mutate(mv = mve_rsq-base_rsq)
 mvr2 <- read_rds('../pe_summary_060623/mvr2.rds') |> mutate(mv = mve_rsq-base_rsq)
-pe <- tbl(con, "pe")
+pe <- tbl(con, "pe") ## individual surveys
 pe_r2 <- tbl(con, "rsq")
 glanced <- tbl(con, "glanced")
 glanced <- glanced |> left_join(pe_r2 |> select(exposure, phenotype, series, model_number,aggregate_base_model, rsq, adj.r2), by=c("exposure", "phenotype", "model_number", "aggregate_base_model", "series"))
 variable_domain <- tbl(con, "variable_domain")
 adjusted_meta_uwls <- tbl(con, "adjusted_meta_uwls")
-
+pe_overall <- tbl(con, "pe_overall")
+r2_overall <- tbl(con, "rsq_overall")
+glanced_overall <- tbl(con, "glanced_overall")
 adjusted_meta <- adjusted_meta |> left_join(adjusted_meta_uwls |> rename(term_name=expo_name),  by = c("term_name", "evarname", "pvarname","model_number"))
-
 
 ```
 
@@ -73,11 +73,26 @@ e_variable_domain <- variable_domain |> filter(epcf == 'e') |> collect() |> grou
 
 adjusted_meta_full <- adjusted_meta_full |> left_join(p_variable_domain, by=c("pvarname"="Variable.Name"))
 adjusted_meta_full <- adjusted_meta_full |> left_join(e_variable_domain, by=c("evarname"="Variable.Name"))
-
 expos_wide <- expos_wide |> left_join(p_variable_domain, by=c("pvarname"="Variable.Name"))
 expos_wide <- expos_wide |> left_join(e_variable_domain, by=c("evarname"="Variable.Name"))
-
 mvr2 <- mvr2 |> collect() |> left_join(p_variable_domain, by=c("pvarname"="Variable.Name"))
+
+
+```
+
+```{r}
+## merge in with the overall data
+overall_model_2  <- pe_overall |> filter(model_number == 2, term == 'expo') |> collect() |> rename(evarname=exposure, pvarname=phenotype)
+adjusted_meta_full_2 <- adjusted_meta_full |> left_join(overall_model_2, by=c("evarname", "pvarname"))
+
+adjusted_meta_full_2 |> mutate(e_diff=estimate.x-estimate.y) |> ggplot(aes(e_diff)) + geom_histogram()
+
+#ggplot(adjusted_meta_full_2, aes(statistic.x, statistic.y)) + geom_point(alpha=.2)
+#ggplot(adjusted_meta_full_2 |> filter(p.value.x < 0.0001), aes(estimate.x, estimate.y)) + geom_point(alpha=.1) + geom_abline()
+
+
+adjusted_meta_full_2  |> filter(is.na(estimate.y)) |> select(evarname, pvarname, nobs, total_n) |> filter(nobs > 1)
+
 ```
 
 
