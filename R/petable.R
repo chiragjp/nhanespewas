@@ -360,17 +360,36 @@ get_x_y_tables_as_list <- function(con, table_list_1, table_list_2) {
   tab_obj_by_series
 }
 
+
+
+eliminate_conflicting_columns <- function(tables) {
+  all_names <- Reduce(union, lapply(tables, names))
+  conflicting_columns <- vector()
+
+  for (name in all_names) {
+    cols <- lapply(tables, function(df) df[[name]])
+    col_classes <- sapply(cols, class)
+
+    if (length(unique(col_classes)) > 1) {
+      conflicting_columns <- c(conflicting_columns, name)
+    }
+  }
+
+  tables <- lapply(tables, function(df) df[ , !(names(df) %in% conflicting_columns)])
+  return(tables)
+}
+
 rbind_x_y_tables <- function(tab_obj_by_series, keep_xy_tables=F) {
   list_of_tibbles <- function(nested_list, name) {
     new_list <- map(nested_list, function(x) {x[[name]] |> dplyr::collect() })
   }
   if(keep_xy_tables) {
-    tab_obj <- list(merged_tab=list_of_tibbles(tab_obj_by_series, "merged_tab") |> dplyr::bind_rows(),
-                    table1=list_of_tibbles(tab_obj_by_series, "table1") |> dplyr::bind_rows(),
-                    table2=list_of_tibbles(tab_obj_by_series, "table2") |> dplyr::bind_rows()
+    tab_obj <- list(merged_tab=list_of_tibbles(tab_obj_by_series, "merged_tab") |> eliminate_conflicting_columns() |> dplyr::bind_rows(),
+                    table1=list_of_tibbles(tab_obj_by_series, "table1") |> eliminate_conflicting_columns() |> dplyr::bind_rows(),
+                    table2=list_of_tibbles(tab_obj_by_series, "table2") |> eliminate_conflicting_columns() |>  dplyr::bind_rows()
     )
   } else {
-    tab_obj <- list(merged_tab=list_of_tibbles(tab_obj_by_series, "merged_tab") |> dplyr::bind_rows())
+    tab_obj <- list(merged_tab=list_of_tibbles(tab_obj_by_series, "merged_tab") |> eliminate_conflicting_columns() |> dplyr::bind_rows())
   }
   tab_obj$series <- map_chr(tab_obj_by_series, function(x) {x[["series"]]})
   tab_obj
@@ -524,7 +543,11 @@ figure_out_multiyear_weight <- function(get_tables_as_list_obj) {
         if(orig_weight_name == 'WTDRD1') {
           new_4yr_weight_name <- "WTDR4YR"
         }
-        get_tables_as_list_obj[[table_index]]$merged_tab <- get_tables_as_list_obj[[table_index]]$merged_tab |> dplyr::mutate(new_wt = ifelse(SDDSRVYR == 1 | SDDSRVYR == 2, !!sym(new_4yr_weight_name), wt))
+        if(orig_weight_name == 'WTSVOC2Y') {
+          new_4yr_weight_name <- "WTSVOC4Y"
+        }
+        get_tables_as_list_obj[[table_index]]$merged_tab <- get_tables_as_list_obj[[table_index]]$merged_tab |>
+          dplyr::mutate(new_wt = ifelse(SDDSRVYR == 1 | SDDSRVYR == 2, !!sym(new_4yr_weight_name), wt))
     }
     get_tables_obj <- rbind_x_y_tables(get_tables_as_list_obj)
     get_tables_obj$merged_tab <- get_tables_obj$merged_tab |> dplyr::mutate(orig_wt=wt) |> mutate(wt=new_wt) |> select(-new_wt) # save the old 2 year weight

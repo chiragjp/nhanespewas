@@ -7,7 +7,7 @@ library(tidyverse)
 library(logger)
 library(tools)
 devtools::load_all("..")
-#Error in check_e_data_type(rw$evarname) : object 'elvl' not found
+
 TEST <- F
 spec <- matrix(c(
   'phenotype', 'p', 1, "character",
@@ -22,7 +22,11 @@ sample_size_threshold <- 500
 
 
 ########### debug stuff
-phenotype <- "BMXBMI"
+#phenotype <- "BMXBMI"
+#phenotype <- "LBXP1"
+#exposure <- "DR1TACAR"
+phenotype <- "LBXGLU"
+exposure <- "LBXBEC"
 #ss_file <- './select/sample_size_pe.csv'  #opt$sample_size_pairs_list_file
 ss_file <- '../select/sample_size_pe_category_060623.csv'
 path_to_db <-   '../db/nhanes_012324.sqlite' # '../nhanes_122322.sqlite'
@@ -37,12 +41,13 @@ if(!TEST) {
 
 ############### end DEBUG
 
-
-
 con <- DBI::dbConnect(RSQLite::SQLite(), dbname=path_to_db)
-
 to_do <- read_csv(ss_file) |> filter(pvarname == phenotype) |> group_by(evarname) |> summarize(total_n=sum(n), num_surveys = n()) |> mutate(pvarname = phenotype)
 to_do <- to_do |> filter(num_surveys >=2, total_n >= sample_size_threshold)
+
+if(TEST) {
+  to_do <- to_do |> filter(evarname == exposure)
+}
 
 if(!is.null(opt$exposures)) {
   exposures <- read_csv(opt$exposures, col_names=F)
@@ -114,7 +119,7 @@ if(nrow(to_do) == 0) {
 
 N <- nrow(to_do)
 models <- vector("list", length=N)
-if(TEST) { N = 3; }
+
 for(ii in 1:N) {
   rw <- to_do |> slice(ii)
   log_info("{ii} out of {nrow(to_do)}; expo: {rw$evarname}; pheno: {rw$pvarname} ")
@@ -134,7 +139,7 @@ for(ii in 1:N) {
     #               pheno_table_name=NULL, expo_table_name=NULL,
     #               quantile_expo=NULL, exposure_levels=NULL) {
     mod <- pe_safely(rw$pvarname, rw$evarname, adjustment_model_for_e, con,
-                     logxform_p=T, logxform_e=T, scale_e=T, scale_p=T,
+                     logxform_p=F, logxform_e=T, scale_e=T, scale_p=T,
                      quantile_expo=NULL, exposure_levels=NULL)
 
   } else if(e_levels$vartype == 'categorical') {

@@ -82,14 +82,13 @@ mvr2 <- mvr2 |> collect() |> left_join(p_variable_domain, by=c("pvarname"="Varia
 
 ```{r}
 ## merge in with the overall data
-overall_model_2  <- pe_overall |> filter(model_number == 2, term == 'expo') |> collect() |> rename(evarname=exposure, pvarname=phenotype)
-adjusted_meta_full_2 <- adjusted_meta_full |> left_join(overall_model_2, by=c("evarname", "pvarname"))
+overall_model_2  <- pe_overall |> filter(model_number == 2) |> collect() |> filter(grepl("expo", term)) |> rename(evarname=exposure, pvarname=phenotype, term_name=term) 
+adjusted_meta_full_2 <- adjusted_meta_full |> left_join(overall_model_2, by=c("evarname", "pvarname", "term_name"))
 
 adjusted_meta_full_2 |> mutate(e_diff=estimate.x-estimate.y) |> ggplot(aes(e_diff)) + geom_histogram()
 
 #ggplot(adjusted_meta_full_2, aes(statistic.x, statistic.y)) + geom_point(alpha=.2)
 #ggplot(adjusted_meta_full_2 |> filter(p.value.x < 0.0001), aes(estimate.x, estimate.y)) + geom_point(alpha=.1) + geom_abline()
-
 
 adjusted_meta_full_2  |> filter(is.na(estimate.y)) |> select(evarname, pvarname, nobs, total_n) |> filter(nobs > 1)
 

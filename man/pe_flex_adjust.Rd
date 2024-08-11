@@ -84,6 +84,6 @@ The function performs the following steps:
 \dontrun{
 con <- DBI::dbConnect(RSQLite::SQLite(), dbname = "nhanes.db")
 adjustment_vars <- data.frame(variables = c("AGE", "SEX"), scenario = c("A", "A"))
-result <- pe_flex_adjust(pheno = "BMI", exposure = "SMOKING", adjustment_variables = adjustment_vars, con = con)
+result <- pe_flex_adjust(pheno = "BMXBMI", exposure = "LBXCOT", adjustment_variables = adjustment_vars, con = con)
 }
 }
