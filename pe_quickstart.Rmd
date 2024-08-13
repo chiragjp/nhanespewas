@@ -1,0 +1,63 @@
+---
+title: "Quickstart: Associating a phenotype with an exposure"
+author: "Chirag Patel"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r start anew}
+if(exists("con")) {
+  dbDisconnect(con)
+  remove(list=ls())
+}
+
+```
+
+# Estimating an association between an exposure and phenotype across multiple years
+
+
+```{r}
+library(tidyverse)
+library(DBI)
+library(survey)
+library(tictoc)
+devtools::load_all(".")
+```
+
+```{r connect}
+con <- DBI::dbConnect(RSQLite::SQLite(), dbname='./db/nhanes_012324.sqlite')
+varnames <- dplyr::tbl(con, "variable_names_epcf") 
+```
+
+
+# C-Reactive Protein (P) and Cotinine (E)
+```{r serum cotinine and c-reactive protein}
+varnames |> filter(Variable.Name == 'LBXCOT')
+varnames |> filter(Variable.Name == 'LBXCRP')
+crp_cot <- pe_flex_adjust("LBXCRP", "LBXCOT", adjustment_models, con, scale_p=T)
+# print out the tidied summary stats for the fully adjusted model
+crp_cot$models[[2]]$tidied
+# R2 for the full adjusted model
+crp_cot$models[[2]]$r2
+# R2 for base model
+crp_cot$base_models[[2]]$r2
+# full-base
+crp_cot$models[[2]]$r2$rsq - crp_cot$base_models[[2]]$r2$rsq
+```
+
+
+# Urinary Creatinine and Urinary Chlamydia: positive and neagtive test
+```{r urinary creatinine}
+varnames |> filter(Variable.Name == 'URXUCL')
+ucr_ucl <- pe_flex_adjust("URXUCR", "URXUCL", adjustment_models, con, scale_p=T, scale_e=F, logxform_e = F, exposure_levels = c(1,2))
+ucr_ucl$models[[2]]$tidied
+```
+
+```{r disconnect}
+dbDisconnect(con)
+```

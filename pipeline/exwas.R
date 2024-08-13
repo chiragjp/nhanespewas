@@ -8,7 +8,7 @@ library(logger)
 library(tools)
 devtools::load_all("..")
 
-TEST <- F
+TEST <- T
 spec <- matrix(c(
   'phenotype', 'p', 1, "character",
   'sample_size_pairs_list_file', 'l', 1, "character", # file that lists the sample sizes for each pair
@@ -25,8 +25,8 @@ sample_size_threshold <- 500
 #phenotype <- "BMXBMI"
 #phenotype <- "LBXP1"
 #exposure <- "DR1TACAR"
-phenotype <- "LBXGLU"
-exposure <- "LBXBEC"
+phenotype <- "LBDSAPSI"
+exposure <- "LBDHD"
 #ss_file <- './select/sample_size_pe.csv'  #opt$sample_size_pairs_list_file
 ss_file <- '../select/sample_size_pe_category_060623.csv'
 path_to_db <-   '../db/nhanes_012324.sqlite' # '../nhanes_122322.sqlite'
@@ -59,51 +59,7 @@ tidied <- vector("list", length = nrow(to_do))
 glanced <- vector("list", length = nrow(to_do))
 
 
-check_e_data_type <- function(varname, con) {
-  ret <- list(vartype="continuous", varlevels=NULL)
 
-  if(grepl('CNT$', varname)) {
-    return(list(vartype="continuous-rank", varlevels=NULL))
-  }
-
-  if(grepl("^PAQ", varname)) {
-    return(list(vartype="continuous", varlevels=NULL))
-  }
-
-  elvl <- tbl(con, 'e_variable_levels') |>  filter(Variable.Name == varname, !is.na(values)) |> pull(values) |> unique()
-
-  if(length(elvl) == 1) {
-    return(list(vartype="continuous", varlevels=NULL))
-  } else if(any(elvl < 1 & elvl > 0) | any(round(elvl) != elvl)) {
-    return(list(vartype="continuous-rank", varlevels=sort(elvl)))
-  } else if(all(round(elvl) == elvl)) {
-    return(list(vartype="categorical", varlevels=sort(elvl)))
-  }
-  return(ret)
-}
-
-adjustment_scenario_for_variable <- function(evarname, pvarname) {
-  first_three <- substr(evarname, 1, 3)
-  first_two <- substr(evarname, 1, 2)
-  first_two_p <- substr(pvarname, 1, 2)
-  if(first_three == 'DRX') {
-    log_info("Adjusting by total calories")
-    return(adjustment_models_diet_x)
-  } else if(first_three == 'DR1') {
-    log_info("Adjusting by total calories")
-    return(adjustment_models_diet_1)
-  } else if(first_three == 'DR2') {
-    log_info("Adjusting by total calories")
-    return(adjustment_models_diet_2)
-  } else if(first_two == 'UR' & first_two_p != 'UR') {
-    log_info("Adjusting by creatinine")
-    return(adjustment_models_ucr)
-  }else {
-    log_info("Default adjustments")
-    return(adjustment_models)
-  }
-
-}
 
 
 log_info("Process ID: {Sys.getpid()}")
@@ -126,8 +82,8 @@ for(ii in 1:N) {
 
   ## how to transform the phenotype and the exposure - log the phenotype
 
-  e_levels <- check_e_data_type(rw$evarname, con)
-  adjustment_model_for_e <- adjustment_scenario_for_variable(rw$evarname, rw$pvarname)
+  e_levels <- nhanespewas::check_e_data_type(rw$evarname, con)
+  adjustment_model_for_e <- nhanespewas::adjustment_scenario_for_variable(rw$evarname, rw$pvarname)
   #print(adjustment_model_for_e)
   log_info("{ii} e_levels { e_levels$vartype } ")
   mod <- NULL

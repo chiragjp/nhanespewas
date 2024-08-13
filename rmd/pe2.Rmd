@@ -77,22 +77,21 @@ expos_wide <- expos_wide |> left_join(p_variable_domain, by=c("pvarname"="Variab
 expos_wide <- expos_wide |> left_join(e_variable_domain, by=c("evarname"="Variable.Name"))
 mvr2 <- mvr2 |> collect() |> left_join(p_variable_domain, by=c("pvarname"="Variable.Name"))
 
+pe_overall_full <- pe_overall |> filter(model_number == 2, term %like% "expo%") |> select(term, estimate, std.error, statistic, p.value, exposure, phenotype) |> 
+  rename(evarname = exposure, pvarname = phenotype, term_name=term) |> collect()
+
+adjusted_meta_full <- adjusted_meta_full |> left_join(pe_overall_full, by=c("term_name", "evarname", "pvarname"), suffix=c("", "_overall"))
+adjusted_meta_full <- adjusted_meta_full |> mutate(estimate_overall=ifelse(nobs == 1, estimate, estimate_overall), 
+                                                   p.value_overall=ifelse(nobs == 1, p.value, p.value_overall),
+                                                   std.error_overall=ifelse(nobs == 1, std.error, std.error_overall), 
+                                                   statistic_overall=ifelse(nobs == 1, statistic, statistic_overall), 
+                                                   )
 
 ```
 
-```{r}
-## merge in with the overall data
-overall_model_2  <- pe_overall |> filter(model_number == 2) |> collect() |> filter(grepl("expo", term)) |> rename(evarname=exposure, pvarname=phenotype, term_name=term) 
-adjusted_meta_full_2 <- adjusted_meta_full |> left_join(overall_model_2, by=c("evarname", "pvarname", "term_name"))
 
-adjusted_meta_full_2 |> mutate(e_diff=estimate.x-estimate.y) |> ggplot(aes(e_diff)) + geom_histogram()
 
-#ggplot(adjusted_meta_full_2, aes(statistic.x, statistic.y)) + geom_point(alpha=.2)
-#ggplot(adjusted_meta_full_2 |> filter(p.value.x < 0.0001), aes(estimate.x, estimate.y)) + geom_point(alpha=.1) + geom_abline()
 
-adjusted_meta_full_2  |> filter(is.na(estimate.y)) |> select(evarname, pvarname, nobs, total_n) |> filter(nobs > 1)
-
-```
 
 
 # Number of unique exposures and phenotypes
@@ -108,7 +107,6 @@ num_e * num_p
 # Number exposures and phenotypes and associations in X number of surveys
 
 ```{r}
-#adjusted_meta <- adjusted_meta |> unnest(glanced) |> unnest(tidied)
 n_obss <- sort(unique(adjusted_meta_full$nobs))
 
 num_tests <- map_df(n_obss, function(n) {
@@ -142,20 +140,37 @@ sample_size_per_pair <- expos_wide |> filter(term == 'expo' | term== 'expo1') |>
 
 # Summary of the summary stats
 
-```{r }
-adjusted_meta_2 <- adjusted_meta_2 |> ungroup() |>  mutate(pval_BY=p.adjust(p.value, method="BY"), pvalue_bonferroni=p.adjust(p.value, method="bonferroni"))
+```{r}
+
+adjusted_meta_2 <- adjusted_meta_2 |> ungroup() |>  mutate(pval_BY=p.adjust(p.value_overall, method="BY"), pvalue_bonferroni=p.adjust(p.value_overall, method="bonferroni"))
 adjusted_meta_2 <- adjusted_meta_2 |> mutate(sig_levels = case_when(
   pvalue_bonferroni < 0.05 ~ 'Bonf.<0.05',
   pval_BY < 0.05 ~ 'BY<0.05',
   TRUE ~ '> BY & Bonf.'
 ))
 
-#ihwTest <- ihw(p.value.uwls ~ nobs,  data = adjusted_meta_2, alpha = 0.05)
-#qvals <- qvalue(adjusted_meta_2$p.value.uwls)
-#plot(qvals)
-#adjusted_meta_2 <- adjusted_meta_2 |> mutate(pval_ihw = adj_pvalues(ihwTest))
-#adjusted_meta_2 <- adjusted_meta_2 |> mutate(qval = qvalue(p.value)$qvalues)
+adjusted_meta_2 <- adjusted_meta_2 |> filter(!is.na(estimate_overall), !is.na(p.value_overall))
 
+
+```
+
+```{r}
+
+## phenotype-specific correction
+adjusted_meta_2 <- adjusted_meta_2 |> group_by(pvarname) |> mutate(pval_BY_pheno=p.adjust(p.value_overall, method="BY")) |> ungroup()
+
+p <- ggplot(adjusted_meta_2, aes(-log10(pval_BY_pheno), -log10(pval_BY)))
+p <- p + geom_point()
+p
+
+# glu <- adjusted_meta_2 |> filter(pvarname == 'LBXGLU') |> mutate(pval_glu_test = p.adjust(p.value_overall, method="BY"))
+# 
+# p <- ggplot(glu, aes(-log10(pval_glu_test), -log10(pval_BY)))
+# p <- p + geom_point()
+# 
+# p <- ggplot(glu, aes(-log10(pval_glu_test), -log10(pval_BY_pheno)))
+# p <- p + geom_point()
+# p
 
 ```
 
@@ -163,12 +178,12 @@ adjusted_meta_2 <- adjusted_meta_2 |> mutate(sig_levels = case_when(
 
 
 bonf_thresh <- 0.05/nrow(adjusted_meta_2)
-quantile(adjusted_meta_2$p.value, probs=c(0.01, .05, .1, .2, .3, .4, .5, .6, .7, .8, .9, .95, .99), na.rm = T)
-quantile(adjusted_meta_2$estimate, probs=c(0.01, .05, .1, .2, .3, .4, .5, .6, .7, .8, .9, .95, .99), na.rm = T)
+quantile(adjusted_meta_2$p.value_overall, probs=c(0.01, .05, .1, .2, .3, .4, .5, .6, .7, .8, .9, .95, .99), na.rm = T)
+quantile(adjusted_meta_2$estimate_overall, probs=c(0.01, .05, .1, .2, .3, .4, .5, .6, .7, .8, .9, .95, .99), na.rm = T)
 sum(adjusted_meta_2$pvalue_bonferroni < 0.05)/nrow(adjusted_meta_2) 
 
 adjusted_meta_2 |> group_by(sig_levels) |> count()
-adjusted_meta_2 |> filter(sig_levels == 'BY<0.05') |> arrange(-p.value) |> head()
+adjusted_meta_2 |> filter(sig_levels == 'BY<0.05') |> arrange(p.value_overall) |> head()
 
 adjusted_meta_2 |> group_by(sig_levels) |> summarize(r2_25=quantile(mean_adjusted_base_r2_diff, probs=.25, na.rm = T),
                                                      r2_50=quantile(mean_adjusted_base_r2_diff, probs=.5, na.rm = T),
@@ -179,7 +194,7 @@ adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05') |> arrange(-mean_adjusted_
 
 
 ## qqplot
-pval_qq <- data.frame(observed = sort(adjusted_meta_2$p.value), expected = (1:nrow(adjusted_meta_2))/nrow(adjusted_meta_2))
+pval_qq <- data.frame(observed = sort(adjusted_meta_2$p.value_overall), expected = (1:nrow(adjusted_meta_2))/nrow(adjusted_meta_2))
 qq_p <- ggplot(pval_qq, aes(-log10(expected), -log10(observed)))
 qq_p <- qq_p + geom_point() + geom_abline()
 ##
@@ -198,12 +213,12 @@ p <- p + xlab("P-E association pvalue")
 p_hist <- p
 p_hist
 
-p <- ggplot(adjusted_meta_2, aes(p.value))
+p <- ggplot(adjusted_meta_2, aes(p.value_overall))
 p <- p + geom_density() + theme_bw() + facet_grid(~ecategory)
 p1 <- p + xlab("P-E association pvalue")
 
 
-p <- ggplot(adjusted_meta_2, aes(p.value))
+p <- ggplot(adjusted_meta_2, aes(p.value_overall))
 p <- p + geom_density() + theme_bw() + facet_grid(~pcategory)
 p2 <- p + xlab("P-E association pvalue")
 
@@ -464,8 +479,8 @@ p_group_summary
 
 
 ```{r volcano, fig.height=8, fig.width=8}
-adjusted_meta_2 <- adjusted_meta_2 |> mutate(p_cap = ifelse(p.value < 1e-30, 1e-30, p.value))
-p <- ggplot(adjusted_meta_2 |> filter(ecategory != 'autoantibody'), aes(estimate, -log10(p_cap)))
+adjusted_meta_2 <- adjusted_meta_2 |> mutate(p_cap = ifelse(p.value_overall < 1e-30, 1e-30, p.value_overall))
+p <- ggplot(adjusted_meta_2 |> filter(ecategory != 'autoantibody'), aes(estimate_overall, -log10(p_cap)))
 p <- p + geom_point(shape='.') + scale_x_continuous(limits=c(-1, 1))
 p <- p + facet_grid(ecategory ~ .) + scale_color_npg()
 p <- p + geom_hline(yintercept = -log10(.05/nrow(adjusted_meta_2)), color='lightblue')
@@ -473,14 +488,14 @@ p <- p + theme_minimal() + theme(legend.position = "none") +ylab('p.value') + xl
 p1 <- p
 
 ## uBiome only
-p <- ggplot(adjusted_meta_2 |> filter(pcategory == 'microbiome'), aes(estimate, -log10(p_cap)))
+p <- ggplot(adjusted_meta_2 |> filter(pcategory == 'microbiome'), aes(estimate_overall, -log10(p_cap)))
 p <- p + geom_point(shape='.') + scale_x_continuous(limits=c(-1, 1))
 p <- p + facet_grid(ecategory ~ .) + scale_color_npg()
 p <- p + geom_hline(yintercept = -log10(.05/nrow(adjusted_meta_2)), color='lightblue')
 p <- p + theme_minimal() + theme(legend.position = "none") +ylab('p.value') + xlab("estimate")
 
 
-p <- ggplot(adjusted_meta_2, aes(estimate, -log10(p_cap)))
+p <- ggplot(adjusted_meta_2, aes(estimate_overall, -log10(p_cap)))
 p <- p + geom_point(shape='.') + scale_x_continuous(limits=c(-1, 1))
 p <- p + facet_grid(pcategory ~ .) + scale_color_npg()
 p <- p + geom_hline(yintercept = -log10(.05/nrow(adjusted_meta_2)), color='lightblue')
@@ -489,7 +504,7 @@ p2 <-p
 
 plot_grid(p1, p2, ncol=2, labels=c("A", "B"))
 
-adjusted_meta_2 <- adjusted_meta_2 |> mutate(p_cap = ifelse(p.value < 1e-30, 1e-30, p.value))
+#adjusted_meta_2 <- adjusted_meta_2 |> mutate(p_cap = ifelse(p.value < 1e-30, 1e-30, p.value))
 p <- ggplot(adjusted_meta_2 |> filter(ecategory != 'autoantibody'), aes(mean_adjusted_base_r2_diff, -log10(p_cap)))
 p <- p + geom_point(shape='.') + scale_x_continuous(limits=c(0, .2))
 p <- p + facet_grid(ecategory ~ .) + scale_color_npg()

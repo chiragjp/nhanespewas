@@ -3,7 +3,28 @@
 ## pe.R --> consider renaming to pe.R
 ## machinery to associate phenotypes with a categorical or real-valued exposure
 
+check_e_data_type <- function(varname, con) {
+  ret <- list(vartype="continuous", varlevels=NULL)
 
+  if(grepl('CNT$', varname)) {
+    return(list(vartype="continuous-rank", varlevels=NULL))
+  }
+
+  if(grepl("^PAQ", varname)) {
+    return(list(vartype="continuous", varlevels=NULL))
+  }
+
+  elvl <- tbl(con, 'e_variable_levels') |>  filter(Variable.Name == varname, !is.na(values)) |> pull(values) |> unique()
+
+  if(length(elvl) == 1) {
+    return(list(vartype="continuous", varlevels=NULL))
+  } else if(any(elvl < 1 & elvl > 0) | any(round(elvl) != elvl)) {
+    return(list(vartype="continuous-rank", varlevels=sort(elvl)))
+  } else if(all(round(elvl) == elvl)) {
+    return(list(vartype="categorical", varlevels=sort(elvl)))
+  }
+  return(ret)
+}
 xysvydesign <- function(get_tables_obj) {
   create_svydesign(get_tables_obj$merged_tab)
 }
@@ -691,3 +712,25 @@ xy_by_table_flex_adjust <- function(tab_obj, yvar, xvar,
 
 
 
+check_e_data_type <- function(varname, con) {
+  ret <- list(vartype="continuous", varlevels=NULL)
+
+  if(grepl('CNT$', varname)) {
+    return(list(vartype="continuous-rank", varlevels=NULL))
+  }
+
+  if(grepl("^PAQ", varname)) {
+    return(list(vartype="continuous", varlevels=NULL))
+  }
+
+  elvl <- tbl(con, 'e_variable_levels') |>  filter(Variable.Name == varname, !is.na(values)) |> pull(values) |> unique()
+
+  if(length(elvl) == 1) {
+    return(list(vartype="continuous", varlevels=NULL))
+  } else if(any(elvl < 1 & elvl > 0) | any(round(elvl) != elvl)) {
+    return(list(vartype="continuous-rank", varlevels=sort(elvl)))
+  } else if(all(round(elvl) == elvl)) {
+    return(list(vartype="categorical", varlevels=sort(elvl)))
+  }
+  return(ret)
+}

@@ -561,12 +561,6 @@ figure_out_multiyear_weight <- function(get_tables_as_list_obj) {
 
 
 
-
-
-
-
-
-
 #' Retrieve and merge demographic, multi-variable exposure, and phenotype tables from a database
 #'
 #' This function retrieves and merges tables from a database based on provided table names. Specifically, it merges demographic, multiple exposure variables and phenotype tables. The function logs the series of the phenotype, the name of the demographics table, the number of rows in each exposure and phenotype table, and finally the number of rows in the merged table.
@@ -612,5 +606,52 @@ get_mv_expo_pheno_tables <- function(con, pheno_table_name, expo_table_names) {
 }
 
 
+#' Check Exposure Data Type
+#'
+#' This function checks the data type of a given exposure variable based on its name and associated levels stored in a database. It returns information about whether the variable is continuous, continuous-rank, or categorical.
+#'
+#' @param varname A character string specifying the name of the variable to be checked.
+#' @param con A database connection object used to query the database for variable levels.
+#' @return A list containing the following elements:
+#' \itemize{
+#'   \item `vartype`: A character string indicating the type of the variable. It can be one of `"continuous"`, `"continuous-rank"`, or `"categorical"`.
+#'   \item `varlevels`: A vector of variable levels if the variable is categorical or continuous-rank, otherwise `NULL`.
+#' }
+#' @details
+#' The function determines the variable type based on the following rules:
+#' \itemize{
+#'   \item If the variable name ends with `"CNT"`, it is treated as `"continuous-rank"`.
+#'   \item If the variable name starts with `"PAQ"`, it is treated as `"continuous"`.
+#'   \item If the variable has a single unique level, it is treated as `"continuous"`.
+#'   \item If the variable levels are non-integer values, it is treated as `"continuous-rank"`.
+#'   \item If the variable levels are all integer values, it is treated as `"categorical"`.
+#' }
+#' @examples
+#' \dontrun{
+#' con <- DBI::dbConnect(RSQLite::SQLite(), dbname = "exposome.db")
+#' result <- check_e_data_type("LBXCOT", con)
+#' print(result$vartype)
+#' }
+#' @export
+check_e_data_type <- function(varname, con) {
+  ret <- list(vartype="continuous", varlevels=NULL)
 
+  if(grepl('CNT$', varname)) {
+    return(list(vartype="continuous-rank", varlevels=NULL))
+  }
 
+  if(grepl("^PAQ", varname)) {
+    return(list(vartype="continuous", varlevels=NULL))
+  }
+
+  elvl <- tbl(con, 'e_variable_levels') |>  filter(Variable.Name == varname, !is.na(values)) |> pull(values) |> unique()
+
+  if(length(elvl) == 1) {
+    return(list(vartype="continuous", varlevels=NULL))
+  } else if(any(elvl < 1 & elvl > 0) | any(round(elvl) != elvl)) {
+    return(list(vartype="continuous-rank", varlevels=sort(elvl)))
+  } else if(all(round(elvl) == elvl)) {
+    return(list(vartype="categorical", varlevels=sort(elvl)))
+  }
+  return(ret)
+}
