@@ -19,7 +19,6 @@ Specifically, the atlas provides a comprehensive list of exposure-phenome associ
 ## nhanespewas: run your own P-E Associations
 
 
-
 ### Installation
 
 ```         
@@ -38,7 +37,7 @@ pedata_con <- connect_pewas_data()
 # conduct an association between c-reactive protein and cotinine
 ## -   See pe_quickstart.Rmd
 
-# crp_cot <- pe_flex_adjust("LBXCRP", "LBXCOT", adjustment_models, con, scale_p=T)
+crp_cot <- pe_flex_adjust("LBXCRP", "LBXCOT", adjustment_models, con, scale_p=T)
 # clean up
 disconnect_pewas_data(pedata_con)
 ```
