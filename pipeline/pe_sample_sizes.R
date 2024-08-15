@@ -1,7 +1,8 @@
 ## Get the sample sizes per correlation and survey year
 
+TEST <- F
 library(getopt)
-library(corrr)
+
 source('db_paths.R')
 library(DBI)
 library(tidyverse)
@@ -11,8 +12,6 @@ spec <- matrix(c(
 ), byrow=TRUE, ncol=4);
 opt <- getopt(spec)
 
-series <- opt$series
-
 con <- DBI::dbConnect(RSQLite::SQLite(), dbname=path_to_nhanes)
 e_variables <- read_csv('../select/select_expo_variables_3.csv')
 p_variables <- read_csv('../select/select_pheno_variables_3.csv')
@@ -21,41 +20,63 @@ p_variables <- read_csv('../select/select_pheno_variables_3.csv')
 
 variable_information_selected <- rbind(e_variables, p_variables)
 
-merged_table <- function(con, tab1, tab2) {
-  if(tab1 == tab2) {
-    return(tbl(con, tab1) |> collect())
-  }
-  tbl(con, tab1) |> inner_join(tbl(con,tab2), by = "SEQN") |> collect()
-}
 
 merged_table_dplyr <- function(con, tab1, tab2) {
+
+  df1 <- tbl(con, tab1)
+  df2 <- tbl(con, tab2)
+
+  suffix_df1 <- sprintf("_%s",tab1)
+  suffix_df2 <- sprintf("_%s",tab2)
+
+  df1_renamed <- df1 |> rename_with(~ paste0(., suffix_df1),.cols = -all_of("SEQN"))
+  df2_renamed <- df2 |> rename_with(~ paste0(., suffix_df2),.cols = -all_of("SEQN"))
+
   if(tab1 == tab2) {
-    return(tbl(con, tab1))
+    return(df1_renamed)
   }
-  tbl(con, tab1) |> inner_join(tbl(con,tab2), by = "SEQN")
-}
 
-sample_size_for_table <- function(m_table, evars, pvars) {
-  sample_size_pair <- m_table |> pair_n() |> as_cordf()
-  vars <- intersect(c(evars, pvars), colnames(m_table))
-  sample_size_pair <- sample_size_pair |> dice(all_of(vars)) |> stretch(na.rm=F) |> rename(n=r)
-  sample_size_pair <- sample_size_pair |> filter(x %in% evars, y %in% pvars) |> rename(evarname=x, pvarname=y)
-  sample_size_pair
+  result <- inner_join(df1_renamed, df2_renamed,by = "SEQN")
+
+  return(result)
+
 }
 
 
-sample_size_for_table_dplyr <- function(m_table, evars, pvars) {
+#merged_table <- function(con, tab1, tab2) {
+#  if(tab1 == tab2) {
+#    return(tbl(con, tab1) |> collect())
+#  }
+#  tbl(con, tab1) |> inner_join(tbl(con,tab2), by = "SEQN", suffix=c("_p", "_e")) |> collect()
+#}
+
+#sample_size_for_table <- function(m_table, evars, pvars) {
+# #library(corrr)
+#  sample_size_pair <- m_table |> pair_n() |> as_cordf()
+#  vars <- intersect(c(evars, pvars), colnames(m_table))
+#  sample_size_pair <- sample_size_pair |> dice(all_of(vars)) |> stretch(na.rm=F) |> rename(n=r)
+#  sample_size_pair <- sample_size_pair |> filter(x %in% evars, y %in% pvars) |> rename(evarname=x, pvarname=y)
+#  sample_size_pair
+#}
+
+
+sample_size_for_table_dplyr <- function(m_table, evars, pvars, eTable, pTable) {
   ## to complete
+  table_cols <- colnames(m_table)
   nn <- vector("list",length = length(evars)*length(pvars))
   i <- 1
   for(evari in 1:length(evars)) {
     for(pvari in 1:length(pvars)) {
-      #m_table |> select(pvars[pvari], evars[evari])
-      col1 <- pvars[pvari]
-      col2 <- evars[evari]
-      n <- m_table |> filter(!is.na(!!sym(col1)), !is.na(!!sym(col2))) |>
+      col1 <- sprintf("%s_%s", pvars[pvari], pTable)
+      col2 <- sprintf("%s_%s", evars[evari], eTable)
+
+      if (col1 %in% table_cols && col2 %in% table_cols) {
+        n <- m_table |> filter(!is.na(!!sym(col1)), !is.na(!!sym(col2))) |>
         summarize(nn = n()) |> pull(nn)
-      nn[[i]] <- tibble(pvarname=col1, evarname=col2, n=n)
+        nn[[i]] <- tibble(pvarname=pvars[pvari], evarname= evars[evari], n=n)
+      } else {
+        nn[[i]] <- tibble(pvarname=pvars[pvari], evarname= evars[evari], n=NA)
+      }
       i <- i + 1
     }
   }
@@ -63,21 +84,23 @@ sample_size_for_table_dplyr <- function(m_table, evars, pvars) {
   nn |> bind_rows()
 }
 
-sample_size_for_ep_tables <- function(con, eTable, pTable, variable_information) {
-log_info("Working on { eTable } x {pTable}")
- m_table <- merged_table(con, pTable, eTable)  |> collect()
- evars <- variable_information |> filter(Data.File.Name == eTable, epcf == 'e') |> select(Variable.Name) |> pull()
- pvars <- variable_information |> filter(Data.File.Name == pTable, epcf == 'p') |> select(Variable.Name) |> pull()
- sample_size_for_table(m_table, evars,pvars) |> mutate(e_table_name = eTable, p_table_name = pTable)
-}
+#sample_size_for_ep_tables <- function(con, eTable, pTable, variable_information) {
+#log_info("Working on { eTable } x { pTable }")
+# m_table <- merged_table(con, pTable, eTable)  |> collect()
+# evars <- variable_information |> filter(Data.File.Name == eTable, epcf == 'e') |> select(Variable.Name) |> pull()
+# pvars <- variable_information |> filter(Data.File.Name == pTable, epcf == 'p') |> select(Variable.Name) |> pull()
+
+# sample_size_for_table(m_table, evars,pvars) |> mutate(e_table_name = eTable, p_table_name = pTable)
+#}
 
 
 sample_size_for_ep_tables_dplyr <- function(con, eTable, pTable, variable_information) {
   log_info("Working on { eTable } x {pTable}")
-  m_table <- merged_table_dplyr(con, pTable, eTable)
+  m_table <- merged_table_dplyr(con, pTable, eTable) |> collect()
   evars <- variable_information |> filter(Data.File.Name == eTable, epcf == 'e') |> select(Variable.Name) |> pull()
   pvars <- variable_information |> filter(Data.File.Name == pTable, epcf == 'p') |> select(Variable.Name) |> pull()
-  sample_size_for_table_dplyr(m_table, evars,pvars) |> mutate(e_table_name = eTable, p_table_name = pTable)
+
+  sample_size_for_table_dplyr(m_table, evars,pvars, eTable, pTable) |> mutate(e_table_name = eTable, p_table_name = pTable)
 }
 
 ep_sample_sizes <- function(con, e_vars, p_vars) {
@@ -99,6 +122,15 @@ ep_sample_sizes <- function(con, e_vars, p_vars) {
 }
 
 
+if(TEST) {
+  samp_size <- ep_sample_sizes(con,
+                               e_variables |> filter(Data.File.Name == 'COT_J'),
+                               p_variables |> filter(Data.File.Name == 'CBC_J'))
+  samp_size |> write_csv(sprintf('sample_size_pe_category_test_0824.csv'))
+  q(save="no")
+}
+
+series <- opt$series
 log_info("Sample size for survey:")
 if(series == "A") {
   log_info("A")
