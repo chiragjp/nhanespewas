@@ -2,8 +2,7 @@
 
 TEST <- F
 library(getopt)
-
-source('db_paths.R')
+#source('db_paths.R')
 library(DBI)
 library(tidyverse)
 library(logger)
@@ -12,7 +11,7 @@ spec <- matrix(c(
 ), byrow=TRUE, ncol=4);
 opt <- getopt(spec)
 
-con <- DBI::dbConnect(RSQLite::SQLite(), dbname=path_to_nhanes)
+con <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/nhanes_012324.sqlite')
 e_variables <- read_csv('../select/select_expo_variables_3.csv')
 p_variables <- read_csv('../select/select_pheno_variables_3.csv')
 
