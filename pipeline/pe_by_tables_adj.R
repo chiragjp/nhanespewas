@@ -34,8 +34,12 @@ sample_size_threshold <- 500
 #exposure_table <- 'PAQ'
 #phenotype_table <- 'BMX_E'
 #exposure_table <- 'DS2TOT_E'
-phenotype_table <- 'BMX_D'
-exposure_table <- 'VITAEC_D'
+#phenotype_table <- 'BMX_D'
+#exposure_table <- 'VITAEC_D'
+
+phenotype_table <- "ALB_CR_F" # "ALB_CR_E"
+exposure_table <- "HPVSER_F" #HPVSER_E" #
+
 
 #ss_file <- './select/sample_size_pe.csv'  #opt$sample_size_pairs_list_file
 ss_file <- '../select/sample_size_pe_category_060623.csv'

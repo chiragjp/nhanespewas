@@ -5,7 +5,7 @@ output:
     df_print: paged
 ---
 
-## PE with flexible adjustments 
+## Architecture of Phenotype-Exposure Correlations
 
 ```{r start anew}
 if(exists("con")) {
@@ -30,7 +30,7 @@ library(IHW)
 
 
 
-```{r connect to db}
+```{r connect to db of summary stats}
 con <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/pe_summary_stats_02_2024-v2.sqlite')
 varnames <- tbl(con, "variable_names_epcf")
 adjusted_meta <- tbl(con, "adjusted_meta")
@@ -44,6 +44,7 @@ adjusted_meta_uwls <- tbl(con, "adjusted_meta_uwls")
 pe_overall <- tbl(con, "pe_overall")
 r2_overall <- tbl(con, "rsq_overall")
 glanced_overall <- tbl(con, "glanced_overall")
+glanced_overall <- glanced_overall |> left_join(r2_overall |> select(exposure, phenotype, model_number,aggregate_base_model, rsq, adj.r2), by=c("exposure", "phenotype", "model_number", "aggregate_base_model"))
 adjusted_meta <- adjusted_meta |> left_join(adjusted_meta_uwls |> rename(term_name=expo_name),  by = c("term_name", "evarname", "pvarname","model_number"))
 
 ```
@@ -53,20 +54,21 @@ adjusted_meta <- adjusted_meta |> left_join(adjusted_meta_uwls |> rename(term_na
 expos <- pe |> filter(term %like% 'expo%') |> rename(evarname=exposure, pvarname=phenotype)
 expos_wide <- expos |> pivot_wider(names_from = "model_number", values_from = c("estimate", "std.error", "statistic", "p.value")) 
 glanced_wide <- glanced |> select(-c(adj.r2, df.residual, null.deviance, df.null, deviance)) |> pivot_wider(names_from=c("model_number", "aggregate_base_model"), values_from = c("rsq", "nobs", "AIC", "BIC")) |>  rename(evarname=exposure, pvarname=phenotype)
-
 glanced_wide <- glanced_wide |> mutate(rsq_adjusted_base_diff=rsq_2_0-rsq_2_1, rsq_adjusted_diff = rsq_2_0-rsq_1_0) 
+glanced_overall_wide <- glanced_overall |> select(-c(adj.r2, df.residual, null.deviance, df.null, deviance)) |> pivot_wider(names_from=c("model_number", "aggregate_base_model"), values_from = c("rsq", "nobs", "AIC", "BIC")) |>  rename(evarname=exposure, pvarname=phenotype)
 
 expos_wide <- expos_wide |> left_join(glanced_wide |> select(-c(series, log_p, log_e, scaled_p, scaled_e)), by=c("evarname", "pvarname", "exposure_table_name", "phenotype_table_name"))
 expos_wide <- expos_wide |> left_join(varnames, by=c("evarname"="Variable.Name", "exposure_table_name"="Data.File.Name"))
 expos_wide <- expos_wide |> left_join(varnames |> select(Variable.Name, Data.File.Name, Variable.Description, Data.File.Description), 
                                       by=c("pvarname"="Variable.Name", "phenotype_table_name"="Data.File.Name"))
 
-
 expos_wide <- expos_wide |> collect() |> select(-Use.Constraints) |> rename(e_data_file_desc=Data.File.Description.x, p_data_file_desc=Data.File.Description.y,e_variable_description=Variable.Description.x, p_variable_description=Variable.Description.y)
 
-expos_wide_summary <- expos_wide |> filter(term == 'expo' | term == 'expo1' | term == 'expo2') |> group_by(evarname, pvarname) |> summarize(mean_adjusted_base_r2_diff = mean(rsq_adjusted_base_diff), mean_unadjusted_r2_diff=mean(rsq_adjusted_diff), total_n = sum(nobs_2_0)) |> ungroup()
+#expos_wide_summary <- expos_wide |> filter(term == 'expo' | term == 'expo1' | term == 'expo2') |> group_by(evarname, pvarname) |> summarize(mean_adjusted_base_r2_diff = mean(rsq_adjusted_base_diff), mean_unadjusted_r2_diff=mean(rsq_adjusted_diff), total_n = sum(nobs_2_0)) |> ungroup()
 
-adjusted_meta_full <- adjusted_meta |> filter(model_number == 2) |> collect() |> left_join(expos_wide_summary, by=c("evarname", "pvarname")) ## fully adjusted model
+glanced_summary <- glanced_overall_wide |> mutate(total_n = nobs_2_0, rsq_adjusted_base_diff = rsq_2_0-rsq_2_1, rsq_adjusted_diff=rsq_2_0-rsq_1_0) |> select(evarname, pvarname, rsq_adjusted_base_diff, rsq_adjusted_diff)
+
+adjusted_meta_full <- adjusted_meta |> filter(model_number == 2)  |> left_join(glanced_summary, by=c("evarname", "pvarname")) |> collect() ## fully adjusted model
 
 p_variable_domain <- variable_domain |> filter(epcf == 'p') |> collect() |> group_by(Variable.Name) |> summarise(pvardesc=first(Variable.Description),pcategory=first(category),psubcategory=first(subcategory))
 e_variable_domain <- variable_domain |> filter(epcf == 'e') |> collect() |> group_by(Variable.Name) |> summarise(evardesc=first(Variable.Description),ecategory=first(category),esubcategory=first(subcategory))
@@ -158,19 +160,6 @@ adjusted_meta_2 <- adjusted_meta_2 |> filter(!is.na(estimate_overall), !is.na(p.
 
 ## phenotype-specific correction
 adjusted_meta_2 <- adjusted_meta_2 |> group_by(pvarname) |> mutate(pval_BY_pheno=p.adjust(p.value_overall, method="BY")) |> ungroup()
-
-p <- ggplot(adjusted_meta_2, aes(-log10(pval_BY_pheno), -log10(pval_BY)))
-p <- p + geom_point()
-p
-
-# glu <- adjusted_meta_2 |> filter(pvarname == 'LBXGLU') |> mutate(pval_glu_test = p.adjust(p.value_overall, method="BY"))
-# 
-# p <- ggplot(glu, aes(-log10(pval_glu_test), -log10(pval_BY)))
-# p <- p + geom_point()
-# 
-# p <- ggplot(glu, aes(-log10(pval_glu_test), -log10(pval_BY_pheno)))
-# p <- p + geom_point()
-# p
 
 ```
 

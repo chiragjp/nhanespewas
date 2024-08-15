@@ -22,8 +22,8 @@ sample_size_threshold <- 500
 
 
 ########### debug stuff
-phenotype <- "LBXCRP"
-exposure <- "LBXCOT"
+phenotype <- "URXUMA"
+exposure <- "LBX06"
 #phenotype <- "LBXP1"
 #exposure <- "DR1TACAR"
 #phenotype <- "LBDSAPSI"
@@ -91,10 +91,6 @@ for(ii in 1:N) {
   if(e_levels$vartype == 'continuous') {
     log_info("{ii} continuous { rw$evarname } ")
     # pe
-    #pe <- function(pheno, exposure, adjustment_variables,con, series=NULL,
-    #               logxform_p=T, logxform_e=T, scale_e=T, scale_p=F,
-    #               pheno_table_name=NULL, expo_table_name=NULL,
-    #               quantile_expo=NULL, exposure_levels=NULL) {
     mod <- pe_safely(rw$pvarname, rw$evarname, adjustment_model_for_e, con,
                      logxform_p=F, logxform_e=T, scale_e=T, scale_p=T,
                      quantile_expo=NULL, exposure_levels=NULL)

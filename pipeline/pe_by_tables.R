@@ -20,7 +20,7 @@ opt <- getopt(spec)
 
 sample_size_threshold <- 500
 
-phenotype_table <- 'BPX'
+#phenotype_table <- 'BPX'
 #phenotype_table <- 'BMX_E'
 #phenotype_table <- 'BIOPRO_F'
 #exposure_table <- 'L02HBS'
@@ -29,9 +29,11 @@ phenotype_table <- 'BPX'
 #exposure_table <- 'VOCWB_F'
 #exposure_table <- 'PAQ_E'
 #exposure_table <- 'DS1TOT_E'
-exposure_table <- 'PAQ'
+#exposure_table <- 'PAQ'
 #phenotype_table <- 'BMX_E'
 #exposure_table <- 'DS2TOT_E'
+phenotype_table <- 'ALB_CR_E' # 'ALB_CR_F'
+exposure_table <- 'HPVSER_E' # 'HPVSER_F'
 
 
 #ss_file <- './select/sample_size_pe.csv'  #opt$sample_size_pairs_list_file

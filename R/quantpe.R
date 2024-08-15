@@ -284,7 +284,7 @@ pe_by_survey_series <- function(pheno, exposure, adjustment_variables, series, c
 }
 
 
-#' Phenotype and Exposure Analysis
+#' Phenotype and Exposure Association Across Surveys
 #'
 #' This function performs analysis of phenotype and exposure with adjustment variables. It handles the retrieval of necessary data, weighting, and running of models, and provides a demographic breakdown.
 #'
@@ -329,8 +329,8 @@ pe_by_survey_series <- function(pheno, exposure, adjustment_variables, series, c
 #' @examples
 #' \dontrun{
 #' con <- DBI::dbConnect(RSQLite::SQLite(), dbname = "nhanes.db")
-#' adjustment_vars <- c("AGE", "SEX")
-#' result <- pe(pheno = "BMI", exposure = "SMOKING", adjustment_variables = adjustment_vars, con = con)
+#' adjustment_vars <- c("RIDAGEYR", "RIAGENDR")
+#' result <- pe(pheno = "BMXBMI", exposure = "LBXCOT", adjustment_variables = adjustment_vars, con = con)
 #' }
 #' @export
 pe <- function(pheno, exposure, adjustment_variables,con, series=NULL,
