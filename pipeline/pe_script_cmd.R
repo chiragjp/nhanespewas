@@ -56,7 +56,7 @@ main_out <- file.path(path_scripts_out, "srun_me.sh")
 cat("",file=main_out)
 for(ii in 1:n_groups) {
   if(use_sbatch) {
-    cat(sprintf("sbatch --exclude=compute-f-17-[09-16] -o %i.out -p short -t 02:59:00 -c 1 --mem=2000 --wrap=\"./%i.sh\"\n", ii, ii), file=main_out, append = T)
+    cat(sprintf("sbatch --exclude=compute-f-17-[09-16] -o %i.out -p short -t 11:59:00 -c 1 --mem=2000 --wrap=\"./%i.sh\"\n", ii, ii), file=main_out, append = T)
   } else {
     cat(sprintf("./%i.sh\n", ii), file=main_out, append = T)
   }
