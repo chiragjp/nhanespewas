@@ -4,10 +4,11 @@
 library(getopt)
 library(tidyverse)
 library(logger)
-#source('db_paths.R')
 devtools::load_all("..")
 
-TEST <- T
+TEST <- F
+OUTPUT_PAIRWISE <- T
+
 spec <- matrix(c(
   'phenotype_table', 'p', 1, "character",
   'exposure_table', 'e', 1, "character",
@@ -164,9 +165,22 @@ for(ii in 1:N) {
                      quantile_expo=NULL, exposure_levels=NULL)
 
   }
-  models[[ii]] <- mod ## each iteration contains a pair, and a data struct of all the models
+
+  if(OUTPUT_PAIRWISE) {
+    outfile_name <- sprintf('%s_%s_%s-%s.rds', phenotype_table, exposure_table, rw$pvarname,rw$evarname)
+    saveRDS(mod, file=file.path(path_out, outfile_name))
+  } else {
+    models[[ii]] <- mod ## each iteration contains a pair, and a data struct of all the models
+  }
+
+
 }
 
+if(OUTPUT_PAIRWISE) {
+  dbDisconnect(con)
+  log_info("Done with PxE: { phenotype_table } x { exposure_table }")
+  quit(save="no")
+}
 
 tidied_result <- function(models, aggregate_base_model = F) {
   final_result <- map_dfr(models, ~ {
@@ -299,10 +313,10 @@ if(TEST) {
   outstruct <- list(pe_tidied=tidied,pe_glanced=glanced, rsq=rsq,
                     modls=models)
 } else {
-  outstruct <- list(pe_tidied=tidied,pe_glanced=glanced, rsq=rsq, modls=models)
+  outstruct <- list(pe_tidied=tidied,pe_glanced=glanced, rsq=rsq)
 }
 
-
+dbDisconnect(con)
 log_info("Done with PxE: { phenotype_table } x { exposure_table }")
 outfile_name <- sprintf('%s_%s.rds', phenotype_table, exposure_table)
 

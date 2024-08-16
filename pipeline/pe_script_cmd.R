@@ -12,9 +12,10 @@ n_groups <- 100
 #ss_file <- './select/sample_size_pe_category_041823.csv'  #opt$sample_size_pairs_list_file
 #ss_file <- './select/sample_size_pe_category_051323.csv'  #opt$sample_size_pairs_list_file
 #ss_file <- './select/sample_size_pe_category_telo_052823.csv'
-ss_file <- '../select/sample_size_pe_category_060623.csv'
+#ss_file <- '../select/sample_size_pe_category_060623.csv'
+#ss_file <- '../select/sample_size_pe_category_0824.csv'
 #ss_file <- './select/sample_size_alphape.csv'
-use_sbatch <- FALSE
+use_sbatch <- TRUE
 path_out <- '../out/'
 #cmd_path <- './pe_by_tables.R'
 cmd_path <- '../pipeline/pe_by_tables_adj.R'
