@@ -110,10 +110,9 @@ get_tables <- function(pvarname, evarname, seriesName, con, pheno_table_name=NUL
   p_table <- tibble::tibble()
   if(!is.null(pheno_table_name)) {
     #p_table_name <- p_table_name |> filter(Data.File.Name == pheno_table_name)
-    p_table <- tbl(con, pheno_table_name)
+    p_table <- dplyr::tbl(con, pheno_table_name)
   } else{
-    p_table_name <- variables |> dplyr::filter(Variable.Name == pvarname & Begin.Year == series_begin_year) |> dplyr::collect()
-    pheno_table_name <- p_table_name$Data.File.Name
+    pheno_table_name <- get_table_names_for_varname(con, pvarname, seriesName) |> pull(Data.File.Name)
     p_table <- dplyr::tbl(con, pheno_table_name)
   }
 
@@ -123,13 +122,17 @@ get_tables <- function(pvarname, evarname, seriesName, con, pheno_table_name=NUL
   if(!is.null(expo_table_name)) {
     e_table <- dplyr::tbl(con, expo_table_name)
   } else {
-    e_table_name <- variables |> dplyr::filter(Variable.Name == evarname & Begin.Year == series_begin_year) |> dplyr::collect()
-    expo_table_name <- e_table_name$Data.File.Name
+    expo_table_name <- get_table_names_for_varname(con, evarname, seriesName) |> pull(Data.File.Name)
     e_table <- dplyr::tbl(con, expo_table_name)
   }
 
   if(expo_table_name == pheno_table_name) {
     p_table <- p_table |> dplyr::select(SEQN, pvarname)
+  }
+
+  cols_both <- intersect(colnames(p_table), colnames(e_table)) |> setdiff(c("SEQN"))
+  if(length(cols_both) > 0) {
+    e_table <- e_table |> select(-all_of(cols_both))
   }
 
   etable_nr <- e_table |> dplyr::count() |> dplyr::pull(n)
@@ -138,6 +141,10 @@ get_tables <- function(pvarname, evarname, seriesName, con, pheno_table_name=NUL
   logger::log_info("Merged table has {small_tab |> count() |> pull(n) } rows")
   return(list(merged_tab=small_tab, e_table=e_table, p_table=p_table, series=seriesName))
 }
+
+
+
+
 
 #' Get Table Names for a Given Variable Name
 #'
@@ -190,7 +197,7 @@ get_table_names_for_varname <- function(con, varname, series=NULL) {
         filter(Begin.Year == yr) |>
         select(Data.File.Name, Begin.Year)
     } else {
-      # need to count the rows and get the table that has to the most data
+      # get the table that has to the most data
       potential_tables <- all_tables |> filter(Begin.Year == yr) |> pull(Data.File.Name)
       nrow_per_table <- vector(mode="list", length = length(potential_tables))
       for(i in 1:length(potential_tables)) {
@@ -239,6 +246,12 @@ get_expo_pheno_tables <- function(con, pheno_table_name, expo_table_name) {
   }
   p_table_nrow <- p_table |> collect() |> nrow()
   logger::log_info("Pheno table {pheno_table_name} has {p_table_nrow } rows")
+
+  cols_both <- intersect(colnames(p_table), colnames(e_table)) |> setdiff(c("SEQN"))
+  if(length(cols_both) > 0) {
+    e_table <- e_table |> select(-all_of(cols_both))
+  }
+
   small_tab <- demo |> dplyr::inner_join(p_table, by="SEQN") |> dplyr::inner_join(e_table, by="SEQN") |> dplyr::collect()
   small_tab_nrow <- small_tab |> collect() |> nrow()
   logger::log_info("Merged table has { small_tab_nrow } rows")

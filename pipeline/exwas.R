@@ -22,14 +22,17 @@ sample_size_threshold <- 500
 
 
 ########### debug stuff
-phenotype <- "URXUMA"
-exposure <- "LBX06"
+#phenotype <- "URXUMA"
+#exposure <- "LBX06"
+exposure <- "URXNAL"
+phenotype <- "URXUCR"
 #phenotype <- "LBXP1"
 #exposure <- "DR1TACAR"
 #phenotype <- "LBDSAPSI"
 #exposure <- "LBDHD"
 #ss_file <- './select/sample_size_pe.csv'  #opt$sample_size_pairs_list_file
-ss_file <- '../select/sample_size_pe_category_060623.csv'
+#ss_file <- '../select/sample_size_pe_category_060623.csv'
+ss_file <- '../select/sample_size_pe_category_0824.csv'
 path_to_db <-   '../db/nhanes_012324.sqlite' # '../nhanes_122322.sqlite'
 path_out <- '.'
 

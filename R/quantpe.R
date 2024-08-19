@@ -570,6 +570,7 @@ pe_by_table_flex_adjust <- function(tab_obj, pvar, evar,
                                     logxform_p=F, logxform_e=T, scale_e=T, scale_p=T,
                                     quantile_expo=NULL, exposure_levels=NULL) {
 
+  run_model_safely <- safely(run_model)
   pheno <- pvar
   exposure <- evar
   tab_obj <- name_and_xform_pheno_expo(pheno, exposure, tab_obj, logxform_p, logxform_e)
@@ -597,9 +598,10 @@ pe_by_table_flex_adjust <- function(tab_obj, pvar, evar,
     } else {
       baseadjusted <- addToBase(baseformula, adjust_variables_for_scene)
       basebaseadjusted <- addToBase(basebase, adjust_variables_for_scene)
-      base_models[[mod_num]] <- run_model(basebaseadjusted,dsn, scale_expo = scale_e, scale_pheno = scale_p,  quantile_expo=quantile_expo, expo_levels =  exposure_levels)
+      base_models[[mod_num]] <- run_model_safely(basebaseadjusted,dsn, scale_expo = scale_e, scale_pheno = scale_p,  quantile_expo=quantile_expo, expo_levels =  exposure_levels)
     }
-    models[[mod_num]] <- run_model(baseadjusted,dsn, scale_expo = scale_e, scale_pheno = scale_p,  quantile_expo=quantile_expo, expo_levels =  exposure_levels)
+
+    models[[mod_num]] <- run_model_safely(baseadjusted,dsn, scale_expo = scale_e, scale_pheno = scale_p,  quantile_expo=quantile_expo, expo_levels =  exposure_levels)
   }
   n <- dsn |> nrow()
   list(log_p = logxform_p, log_e = logxform_e, scaled_p = scale_p, scaled_e=scale_e, unweighted_n=n, phenotype=pheno, series=tab_obj$series, exposure=exposure, models=models, base_models=base_models, adjustment_variables=adjustment_variables, demographic_breakdown=demo_break_tbl)

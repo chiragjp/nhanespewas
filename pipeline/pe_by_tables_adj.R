@@ -7,7 +7,7 @@ library(logger)
 devtools::load_all("..")
 
 TEST <- F
-OUTPUT_PAIRWISE <- T
+OUTPUT_PAIRWISE <- F
 
 spec <- matrix(c(
   'phenotype_table', 'p', 1, "character",
@@ -37,13 +37,17 @@ sample_size_threshold <- 500
 #exposure_table <- 'DS2TOT_E'
 #phenotype_table <- 'BMX_D'
 #exposure_table <- 'VITAEC_D'
-
-phenotype_table <- "ALB_CR_F" # "ALB_CR_E"
-exposure_table <- "HPVSER_F" #HPVSER_E" #
+#phenotype_table <- 'CBC_H'
+#exposure_table <- 'COT_H'
+#phenotype_table <- 'FETIB_D'
+#exposure_table <- 'PFC_D'
+#phenotype_table <- "ALB_CR_F" # "ALB_CR_E"
+#exposure_table <- "HPVSER_F" #HPVSER_E" #
 
 
 #ss_file <- './select/sample_size_pe.csv'  #opt$sample_size_pairs_list_file
-ss_file <- '../select/sample_size_pe_category_060623.csv'
+#ss_file <- '../select/sample_size_pe_category_060623.csv'
+ss_file <- '../select/sample_size_pe_category_0824.csv'
 path_to_db <-   '../db/nhanes_012324.sqlite' # '../nhanes_122322.sqlite'
 path_out <- '.'
 
@@ -64,6 +68,8 @@ to_do <- read_csv(ss_file) |> filter(e_table_name == exposure_table, p_table_nam
 m_table <- get_expo_pheno_tables(con, phenotype_table, exposure_table) |> figure_out_weight()
 expo_levels <- tbl(con, 'e_variable_levels') |> filter(Data.File.Name == exposure_table) |> collect()
 pe_safely <- safely(nhanespewas::pe_by_table_flex_adjust)
+#pe_safely <- nhanespewas::pe_by_table_flex_adjust
+
 tidied <- vector("list", length = nrow(to_do))
 glanced <- vector("list", length = nrow(to_do))
 
@@ -133,6 +139,11 @@ if(nrow(to_do) == 0) {
 }
 
 
+if(OUTPUT_PAIRWISE) {
+  ## create a directory
+
+}
+
 N <- nrow(to_do)
 models <- vector("list", length=N)
 for(ii in 1:N) {
@@ -182,6 +193,9 @@ if(OUTPUT_PAIRWISE) {
   quit(save="no")
 }
 
+
+
+
 tidied_result <- function(models, aggregate_base_model = F) {
   final_result <- map_dfr(models, ~ {
     # Check for the presence of an error
@@ -195,10 +209,10 @@ tidied_result <- function(models, aggregate_base_model = F) {
       }
 
       map2_dfr(to_do, m_index, ~ { ## loops over all adjustment scenarios
-        if(is.null(.x)) {
+        if(is.null(.x$result)) {
           return(tibble())
         }
-        tidied_with_key <- mutate(.x$tidied,
+        tidied_with_key <- mutate(.x$result$tidied,
                                   model_number = .y,
                                   series = lcl$series,
                                   exposure = lcl$exposure,
@@ -233,10 +247,10 @@ glanced_result <-function(models, aggregate_base_model=F) {
       }
 
       map2_dfr(to_do, m_index, ~ { ## loops over all adjustment scenarios
-        if(is.null(.x)) {
+        if(is.null(.x$result)) {
           return(tibble())
         }
-        tidied_with_key <- mutate(.x$glanced,
+        tidied_with_key <- mutate(.x$result$glanced,
                                   model_number = .y,
                                   series = lcl$series,
                                   exposure = lcl$exposure,
@@ -270,10 +284,10 @@ r2_result <-function(models, aggregate_base_model=F) {
       }
 
       map2_dfr(to_do, m_index, ~ { ## loops over all adjustment scenarios
-        if(is.null(.x)) {
+        if(is.null(.x$result)) {
           return(tibble())
         }
-        tidied_with_key <- mutate(.x$r2 |> as_tibble(),
+        tidied_with_key <- mutate(.x$result$r2 |> as_tibble(),
                                   model_number = .y,
                                   series = lcl$series,
                                   exposure = lcl$exposure,
@@ -310,8 +324,8 @@ rsq <- rbind(
 
 outstruct <- NULL
 if(TEST) {
-  outstruct <- list(pe_tidied=tidied,pe_glanced=glanced, rsq=rsq,
-                    modls=models)
+  outstruct <- list(pe_tidied=tidied,pe_glanced=glanced,rsq=rsq,modls=models)
+
 } else {
   outstruct <- list(pe_tidied=tidied,pe_glanced=glanced, rsq=rsq)
 }
