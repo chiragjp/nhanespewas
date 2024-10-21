@@ -1,7 +1,9 @@
 ## split the todo file into 10 equal lists of exposures
 
+library(tidyverse)
 n_groups <- 10
-ss_file <- '../select/sample_size_pe_category_060623.csv'
+#ss_file <- '../select/sample_size_pe_category_060623.csv'
+ss_file <- '../select/sample_size_pe_category_0824.csv'
 to_do <- read_csv(ss_file) |> group_by(evarname) |> tally()
 
 index <- rep(1:n_groups, floor(nrow(to_do)/n_groups))

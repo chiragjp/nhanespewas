@@ -6,7 +6,7 @@ library(tidyverse)
 library(logger)
 devtools::load_all("..")
 
-TEST <- F
+TEST <- T
 OUTPUT_PAIRWISE <- F
 
 spec <- matrix(c(
@@ -14,7 +14,8 @@ spec <- matrix(c(
   'exposure_table', 'e', 1, "character",
   'sample_size_pairs_list_file', 'l', 1, "character", # file that lists the sample sizes for each pair
   'path_to_db', 'i', 1, "character",
-  'path_out', 'o', 1, "character"
+  'path_out', 'o', 1, "character",
+  'use_quantile', 'q', 2, "logical"
 ), byrow=TRUE, ncol=4);
 opt <- getopt(spec)
 
@@ -50,6 +51,8 @@ sample_size_threshold <- 500
 ss_file <- '../select/sample_size_pe_category_0824.csv'
 path_to_db <-   '../db/nhanes_012324.sqlite' # '../nhanes_122322.sqlite'
 path_out <- '.'
+use_quantiles <- TRUE
+
 
 if(!TEST) {
   phenotype_table <- opt$phenotype_table
@@ -57,10 +60,11 @@ if(!TEST) {
   ss_file <- opt$sample_size_pairs_list_file
   path_to_db <- opt$path_to_db
   path_out <- opt$path_out
+  use_quantiles <- ifelse(is.null(opt$use_quantile), F, opt$use_quantile)
 }
 
-############### end DEBUG
 
+############### end DEBUG
 
 
 con <- DBI::dbConnect(RSQLite::SQLite(), dbname=path_to_db)
@@ -68,7 +72,7 @@ to_do <- read_csv(ss_file) |> filter(e_table_name == exposure_table, p_table_nam
 m_table <- get_expo_pheno_tables(con, phenotype_table, exposure_table) |> figure_out_weight()
 expo_levels <- tbl(con, 'e_variable_levels') |> filter(Data.File.Name == exposure_table) |> collect()
 pe_safely <- safely(nhanespewas::pe_by_table_flex_adjust)
-#pe_safely <- nhanespewas::pe_by_table_flex_adjust
+
 
 tidied <- vector("list", length = nrow(to_do))
 glanced <- vector("list", length = nrow(to_do))
@@ -139,10 +143,7 @@ if(nrow(to_do) == 0) {
 }
 
 
-if(OUTPUT_PAIRWISE) {
-  ## create a directory
 
-}
 
 N <- nrow(to_do)
 models <- vector("list", length=N)
@@ -159,9 +160,18 @@ for(ii in 1:N) {
   mod <- NULL
   if(e_levels$vartype == 'continuous') {
     log_info("{ii} continuous { rw$evarname } ")
-    mod <- pe_safely(m_table, rw$pvarname, rw$evarname, adjustment_model_for_e,
-                     logxform_p=F, logxform_e=T, scale_e=T, scale_p=T,
-                     quantile_expo=NULL, exposure_levels=NULL)
+
+    if(use_quantiles) {
+      mod <- pe_safely(m_table, rw$pvarname, rw$evarname, adjustment_model_for_e,
+                       logxform_p=F, logxform_e=F, scale_e=F, scale_p=T,
+                       quantile_expo=c(0, .25, .5, .75, 1), exposure_levels=NULL)
+    } else {
+      mod <- pe_safely(m_table, rw$pvarname, rw$evarname, adjustment_model_for_e,
+                       logxform_p=F, logxform_e=T, scale_e=T, scale_p=T,
+                       quantile_expo=NULL, exposure_levels=NULL)
+    }
+
+
 
   } else if(e_levels$vartype == 'categorical') {
     log_info("{ii} categorizing { rw$evarname } ")
@@ -192,8 +202,6 @@ if(OUTPUT_PAIRWISE) {
   log_info("Done with PxE: { phenotype_table } x { exposure_table }")
   quit(save="no")
 }
-
-
 
 
 tidied_result <- function(models, aggregate_base_model = F) {

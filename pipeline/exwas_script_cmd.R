@@ -9,14 +9,15 @@ library(logger)
 source('db_paths.R')
 
 path_out <- '../out'
-ss_file <- '../select/sample_size_pe_category_060623.csv'
+#ss_file <- '../select/sample_size_pe_category_060623.csv'
+ss_file <- '../select/sample_size_pe_category_0824.csv'
 to_do <- read_csv(ss_file) |> group_by(pvarname) |> count() |> ungroup()
 path_scripts_out <- '../scripts'
 cmd_path <- '../pipeline/exwas.R'
 use_sbatch <- TRUE
 use_input_exposure_files <- TRUE # this is to filter the exposure inputs to parallelize the job: see exwas_exposure_aux_files.R
 num_input_exposure_files <- 10
-
+use_quantile <- 1
 
 
 main_out <- file.path(path_scripts_out, "srun_me.sh")
@@ -30,10 +31,10 @@ for(ii in 1:nrow(to_do)) {
     rcmds <- vector("list", num_input_exposure_files)
     for(i in 1:num_input_exposure_files) {
       e_file <- sprintf("%i.csv", i)
-      rcmds[[i]] <- sprintf("Rscript %s -p %s -l %s -i %s -o %s -e %s", file.path(cmd_path) , pvar, ss_file, path_to_nhanes, path_out, file.path(path_scripts_out, e_file))
+      rcmds[[i]] <- sprintf("Rscript %s -p %s -l %s -i %s -o %s -e %s -q %i", file.path(cmd_path) , pvar, ss_file, path_to_nhanes, path_out, file.path(path_scripts_out, e_file), use_quantile)
     }
   } else {
-    rcmds[[1]] <- sprintf("Rscript %s -p %s -l %s -i %s -o %s", file.path(cmd_path) , pvar, ss_file, path_to_nhanes, path_out)
+    rcmds[[1]] <- sprintf("Rscript %s -p %s -l %s -i %s -o %s -q %i", file.path(cmd_path) , pvar, ss_file, path_to_nhanes, path_out, use_quantile)
   }
 
   if(use_sbatch) {

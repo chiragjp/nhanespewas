@@ -8,13 +8,14 @@ library(logger)
 library(tools)
 devtools::load_all("..")
 
-TEST <- T
+TEST <- F
 spec <- matrix(c(
   'phenotype', 'p', 1, "character",
   'sample_size_pairs_list_file', 'l', 1, "character", # file that lists the sample sizes for each pair
   'path_to_db', 'i', 1, "character",
   'path_out', 'o', 1, "character",
-  'exposures', 'e', 2, "character"
+  'exposures', 'e', 2, "character",
+  'use_quantile', 'q', 2, "numeric"
 ), byrow=TRUE, ncol=4);
 opt <- getopt(spec)
 
@@ -24,8 +25,10 @@ sample_size_threshold <- 500
 ########### debug stuff
 #phenotype <- "URXUMA"
 #exposure <- "LBX06"
-exposure <- "URXNAL"
-phenotype <- "URXUCR"
+exposure <- 'LBXBEC'
+phenotype <- 'LBXGLU'
+#exposure <- "URXNAL"
+#phenotype <- "URXUCR"
 #phenotype <- "LBXP1"
 #exposure <- "DR1TACAR"
 #phenotype <- "LBDSAPSI"
@@ -35,13 +38,16 @@ phenotype <- "URXUCR"
 ss_file <- '../select/sample_size_pe_category_0824.csv'
 path_to_db <-   '../db/nhanes_012324.sqlite' # '../nhanes_122322.sqlite'
 path_out <- '.'
+use_quantile <- 1
 
 if(!TEST) {
   phenotype <- opt$phenotype
   ss_file <- opt$sample_size_pairs_list_file
   path_to_db <- opt$path_to_db
   path_out <- opt$path_out
+  use_quantile <- ifelse(is.null(opt$use_quantile), 0, opt$use_quantile)
 }
+
 
 ############### end DEBUG
 
@@ -61,10 +67,6 @@ if(!is.null(opt$exposures)) {
 pe_safely <- safely(nhanespewas::pe_flex_adjust)
 tidied <- vector("list", length = nrow(to_do))
 glanced <- vector("list", length = nrow(to_do))
-
-
-
-
 
 log_info("Process ID: {Sys.getpid()}")
 log_info("Number of Exposures: {nrow(to_do)}")
@@ -94,9 +96,15 @@ for(ii in 1:N) {
   if(e_levels$vartype == 'continuous') {
     log_info("{ii} continuous { rw$evarname } ")
     # pe
-    mod <- pe_safely(rw$pvarname, rw$evarname, adjustment_model_for_e, con,
+    if(use_quantile==1) {
+      mod <- pe_safely(rw$pvarname, rw$evarname, adjustment_model_for_e, con,
+                       logxform_p=F, logxform_e=F, scale_e=F, scale_p=T,
+                       quantile_expo=c(0, .25, .5, .75, 1), exposure_levels=NULL)
+    } else {
+      mod <- pe_safely(rw$pvarname, rw$evarname, adjustment_model_for_e, con,
                      logxform_p=F, logxform_e=T, scale_e=T, scale_p=T,
                      quantile_expo=NULL, exposure_levels=NULL)
+    }
 
   } else if(e_levels$vartype == 'categorical') {
     log_info("{ii} categorizing { rw$evarname } ")

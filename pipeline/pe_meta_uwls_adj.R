@@ -44,7 +44,8 @@ stanley_meta <- function(dat) {
 
 log_info("Model number: {MODEL_NUMBER}")
 #load('pe_out_pscale.Rdata')
-load('../pe_summary_020424/pe_summary_022524.Rdata')
+#load('../pe_summary_020424/pe_summary_022524.Rdata')
+load('../pe_summary_0824/gathered_by_series_0824.Rdata')
 #load('pp_summary_032024.Rdata')
 
 expos <- pe |> filter(grepl('expo', term)) |> filter(model_number == MODEL_NUMBER)

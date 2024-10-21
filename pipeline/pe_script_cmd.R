@@ -7,7 +7,7 @@ library(tidyverse)
 source('db_paths.R')
 #path_to_nhanes <- './nhanes_122322.sqlite'
 
-n_groups <- 100
+n_groups <- 1000
 #ss_file <- './select/sample_size_pe_040523.csv'  #opt$sample_size_pairs_list_file
 #ss_file <- './select/sample_size_pe_category_041823.csv'  #opt$sample_size_pairs_list_file
 #ss_file <- './select/sample_size_pe_category_051323.csv'  #opt$sample_size_pairs_list_file

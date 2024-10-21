@@ -1,5 +1,5 @@
 ## Chirag Patel
-## multivariate additive association between lifestyle exposures and a phenotype for a survey
+## multivariate additive association between exposures and a phenotype for a survey
 ## 05/15/23
 
 library(furrr)

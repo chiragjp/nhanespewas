@@ -8,12 +8,12 @@ expo_levels <- tbl(con, "e_variable_levels") |> collect()
 tablenames <- tbl(con, "table_names_epcf") |> collect()
 dbDisconnect(con)
 
-path_to_summary <- '../pe_summary_020424/'
-load(file.path(path_to_summary, 'pe_summary_022524.Rdata'))
+path_to_summary <- '../pe_summary_0824/'
+load(file.path(path_to_summary, 'gathered_by_series_0824.Rdata'))
 
 domains <- read_csv('../select/variable_domains_ep_2.csv')
 
-con <- DBI::dbConnect(RSQLite::SQLite(), dbname='./pe_summary_stats_02_2024-v2.sqlite')
+con <- DBI::dbConnect(RSQLite::SQLite(), dbname='./pe_summary_stats_08_2024.sqlite')
 dbWriteTable(con, "variable_names_epcf", varnames, overwrite=T, append=F)
 dbWriteTable(con, "table_names_epcf", tablenames, overwrite=T, append=F)
 dbWriteTable(con, 'pe', pe, overwrite=T, append=F)
