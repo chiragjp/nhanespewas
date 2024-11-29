@@ -7,8 +7,7 @@ devtools::load_all(".")
 ```
 
 ```{r connect}
-#con <- DBI::dbConnect(RSQLite::SQLite(), dbname='./db/nhanes_012324.sqlite')
-con <- DBI::dbConnect(RSQLite::SQLite(), dbname='./db/nhanes_112824.sqlite')
+con <- DBI::dbConnect(RSQLite::SQLite(), dbname='./db/nhanes_112824.sqlite') ## path to the sqlite 
 varnames <- dplyr::tbl(con, "variable_names_epcf") 
 ```
 
@@ -61,4 +60,12 @@ rb_cot$models[[2]]$r2
 rb_cot$base_models[[2]]$r2
 # full-base
 rb_cot$models[[2]]$r2$rsq - rb_cot$base_models[[2]]$r2$rsq
+```
+
+
+# what are the sample size overlap between some E (e.g., diet) and the uBiome counts?
+# what are the sample size overlap between some P (e.g., glucose) and the uBiome counts?
+```{r}
+sample_size_e <- read_csv('./select/sample_size_ubiome_e_112424.csv.zip') # evarname is the exposure, e_table_name is where it is in .sqlite
+sample_size_p <- read_csv('./select/sample_size_ubiome_y_112424.csv.zip') # xvarname is the pheno, x_table_name is where it is in .sqlite
 ```
