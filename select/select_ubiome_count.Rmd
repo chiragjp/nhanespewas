@@ -1,0 +1,59 @@
+---
+title: "Select uBiome Associations"
+output: html_notebook
+---
+
+11/29/24
+Create the sample size file for the UBiome Count and Relative
+
+```{r }
+library(tidyverse)
+```
+
+```{r load previous }
+samp_size_pe <- read_csv('../select/sample_size_pe_category_0824.csv')
+samp_size_pp <- read_csv('../select/sample_size_pp_category_032024.csv')
+select_ubiome <- read_csv('../select/select_ubiome_count_pheno_variables.csv')
+
+```
+
+Create a sample size file for the uBiome and Exposures
+```{r}
+samp_size_pe_alpha <- samp_size_pe |> filter(p_table_name == 'ALPHADIVERSITY_G' | p_table_name == 'ALPHADIVERSITY_F')
+
+## pvarname, evarname, n, e_table_name, p_table_name
+
+# e table_name, n, and evarname
+eeeee_g <- samp_size_pe_alpha |> filter(p_table_name == 'ALPHADIVERSITY_G') |> group_by(evarname,e_table_name) |> summarize(sd_ss=sd(n), m_ss=mean(n)) |> filter(m_ss >= 500) |> rename(n=m_ss) |> select(-sd_ss) |> ungroup()
+
+ppppp_g <- select_ubiome |> filter(Begin.Year == 2011) |> select(Variable.Name, Data.File.Name) |> rename(pvarname = Variable.Name, p_table_name=Data.File.Name)
+
+series_g <- cross_join(ppppp_g, eeeee_g)
+
+eeeee_f <- samp_size_pe_alpha |> filter(p_table_name == 'ALPHADIVERSITY_F') |> group_by(evarname,e_table_name) |> summarize(sd_ss=sd(n), m_ss=mean(n)) |> filter(m_ss >= 500) |> rename(n=m_ss) |> select(-sd_ss) |> ungroup()
+ppppp_f <- select_ubiome |> filter(Begin.Year == 2009) |> select(Variable.Name, Data.File.Name) |> rename(pvarname = Variable.Name, p_table_name=Data.File.Name)
+
+series_f <- cross_join(ppppp_f, eeeee_f)
+
+rbind(series_f, series_g) |> write_csv('./sample_size_ubiome_e_112424.csv')
+
+```
+
+Create a sample size file for the uBiome and Phenos
+```{r}
+samp_size_pp_alpha_g <- samp_size_pp |> filter(x_table_name == 'ALPHADIVERSITY_G')
+samp_size_pp_alpha_f <- samp_size_pp |> filter(x_table_name == 'ALPHADIVERSITY_F')
+
+xxxxx_g <- samp_size_pp_alpha_g |> group_by(yvarname,y_table_name) |> summarize(sd_ss=sd(n), m_ss=mean(n)) |> filter(m_ss >= 500) |> rename(n=m_ss) |> select(-sd_ss) |> ungroup() |> rename(xvarname = yvarname, x_table_name = y_table_name)
+
+yyyyy_g <- select_ubiome |> filter(Begin.Year == 2011) |> select(Variable.Name, Data.File.Name) |> rename(yvarname = Variable.Name, y_table_name=Data.File.Name)
+
+series_g <- cross_join(xxxxx_g, yyyyy_g)
+
+xxxxx_f <- samp_size_pp_alpha_f |> group_by(yvarname,y_table_name) |> summarize(sd_ss=sd(n), m_ss=mean(n)) |> filter(m_ss >= 500) |> rename(n=m_ss) |> select(-sd_ss) |> ungroup() |> rename(xvarname = yvarname, x_table_name = y_table_name)
+
+yyyyy_f <- select_ubiome |> filter(Begin.Year == 2009) |> select(Variable.Name, Data.File.Name) |> rename(yvarname = Variable.Name, y_table_name=Data.File.Name) 
+
+series_f <- cross_join(xxxxx_f, yyyyy_f)
+rbind(series_f, series_g) |> write_csv('./sample_size_ubiome_y_112424.csv')
+```

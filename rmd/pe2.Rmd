@@ -152,8 +152,6 @@ adjusted_meta_2 <- adjusted_meta_2 |> mutate(sig_levels = case_when(
 ))
 
 adjusted_meta_2 <- adjusted_meta_2 |> filter(!is.na(estimate_overall), !is.na(p.value_overall))
-
-
 ```
 
 ```{r}
@@ -164,8 +162,6 @@ adjusted_meta_2 <- adjusted_meta_2 |> group_by(pvarname) |> mutate(pval_BY_pheno
 ```
 
 ```{r fig.height=5, fig.width=10}
-
-
 bonf_thresh <- 0.05/nrow(adjusted_meta_2)
 quantile(adjusted_meta_2$p.value_overall, probs=c(0.01, .05, .1, .2, .3, .4, .5, .6, .7, .8, .9, .95, .99), na.rm = T)
 quantile(adjusted_meta_2$estimate_overall, probs=c(0.01, .05, .1, .2, .3, .4, .5, .6, .7, .8, .9, .95, .99), na.rm = T)
@@ -715,7 +711,6 @@ p <- plot_grid(survey_het, pheno_het, ncol=2, labels=c("", "E"), label_size = 12
 # R2 adjusted vs. non-adjusted
 
 ```{r}
-
 p <- ggplot(expos_wide, aes(rsq_2_1, rsq_2_0))
 p <- p + geom_point(shape='.') + xlab("R2 Base [Demographics]") + ylab("R2 [Exposure + Demographics]")
 p <- p + theme_bw()

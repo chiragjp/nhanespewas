@@ -9,8 +9,14 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Exposome Globes:
-Centered around two phenotypes, e.g., insulin, BMI, and glucose
+```{r}
+library(tidyverse)
+library(DBI)
+library(igraph)
+```
+
+Exposome Globes
+
 
 ```{r}
 get_data <- function(dbname) {
@@ -51,7 +57,7 @@ process_data <- function(dbdata, e_or_p='p') {
   adjusted_meta_raw <- dbdata$adjusted_meta |> filter(model_number == 1) |> collect() |> left_join(expos_wide_summary, by=c("xvarname", "yvarname")) 
 
   y_variable_domain <- dbdata$variable_domain |> filter(epcf == e_or_p) |> collect() |> group_by(Variable.Name) |> summarise(yvardesc=first(Variable.Description),ycategory=first(category),ysubcategory=first(subcategory))
-  x_variable_domain <- variable_domain |> filter(epcf == e_or_p) |> collect() |> group_by(Variable.Name) |> summarise(xvardesc=first(Variable.Description),xcategory=first(category),xsubcategory=first(subcategory))
+  x_variable_domain <- dbdata$variable_domain |> filter(epcf == e_or_p) |> collect() |> group_by(Variable.Name) |> summarise(xvardesc=first(Variable.Description),xcategory=first(category),xsubcategory=first(subcategory))
   
   
   adjusted_meta_full <- adjusted_meta_full |> left_join(y_variable_domain, by=c("yvarname"="Variable.Name"))
@@ -71,27 +77,33 @@ process_data <- function(dbdata, e_or_p='p') {
 
 ```{r}
 
-con <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/pe_summary_stats_02_2024-v2.sqlite')
-pe_meta <- tbl(con, "adjusted_meta")
-pe <- get_data('../db/pe_summary_stats_02_2024-v2.sqlite')
+#con <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/pe_summary_stats_02_2024-v2.sqlite')
+con <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/pe_summary_stats_08_2024.sqlite')
+pe_meta <- tbl(con, "pe_overall")
+#pe <- get_data('../db/pe_summary_stats_02_2024-v2.sqlite')
 pp <- get_data('../db/pp_summary_stats_03_2024.sqlite')
 ee <- get_data('../db/ee_summary_stats_03_2024.sqlite')
 pp_process <- process_data(pp, 'p')
 ee_process <- process_data(ee, 'e')
 ```
 
+```{r write out globe}
 
-## create some globes -- ones related to BMI
+write_rds(ee_process$adjusted_meta_raw, "ee_corrs.rds")
+
+```
+
+
+## create some globes -- ones related to HA1C
 ```{r}
 
-pe_sig <- pe_meta |> filter(model_number == 2, nobs > 1) |> collect() |>  mutate(pvalue_bonferroni=p.adjust(p.value, method="bonferroni")) |> filter(p.value < 0.05)
+pe_sig <- pe_meta |> filter(term=='expo')  |> filter(p.value < 0.05)
+## bmi/a1c
+pe_sig_cand <- pe_sig |> filter(phenotype == 'LBXGH', model_number==2, p.value < 1e-7)
 
-## bmi
-pe_sig_cand <- pe_sig |> filter(pvarname == 'BMXBMI')
+sig <- ee_process$adjusted_meta_raw |> filter(nobs > 1) |> filter(p.value < 0.0000001, abs(estimate) > .5 & abs(estimate) <= 1) ## get ones that are related to the association
 
-sig <- ee_process$adjusted_meta_raw |> filter(nobs > 1) |> filter(p.value < 0.0001, abs(estimate) > .5 & abs(estimate) <= 1) ## get ones that are related to the association
-
-sig <- sig |> right_join(pe_sig_cand |> select("evarname"), by=c("xvarname"="evarname"))
+sig <- sig |> right_join(pe_sig_cand |> select("exposure")  |> collect(), by=c("xvarname"="exposure"))
 
 sig_graph <- sig |> select(-term_name) |> select(xvarname, yvarname, everything()) 
 sig_vertex <- sig_graph |> select(xvarname, xcategory) |> unique() |> rename(varname = xvarname, category=xcategory)
@@ -108,32 +120,62 @@ category_colors <- setNames(rainbow(length(categories)), categories)
 # Map the colors to vertices based on category
 vertex_colors <- category_colors[V(g)$category]
 coords <- layout_in_circle(g)
-
-plot(g, vertex.color = vertex_colors, vertex.size = node_sizes*3, layout=coords, vertex.label=NA)
+plot(g, vertex.color = vertex_colors, layout=coords, vertex.label=NA)
 ```
 
+```{r globe for phenotypes correlated with HA1c}
+sig <- pp_process$adjusted_meta_raw |> filter(nobs > 1) ## get ones
 
-## create some globes per domain
-```{r}
+p <- ggplot(sig |> filter(xvarname == 'LBXGH' | yvarname == 'LBXGH'), aes(estimate))
+p <- p + geom_histogram(aes(y = stat(density))) + scale_x_continuous(limits=c(-1, 1)) 
+p
 
-sig <- ee_process$adjusted_meta_raw |> filter(nobs > 1) |> filter(p.value < 0.0001, abs(estimate) > .5 & abs(estimate) <= 1) ## get ones that are related to the association
 
-sig_graph <- sig |> select(-term_name) |> select(xvarname, yvarname, everything()) 
-sig_vertex <- sig_graph |> select(xvarname, xcategory) |> unique() |> rename(varname = xvarname, category=xcategory)
-sig_vertex2 <- sig_graph |> select(yvarname, ycategory) |> unique() |> rename(varname = yvarname, category=ycategory)
-sig_vertex <- sig_vertex |> rbind(sig_vertex2) |> unique()
 
-g <- graph_from_data_frame(sig_graph, directed = FALSE) # Use directed = TRUE if your graph is directed
-E(g)$color <- ifelse(E(g)$estimate > 0, "red", "blue")
-V(g)$category <- sig_vertex$category[match(V(g)$name, sig_vertex$varname)]
-categories <- unique(V(g)$category)
+sig <- sig |> filter(xvarname == 'LBXGH' | yvarname == 'LBXGH')
+sig <- sig |> filter(p.value < .05/nrow(sig), abs(estimate) < 1)
+
+p <- ggplot(sig, aes(xvarname, estimate)) 
+p <- p + geom_point()
+p
+
+#sig_graph <- sig |> select(-term_name) |> select(xvarname, yvarname, everything()) 
+#sig_vertex <- sig_graph |> select(xvarname, xcategory) |> unique() |> rename(varname = xvarname, category=xcategory)
+#sig_vertex2 <- sig_graph |> select(yvarname, ycategory) |> unique() |> rename(varname = yvarname, category=ycategory)
+#sig_vertex <- sig_vertex |> rbind(sig_vertex2) |> unique()
+
+#g <- graph_from_data_frame(sig_graph, directed = FALSE) # Use directed = TRUE if your graph is directed
+#E(g)$color <- ifelse(E(g)$estimate > 0, "red", "blue")
+#V(g)$category <- sig_vertex$category[match(V(g)$name, sig_vertex$varname)]
+#categories <- unique(V(g)$category)
 
 # Assign colors to each category
-category_colors <- setNames(rainbow(length(categories)), categories)
+#category_colors <- setNames(rainbow(length(categories)), categories)
 # Map the colors to vertices based on category
-vertex_colors <- category_colors[V(g)$category]
-coords <- layout_in_circle(g)
+#vertex_colors <- category_colors[V(g)$category]
+#coords <- layout_in_circle(g)
+#plot(g, vertex.color = vertex_colors, layout=coords, vertex.label=NA)
 
-plot(g, vertex.color = vertex_colors, vertex.size = node_sizes*3, layout=coords, vertex.label=NA)
+
 ```
+
+
+```{r distribution of all exposure correlations}
+ee_process$adjusted_meta_raw <- ee_process$adjusted_meta_raw |> mutate(p.value_bonf = p.adjust(p.value, method="bonferroni"))
+p <- ggplot(ee_process$adjusted_meta_raw |> filter(p.value_bonf < 0.05), aes(estimate))
+p <- p + geom_histogram() + scale_x_continuous(limits=c(-1, 1))
+p
+```
+
+```{r distribution of all phenotype correlations}
+pp_process$adjusted_meta_raw <- pp_process$adjusted_meta_raw |> mutate(p.value_bonf = p.adjust(p.value, method="bonferroni"))
+p <- ggplot(pp_process$adjusted_meta_raw |> filter(p.value_bonf < 0.05), aes(estimate))
+p <- p + geom_histogram(aes(y = stat(density))) + scale_x_continuous(limits=c(-1, 1)) + facet_wrap(~ycategory)
+p
+
+```
+
+
+
+
 

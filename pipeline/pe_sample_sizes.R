@@ -11,9 +11,10 @@ spec <- matrix(c(
 ), byrow=TRUE, ncol=4);
 opt <- getopt(spec)
 
-con <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/nhanes_012324.sqlite')
+con <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/nhanes_112824.sqlite')
 e_variables <- read_csv('../select/select_expo_variables_3.csv')
-p_variables <- read_csv('../select/select_pheno_variables_3.csv')
+#p_variables <- read_csv('../select/select_pheno_variables_3.csv')
+p_variables <- read_csv('../select/select_ubiome_count_pheno_variables.csv') |> mutate(varname=Variable.Name, epcf="p", category='ubiome',subcategory=NA)
 
 #p_variables <- read_csv("./select/select_ubiome_pheno_variables.csv") |> mutate(epcf='p')
 
@@ -62,13 +63,16 @@ merged_table_dplyr <- function(con, tab1, tab2) {
 sample_size_for_table_dplyr <- function(m_table, evars, pvars, eTable, pTable) {
   ## to complete
   table_cols <- colnames(m_table)
+  N <- length(evars)*length(pvars)
   nn <- vector("list",length = length(evars)*length(pvars))
   i <- 1
   for(evari in 1:length(evars)) {
     for(pvari in 1:length(pvars)) {
       col1 <- sprintf("%s_%s", pvars[pvari], pTable)
       col2 <- sprintf("%s_%s", evars[evari], eTable)
-
+      if((i %% 1000) == 0) {
+        cat(sprintf("%i/%i\n", i, N))
+      }
       if (col1 %in% table_cols && col2 %in% table_cols) {
         n <- m_table |> filter(!is.na(!!sym(col1)), !is.na(!!sym(col2))) |>
         summarize(nn = n()) |> pull(nn)
@@ -165,8 +169,8 @@ if(series == "A") {
   exit("specify a valid series!")
 }
 
-samp_size |> write_csv(sprintf('sample_size_pe_category_%s_0824.csv', series))
-
+#samp_size |> write_csv(sprintf('sample_size_pe_category_%s_0824.csv', series))
+samp_size |> write_csv(sprintf('sample_size_pe_ubiome_%s_1124.csv', series))
 
 #log_info("A")
 #samp_size_a <- ep_sample_sizes(con, e_variables |> filter(Begin.Year == 1999), p_variables |> filter(Begin.Year == 1999))

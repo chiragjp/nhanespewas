@@ -30,7 +30,8 @@ devtools::load_all(".")
 ```
 
 ```{r connect}
-con <- DBI::dbConnect(RSQLite::SQLite(), dbname='./db/nhanes_012324.sqlite')
+#con <- DBI::dbConnect(RSQLite::SQLite(), dbname='./db/nhanes_012324.sqlite')
+con <- DBI::dbConnect(RSQLite::SQLite(), dbname='./db/nhanes_112824.sqlite')
 varnames <- dplyr::tbl(con, "variable_names_epcf") 
 ```
 
@@ -50,8 +51,41 @@ crp_cot$base_models[[2]]$r2
 crp_cot$models[[2]]$r2$rsq - crp_cot$base_models[[2]]$r2$rsq
 ```
 
+# Explore the uBiome and alpha diversity
 
-# Urinary Creatinine and Urinary Chlamydia: positive and neagtive test
+```{r}
+varnames |> filter(Variable.Name == 'RB_family1_count')
+
+rb_count <- tbl(con, 'DADA2RB_FAMILY_COUNT_F')
+alpha <- tbl(con, 'ALPHADIVERSITY_F')
+
+rb_count |> colnames()
+
+rb_count |> collect() |> str() ## which ones actually have variation?
+
+p <- ggplot(rb_count, aes((RB_family29_count+.01))) ## looks like it is right skewed
+p + geom_histogram()
+
+```
+
+#  RB_family1_count (P) and Cotinine (E)
+```{r serum cotinine and RB29 count}
+
+varnames |> filter(Variable.Name == 'LBXCOT') # indicator of nicotene (smoke exposure)
+varnames |> filter(Variable.Name == 'RB_family29_count') # Actinomycetaceae
+rb_cot <- pe_flex_adjust("RB_family29_count", "LBXCOT", adjustment_models, con, scale_p=T, logxform_p = T)
+# print out the tidied summary stats for the fully adjusted model
+rb_cot$models[[2]]$tidied
+# R2 for the full adjusted model
+rb_cot$models[[2]]$r2
+# R2 for base model
+rb_cot$base_models[[2]]$r2
+# full-base
+rb_cot$models[[2]]$r2$rsq - rb_cot$base_models[[2]]$r2$rsq
+```
+
+
+# Urinary Creatinine and Urinary Chlamydia: positive and negative test
 ```{r urinary creatinine}
 varnames |> filter(Variable.Name == 'URXUCL')
 ucr_ucl <- pe_flex_adjust("URXUCR", "URXUCL", adjustment_models, con, scale_p=T, scale_e=F, logxform_e = F, exposure_levels = c(1,2))

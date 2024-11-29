@@ -1,0 +1,291 @@
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Manhattan plot across all exposures
+
+```{r}
+library(tidyverse)
+library(DBI)
+library(ggsci)
+library(DT)
+library(ggrepel)
+library(cowplot)
+library(ggpubr)
+library(reactable)
+library(gt)
+library(broom)
+library(ggridges)
+```
+
+
+
+```{r connect to db of summary stats}
+con <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/pe_summary_stats_08_2024.sqlite')
+varnames <- tbl(con, "variable_names_epcf")
+adjusted_meta <- tbl(con, "adjusted_meta_uwls") |> rename(term_name=expo_name)
+mvr2 <- read_rds('../pe_summary_060623/mvr2.rds') |> mutate(mv = mve_rsq-base_rsq)
+pe <- tbl(con, "pe") ## individual surveys
+pe_r2 <- tbl(con, "rsq")
+glanced <- tbl(con, "glanced")
+glanced <- glanced |> left_join(pe_r2 |> select(exposure, phenotype, series, model_number,aggregate_base_model, rsq, adj.r2), by=c("exposure", "phenotype", "model_number", "aggregate_base_model", "series"))
+variable_domain <- tbl(con, "variable_domain")
+pe_overall <- tbl(con, "pe_overall")
+r2_overall <- tbl(con, "rsq_overall")
+glanced_overall <- tbl(con, "glanced_overall")
+glanced_overall <- glanced_overall |> left_join(r2_overall |> select(exposure, phenotype, model_number,aggregate_base_model, rsq, adj.r2), by=c("exposure", "phenotype", "model_number", "aggregate_base_model"))
+
+```
+
+```{r}
+expos <- pe |> filter(term %like% 'expo%') |> rename(evarname=exposure, pvarname=phenotype)
+expos_wide <- expos |> pivot_wider(names_from = "model_number", values_from = c("estimate", "std.error", "statistic", "p.value")) 
+glanced_wide <- glanced |> select(-c(adj.r2, df.residual, null.deviance, df.null, deviance)) |> pivot_wider(names_from=c("model_number", "aggregate_base_model"), values_from = c("rsq", "nobs", "AIC", "BIC")) |>  rename(evarname=exposure, pvarname=phenotype)
+glanced_wide <- glanced_wide |> mutate(rsq_adjusted_base_diff=rsq_2_0-rsq_2_1, rsq_adjusted_diff = rsq_2_0-rsq_1_0) 
+glanced_overall_wide <- glanced_overall |> select(-c(adj.r2, df.residual, null.deviance, df.null, deviance)) |> pivot_wider(names_from=c("model_number", "aggregate_base_model"), values_from = c("rsq", "nobs", "AIC", "BIC")) |>  rename(evarname=exposure, pvarname=phenotype)
+
+expos_wide <- expos_wide |> left_join(glanced_wide |> select(-c(series, log_p, log_e, scaled_p, scaled_e)), by=c("evarname", "pvarname", "exposure_table_name", "phenotype_table_name"))
+expos_wide <- expos_wide |> left_join(varnames, by=c("evarname"="Variable.Name", "exposure_table_name"="Data.File.Name"))
+expos_wide <- expos_wide |> left_join(varnames |> select(Variable.Name, Data.File.Name, Variable.Description, Data.File.Description), 
+                                      by=c("pvarname"="Variable.Name", "phenotype_table_name"="Data.File.Name"))
+
+expos_wide <- expos_wide |> collect() |> select(-Use.Constraints) |> rename(e_data_file_desc=Data.File.Description.x, p_data_file_desc=Data.File.Description.y,e_variable_description=Variable.Description.x, p_variable_description=Variable.Description.y)
+
+
+glanced_summary <- glanced_overall_wide |> mutate(total_n = nobs_2_0, rsq_adjusted_base_diff = rsq_2_0-rsq_2_1, rsq_adjusted_diff=rsq_2_0-rsq_1_0) |> 
+  select(evarname, pvarname, rsq_adjusted_base_diff, rsq_adjusted_diff, total_n)
+
+adjusted_meta_full <- adjusted_meta |> filter(model_number == 2)  |> left_join(glanced_summary, by=c("evarname", "pvarname")) |> collect() ## fully adjusted model
+
+p_variable_domain <- variable_domain |> filter(epcf == 'p') |> collect() |> group_by(Variable.Name) |> summarise(pvardesc=first(Variable.Description),pcategory=first(category),psubcategory=first(subcategory))
+e_variable_domain <- variable_domain |> filter(epcf == 'e') |> collect() |> group_by(Variable.Name) |> summarise(evardesc=first(Variable.Description),ecategory=first(category),esubcategory=first(subcategory))
+
+adjusted_meta_full <- adjusted_meta_full |> left_join(p_variable_domain, by=c("pvarname"="Variable.Name"))
+adjusted_meta_full <- adjusted_meta_full |> left_join(e_variable_domain, by=c("evarname"="Variable.Name"))
+expos_wide <- expos_wide |> left_join(p_variable_domain, by=c("pvarname"="Variable.Name"))
+expos_wide <- expos_wide |> left_join(e_variable_domain, by=c("evarname"="Variable.Name"))
+mvr2 <- mvr2 |> collect() |> left_join(p_variable_domain, by=c("pvarname"="Variable.Name"))
+
+pe_overall_full <- pe_overall |> filter(model_number == 2, term %like% "expo%") |> select(term, estimate, std.error, statistic, p.value, exposure, phenotype) |> 
+  rename(evarname = exposure, pvarname = phenotype, term_name=term) |> collect()
+
+adjusted_meta_full <- adjusted_meta_full |> left_join(pe_overall_full, by=c("term_name", "evarname", "pvarname"), suffix=c("", "_overall"))
+
+adjusted_meta_full <- adjusted_meta_full |> mutate(estimate_overall=ifelse(k.uwls == 1, estimate.uwls, estimate), 
+                                                   p.value_overall=ifelse(k.uwls == 1, p.value.uwls, p.value),
+                                                   std.error_overall=ifelse(k.uwls == 1, std.error.uwls, std.error), 
+                                                   statistic_overall=ifelse(k.uwls == 1, statistic.uwls, statistic)
+                                                   )
+```
+
+```{r filter exposure categories}
+exposure_categories <- c("pollutant", "nutrients", "smoking", "infection")
+adjusted_meta_full <- adjusted_meta_full |> filter(ecategory %in% exposure_categories)
+expos_wide <- expos_wide |> filter(ecategory %in% exposure_categories)
+
+```
+
+
+```{r}
+adjusted_meta_full <- adjusted_meta_full |> mutate(nobs = k.uwls)
+n_obss <- sort(unique(adjusted_meta_full$nobs))
+
+num_tests <- map_df(n_obss, function(n) {
+  n_e <- adjusted_meta_full |> filter(nobs >= n) |> pull(evarname) |> unique() |> length()
+  n_p <- adjusted_meta_full |> filter(nobs >= n) |> pull(pvarname) |> unique() |> length()
+  nn <- nrow(adjusted_meta_full |> filter(nobs == n))
+  tibble(n_expos=n_e, n_phenos=n_p, n_pxe=nn)
+})
+
+num_tests  |> mutate(n_surveys=n_obss) |> gt()
+
+
+
+```
+
+```{r}
+# Keep number of surveys is greater than 2
+adjusted_meta_2 <- adjusted_meta_full |> filter(nobs >= 2)
+n_evars <- length(unique(adjusted_meta_2$evarname))
+n_pvars <- length(unique(adjusted_meta_2$pvarname))
+n_evars
+n_pvars
+```
+
+Sample sizes within and across all surveys
+```{r sample sizes}
+sample_size_per_pair <- expos_wide |> filter(term == 'expo' | term== 'expo1') |> group_by(evarname, pvarname) |> summarize(total_n=sum(nobs_2_0), n_surveys=n(), median_n=median(nobs_2_0))
+
+```
+
+```{r}
+adjusted_meta_2 <- adjusted_meta_2 |> filter(!is.na(estimate_overall), !is.na(p.value_overall))
+adjusted_meta_2 <- adjusted_meta_2 |> ungroup() |>  mutate(pval_BY=p.adjust(p.value_overall, method="BY"), pvalue_bonferroni=p.adjust(p.value_overall, method="bonferroni"))
+adjusted_meta_2 <- adjusted_meta_2 |> mutate(sig_levels = case_when(
+  pvalue_bonferroni < 0.05 ~ 'Bonf.<0.05',
+  pval_BY < 0.05 ~ 'BY<0.05',
+  TRUE ~ '> BY & Bonf.'
+))
+```
+
+
+
+```{r rename subcategories}
+
+#adjusted_meta_2 |> filter(psubcategory == 'injury') |> group_by(pvardesc) |> count()
+#adjusted_meta_2 |> filter(psubcategory == 'liver/kidney') |> group_by(pvardesc) |> count()
+#adjusted_meta_2 |> filter(psubcategory == 'hormone') |> group_by(pvardesc) |> count()
+#adjusted_meta_2 |> filter(psubcategory == 'metabolic') |> group_by(pvardesc) |> count()
+#adjusted_meta_2 |> filter(psubcategory == 'immunity') |> group_by(pvardesc) |> count()
+#adjusted_meta_2 |> filter(psubcategory == 'liver') |> group_by(pvardesc) |> count()
+#adjusted_meta_2 |> filter(psubcategory == 'lung function') |> group_by(pvardesc) |> count()
+#adjusted_meta_2 |> filter(psubcategory == 'exhaled NO') |> group_by(pvardesc) |> count()
+
+adjusted_meta_2 <- adjusted_meta_2 |> mutate(
+  pnewsubcategory =  case_when(
+    psubcategory == 'injury' ~ "inflammation",
+    psubcategory == 'liver/kidney' ~ "kidney",
+    psubcategory == 'immunity' ~ "liver",
+    psubcategory == 'exhaled NO' ~ "inflammation",
+    psubcategory == 'lung function' ~ "lung",
+    psubcategory == 'nutritional status' ~ "nutrition",
+    TRUE ~ psubcategory
+  )
+)
+
+adjusted_meta_2 <- adjusted_meta_2 |> mutate(pnewsubcategory = ifelse(is.na(pnewsubcategory), pcategory, pnewsubcategory))
+adjusted_meta_2 <- adjusted_meta_2 |> mutate(enewsubcategory = ifelse(ecategory == 'infection', 'infection', esubcategory))
+adjusted_meta_2 <- adjusted_meta_2 |> mutate(enewsubcategory = ifelse(enewsubcategory == 'pyrethoid', 'pyrethroid', enewsubcategory)) 
+adjusted_meta_2 <- adjusted_meta_2 |> mutate(enewsubcategory = ifelse(enewsubcategory == 'amine' | enewsubcategory == 'amide', 'amine/amide', enewsubcategory))
+adjusted_meta_2 <- adjusted_meta_2 |> mutate(enewsubcategory = ifelse(enewsubcategory == 'deet', 'amine/amide', enewsubcategory))
+
+
+```
+
+
+
+
+
+```{r fig.height=11, fig.width=9}
+PCAP <- 1e-20
+to_plot <- adjusted_meta_2 |> mutate(plot_p = ifelse(p.value_overall < PCAP, PCAP, p.value_overall))
+to_plot <- to_plot |> filter(pnewsubcategory != 'psa')
+to_plot <- to_plot |> filter(pnewsubcategory != 'fitness')
+to_plot <- to_plot |> filter(pnewsubcategory != 'aging')
+
+## order in terms of number found; or R2.
+enewsubcategory_order <- to_plot |> filter(sig_levels == 'Bonf.<0.05') |> group_by(enewsubcategory) |> summarize(med_r2=mean(rsq_adjusted_base_diff)) |> arrange(-med_r2) |> mutate(group_number = row_number())
+
+to_plot <- to_plot |> left_join(enewsubcategory_order |> select(enewsubcategory, group_number))
+eplot_order <- to_plot |> select(evarname ,enewsubcategory, group_number) |> unique() |> arrange(group_number) |> mutate(order_number = row_number())
+
+# anthropometric, blood, blood pressure, bone, electrolyte, inflammation, kidney, liver, hormone, metabolic, nutrition, dexa
+# keep out: microbiome, lung
+keep <- c("anthropometric", "blood", "blood pressure", "bone", "electrolyte", "inflammation", "kidney", "liver", "hormone", "metabolic", "nutrition", "dexa")
+to_plot <- to_plot |> filter(pnewsubcategory %in% keep)
+
+xaxis_labels <- eplot_order |> group_by(group_number,enewsubcategory) |> summarize(med_x=round(median(order_number)), min_x=min(order_number), max_x=max(order_number))
+
+to_plot <- to_plot |> left_join(eplot_order |> select(evarname,order_number))
+p <- ggplot(to_plot |> arrange(order_number), aes(order_number, -log10(plot_p)))
+p <- p + geom_point(aes(color=sig_levels), shape=20) + facet_wrap(pnewsubcategory~., nrow=6, ncol=2) + scale_color_tron()
+p <- p + scale_y_continuous(limits=c(0, -log10(PCAP)+1))
+p <- p + scale_x_continuous(breaks = xaxis_labels$med_x,  labels = xaxis_labels$enewsubcategory)
+p <- p + geom_vline(data=xaxis_labels, aes(xintercept=max_x), linetype='dotted', col = 'black') + theme_bw()
+p <- p + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1), legend.position = "bottom")
+p <- p + xlab("") + ylab("-log10(pvalue)") 
+#p
+
+to_plot <- to_plot |> mutate(rsquared=ifelse(rsq_adjusted_base_diff >= .1, .1, rsq_adjusted_base_diff))
+p <- ggplot(to_plot |> arrange(order_number), aes(order_number, rsquared))
+p <- p + geom_point(aes(color=sig_levels), shape=20) + facet_wrap(pnewsubcategory~., nrow=6, ncol=2) + scale_color_tron()
+p <- p + scale_y_continuous(limits=c(0, .1))
+p <- p + scale_x_continuous(breaks = xaxis_labels$med_x,  labels = xaxis_labels$enewsubcategory)
+p <- p + geom_vline(data=xaxis_labels, aes(xintercept=max_x), linetype='dotted', col = 'black') + theme_bw()
+p <- p + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1), legend.position = "none")
+p <- p + xlab("") + ylab("R-squared") 
+#p
+ggsave("manhattan_pheno_r2.pdf", p,width=8, height=8, units="in")
+
+
+
+
+```
+
+```{r fig.height=5, fig.width=7}
+
+p <- ggplot(to_plot, aes(order_number, -log10(plot_p)))
+p <- p + geom_point(aes(color=sig_levels), shape=20) + scale_color_tron() 
+p <- p + scale_y_continuous(limits=c(0, -log10(PCAP)+1))
+p <- p + scale_x_continuous(breaks = xaxis_labels$med_x,  labels = xaxis_labels$enewsubcategory)
+p <- p + geom_vline(data=xaxis_labels, aes(xintercept=max_x), linetype='dotted', col = 'black')+ theme_bw()
+p <- p + theme(legend.position = "none",  panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),axis.text.x=element_blank(),
+    plot.margin = unit(c(0,1,0,1), 'lines')
+)
+
+p1 <- p + xlab("") + ylab("-log10(pvalue)") 
+
+## cap the r2 at 0.2
+
+xaxis_labels <- xaxis_labels |> left_join(enewsubcategory_order)
+p <- ggplot(to_plot, aes(order_number, rsquared))
+p <- p + geom_point(aes(color=sig_levels), shape=20) + scale_color_tron() 
+p <- p + scale_y_continuous(limits=c(0, .205))
+p <- p + scale_x_continuous(breaks = xaxis_labels$med_x,  labels = xaxis_labels$enewsubcategory)
+p <- p + geom_vline(data=xaxis_labels, aes(xintercept=max_x), linetype='dotted', col = 'black')+ theme_bw()
+p <- p + geom_segment(data=xaxis_labels, aes(x=min_x, xend=max_x, y=med_r2, yend=med_r2))
+p <- p + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1), legend.position = "none",  panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    plot.margin = unit(c(0,1,0,1), 'lines'))
+p2 <- p + xlab("") + ylab("R-squared") 
+
+pp <- ggarrange(p1,p2,nrow=2,align="v", heights=c(1, 1))
+#ggsave("manhattan_r2.pdf", pp, width=7, height=5, units="in")
+
+
+```
+
+
+```{r}
+manhattan_plot_per_pheno <- function(to_plot_object, phenotype_category) {
+  to_plot <- to_plot_object |> filter(pnewsubcategory==phenotype_category)
+  p <- ggplot(to_plot, aes(order_number, -log10(plot_p)))
+  p <- p + geom_point(aes(color=sig_levels), shape=20) + scale_color_tron() 
+  p <- p + scale_y_continuous(limits=c(0, -log10(PCAP)+1))
+  p <- p + scale_x_continuous(breaks = xaxis_labels$med_x,  labels = xaxis_labels$enewsubcategory)
+  p <- p + geom_vline(data=xaxis_labels, aes(xintercept=max_x), linetype='dotted', col = 'black')+ theme_bw()
+  p <- p + theme(legend.position = "none",  panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),axis.text.x=element_blank(),
+    plot.margin = unit(c(0,1,0,1), 'lines')
+)
+  p1 <- p + xlab("") + ylab("-log10(pvalue)")
+  p1
+}
+
+manhattan_r2_plot_per_pheno <- function(to_plot_object, phenotype_category) {
+  to_plot <- to_plot_object |> filter(pnewsubcategory==phenotype_category)
+  
+  p <- ggplot(to_plot, aes(order_number, rsquared))
+  p <- p + geom_point(aes(color=sig_levels), shape=20) + scale_color_tron() 
+  p <- p + scale_y_continuous(limits=c(0, .205))
+  p <- p + scale_x_continuous(breaks = xaxis_labels$med_x,  labels = xaxis_labels$enewsubcategory)
+  p <- p + geom_vline(data=xaxis_labels, aes(xintercept=max_x), linetype='dotted', col = 'black')+ theme_bw()
+  #p <- p + geom_segment(data=xaxis_labels, aes(x=min_x, xend=max_x, y=med_r2, yend=med_r2))
+  p <- p + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1), legend.position = "none",  panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    plot.margin = unit(c(0,1,0,1), 'lines')
+  )
+  p2 <- p + xlab("") + ylab("R-squared") 
+  p2
+}
+
+manhattan_plot_wrap <- function(to_plot, phenotype_category) {
+  p1 <- manhattan_plot_per_pheno(to_plot, phenotype_category)
+  p2 <- manhattan_r2_plot_per_pheno(to_plot, phenotype_category)
+  pp <- ggarrange(p1,p2,nrow=2,align="v", heights=c(1, 1))
+  pp
+}
+pp <- manhattan_plot_wrap(to_plot, "dexa")
+#ggsave("test.pdf", pp, width=3.5, height=4, units="in")
+```
