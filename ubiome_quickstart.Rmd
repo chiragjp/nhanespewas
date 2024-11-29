@@ -1,0 +1,64 @@
+```{r}
+library(tidyverse)
+library(DBI)
+library(survey)
+library(tictoc)
+devtools::load_all(".")
+```
+
+```{r connect}
+#con <- DBI::dbConnect(RSQLite::SQLite(), dbname='./db/nhanes_012324.sqlite')
+con <- DBI::dbConnect(RSQLite::SQLite(), dbname='./db/nhanes_112824.sqlite')
+varnames <- dplyr::tbl(con, "variable_names_epcf") 
+```
+
+# Explore the uBiome and alpha diversity
+
+```{r}
+varnames |> filter(Variable.Name == 'RB_family1_count')
+
+rb_count <- tbl(con, 'DADA2RB_FAMILY_COUNT_F')
+alpha <- tbl(con, 'ALPHADIVERSITY_F')
+
+rb_count |> colnames()
+
+rb_count |> collect() |> str() ## which ones actually have variation?
+
+p <- ggplot(rb_count, aes((RB_family29_count+.01))) ## looks like it is right skewed
+p + geom_histogram()
+
+
+```
+
+```{r correlation with sex and age?}
+
+rb_count_demog <- rb_count |> left_join(tbl(con, "DEMO_F")) 
+
+p <- ggplot(rb_count_demog, aes(as.factor(RIAGENDR), I(log10(RB_family29_count+1)))) # maybe?
+p <- p + geom_boxplot()
+p
+
+p <- ggplot(rb_count_demog, aes(RIDAGEYR, (RB_family29_count+1)))
+p <- p + geom_point(alpha=.1)
+p
+
+
+```
+
+
+
+# Associate RB_family29_count (P) and Cotinine (E)
+```{r serum cotinine and RB29 count}
+
+varnames |> filter(Variable.Name == 'LBXCOT') # indicator of nicotene (smoke exposure)
+varnames |> filter(Variable.Name == 'RB_family29_count') # Actinomycetaceae
+rb_cot <- pe_flex_adjust("RB_family29_count", "LBXCOT", adjustment_models, con, scale_p=T, logxform_p = T)
+# print out the tidied summary stats for the fully adjusted model
+rb_cot$models[[2]]$tidied
+# R2 for the full adjusted model
+rb_cot$models[[2]]$r2
+# R2 for base model
+rb_cot$base_models[[2]]$r2
+# full-base
+rb_cot$models[[2]]$r2$rsq - rb_cot$base_models[[2]]$r2$rsq
+```
