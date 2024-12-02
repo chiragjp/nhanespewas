@@ -9,9 +9,10 @@ devtools::load_all(".")
 ```{r connect}
 con <- DBI::dbConnect(RSQLite::SQLite(), dbname='./db/nhanes_112824.sqlite') ## path to the sqlite 
 varnames <- dplyr::tbl(con, "variable_names_epcf") 
+
 ```
 
-# Explore the uBiome and alpha diversity
+
 
 ```{r}
 varnames |> filter(Variable.Name == 'RB_family1_count')
@@ -27,7 +28,10 @@ p <- ggplot(rb_count, aes((RB_family29_count+.01))) ## looks like it is right sk
 p + geom_histogram()
 
 
+
 ```
+
+
 
 ```{r correlation with sex and age?}
 
@@ -44,6 +48,27 @@ p
 
 ```
 
+Pseudo code from Braden:
+```{r}
+# outlist = list()
+# for(category in c('phenotype','exposure','','')){
+# 	dat = chiragadata %>% filter(categegory == c)
+# 	for(val in dat$variable){
+# 		for(microbe in microbes){
+# 		#join microbe data in 
+# 		# run weighted regression
+# 		outlist[paste(c,val,microbe)] = lm(variable ~ microbe,weight=SRVYWEGHT) %>% broom::tidy() %>% mutate(category = c, variable = v, microbe = m)
+# 		}
+# 	}
+# }
+
+#out = bind_rows(outlist)
+# out is a dataframe with the columns:
+### term, beta, se, df,pvalue, category, variable, microbe, adjusted_pvalue
+
+```
+
+
 
 
 # Associate RB_family29_count (P) and Cotinine (E)
@@ -54,7 +79,7 @@ varnames |> filter(Variable.Name == 'RB_family29_count') # Actinomycetaceae
 rb_cot <- pe_flex_adjust("RB_family29_count", "LBXCOT", adjustment_models, con, scale_p=T, logxform_p = T)
 # print out the tidied summary stats for the fully adjusted model
 rb_cot$models[[2]]$tidied
-# R2 for the full adjusted model
+# Radju2 for the full adjusted model
 rb_cot$models[[2]]$r2
 # R2 for base model
 rb_cot$base_models[[2]]$r2
@@ -68,4 +93,9 @@ rb_cot$models[[2]]$r2$rsq - rb_cot$base_models[[2]]$r2$rsq
 ```{r}
 sample_size_e <- read_csv('./select/sample_size_ubiome_e_112424.csv.zip') # evarname is the exposure, e_table_name is where it is in .sqlite
 sample_size_p <- read_csv('./select/sample_size_ubiome_y_112424.csv.zip') # xvarname is the pheno, x_table_name is where it is in .sqlite
+```
+
+
+```{r}
+beta_diversity <- read_tsv("./download/beta/dada2rb-unwunifrac-beta.txt")
 ```
