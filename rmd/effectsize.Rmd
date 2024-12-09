@@ -189,44 +189,113 @@ linear_res <- adjusted_meta_2 |> filter(term_name == 'expo') |> select(evarname,
 pe_quantile_all <- pe_quantile |> left_join(linear_res, by=c("evarname", "pvarname"))
 pe_quantile_top <- pe_quantile_all |> filter(sig_levels == 'Bonf.<0.05')
 
+p <- ggplot(pe_quantile_all |> filter(!is.na(sig_levels)) |> mutate(sig_levels = factor(sig_levels, levels=c("> BY & Bonf.", "BY<0.05", "Bonf.<0.05"))) ,  aes(y=exposure_level, x=I(abs(estimate)), fill=sig_levels))
+p <- p + geom_boxplot()+ scale_x_continuous(limits=c(0, .7))
+p <- p + xlab("Absolute Value of Effect Size [1SD of Phenotype]") + ylab("Quantile of Exposure") + scale_fill_nejm()
+p1 <- p + theme_bw() + theme(legend.position = "bottom")
 
-p <- ggplot(pe_quantile_top, aes(y=exposure_level, x=I(abs(estimate))))
-p <- p + geom_density_ridges()+ scale_x_continuous(limits=c(0, .7))
+ggsave("./paper figs/EffectSize.pdf", p1, width=5, height=5)
+
+keep_p <- c("anthropometric", "blood", "blood pressure", "bone", "electrolyte", "inflammation", "kidney", "liver", "hormone", "metabolic", "nutrition", "dexa")
+
+p <- ggplot(pe_quantile_top |> filter(pnewsubcategory %in% keep_p) , aes(y=exposure_level, x=I(abs(estimate)), fill=pnewsubcategory))
+p <- p + geom_boxplot()+ scale_x_continuous(limits=c(0, .7)) 
 p <- p + xlab("Absolute value of Effect Size [1SD of Phenotype]") + ylab("Quantile of Exposure")
-p
+p2 <- p + theme_bw() + theme(legend.position = "none")
 
-p <- ggplot(pe_quantile_top, aes(y=exposure_level, x=I(abs(estimate)), fill=ecategory))
-p <- p + geom_density_ridges()+ scale_x_continuous(limits=c(0, .7)) + facet_grid(pnewsubcategory~enewsubcategory) + scale_fill_tron()
-p <- p + xlab("Absolute value of Effect Size [1SD of Phenotype]") + ylab("Quantile of Exposure")
-p <- p + theme_bw()
-p
 
-p <- ggplot(pe_quantile_top, aes(y=exposure_level, x=I(abs(estimate))))
-p <- p + geom_density_ridges2(stat="binline", bins=20)+ scale_x_continuous(limits=c(0, .7)) + facet_grid(~pnewsubcategory) +scale_fill_tron()
-p <- p + xlab("Absolute value of Effect Size [1SD of Phenotype]") + ylab("Quantile of Exposure")
-p <- p + theme_bw() + theme()
-p
 
-p <- ggplot(pe_quantile_top, aes(x=exposure_level, y=I(abs(estimate)), fill=pnewsubcategory))
-p <- p + geom_boxplot()+ scale_y_continuous(limits=c(0, .7))
+enewsubcategory_labels <- c("DI",
+                            "OR",
+                            "DB",
+                            "VO",
+                            "PP",
+                            "HM",
+                            "HY",
+                            "DA",
+                            "PH",
+                            "AA",
+                            "SB",
+                            "PT",
+                            "PO",
+                            "IN", "SU", "SM")
+names(enewsubcategory_labels) <- c("dietary interview",
+                                   "organochlorine",
+                                   "dietary biomarker",
+                                   "VOC",
+                                   "priority pesticide",
+                                   "heavy metals",
+                                   "hydrocarbon",
+                                   "diakyl",
+                                   "phenols",
+                                   "amine/amide",
+                                   "smoking biomarker",
+                                   "phthalates",
+                                   "polyfluoro",
+                                   "infection",
+                                   "supplements",
+                                   "smoking behavior" )
+
+p <- ggplot(pe_quantile_top |> filter(pnewsubcategory %in% keep_p) , aes(x=exposure_level, y=I(abs(estimate)), fill=enewsubcategory))
+p <- p + geom_boxplot() + scale_y_continuous(limits=c(0, .7)) 
 p <- p + ylab("Effect Size [1SD of Phenotype]") + xlab("Quantile of Exposure")
-p <- p + theme_bw() + theme()
+p <- p + theme_bw() + 
+  facet_grid(enewsubcategory~pnewsubcategory, labeller = labeller(enewsubcategory = enewsubcategory_labels)) + 
+  coord_flip() + theme(legend.position = "bottom",axis.text.x = element_text(angle = 45, vjust = 0.8, hjust=1))
+
+
+ggsave("./paper figs/EffectSize_matrix.pdf", p, width=8.5, height=10)
+```
+
+
+## cdf of the R2
+
+```{r cdfs}
+
+adjusted_meta_2 <- adjusted_meta_2 |> mutate(vartype = ifelse(term_name == 'expo', 'continuous', 'categorical'))
+p <- ggplot(adjusted_meta_2 |> filter(vartype =='categorical'), aes(abs(estimate), color=sig_levels))
+p <- p + stat_ecdf() + scale_x_continuous(limits=c(0, .25))
+p <- p + xlab("abs(estimate)") + ylab("percentile")  + theme(legend.position="bottom") + scale_color_npg()
 p
 
+p <- ggplot(adjusted_meta_2 |> filter(vartype =='continuous'), aes(abs(estimate), color=sig_levels))
+p <- p + stat_ecdf() + scale_x_continuous(limits=c(0, .25))
+p <- p + xlab("abs(estimate)") + ylab("percentile") + theme(legend.position="bottom") + scale_color_npg()
+p
+
+
+p <- ggplot(adjusted_meta_2, aes(abs(estimate), color=sig_levels))
+p <- p + stat_ecdf() + scale_x_continuous(limits=c(0, .25))
+p <- p + xlab("abs(estimate)") + ylab("percentile") + theme(legend.position="bottom") + scale_color_npg()
+p
+
+ecdf_for_sig <- adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05') |> pull(rsq_adjusted_base_diff) |> ecdf()
+ecdf_for_non_sig <- adjusted_meta_2 |> filter(sig_levels == '> BY & Bonf.') |> pull(rsq_adjusted_base_diff) |> ecdf()
+
+p_percent_sig <- adjusted_meta_2 |> group_by(pnewsubcategory, sig_levels) |> count() |> pivot_wider(names_from = sig_levels, values_from = n) |> mutate(total_tests = rowSums(across(where(is.numeric)), na.rm = TRUE)) |> 
+  mutate(percent_non_sig = `> BY & Bonf.`/total_tests, percent_bonf = `Bonf.<0.05`/total_tests, percent_BY=`BY<0.05`/total_tests) |> 
+  select(pnewsubcategory, total_tests, percent_non_sig, percent_bonf, percent_BY) |> ungroup()
+
+p_effect_sizes_per <- adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05') |> group_by(pnewsubcategory) |> summarize(median_pvalue=median(p.value), median_r2=median((rsq_adjusted_base_diff))) |> left_join(p_percent_sig)
+
+p_effect_sizes_per <- p_effect_sizes_per |> mutate(q = ecdf_for_sig(median_r2), sig_levels ='Bonf.<0.05')
+p_effect_sizes_per <- p_effect_sizes_per |> mutate(p_cat = pnewsubcategory)
+
+
+
+p <- ggplot(adjusted_meta_2 |> mutate(sig_levels = factor(sig_levels, levels=c("> BY & Bonf.", "BY<0.05", "Bonf.<0.05"))), aes(rsq_adjusted_base_diff, color=sig_levels))
+p <- p + stat_ecdf() + scale_x_continuous(limits=c(0, .05)) +scale_color_nejm()
+p <- p + geom_point(data=p_effect_sizes_per, aes(x=median_r2, y = q, color=sig_levels)) 
+p <- p + geom_text_repel(data=p_effect_sizes_per, aes(x=median_r2, y = q, color=sig_levels, label=p_cat)) 
+p <- p + xlab("R^2 (adjusted-base model)") + ylab("Percentile") 
+p <- p + theme_bw() + theme(legend.position="bottom") 
+p
+ggsave("./paper figs/r2_CDF.pdf", p, width=5, height=5)
+
+
+
 ```
 
-
-```{r}
-
-pe_quantile_top |> filter(term == "expoq5") |> group_by(esubcategory) |> 
-  summarize(med_estimate = median(abs(estimate)),
-            med_estimate = quantile(abs(estimate)),
-            med_pvalue = median((p.value))
-            )
-
-
-
-```
 
 Compare the pvalues from the two different approaches
 
@@ -239,32 +308,4 @@ ggplot(pval_compare, aes(-log10(p.value.x), -log10(p.value_overall))) + geom_poi
 
 
 
-```{r}
-con_q_nat_scale <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/pe_summary_stats_percentile_noscale_p_10_2024.sqlite')
-pe_overall_q_nat_scale <- tbl(con_q_nat_scale, "pe_overall")
-pe_overall_q_nat_2 <- pe_overall_q_nat_scale |> filter( model_number == 2)
 
-
-pe_overall_q_nat_2 |> filter(exposure == 'LBXGTC', phenotype == "BMXBMI", aggregate_base_model == 0)
-## 5 greater points in BMI )vs. the lowest exposure group
-
-pe_overall_q_nat_2 |> filter(exposure == 'LBXBPB', phenotype == "BMXHT", aggregate_base_model == 0)
-## -3cm lower height for
-
-
-pe_overall_q_nat_2 |> filter(phenotype == 'BMXHT', aggregate_base_model==0, term == 'expoq5') |> ggplot(aes(estimate)) + geom_histogram() + xlab("Height (cm)")
-
-pe_overall_q_nat_2 |> filter(phenotype == 'LBXGH', aggregate_base_model==0, term == 'expoq5') |> ggplot(aes(estimate)) + geom_histogram() + xlab("Hemoglobin A1C%")
-
-pe_overall_q_nat_2 |> filter(phenotype == 'LBXGLU', aggregate_base_model==0, term == 'expoq5') |> ggplot(aes(estimate)) + geom_histogram() + xlab("Fasting Glucose (mg/dL)")
-
-pe_overall_q_nat_2 |> filter(phenotype == 'LBDLDL', aggregate_base_model==0, term == 'expoq5') |> ggplot(aes(estimate)) + geom_histogram() + xlab("LDL Cholesterol (mg/dL)")
-
-pe_overall_q_nat_2 |> filter(phenotype == 'SPXNFEV1', aggregate_base_model==0, term == 'expoq5') |> ggplot(aes(estimate)) + geom_histogram() + xlab("FEV1")
-pe_overall_q_nat_2 |> filter(phenotype == 'SPXNFEV1', aggregate_base_model==0, term == 'expoq5') |> arrange(statistic)
-
-
-pe_overall_q_nat_2 |> filter(phenotype == 'LBXTC', aggregate_base_model==0, term == 'expoq5') |> ggplot(aes(estimate)) + geom_histogram() + xlab("Total Cholesterol (mg/dL)") + theme_bw()
-
-
-```

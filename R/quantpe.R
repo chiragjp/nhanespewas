@@ -137,7 +137,7 @@ svyrsquared <- function(analysisObj) {
 #' result <- run_model(formu, dsn, scale_expo=T, scale_pheno=F, quantile_expo=c(0.25, 0.5, 0.75))
 #' }
 #' @export
-run_model <- function(formu, dsn, scale_expo=T, scale_pheno=F, quantile_expo=NULL, expo_levels=NULL, save_svymodel=F) {
+run_model <- function(formu, dsn, scale_expo=T, scale_pheno=F, quantile_expo=NULL, expo_levels=NULL, save_svymodel=F, scale_clr=F) {
   cut_points <- NA
   if(scale_expo) {
     logger::log_info("Exposure as scaled")
@@ -155,11 +155,18 @@ run_model <- function(formu, dsn, scale_expo=T, scale_pheno=F, quantile_expo=NUL
     dsn <- stats::update(dsn, expo=factor(expo, levels=expo_levels))
   }
 
-  if(scale_pheno) {
+  if(scale_pheno & (scale_clr == F)) {
+    logger::log_info("Phenotype scaled by mean and SD")
     s <- sqrt(mean(survey::svyvar(~pheno, dsn, na.rm = T)))
     mn <- mean(survey::svymean(~pheno, dsn, na.rm=T))
     dsn <- stats::update(dsn, pheno=(pheno-mn)/s)
+  } else if(scale_pheno & scale_clr) {
+    logger::log_info("Phenotype scaled using CLR")
+    dsn <- stats::update(dsn, logpheno=log(pheno+.25))
+    mn <- mean(survey::svymean(~logpheno, dsn, na.rm=T))
+    dsn <- stats::update(dsn, pheno=logpheno-mn)
   }
+
 
   mod <- survey::svyglm(formu,dsn)
   ti <- broom::tidy(mod)
@@ -193,7 +200,7 @@ name_and_xform_pheno_expo <- function(pheno, exposure, table_object, logxform_p=
     logger::log_info("Phenotype {pheno} being logged")
     table_object$merged_tab <- table_object$merged_tab |> dplyr::mutate(pheno=log10_xform_variable(!!as.name(pheno)))
   } else {
-    logger::log_info("Phenotype {pheno} being kept on the natural scale")
+    logger::log_info("Phenotype {pheno} being kept on the natural scale (not being logged)")
     table_object$merged_tab <- table_object$merged_tab |> dplyr::mutate(pheno=!!as.name(pheno))
   }
 
@@ -432,7 +439,7 @@ pe <- function(pheno, exposure, adjustment_variables,con, series=NULL,
 pe_flex_adjust <- function(pheno, exposure, adjustment_variables,con, series=NULL,
                            logxform_p=T, logxform_e=T, scale_e=T, scale_p=F,
                            pheno_table_name=NULL, expo_table_name=NULL,
-                           quantile_expo=NULL, exposure_levels=NULL) {
+                           quantile_expo=NULL, exposure_levels=NULL, scale_clr=F) {
 
   ptables <- get_table_names_for_varname(con, varname = pheno, series) |> rename(p_name = Data.File.Name)
   etables <- get_table_names_for_varname(con, varname = exposure, series) |> rename(e_name = Data.File.Name)
@@ -472,9 +479,9 @@ pe_flex_adjust <- function(pheno, exposure, adjustment_variables,con, series=NUL
     } else {
       baseadjusted <- addToBase(baseformula, adjust_variables_for_scene)
       basebaseadjusted <- addToBase(basebase, adjust_variables_for_scene)
-      base_models[[mod_num]] <- run_model(basebaseadjusted,dsn, scale_expo = scale_e, scale_pheno = scale_p,  quantile_expo=quantile_expo, expo_levels =  exposure_levels)
+      base_models[[mod_num]] <- run_model(basebaseadjusted,dsn, scale_expo = scale_e, scale_pheno = scale_p,  quantile_expo=quantile_expo, expo_levels =  exposure_levels, scale_clr=scale_clr)
     }
-    models[[mod_num]] <- run_model(baseadjusted,dsn, scale_expo = scale_e, scale_pheno = scale_p,  quantile_expo=quantile_expo, expo_levels =  exposure_levels)
+    models[[mod_num]] <- run_model(baseadjusted,dsn, scale_expo = scale_e, scale_pheno = scale_p,  quantile_expo=quantile_expo, expo_levels =  exposure_levels,scale_clr=scale_clr)
   }
   n <- dsn |> nrow()
   list(log_p = logxform_p, log_e = logxform_e, scaled_p = scale_p, scaled_e=scale_e, unweighted_n=n, phenotype=pheno, series=tab_obj$series, exposure=exposure, models=models, base_models=base_models, adjustment_variables=adjustment_variables, demographic_breakdown=demo_break_tbl)

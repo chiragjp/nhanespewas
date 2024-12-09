@@ -9,7 +9,7 @@ devtools::load_all(".")
 ```{r connect}
 con <- DBI::dbConnect(RSQLite::SQLite(), dbname='./db/nhanes_112824.sqlite') ## path to the sqlite 
 varnames <- dplyr::tbl(con, "variable_names_epcf") 
-
+table_names <- dplyr::tbl(con, "table_names_epcf")
 ```
 
 
@@ -31,6 +31,54 @@ p + geom_histogram()
 
 ```
 
+
+# variation of the relative abundance information
+```{r}
+rsv_relative <- tbl(con, 'DADA2RSV_GENUS_RELATIVE_F') |> collect() |> rbind(tbl(con, 'DADA2RSV_GENUS_RELATIVE_G') |> collect())
+
+rsv_sd <- rsv_relative |> summarise(across(where(is.numeric), list(sd = sd), .names = "{.col}")) |> 
+  pivot_longer(cols = everything())
+
+
+compute_clr <- function(data) {
+  data |>
+    rowwise() |> # Operate on rows
+    mutate(
+      geo_mean = exp(mean(log(c_across(where(is.numeric))+.25), na.rm = TRUE)), # Row-wise geometric mean
+      across(where(is.numeric), ~ log(.x +.25 / geo_mean), .names = "clr_{.col}") # CLR transformation
+    ) |>
+    select(-geo_mean) |> # Remove intermediate geo_mean column
+    ungroup()
+}
+
+rsv_relative <- compute_clr(rsv_relative)
+
+rsv_mean <- rsv_relative |> summarise(across(where(is.numeric), list(mean = mean), .names = "{.col}")) |> 
+  pivot_longer(cols = everything())
+
+rsv_non_zero<- rsv_relative |> summarise(across(where(is.numeric), list(non_z = ~sum(.x>0)), .names = "{.col}")) |> 
+  pivot_longer(cols = everything())
+
+rsv_mean <- rsv_relative |> summarise(across(where(is.numeric), list(mean = mean), .names = "{.col}")) |> 
+  pivot_longer(cols = everything())
+
+rsv_max <- rsv_relative |> summarise(across(where(is.numeric), list(mean = mean), .names = "{.col}")) |> 
+  pivot_longer(cols = everything())
+
+
+rsv_measure <- rsv_sd |> mutate(statistic="sd") |> rbind(rsv_mean |> mutate(statistic="mean")) 
+
+p <- ggplot(rsv_non_zero |> filter(name != "SEQN"), aes(value)) + geom_histogram()
+p
+p <- ggplot(rsv_max |> filter(name != "SEQN"), aes(value)) + geom_histogram()
+p
+
+p <- ggplot(rsv_sd |> filter(name != "SEQN"), aes(value)) + geom_histogram()
+p
+
+# filter out those that have a SD of zero, then also add .25 and 
+
+```
 
 
 ```{r correlation with sex and age?}
@@ -76,7 +124,10 @@ Pseudo code from Braden:
 
 varnames |> filter(Variable.Name == 'LBXCOT') # indicator of nicotene (smoke exposure)
 varnames |> filter(Variable.Name == 'RB_family29_count') # Actinomycetaceae
-rb_cot <- pe_flex_adjust("RB_family29_count", "LBXCOT", adjustment_models, con, scale_p=T, logxform_p = T)
+
+
+
+rb_cot <- pe_flex_adjust("RSV_genus29_relative", "LBXCOT", adjustment_models, con, scale_p=T, logxform_p = F, scale_clr = T)
 # print out the tidied summary stats for the fully adjusted model
 rb_cot$models[[2]]$tidied
 # Radju2 for the full adjusted model
@@ -85,6 +136,45 @@ rb_cot$models[[2]]$r2
 rb_cot$base_models[[2]]$r2
 # full-base
 rb_cot$models[[2]]$r2$rsq - rb_cot$base_models[[2]]$r2$rsq
+```
+
+
+# check the CLR 
+```{r}
+
+ptables <- get_table_names_for_varname(con, varname = "RSV_genus29_relative") |> rename(p_name = Data.File.Name)
+etables <- get_table_names_for_varname(con, varname = "LBXCOT") |> rename(e_name = Data.File.Name)
+table_set <- ptables |> inner_join(etables, by = "Begin.Year")
+if(nrow(table_set) == 0) {
+    stop("Y and X variables not collected in the same survey")
+}
+
+
+  ## get table names for each series
+tab_obj <- get_x_y_tables_as_list(con,table_set$p_name,table_set$e_name)
+
+  ## weight
+tab_obj <- figure_out_multiyear_weight(tab_obj)
+
+tab_obj <- name_and_xform_pheno_expo("RSV_genus29_relative", "LBXCOT", tab_obj, logxform_p=F, logxform_e=T)
+
+potential_adjusters <- setdiff(unique(adjustment_models$variables), NA)
+dat <- tab_obj$merged_tab |> dplyr::filter(!is.na(wt), wt > 0, !is.na(expo), !is.na(pheno), dplyr::if_all(tidyselect::all_of(potential_adjusters), ~!is.na(.)))
+dsn <- create_svydesign(dat)
+logger::log_info("Phenotype scaled using CLR")
+dsn <- stats::update(dsn, logpheno=log(pheno+.25))
+mn <- mean(survey::svymean(~logpheno, dsn, na.rm=T))
+dsn <- stats::update(dsn, pheno_test=logpheno-mn)
+plot(dsn$variables$logpheno, log(dsn$variables$pheno+.25))
+abline(0, 1)
+plot(dsn$variables$pheno_test, log(dsn$variables$pheno+.25)-mean(log(dsn$variables$pheno+.25)))
+abline(0,1)
+
+plot(dsn$variables$pheno_test, dsn$variables$RSV_genus29_relative)
+
+hist(dsn$variables$RSV_genus29_relative)
+
+
 ```
 
 
