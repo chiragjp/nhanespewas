@@ -28,6 +28,8 @@ sample_size_threshold <- 500
 #exposure <- "LBX06"
 exposure <- 'URXNAL'
 phenotype <- 'RSV_genus29_relative'
+#exposure <- "RSV_genus29_relative"
+#phenotype <- "BMXBMI"
 #exposure <- "URXNAL"
 #phenotype <- "URXUCR"
 #phenotype <- "LBXP1"
@@ -37,6 +39,7 @@ phenotype <- 'RSV_genus29_relative'
 #ss_file <- './select/sample_size_pe.csv'  #opt$sample_size_pairs_list_file
 #ss_file <- '../select/sample_size_pe_category_060623.csv'
 #ss_file <- '../select/sample_size_pe_category_0824.csv'
+#ss_file <- '../select/sample_size_ubiome_y_112424.csv'
 ss_file <- '../select/sample_size_ubiome_e_112424.csv'
 #path_to_db <-   '../db/nhanes_012324.sqlite' # '../nhanes_122322.sqlite'
 path_to_db <-'../db/nhanes_112824.sqlite'
@@ -55,8 +58,9 @@ if(!TEST) {
 ############### end DEBUG
 
 con <- DBI::dbConnect(RSQLite::SQLite(), dbname=path_to_db)
-to_do <- read_csv(ss_file) |> filter(pvarname == phenotype) |> group_by(evarname) |> summarize(total_n=sum(n), num_surveys = n()) |> mutate(pvarname = phenotype)
+#to_do <- read_csv(ss_file) |> filter(pvarname == phenotype) |> group_by(evarname) |> summarize(total_n=sum(n), num_surveys = n()) |> mutate(pvarname = phenotype)
 #to_do <- to_do |> filter(num_surveys >=2, total_n >= sample_size_threshold) # no need to threshold
+to_do <- read_csv(ss_file) |> filter(pvarname == phenotype) |> group_by(evarname) |> summarize(total_n=sum(n), num_surveys = n()) |> mutate(pvarname = phenotype)
 
 
 if(TEST) {
@@ -84,7 +88,7 @@ if(nrow(to_do) == 0) {
 
 
 N <- nrow(to_do)
-N <- 100 ## test
+#N <- 2
 models <- vector("list", length=N)
 
 for(ii in 1:N) {
@@ -94,6 +98,7 @@ for(ii in 1:N) {
   ## how to transform the phenotype and the exposure - log the phenotype
 
   e_levels <- nhanespewas::check_e_data_type(rw$evarname, con)
+
   adjustment_model_for_e <- nhanespewas::adjustment_scenario_for_variable(rw$evarname, rw$pvarname) # should be ok
   #print(adjustment_model_for_e)
   log_info("{ii} e_levels { e_levels$vartype } ")

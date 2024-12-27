@@ -34,7 +34,8 @@ p + geom_histogram()
 
 # variation of the relative abundance information
 ```{r}
-rsv_relative <- tbl(con, 'DADA2RSV_GENUS_RELATIVE_F') |> collect() |> rbind(tbl(con, 'DADA2RSV_GENUS_RELATIVE_G') |> collect())
+rsv_relative <- tbl(con, 'DADA2RB_GENUS_RELATIVE_F') |> collect() |> rbind(tbl(con, 'DADA2RB_GENUS_RELATIVE_G') |> collect())
+#rsv_relative <- tbl(con, 'DADA2RB_FAMILY_RELATIVE_F') |> collect() |> rbind(tbl(con, 'DADA2RB_FAMILY_RELATIVE_G') |> collect())
 
 rsv_sd <- rsv_relative |> summarise(across(where(is.numeric), list(sd = sd), .names = "{.col}")) |> 
   pivot_longer(cols = everything())
@@ -70,6 +71,10 @@ rsv_measure <- rsv_sd |> mutate(statistic="sd") |> rbind(rsv_mean |> mutate(stat
 
 p <- ggplot(rsv_non_zero |> filter(name != "SEQN"), aes(value)) + geom_histogram()
 p
+
+p <- ggplot(rsv_non_zero |> filter(name != "SEQN") |> mutate(name = fct_reorder(name, desc(value))), aes(name,value)) + geom_bar(stat = "identity")
+p
+
 p <- ggplot(rsv_max |> filter(name != "SEQN"), aes(value)) + geom_histogram()
 p
 
@@ -139,6 +144,27 @@ rb_cot$models[[2]]$r2$rsq - rb_cot$base_models[[2]]$r2$rsq
 ```
 
 
+BMI association with a bug
+```{r}
+rb_bmi <- pe_flex_adjust("BMXBMI", "RSV_genus29_relative", adjustment_models, con, scale_p=T, logxform_p = F, scale_clr = F)
+rb_arm <- pe_flex_adjust("BMXARMC", "RSV_genus29_relative", adjustment_models, con, scale_p=T, logxform_p = F, scale_clr = F)
+rb_glu <- pe_flex_adjust("LBXGLU", "RB_genus1267_relative", adjustment_models, con, scale_p=T, scale_e = T, logxform_e = F, logxform_p = F, scale_clr = F)
+```
+
+```{r}
+ptables <- get_table_names_for_varname(con, varname = "BMXBMI") |> rename(p_name = Data.File.Name)
+etables <- get_table_names_for_varname(con, varname = "RB_genus780_relative") |> rename(e_name = Data.File.Name)
+table_set <- ptables |> inner_join(etables, by = "Begin.Year")
+tab_obj <- get_x_y_tables_as_list(con,table_set$p_name,table_set$e_name)
+  ## weight
+tab_obj <- figure_out_multiyear_weight(tab_obj)
+
+plot(tab_obj$merged_tab$RB_genus780_relative, tab_obj$merged_tab$BMXBMI)
+
+
+
+```
+
 # check the CLR 
 ```{r}
 
@@ -189,3 +215,6 @@ sample_size_p <- read_csv('./select/sample_size_ubiome_y_112424.csv.zip') # xvar
 ```{r}
 beta_diversity <- read_tsv("./download/beta/dada2rb-unwunifrac-beta.txt")
 ```
+
+
+

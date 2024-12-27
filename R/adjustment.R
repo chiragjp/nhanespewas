@@ -114,5 +114,8 @@ adjustment_scenario_for_variable <- function(evarname, pvarname) {
     log_info("Default adjustments")
     return(adjustment_models)
   }
-
 }
+
+
+
+

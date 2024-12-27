@@ -35,7 +35,7 @@ ppppp_f <- select_ubiome |> filter(Begin.Year == 2009) |> select(Variable.Name, 
 
 series_f <- cross_join(ppppp_f, eeeee_f)
 
-rbind(series_f, series_g) |> write_csv('./sample_size_ubiome_e_112424.csv')
+#rbind(series_f, series_g) |> write_csv('./sample_size_ubiome_e_112424.csv')
 
 ```
 
@@ -44,16 +44,18 @@ Create a sample size file for the uBiome and Phenos
 samp_size_pp_alpha_g <- samp_size_pp |> filter(x_table_name == 'ALPHADIVERSITY_G')
 samp_size_pp_alpha_f <- samp_size_pp |> filter(x_table_name == 'ALPHADIVERSITY_F')
 
-xxxxx_g <- samp_size_pp_alpha_g |> group_by(yvarname,y_table_name) |> summarize(sd_ss=sd(n), m_ss=mean(n)) |> filter(m_ss >= 500) |> rename(n=m_ss) |> select(-sd_ss) |> ungroup() |> rename(xvarname = yvarname, x_table_name = y_table_name)
+xxxxx_g <- samp_size_pp_alpha_g |> group_by(yvarname,y_table_name) |> summarize(sd_ss=sd(n), m_ss=mean(n)) |> filter(m_ss >= 500) |> rename(n=m_ss) |> select(-sd_ss) |> ungroup() |> rename(pvarname = yvarname, p_table_name = y_table_name)
 
-yyyyy_g <- select_ubiome |> filter(Begin.Year == 2011) |> select(Variable.Name, Data.File.Name) |> rename(yvarname = Variable.Name, y_table_name=Data.File.Name)
+yyyyy_g <- select_ubiome |> filter(Begin.Year == 2011) |> select(Variable.Name, Data.File.Name) |> rename(evarname = Variable.Name, e_table_name=Data.File.Name)
 
 series_g <- cross_join(xxxxx_g, yyyyy_g)
 
-xxxxx_f <- samp_size_pp_alpha_f |> group_by(yvarname,y_table_name) |> summarize(sd_ss=sd(n), m_ss=mean(n)) |> filter(m_ss >= 500) |> rename(n=m_ss) |> select(-sd_ss) |> ungroup() |> rename(xvarname = yvarname, x_table_name = y_table_name)
+xxxxx_f <- samp_size_pp_alpha_f |> group_by(yvarname,y_table_name) |> summarize(sd_ss=sd(n), m_ss=mean(n)) |> filter(m_ss >= 500) |> rename(n=m_ss) |> select(-sd_ss) |> ungroup() |> rename(pvarname = yvarname, p_table_name = y_table_name)
 
-yyyyy_f <- select_ubiome |> filter(Begin.Year == 2009) |> select(Variable.Name, Data.File.Name) |> rename(yvarname = Variable.Name, y_table_name=Data.File.Name) 
+yyyyy_f <- select_ubiome |> filter(Begin.Year == 2009) |> select(Variable.Name, Data.File.Name) |> rename(evarname = Variable.Name, e_table_name=Data.File.Name) 
 
 series_f <- cross_join(xxxxx_f, yyyyy_f)
 rbind(series_f, series_g) |> write_csv('./sample_size_ubiome_y_112424.csv')
+
+
 ```
