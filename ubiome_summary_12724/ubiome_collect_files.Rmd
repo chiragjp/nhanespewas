@@ -1,0 +1,53 @@
+---
+title: "uBiome Exposures"
+author: "Chirag Patel"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+
+load_pfile <- function(path) {
+  load(path)
+  list(glanced=glanced, pe=pe, rsq=rsq)
+} 
+
+directory <- './ubiome_exwas/'
+ubiome_files <- dir(directory)
+```
+
+```{r}
+pe <- vector("list", length(ubiome_files))
+rsq <- vector("list", length(ubiome_files))
+glanced <- vector("list", length(ubiome_files))
+for(ii in 1:length(ubiome_files)) {
+  path_to_file <- file.path(directory, ubiome_files[[ii]])
+  print(path_to_file)
+  p_contents <- load_pfile(path_to_file)
+  pe[[ii]] <- p_contents$pe  |> filter(model_number <= 2) |> filter(grepl("genus", phenotype))
+  glanced[[ii]] <- p_contents$rsq |> filter(model_number <= 2) |> filter(grepl("genus", phenotype))
+  rsq[[ii]] <- p_contents$glanced |> filter(model_number <= 2) |> filter(grepl("genus", phenotype))
+}
+
+glanced <- bind_rows(glanced)
+rsq <- bind_rows(rsq)
+pe <- bind_rows(pe)
+
+write_rds(list(glanced=glanced, ubiome_e=pe, rsq=rsq), file = "./ubiome_exwas.rds")
+
+```
+
+```{r}
+pe |> filter(model_number == 1) |> group_by(exposure) |> count()
+```
+

@@ -1,0 +1,99 @@
+---
+title: "uBiome PheWAS"
+author: "Chirag Patel"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#  Phenome wide association study on genus of the oral uBiome
+Chirag Patel
+
+## Model Specification
+
+- Clinical Pheno ~ genus_i + age + sex + poverty + education + race
+
+```{r}
+library(tidyverse)
+devtools::load_all(".")
+load('./ubiome_phewas.Rdata')
+path_to_db <- '../db/nhanes_112824.sqlite' ## path to the sqlite 
+con <- DBI::dbConnect(RSQLite::SQLite(), dbname=path_to_db) 
+variable_names <- tbl(con, "variable_names_epcf") 
+
+```
+
+```{r}
+phewas <- pe |> filter(model_number == 2, term == "expo")
+phewas <- phewas |> left_join(variable_names |> filter(Begin.Year == 2009) |> select(Variable.Name, Variable.Description) |> collect(),by=c("exposure"="Variable.Name")) |> rename(exposure_description = Variable.Description)
+```
+
+What is the SD and the total non-zero count of the uBiome variables?
+```{r}
+rsv_relative <- tbl(con, 'DADA2RSV_GENUS_RELATIVE_F') |> collect() |> rbind(tbl(con, 'DADA2RSV_GENUS_RELATIVE_G') |> collect())
+
+rsv_sd <- rsv_relative |> summarise(across(where(is.numeric), list(sd = sd), .names = "{.col}")) |> 
+  pivot_longer(cols = everything())
+
+rsv_non_zero <- rsv_relative |> summarise(across(where(is.numeric), list(non_z = ~sum(.x>0)), .names = "{.col}")) |> 
+  pivot_longer(cols = everything())
+
+sd_non_zero <- rsv_sd |> rename(SD=value) |> left_join(rsv_non_zero, by="name") |> rename(non_zero_cnt = value)
+p <- ggplot(sd_non_zero |> filter(name != "SEQN"), aes((non_zero_cnt), (SD)))
+p <- p + geom_point() + theme_bw()
+p
+```
+
+```{r}
+phewas <- phewas |> left_join(rsv_non_zero, by=c("exposure"="name")) 
+phewas <- phewas |> rename(non_zero_cnt=value)
+
+```
+
+
+# Clinical Variables and uBiome Genus with at least X non-zero values
+- set X = 2500, approx 25%
+```{r}
+phewas <- phewas |> filter(non_zero_cnt >= 2500)
+
+phewas |> group_by(phenotype) |> count()
+phewas |> group_by(exposure_description) |> count()
+
+
+```
+
+```{r}
+phewas <- phewas |> mutate(p.value.fdr = p.adjust(p.value, "BH"))
+p <- ggplot(phewas, aes(estimate, I(-log10(p.value.fdr))))
+p <- p + geom_point() + theme_bw()
+p
+```
+
+```{r}
+
+phewas |> arrange(p.value.fdr) |> select(phenotype, exposure, exposure_description, estimate, p.value.fdr) |> head(n=100)
+
+phewas |> arrange(p.value.fdr) |> select(phenotype, exposure, exposure_description, estimate, p.value.fdr) |> filter(exposure != "RSV_genus39_relative") |> head(n=100)
+
+```
+
+## plot the top hit as an example
+```{r}
+phewas |> arrange(p.value.fdr) |> select(phenotype, exposure, exposure_description, estimate, p.value.fdr) |> select(phenotype, exposure, exposure_description) 
+
+rsq |> filter(exposure=='RSV_genus519_relative', phenotype=="LBXSBU")
+
+ptables <- get_table_names_for_varname(con, varname = "LBXSBU") |> rename(p_name = Data.File.Name)
+etables <- get_table_names_for_varname(con, varname = "RSV_genus519_relative") |> rename(e_name = Data.File.Name)
+table_set <- ptables |> inner_join(etables, by = "Begin.Year")
+tab_obj <- get_x_y_tables_as_list(con,table_set$p_name,table_set$e_name)
+  ## weight
+tab_obj <- figure_out_multiyear_weight(tab_obj)
+
+plot((scale(tab_obj$merged_tab$RSV_genus519_relative)), scale(tab_obj$merged_tab$LBXSBU))
+
+hist(scale(tab_obj$merged_tab$RSV_genus519_relative))
+```

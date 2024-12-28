@@ -34,9 +34,8 @@ p + geom_histogram()
 
 # variation of the relative abundance information
 ```{r}
-rsv_relative <- tbl(con, 'DADA2RB_GENUS_RELATIVE_F') |> collect() |> rbind(tbl(con, 'DADA2RB_GENUS_RELATIVE_G') |> collect())
+rsv_relative <- tbl(con, 'DADA2RSV_GENUS_RELATIVE_F') |> collect() |> rbind(tbl(con, 'DADA2RSV_GENUS_RELATIVE_G') |> collect())
 #rsv_relative <- tbl(con, 'DADA2RB_FAMILY_RELATIVE_F') |> collect() |> rbind(tbl(con, 'DADA2RB_FAMILY_RELATIVE_G') |> collect())
-
 rsv_sd <- rsv_relative |> summarise(across(where(is.numeric), list(sd = sd), .names = "{.col}")) |> 
   pivot_longer(cols = everything())
 
@@ -52,15 +51,12 @@ compute_clr <- function(data) {
     ungroup()
 }
 
-rsv_relative <- compute_clr(rsv_relative)
+rsv_relative_clr <- compute_clr(rsv_relative)
 
 rsv_mean <- rsv_relative |> summarise(across(where(is.numeric), list(mean = mean), .names = "{.col}")) |> 
   pivot_longer(cols = everything())
 
 rsv_non_zero<- rsv_relative |> summarise(across(where(is.numeric), list(non_z = ~sum(.x>0)), .names = "{.col}")) |> 
-  pivot_longer(cols = everything())
-
-rsv_mean <- rsv_relative |> summarise(across(where(is.numeric), list(mean = mean), .names = "{.col}")) |> 
   pivot_longer(cols = everything())
 
 rsv_max <- rsv_relative |> summarise(across(where(is.numeric), list(mean = mean), .names = "{.col}")) |> 
@@ -153,14 +149,16 @@ rb_glu <- pe_flex_adjust("LBXGLU", "RB_genus1267_relative", adjustment_models, c
 
 ```{r}
 ptables <- get_table_names_for_varname(con, varname = "BMXBMI") |> rename(p_name = Data.File.Name)
-etables <- get_table_names_for_varname(con, varname = "RB_genus780_relative") |> rename(e_name = Data.File.Name)
+etables <- get_table_names_for_varname(con, varname = "RSV_genus39_relative") |> rename(e_name = Data.File.Name)
 table_set <- ptables |> inner_join(etables, by = "Begin.Year")
 tab_obj <- get_x_y_tables_as_list(con,table_set$p_name,table_set$e_name)
   ## weight
 tab_obj <- figure_out_multiyear_weight(tab_obj)
 
-plot(tab_obj$merged_tab$RB_genus780_relative, tab_obj$merged_tab$BMXBMI)
 
+geo_mean = exp(mean(log(tab_obj$merged_tab$RSV_genus39_relative+.25)))
+x <- log(tab_obj$merged_tab$RSV_genus39_relative+.25 / geo_mean)
+plot(x,scale(tab_obj$merged_tab$RSV_genus39_relative))
 
 
 ```
