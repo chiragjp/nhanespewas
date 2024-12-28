@@ -17,7 +17,8 @@ pe_flex_adjust(
   pheno_table_name = NULL,
   expo_table_name = NULL,
   quantile_expo = NULL,
-  exposure_levels = NULL
+  exposure_levels = NULL,
+  scale_clr = F
 )
 }
 \arguments{

@@ -2,7 +2,7 @@
 % Please edit documentation in R/quantpe.R
 \name{pe}
 \alias{pe}
-\title{Phenotype and Exposure Analysis}
+\title{Phenotype and Exposure Association Across Surveys}
 \usage{
 pe(
   pheno,
@@ -81,7 +81,7 @@ The function performs the following steps:
 \examples{
 \dontrun{
 con <- DBI::dbConnect(RSQLite::SQLite(), dbname = "nhanes.db")
-adjustment_vars <- c("AGE", "SEX")
-result <- pe(pheno = "BMI", exposure = "SMOKING", adjustment_variables = adjustment_vars, con = con)
+adjustment_vars <- c("RIDAGEYR", "RIAGENDR")
+result <- pe(pheno = "BMXBMI", exposure = "LBXCOT", adjustment_variables = adjustment_vars, con = con)
 }
 }

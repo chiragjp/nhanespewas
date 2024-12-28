@@ -11,7 +11,8 @@ run_model(
   scale_pheno = F,
   quantile_expo = NULL,
   expo_levels = NULL,
-  save_svymodel = F
+  save_svymodel = F,
+  scale_clr = F
 )
 }
 \arguments{
