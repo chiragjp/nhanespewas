@@ -1,3 +1,12 @@
+---
+title: "uBiome Quickstart"
+author: "Chirag Patel"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+
+
 ```{r}
 library(tidyverse)
 library(DBI)
@@ -140,12 +149,15 @@ rb_cot$models[[2]]$r2$rsq - rb_cot$base_models[[2]]$r2$rsq
 ```
 
 
-BMI association with a bug
+BMI association 
 ```{r}
 rb_bmi <- pe_flex_adjust("BMXBMI", "RSV_genus29_relative", adjustment_models, con, scale_p=T, logxform_p = F, scale_clr = F)
 rb_arm <- pe_flex_adjust("BMXARMC", "RSV_genus29_relative", adjustment_models, con, scale_p=T, logxform_p = F, scale_clr = F)
 rb_glu <- pe_flex_adjust("LBXGLU", "RB_genus1267_relative", adjustment_models, con, scale_p=T, scale_e = T, logxform_e = F, logxform_p = F, scale_clr = F)
 ```
+
+
+
 
 ```{r}
 ptables <- get_table_names_for_varname(con, varname = "BMXBMI") |> rename(p_name = Data.File.Name)
@@ -213,6 +225,5 @@ sample_size_p <- read_csv('./select/sample_size_ubiome_y_112424.csv.zip') # xvar
 ```{r}
 beta_diversity <- read_tsv("./download/beta/dada2rb-unwunifrac-beta.txt")
 ```
-
 
 
