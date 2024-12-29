@@ -184,6 +184,113 @@ logistic_e_flex_adjust <- function(pheno, exposure, adjustment_variables,con, se
 }
 
 
+#' Flexible Logistic Regression with Adjustments by Table
+#'
+#' This function performs logistic regression on a phenotype and exposure variable within a table object, applying flexible adjustments for multiple scenarios and transformations of the exposure variable.
+#'
+#' @param tab_obj A table object containing a merged data frame (`merged_tab`) with phenotype, exposure, weights, and adjustment variables.
+#' @param pvar Character; the name of the phenotype variable.
+#' @param evar Character; the name of the exposure variable.
+#' @param adjustment_variables A tibble indexed by `scenario` and `variables`, specifying adjustment scenarios and associated adjustment variables.
+#' @param logxform_e Logical; if `TRUE`, the exposure variable is log10-transformed. Default is `TRUE`.
+#' @param scale_e Logical; if `TRUE`, the exposure variable is scaled (z-score transformation). Default is `TRUE`.
+#' @param quantile_expo Optional numeric vector specifying quantiles for discretizing the exposure variable (e.g., `c(0, 0.25, 0.5, 0.75, 1)`). Default is `NULL`.
+#' @param exposure_levels Optional character vector specifying levels to treat the exposure variable as categorical. Default is `NULL`.
+#'
+#' @return A list containing:
+#' \item{log_e}{Logical; whether the exposure variable was log-transformed.}
+#' \item{scaled_e}{Logical; whether the exposure variable was scaled.}
+#' \item{unweighted_n}{Integer; the number of unweighted observations used in the analysis.}
+#' \item{phenotype}{Character; the name of the phenotype variable.}
+#' \item{series}{Character vector; the series of datasets considered in the analysis.}
+#' \item{exposure}{Character; the name of the exposure variable.}
+#' \item{models}{List; the logistic regression models for each adjustment scenario.}
+#' \item{base_models}{List; the baseline models (excluding the exposure variable) for each adjustment scenario.}
+#' \item{demographic_breakdown}{Data frame; demographic summaries of the survey design.}
+#'
+#' @details
+#' The function takes a `tab_obj` containing a merged table, transforms the phenotype and exposure variables,
+#' and fits logistic regression models for multiple adjustment scenarios. It supports:
+#' - Log-transformation or scaling of the exposure variable.
+#' - Creation of survey designs using the **survey** package.
+#' - Flexible adjustment based on scenarios provided in `adjustment_variables`.
+#' - Demographic breakdowns of the survey design.
+#'
+#' The function uses utility functions like `name_and_xform_logistic_pheno_expo`, `create_svydesign`,
+#' and `run_logistic_model` to perform preprocessing and modeling.
+#'
+#' @examples
+#' \dontrun{
+#' # Example adjustment variables tibble
+#' adjustment_vars <- tibble::tibble(
+#'   scenario = c("baseline", "adjusted"),
+#'   variables = list(NULL, c("age", "gender"))
+#' )
+#'
+#'
+#' # Run logistic regression with flexible adjustments
+#' result <- logistic_e_flex_adjust_by_table(
+#'   tab_obj = table_object,
+#'   pvar = "pheno",
+#'   evar = "expo",
+#'   adjustment_variables = adjustment_vars,
+#'   logxform_e = TRUE,
+#'   scale_e = TRUE
+#' )
+#'
+#' # Access models and demographic breakdown
+#' result$models
+#' result$demographic_breakdown
+#' }
+#'
+#' @importFrom dplyr filter if_all pull setdiff
+#' @importFrom stats as.formula
+#' @importFrom logger log_info
+#' @importFrom survey svyglm
+#' @importFrom tibble tibble
+#' @export
+logistic_e_flex_adjust_by_table <- function(tab_obj, pvar, evar,
+                                            adjustment_variables, ## tibble, indexed by scenario and list of adjustment variables
+                                            logxform_e=T, scale_e=T,
+                                            quantile_expo=NULL, exposure_levels=NULL) {
+  pheno <- pvar
+  exposure <- evar
+
+  tab_obj <- name_and_xform_logistic_pheno_expo(pheno, exposure, tab_obj, logxform_e)
+  ## create svydesign
+  potential_adjusters <- setdiff(unique(adjustment_variables$variables), NA)
+  dat <- tab_obj$merged_tab |> dplyr::filter(!is.na(wt), wt > 0, !is.na(expo), !is.na(pheno), dplyr::if_all(tidyselect::all_of(potential_adjusters), ~!is.na(.)))
+
+  dsn <- create_svydesign(dat)
+  demo_break_tbl <- demographic_breakdown(dsn)
+
+  ## run models
+  baseformula <- stats::as.formula("pheno ~ expo")
+  basebase <- stats::as.formula("pheno ~ 1")
+  uniq_model_scenarios <- unique(adjustment_variables$scenario)
+  models <- vector(mode="list", length=length(uniq_model_scenarios))
+  base_models <- vector(mode="list", length=length(uniq_model_scenarios))
+  logger::log_info("total models { length(uniq_model_scenarios)} " )
+  for(mod_num in 1:length(uniq_model_scenarios)) {
+    scene <- uniq_model_scenarios[mod_num]
+    logger::log_info("running model {scene}" )
+    adjust_variables_for_scene <- adjustment_variables |> filter(scenario==scene) |> dplyr::pull(variables)
+    baseadjusted <- NA
+    if(length(adjust_variables_for_scene) == 1 & is.na(adjust_variables_for_scene[1])) {
+      baseadjusted <- baseformula
+    } else {
+      baseadjusted <- addToBase(baseformula, adjust_variables_for_scene)
+      basebaseadjusted <- addToBase(basebase, adjust_variables_for_scene)
+      base_models[[mod_num]] <- run_logistic_model(basebaseadjusted,dsn, scale_expo = scale_e,  quantile_expo=quantile_expo, expo_levels =  exposure_levels)
+    }
+    models[[mod_num]] <- run_logistic_model(baseadjusted,dsn, scale_expo = scale_e, quantile_expo=quantile_expo, expo_levels =  exposure_levels)
+  }
+  n <- dsn |> nrow()
+
+  list(log_e = logxform_e, scaled_e=scale_e, unweighted_n=n, phenotype=pheno, series=tab_obj$series, exposure=exposure, models=models, base_models=base_models, adjustment_variables=adjustment_variables, demographic_breakdown=demo_break_tbl)
+}
+
+
 #' Run Logistic Model on Survey Data
 #'
 #' This function fits a logistic regression model using survey data, allowing for the scaling, quantile transformation, or categorical recoding of an exposure variable.

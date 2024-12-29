@@ -46,14 +46,18 @@ con <- DBI::dbConnect(RSQLite::SQLite(), dbname=path_to_db)
 #to_do <- read_csv(ss_file) |> filter(pvarname == phenotype) |> group_by(evarname) |> summarize(total_n=sum(n), num_surveys = n()) |> mutate(pvarname = phenotype)
 #to_do <- to_do |> filter(num_surveys >=2, total_n >= sample_size_threshold) # no need to threshold
 to_do <- read_csv(ss_file) |>
-  filter(pvarname == 'BMXBMI', grepl("genus", evarname), grepl("relative", evarname)) |> group_by(evarname) |>
+  filter(pvarname == 'BMXBMI', grepl("genus", evarname), grepl("relative$", evarname), grepl("^RSV", evarname)) |> group_by(evarname) |>
   summarize(total_n=sum(n), num_surveys = n()) |> mutate(pvarname = phenotype)
 
-tab_obj <- get_x_y_tables_as_list(con,table_set$p_name,table_set$e_name)
+exposure_name_sample <- (to_do |> slice_head() |> pull(evarname))[1]
 
+ptables <- get_table_names_for_varname(con, varname = phenotype) |> rename(p_name = Data.File.Name)
+etables <- get_table_names_for_varname(con, varname = exposure_name_sample) |> rename(e_name = Data.File.Name)
+
+table_set <- ptables |> inner_join(etables, by = "Begin.Year")
+tab_obj <- get_x_y_tables_as_list(con,table_set$p_name,table_set$e_name)
 ## weight
 tab_obj <- figure_out_multiyear_weight(tab_obj)
-#m_table <- get_expo_pheno_tables(con, phenotype_table, exposure_table) |> figure_out_weight()
 
 if(TEST) {
   to_do <- to_do |> filter(evarname == exposure)
@@ -64,7 +68,8 @@ if(!is.null(opt$exposures)) {
   to_do <- to_do |> inner_join(exposures |> rename(evarname=X1), by="evarname")
 }
 
-pe_safely <- safely(nhanespewas::logistic_e_flex_adjust)
+pe_safely <- safely(nhanespewas::logistic_e_flex_adjust_by_table)
+#pe_safely <- (nhanespewas::logistic_e_flex_adjust_by_table)
 tidied <- vector("list", length = nrow(to_do))
 glanced <- vector("list", length = nrow(to_do))
 
@@ -78,6 +83,7 @@ if(nrow(to_do) == 0) {
   stop("No pairs to execute")
 }
 
+adjustment_model_for_e <- adjustment_models |> filter(scenario == "base" | scenario == "age_sex_ethnicity_income_education")# limit the adjustment scenarios
 
 N <- nrow(to_do)
 models <- vector("list", length=N)
@@ -85,19 +91,14 @@ models <- vector("list", length=N)
 for(ii in 1:N) {
   rw <- to_do |> slice(ii)
   log_info("{ii} out of {nrow(to_do)}; expo: {rw$evarname}; pheno: {rw$pvarname} ")
-
-  adjustment_model_for_e <- nhanespewas::adjustment_scenario_for_variable(rw$evarname, rw$pvarname) |>
-    filter(scenario == "base" | scenario == "age_sex_ethnicity_income_education")# limit the adjustment scenarios
-
   mod <- NULL
   if(use_quantile==1) {
-    mod <- pe_safely(rw$pvarname, rw$evarname, adjustment_model_for_e, con, logxform_e=F, scale_e=F,
+    mod <- pe_safely(tab_obj,rw$pvarname, rw$evarname, adjustment_model_for_e, logxform_e=F, scale_e=F,
                      quantile_expo=c(0, .25, .5, .75, 1), exposure_levels=NULL)
   } else {
-    mod <- pe_safely(rw$pvarname, rw$evarname, adjustment_model_for_e, con, logxform_e=F, scale_e=T,
+    mod <- pe_safely(tab_obj,rw$pvarname, rw$evarname, adjustment_model_for_e, logxform_e=F, scale_e=T,
                      quantile_expo=NULL, exposure_levels=NULL)
   }
-
   models[[ii]] <- mod ## each iteration contains a pair, and a data struct of all the models
 }
 
@@ -138,10 +139,6 @@ tidied_result <- function(models, aggregate_base_model = F) {
   })
   final_result
 }
-
-
-
-
 
 glanced_result <-function(models, aggregate_base_model=F) {
   final_result <- map_dfr(models, ~ {
