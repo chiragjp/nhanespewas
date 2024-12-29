@@ -46,7 +46,7 @@ con <- DBI::dbConnect(RSQLite::SQLite(), dbname=path_to_db)
 #to_do <- read_csv(ss_file) |> filter(pvarname == phenotype) |> group_by(evarname) |> summarize(total_n=sum(n), num_surveys = n()) |> mutate(pvarname = phenotype)
 #to_do <- to_do |> filter(num_surveys >=2, total_n >= sample_size_threshold) # no need to threshold
 to_do <- read_csv(ss_file) |>
-  filter(pvarname == 'BMXBMI', grepl("genus", evarname), grepl("relative$", evarname), grepl("^RSV", evarname)) |> group_by(evarname) |>
+  filter(pvarname == 'BMXBMI', grepl("genus", evarname), grepl("relative$", evarname), grepl("^RB", evarname)) |> group_by(evarname) |>
   summarize(total_n=sum(n), num_surveys = n()) |> mutate(pvarname = phenotype)
 
 exposure_name_sample <- (to_do |> slice_head() |> pull(evarname))[1]

@@ -26,16 +26,23 @@ variable_names <- tbl(con, "variable_names_epcf")
 ```
 
 ```{r}
-tooth_decay <- read_rds("./TOOTH_DECAY_OHAROCDT.rds")
-gum_disease <- read_rds("./GUM_DISEASE_OHAROCGP.rds")
-oral_hygiene <- read_rds("./ORAL_HYGIENE_OHAROCOH.rds")
-denture <- read_rds("./DENTURE_OHAROCDE.rds")
 
-oral_d_tidied <- rbind(tooth_decay$pe_tidied,
-                       gum_disease$pe_tidied,
-                       oral_hygiene$pe_tidied,
-                       denture$pe_tidied
-                       )
+oral_d_tidied <- rbind(
+  read_rds("./TOOTH_DECAY_OHAROCDT.rds")$pe_tidied,
+  read_rds("./TOOTH_DECAY_OHAROCDT_RB.rds")$pe_tidied,
+  read_rds("./GUM_DISEASE_OHAROCGP.rds")$pe_tidied,
+  read_rds("./GUM_DISEASE_OHAROCGP_RB.rds")$pe_tidied,
+  read_rds("./ORAL_HYGIENE_OHAROCOH.rds")$pe_tidied,
+  read_rds("./ORAL_HYGIENE_OHAROCOH_RB.rds")$pe_tidied,
+  read_rds("./DENTURE_OHAROCDE.rds")$pe_tidied,
+  read_rds("./DENTURE_OHAROCDE_RB.rds")$pe_tidied
+)
+
+#oral_d_tidied <- rbind(tooth_decay$pe_tidied,
+#                       gum_disease$pe_tidied,
+#                       oral_hygiene$pe_tidied,
+#                       denture$pe_tidied
+#                       )
 
 ```
 
@@ -48,6 +55,7 @@ oral_d_tidied_2 <- oral_d_tidied_2 |> left_join(variable_names |> filter(Begin.Y
 What is the SD and the total non-zero count of the uBiome variables?
 ```{r}
 rsv_relative <- tbl(con, 'DADA2RSV_GENUS_RELATIVE_F') |> collect() |> rbind(tbl(con, 'DADA2RSV_GENUS_RELATIVE_G') |> collect())
+rb_relative <- tbl(con, 'DADA2RB_GENUS_RELATIVE_F') |> collect() |> rbind(tbl(con, 'DADA2RB_GENUS_RELATIVE_G') |> collect())
 
 rsv_sd <- rsv_relative |> summarise(across(where(is.numeric), list(sd = sd), .names = "{.col}")) |> 
   pivot_longer(cols = everything())
@@ -55,14 +63,15 @@ rsv_sd <- rsv_relative |> summarise(across(where(is.numeric), list(sd = sd), .na
 rsv_non_zero <- rsv_relative |> summarise(across(where(is.numeric), list(non_z = ~sum(.x>0)), .names = "{.col}")) |> 
   pivot_longer(cols = everything())
 
+rb_non_zero <- rb_relative |> summarise(across(where(is.numeric), list(non_z = ~sum(.x>0)), .names = "{.col}")) |> 
+  pivot_longer(cols = everything())
+
 sd_non_zero <- rsv_sd |> rename(SD=value) |> left_join(rsv_non_zero, by="name") |> rename(non_zero_cnt = value)
-p <- ggplot(sd_non_zero |> filter(name != "SEQN"), aes((non_zero_cnt), (SD)))
-p <- p + geom_point() + theme_bw()
-p
+
 ```
 
 ```{r}
-oral_d_tidied_2 <- oral_d_tidied_2 |> left_join(rsv_non_zero, by=c("exposure"="name")) 
+oral_d_tidied_2 <- oral_d_tidied_2 |> left_join(rsv_non_zero |> rbind(rb_non_zero), by=c("exposure"="name")) 
 oral_d_tidied_2 <- oral_d_tidied_2 |> rename(non_zero_cnt=value)
 ```
 
@@ -79,9 +88,8 @@ oral_d_tidied_2 <- oral_d_tidied_2 |> mutate(p.value.fdr = p.adjust(p.value, "BH
 # Volcano plot of the oral associations
 
 ```{r}
-to_label <- oral_d_tidied_2 |> filter(p.value.fdr < 0.05, abs(estimate) <= 0.6)
 p <- ggplot(oral_d_tidied_2, aes(estimate, I(-log10(p.value.fdr)), color=phenotype ))
-p <- p + geom_point() +scale_x_continuous(limits=c(-.75, .75)) + theme_bw() + geom_hline(yintercept=-log10(.1))
+p <- p + geom_point() +scale_x_continuous(limits=c(-.75, .75)) + theme_bw() + geom_hline(yintercept=-log10(.05))
 p <- p + theme(legend.position="bottom")
 p
 ```
@@ -89,23 +97,23 @@ p
 # Tooth Decay
 
 ```{r}
-knitr::kable(oral_d_tidied_2 |> filter(phenotype == 'TOOTH_DECAY_OHAROCDT') |> select(exposure_description, estimate, p.value.fdr) |> arrange(p.value.fdr))
+knitr::kable(oral_d_tidied_2 |> filter(phenotype == 'TOOTH_DECAY_OHAROCDT', p.value.fdr < 0.05) |> select(exposure_description, estimate, p.value.fdr) |> arrange(p.value.fdr))
 ```
 
 # Gum Disease
 
 ```{r}
-knitr::kable(oral_d_tidied_2 |> filter(phenotype == 'GUM_DISEASE_OHAROCGP') |> select(exposure_description, estimate, p.value.fdr) |> arrange(p.value.fdr))
+knitr::kable(oral_d_tidied_2 |> filter(phenotype == 'GUM_DISEASE_OHAROCGP', p.value.fdr < 0.05) |> select(exposure_description, estimate, p.value.fdr) |> arrange(p.value.fdr))
 ```
 
 # Oral Hygiene
 
 ```{r}
-knitr::kable(oral_d_tidied_2 |> filter(phenotype == 'ORAL_HYGIENE_OHAROCOH') |> select(exposure_description, estimate, p.value.fdr) |> arrange(p.value.fdr))
+knitr::kable(oral_d_tidied_2 |> filter(phenotype == 'ORAL_HYGIENE_OHAROCOH', p.value.fdr < 0.05) |> select(exposure_description, estimate, p.value.fdr) |> arrange(p.value.fdr))
 ```
 
 # Dentures 
 
 ```{r}
-knitr::kable(oral_d_tidied_2 |> filter(phenotype == 'DENTURE_OHAROCDE') |> select(exposure_description, estimate, p.value.fdr) |> arrange(p.value.fdr))
+knitr::kable(oral_d_tidied_2 |> filter(phenotype == 'DENTURE_OHAROCDE', p.value.fdr < 0.05) |> select(exposure_description, estimate, p.value.fdr) |> arrange(p.value.fdr))
 ```
