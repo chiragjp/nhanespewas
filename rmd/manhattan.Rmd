@@ -205,7 +205,7 @@ p <- p + geom_vline(data=xaxis_labels, aes(xintercept=max_x), linetype='dotted',
 p <- p + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1), legend.position = "none")
 p <- p + xlab("") + ylab("R-squared") 
 #p
-ggsave("manhattan_pheno_r2.pdf", p,width=8, height=8, units="in")
+#ggsave("manhattan_pheno_r2.pdf", p,width=8, height=8, units="in")
 
 
 

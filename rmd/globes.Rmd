@@ -1,5 +1,5 @@
 ---
-title: "globe.Rmd"
+title: "Correlation Globes"
 author: "Chirag Patel"
 date: "`r Sys.Date()`"
 output: html_document
@@ -13,10 +13,10 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(DBI)
 library(igraph)
+library(ggsci)
 ```
 
-Exposome Globes
-
+# Exposome Globes: visualizing the correlation between variables
 
 ```{r}
 get_data <- function(dbname) {
@@ -87,95 +87,112 @@ pp_process <- process_data(pp, 'p')
 ee_process <- process_data(ee, 'e')
 ```
 
-```{r write out globe}
-
-write_rds(ee_process$adjusted_meta_raw, "ee_corrs.rds")
-
-```
 
 
-## create some globes -- ones related to HA1C
-```{r}
+# Distribution of the correlation globes
 
-pe_sig <- pe_meta |> filter(term=='expo')  |> filter(p.value < 0.05)
-## bmi/a1c
-pe_sig_cand <- pe_sig |> filter(phenotype == 'LBXGH', model_number==2, p.value < 1e-7)
-
-sig <- ee_process$adjusted_meta_raw |> filter(nobs > 1) |> filter(p.value < 0.0000001, abs(estimate) > .5 & abs(estimate) <= 1) ## get ones that are related to the association
-
-sig <- sig |> right_join(pe_sig_cand |> select("exposure")  |> collect(), by=c("xvarname"="exposure"))
-
-sig_graph <- sig |> select(-term_name) |> select(xvarname, yvarname, everything()) 
-sig_vertex <- sig_graph |> select(xvarname, xcategory) |> unique() |> rename(varname = xvarname, category=xcategory)
-sig_vertex2 <- sig_graph |> select(yvarname, ycategory) |> unique() |> rename(varname = yvarname, category=ycategory)
-sig_vertex <- sig_vertex |> rbind(sig_vertex2) |> unique()
-
-g <- graph_from_data_frame(sig_graph, directed = FALSE) # Use directed = TRUE if your graph is directed
-E(g)$color <- ifelse(E(g)$estimate > 0, "red", "blue")
-V(g)$category <- sig_vertex$category[match(V(g)$name, sig_vertex$varname)]
-categories <- unique(V(g)$category)
-
-# Assign colors to each category
-category_colors <- setNames(rainbow(length(categories)), categories)
-# Map the colors to vertices based on category
-vertex_colors <- category_colors[V(g)$category]
-coords <- layout_in_circle(g)
-plot(g, vertex.color = vertex_colors, layout=coords, vertex.label=NA)
-```
-
-```{r globe for phenotypes correlated with HA1c}
-sig <- pp_process$adjusted_meta_raw |> filter(nobs > 1) ## get ones
-
-p <- ggplot(sig |> filter(xvarname == 'LBXGH' | yvarname == 'LBXGH'), aes(estimate))
-p <- p + geom_histogram(aes(y = stat(density))) + scale_x_continuous(limits=c(-1, 1)) 
-p
-
-
-
-sig <- sig |> filter(xvarname == 'LBXGH' | yvarname == 'LBXGH')
-sig <- sig |> filter(p.value < .05/nrow(sig), abs(estimate) < 1)
-
-p <- ggplot(sig, aes(xvarname, estimate)) 
-p <- p + geom_point()
-p
-
-#sig_graph <- sig |> select(-term_name) |> select(xvarname, yvarname, everything()) 
-#sig_vertex <- sig_graph |> select(xvarname, xcategory) |> unique() |> rename(varname = xvarname, category=xcategory)
-#sig_vertex2 <- sig_graph |> select(yvarname, ycategory) |> unique() |> rename(varname = yvarname, category=ycategory)
-#sig_vertex <- sig_vertex |> rbind(sig_vertex2) |> unique()
-
-#g <- graph_from_data_frame(sig_graph, directed = FALSE) # Use directed = TRUE if your graph is directed
-#E(g)$color <- ifelse(E(g)$estimate > 0, "red", "blue")
-#V(g)$category <- sig_vertex$category[match(V(g)$name, sig_vertex$varname)]
-#categories <- unique(V(g)$category)
-
-# Assign colors to each category
-#category_colors <- setNames(rainbow(length(categories)), categories)
-# Map the colors to vertices based on category
-#vertex_colors <- category_colors[V(g)$category]
-#coords <- layout_in_circle(g)
-#plot(g, vertex.color = vertex_colors, layout=coords, vertex.label=NA)
-
-
-```
-
-
+## Exposures
 ```{r distribution of all exposure correlations}
 ee_process$adjusted_meta_raw <- ee_process$adjusted_meta_raw |> mutate(p.value_bonf = p.adjust(p.value, method="bonferroni"))
 p <- ggplot(ee_process$adjusted_meta_raw |> filter(p.value_bonf < 0.05), aes(estimate))
 p <- p + geom_histogram() + scale_x_continuous(limits=c(-1, 1))
 p
+
+
+
 ```
+
+## Phenotypes
 
 ```{r distribution of all phenotype correlations}
 pp_process$adjusted_meta_raw <- pp_process$adjusted_meta_raw |> mutate(p.value_bonf = p.adjust(p.value, method="bonferroni"))
 p <- ggplot(pp_process$adjusted_meta_raw |> filter(p.value_bonf < 0.05), aes(estimate))
 p <- p + geom_histogram(aes(y = stat(density))) + scale_x_continuous(limits=c(-1, 1)) + facet_wrap(~ycategory)
 p
+```
+
+## CDFs of correlation globes
+```{r}
+both_ee_pp <- rbind(
+  ee_process$adjusted_meta_raw |> filter(p.value_bonf < 0.05) |> select(estimate) |> mutate(type="E-E"),
+  pp_process$adjusted_meta_raw |> filter(p.value_bonf < 0.05) |> select(estimate) |> mutate(type="P-P")
+)
+p <- ggplot(both_ee_pp |> filter(estimate > 0), aes(estimate, color=type))
+p <- p + stat_ecdf() + scale_x_continuous(limits=c(0, 1))
+p <- p + theme_bw()
+p
+p <- ggplot(both_ee_pp |> filter(estimate < 0), aes(estimate, color=type))
+p <- p + stat_ecdf() + scale_x_continuous(limits=c(-1, 0))
+p <- p + theme_bw()
+p
+
+
+```
+
+
+## Globe construction: choose those associated with a phenotype
+
+```{r}
+pe_sig <- pe_meta |> filter(term=='expo')
+## bmi/a1c
+pe_sig_cand <- pe_sig |> filter(phenotype == 'LBXGH', model_number==2, p.value < 1e-7)
+```
+
+## Construct the globe
+
+```{r globe width, fig.height=7, fig.width=7}
+E_CORR_THRESHOLD_NEG <- -0.2
+E_CORR_THRESHOLD_POS <- 0.25
+
+exposome_globe <- function(corr_tibble, exposure_tibble) {
+  
+  ff <- corr_tibble |> right_join(exposure_tibble |> select("exposure") |> collect(), by=c("xvarname"="exposure"))
+  sig <- ff |> right_join(exposure_tibble |> select("exposure") |> collect(), by=c("yvarname"="exposure")) 
+
+  sig_to_plot <- sig |> filter(estimate > E_CORR_THRESHOLD_POS | estimate < E_CORR_THRESHOLD_NEG) ## filter among the highest correlations -- choose some background distribution
+
+  sig_graph <- sig_to_plot |> select(-term_name) |> select(xvarname, yvarname, everything()) 
+  sig_vertex <- sig_graph |> select(xvarname, xcategory) |> unique() |> rename(varname = xvarname, category=xcategory)
+  sig_vertex2 <- sig_graph |> select(yvarname, ycategory) |> unique() |> rename(varname = yvarname, category=ycategory)
+  sig_vertex <- sig_vertex |> rbind(sig_vertex2) |> unique()
+  sig_graph <- sig_graph |> mutate(estimate = ifelse(estimate > 1, 1, estimate)) |> mutate(estimate = ifelse(estimate < 1, -1, estimate))
+
+  g <- graph_from_data_frame(sig_graph, directed = FALSE) 
+  E(g)$color <- ifelse(E(g)$estimate > 0, "black", "grey")
+  V(g)$category <- sig_vertex$category[match(V(g)$name, sig_vertex$varname)]
+  categories <- unique(V(g)$category)
+  # Assign colors to each category
+  color_pal <- ggsci::pal_tron("legacy", alpha = 0.7)
+  category_colors <- setNames(color_pal(length(categories)), categories)
+  # Map the colors to vertices based on category
+  vertex_colors <- category_colors[V(g)$category]
+  coords <- layout_in_circle(g)
+  scaling_factor <- 1
+  plot(g, vertex.color = vertex_colors, layout=coords,
+     vertex.size = 10,
+     vertex.color = vertex_colors,
+     vertex.label = substr(V(g)$name, nchar(V(g)$name)-2, nchar(V(g)$name)),      # Label each vertex with its name
+     vertex.label.cex = 0.7,         # Control the size of the labels
+     vertex.label.color = "black",   # Color of the labels
+    vertex.label.family = "sans",
+    edge.width = abs(E(g)$estimate) * scaling_factor)
+}
+
+
+exposome_globe(ee_process$adjusted_meta_raw, pe_sig |> filter(phenotype == 'LBXGH', model_number==2, p.value < 1e-7))
+exposome_globe(ee_process$adjusted_meta_raw, pe_sig |> filter(phenotype == 'LBXGLU', model_number==2, p.value < 1e-7))
+exposome_globe(ee_process$adjusted_meta_raw, pe_sig |> filter(phenotype == 'LBXCRP', model_number==2, p.value < 1e-7))
+exposome_globe(ee_process$adjusted_meta_raw, pe_sig |> filter(phenotype == 'BMXBMI', model_number==2, p.value < 1e-15))
 
 ```
 
 
 
+```{r write out globe}
 
-
+ee_corrs <- ee_process$adjusted_meta_raw |> select(xvarname, xvardesc, yvarname, yvardesc, estimate, p.value, p.value_bonf, std.error, xcategory, xsubcategory, ycategory, ysubcategory, model_number, mean_adjusted_base_r2_diff, mean_unadjusted_r2_diff)
+pp_corrs <- pp_process$adjusted_meta_raw |> select(xvarname, xvardesc, yvarname, yvardesc, estimate, p.value, p.value_bonf, std.error, xcategory, xsubcategory, ycategory, ysubcategory, model_number, mean_adjusted_base_r2_diff, mean_unadjusted_r2_diff)
+write_rds(ee_corrs, "ee_corrs.rds")
+write_rds(pp_corrs, "pp_corrs.rds")
+dbDisconnect(con)
+```
