@@ -458,6 +458,9 @@ pe_flex_adjust <- function(pheno, exposure, adjustment_variables,con, series=NUL
   tab_obj <- name_and_xform_pheno_expo(pheno, exposure, tab_obj, logxform_p, logxform_e)
 
   potential_adjusters <- setdiff(unique(adjustment_variables$variables), NA)
+
+  potential_adjusters <- all.vars(as.formula(sprintf("~%s", paste(potential_adjusters, collapse="+"))))
+
   dat <- tab_obj$merged_tab |> dplyr::filter(!is.na(wt), wt > 0, !is.na(expo), !is.na(pheno), dplyr::if_all(tidyselect::all_of(potential_adjusters), ~!is.na(.)))
   dsn <- create_svydesign(dat)
   demo_break_tbl <- demographic_breakdown(dsn)
