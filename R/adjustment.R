@@ -5,6 +5,7 @@ adjustmentVariables <- c("RIDAGEYR", "AGE_SQUARED",
                          "EDUCATION_LESS9","EDUCATION_9_11","EDUCATION_AA","EDUCATION_COLLEGEGRAD",
                          "ETHNICITY_MEXICAN", "ETHNICITY_OTHERHISPANIC","ETHNICITY_OTHER", "ETHNICITY_NONHISPANICBLACK")
 
+SURVEY_YEAR_VARIABLE <- "SDDSRVYR"
 
 adjustment_models <- rbind(
   tibble(scenario="base", variables=NA),
@@ -115,6 +116,115 @@ adjustment_scenario_for_variable <- function(evarname, pvarname) {
     return(adjustment_models)
   }
 }
+
+
+#' Add a Covariate to an Adjustment Scenario
+#'
+#' This function adds a specified covariate to a given adjustment scenario within an adjustment model.
+#'
+#' @param adjustment_model A data frame or tibble representing the adjustment model,
+#' containing at least the columns `domain`, `scenario`, and `variables`.
+#' @param scenario_name A character string specifying the name of the adjustment scenario
+#' to which the covariate should be added.
+#' @param variable_name A character string specifying the name of the covariate (variable) to add.
+#'
+#' @return A modified version of the `adjustment_model` with the new covariate added to the specified scenario.
+#'
+#' @details
+#' The function assumes that the input `adjustment_model` contains a `domain` column, and the
+#' domain value for the new entry is extracted from the first row of the input model. The new
+#' scenario and variable are appended as a new row to the `adjustment_model`.
+#'
+#' @examples
+#' # Example adjustment model
+#' adjustment_model <- tibble::tibble(
+#'   domain = "example_domain",
+#'   scenario = c("age_sex", "age_sex"),
+#'   variables = c("age", "sex")
+#' )
+#'
+#' # Add a new covariate
+#' updated_model <- add_covariate_to_scenario(
+#'   adjustment_model,
+#'   scenario_name = "age",
+#'   variable_name = "as.factor(SDDSRVYR)"
+#' )
+#'
+#' print(updated_model)
+#'
+#' @export
+add_covariate_to_scenario <- function(adjustment_model, scenario_name, variable_name) {
+  domain_name <- adjustment_model |> first() |> pull("domain")
+  adjustment_model <- adjustment_model |> rbind(tibble(domain=domain_name, scenario=scenario_name, variables=variable_name))
+  adjustment_model
+}
+
+#' Add Survey Year to Adjustment Scenarios
+#'
+#' This function updates an adjustment model for exposures by adding the survey year
+#' (`SDDSRVYR`) as a covariate across multiple adjustment scenarios. It applies the
+#' `nhanespewas::add_covariate_to_scenario()` function to incorporate the survey year
+#' in various combinations of demographic and socioeconomic variables.
+#'
+#' @param adjustment_model_for_e A list or data structure representing the adjustment
+#' model for exposures. It is expected to be compatible with the
+#' `nhanespewas::add_covariate_to_scenario()` function.
+#'
+#' @return The updated adjustment model for exposures, with the survey year added as
+#' a covariate across various adjustment scenarios.
+#'
+#' @details
+#' The following adjustment scenarios are updated by adding the survey year as
+#' a covariate:
+#' - `age_sex_ethnicity_income_education`
+#' - `age_sex`
+#' - `age`
+#' - `sex`
+#' - `age_sex_ethnicity`
+#' - `age_sex_income_education`
+#' - `income_education`
+#' - `ethnicity`
+#'
+#' The survey year is added as a factor using `as.factor(SDDSRVYR)`.
+#'
+#' @examples
+#' # Assuming `adjustment_model_for_e` is predefined and compatible:
+#' updated_model <- add_survey_year_to_adjustment_scenarios(adjustment_model_for_e)
+#'
+#' @export
+add_survey_year_to_adjustment_scenarios <- function(adjustment_model_for_e) {
+  adjustment_model_for_e <- nhanespewas::add_covariate_to_scenario(adjustment_model_for_e,
+                                                                   "age_sex_ethnicity_income_education",
+                                                                   variable_name = "as.factor(SDDSRVYR)")
+
+  adjustment_model_for_e <- nhanespewas::add_covariate_to_scenario(adjustment_model_for_e,
+                                                                   "age_sex",
+                                                                   variable_name = "as.factor(SDDSRVYR)")
+  adjustment_model_for_e <- nhanespewas::add_covariate_to_scenario(adjustment_model_for_e,
+                                                                   "age",
+                                                                   variable_name = "as.factor(SDDSRVYR)")
+
+  adjustment_model_for_e <- nhanespewas::add_covariate_to_scenario(adjustment_model_for_e,
+                                                                   "sex",
+                                                                   variable_name = "as.factor(SDDSRVYR)")
+
+  adjustment_model_for_e <- nhanespewas::add_covariate_to_scenario(adjustment_model_for_e,
+                                                                   "age_sex_ethnicity",
+                                                                   variable_name = "as.factor(SDDSRVYR)")
+  adjustment_model_for_e <- nhanespewas::add_covariate_to_scenario(adjustment_model_for_e,
+                                                                   "age_sex_income_education",
+                                                                   variable_name = "as.factor(SDDSRVYR)")
+  adjustment_model_for_e <- nhanespewas::add_covariate_to_scenario(adjustment_model_for_e,
+                                                                   "income_education",
+                                                                   variable_name = "as.factor(SDDSRVYR)")
+
+  adjustment_model_for_e <- nhanespewas::add_covariate_to_scenario(adjustment_model_for_e,
+                                                                   "ethnicity",
+                                                                   variable_name = "as.factor(SDDSRVYR)")
+  adjustment_model_for_e
+
+}
+
 
 
 

@@ -8,7 +8,7 @@ library(logger)
 library(tools)
 devtools::load_all("..")
 
-TEST <- F
+TEST <- T
 spec <- matrix(c(
   'phenotype', 'p', 1, "character",
   'sample_size_pairs_list_file', 'l', 1, "character", # file that lists the sample sizes for each pair
@@ -21,12 +21,11 @@ opt <- getopt(spec)
 
 sample_size_threshold <- 500
 
-
 ########### debug stuff
 #phenotype <- "URXUMA"
 #exposure <- "LBX06"
-exposure <- 'LBXBEC'
-phenotype <- 'LBXGLU'
+exposure <- 'LBXBCD'
+phenotype <- 'LBXRDW'
 #exposure <- "URXNAL"
 #phenotype <- "URXUCR"
 #phenotype <- "LBXP1"
@@ -90,7 +89,10 @@ for(ii in 1:N) {
 
   e_levels <- nhanespewas::check_e_data_type(rw$evarname, con)
   adjustment_model_for_e <- nhanespewas::adjustment_scenario_for_variable(rw$evarname, rw$pvarname)
-  #print(adjustment_model_for_e)
+
+  ## add in the SDDRVYR in the non-base models
+  adjustment_model_for_e <- nhanespewas:::add_survey_year_to_adjustment_scenarios(adjustment_model_for_e)
+
   log_info("{ii} e_levels { e_levels$vartype } ")
   mod <- NULL
   if(e_levels$vartype == 'continuous') {
