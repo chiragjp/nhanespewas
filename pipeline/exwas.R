@@ -8,7 +8,7 @@ library(logger)
 library(tools)
 devtools::load_all("..")
 
-TEST <- T
+TEST <- F
 spec <- matrix(c(
   'phenotype', 'p', 1, "character",
   'sample_size_pairs_list_file', 'l', 1, "character", # file that lists the sample sizes for each pair
