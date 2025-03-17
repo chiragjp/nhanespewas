@@ -35,7 +35,8 @@ phenotype <- 'LBXRDW'
 #ss_file <- './select/sample_size_pe.csv'  #opt$sample_size_pairs_list_file
 #ss_file <- '../select/sample_size_pe_category_060623.csv'
 ss_file <- '../select/sample_size_pe_category_0824.csv'
-path_to_db <-   '../db/nhanes_012324.sqlite' # '../nhanes_122322.sqlite'
+#path_to_db <-   '../db/nhanes_012324.sqlite' # '../nhanes_122322.sqlite'
+path_to_db <- '../db/nhanes_112824.sqlite' # '../nhanes_122322.sqlite'
 path_out <- '.'
 use_quantile <- 1
 
@@ -47,7 +48,8 @@ if(!TEST) {
   use_quantile <- ifelse(is.null(opt$use_quantile), 0, opt$use_quantile)
 }
 
-
+QUANTILES <- c(0, .25, .5, .75, .9, 1)
+SCALE_P <- T
 ############### end DEBUG
 
 con <- DBI::dbConnect(RSQLite::SQLite(), dbname=path_to_db)
@@ -100,24 +102,24 @@ for(ii in 1:N) {
     # pe
     if(use_quantile==1) {
       mod <- pe_safely(rw$pvarname, rw$evarname, adjustment_model_for_e, con,
-                       logxform_p=F, logxform_e=F, scale_e=F, scale_p=T,
-                       quantile_expo=c(0, .25, .5, .75, 1), exposure_levels=NULL)
+                       logxform_p=F, logxform_e=F, scale_e=F, scale_p=SCALE_P,
+                       quantile_expo=QUANTILES, exposure_levels=NULL)
     } else {
       mod <- pe_safely(rw$pvarname, rw$evarname, adjustment_model_for_e, con,
-                     logxform_p=F, logxform_e=T, scale_e=T, scale_p=T,
+                     logxform_p=F, logxform_e=T, scale_e=T, scale_p=SCALE_P,
                      quantile_expo=NULL, exposure_levels=NULL)
     }
 
   } else if(e_levels$vartype == 'categorical') {
     log_info("{ii} categorizing { rw$evarname } ")
     mod <- pe_safely(rw$pvarname, rw$evarname, adjustment_model_for_e, con,
-                     logxform_p=F, logxform_e=F, scale_e=F, scale_p=T,
+                     logxform_p=F, logxform_e=F, scale_e=F, scale_p=SCALE_P,
                      quantile_expo=NULL, exposure_levels=e_levels$varlevels)
 
   } else if(e_levels$vartype == 'continuous-rank') {
     log_info("{ii} as is { rw$evarname } ")
     mod <- pe_safely(rw$pvarname, rw$evarname, adjustment_model_for_e, con,
-                     logxform_p=F, logxform_e=F, scale_e=T, scale_p=T,
+                     logxform_p=F, logxform_e=F, scale_e=T, scale_p=SCALE_P,
                      quantile_expo=NULL, exposure_levels=NULL)
 
   }

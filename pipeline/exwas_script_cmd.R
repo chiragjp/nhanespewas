@@ -17,7 +17,7 @@ cmd_path <- '../pipeline/exwas.R'
 use_sbatch <- TRUE
 use_input_exposure_files <- TRUE # this is to filter the exposure inputs to parallelize the job: see exwas_exposure_aux_files.R
 num_input_exposure_files <- 10
-use_quantile <- 1
+use_quantile <- 0
 
 
 main_out <- file.path(path_scripts_out, "srun_me.sh")
@@ -39,8 +39,10 @@ for(ii in 1:nrow(to_do)) {
 
   if(use_sbatch) {
     for(i in 1:length(rcmds)) {
-      cat(sprintf("sbatch --exclude=compute-f-17-[09-16] -o %s/%s_%i.out -p short -t 11:59:00 -c 1 --mem=10G --wrap=\"%s\"\n", file.path(path_out), pvar, i, rcmds[i]),
+      cat(sprintf("sbatch -o %s/%s_%i.out -p short -t 11:59:00 -c 1 --mem=10G --wrap=\"%s\"\n", file.path(path_out), pvar, i, rcmds[i]),
           file=main_out, append = T)
+      #cat(sprintf("sbatch --exclude=compute-f-17-[09-16] -o %s/%s_%i.out -p short -t 11:59:00 -c 1 --mem=10G --wrap=\"%s\"\n", file.path(path_out), pvar, i, rcmds[i]),
+      #    file=main_out, append = T)
     }
   } else {
     for(i in 1:length(rcmds)) {

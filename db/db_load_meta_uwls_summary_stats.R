@@ -3,7 +3,8 @@ library(DBI)
 
 
 #con <- DBI::dbConnect(RSQLite::SQLite(), dbname='./pe_summary_stats_02_2024-v2.sqlite')
-con <- DBI::dbConnect(RSQLite::SQLite(), dbname='./pe_summary_stats_08_2024.sqlite')
+#con <- DBI::dbConnect(RSQLite::SQLite(), dbname='./pe_summary_stats_08_2024.sqlite')
+con <- DBI::dbConnect(RSQLite::SQLite(), dbname='./pe_summary_stats_01_2025.sqlite')
 
 adjusted_meta <- rbind(
   read_rds('../pe_summary_0824/pe_meta_model_uwls_1.rds')  |> ungroup() |> rename(term_name=term),

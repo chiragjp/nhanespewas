@@ -21,7 +21,8 @@ library(ggridges)
 
 
 ```{r connect to db of summary stats}
-con <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/pe_summary_stats_08_2024.sqlite')
+#con <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/pe_summary_stats_08_2024.sqlite')
+con <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/pe_summary_stats_01_2025.sqlite')
 varnames <- tbl(con, "variable_names_epcf")
 adjusted_meta <- tbl(con, "adjusted_meta_uwls") |> rename(term_name=expo_name)
 mvr2 <- read_rds('../pe_summary_060623/mvr2.rds') |> mutate(mv = mve_rsq-base_rsq)
@@ -126,6 +127,9 @@ adjusted_meta_2 <- adjusted_meta_2 |> mutate(sig_levels = case_when(
   pval_BY < 0.05 ~ 'BY<0.05',
   TRUE ~ '> BY & Bonf.'
 ))
+
+
+# reexamine the correaltion of p.value.uwls vs. p.value_overall
 ```
 
 

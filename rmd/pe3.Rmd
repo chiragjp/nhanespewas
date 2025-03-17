@@ -887,12 +887,4 @@ p
 ```
 
 
-focus here on several phenotypes and exposures
-```{r ggridges}
-library(ggridges)
-p <- ggplot(adjusted_meta_2 |> filter(pval_BY < 0.05), aes(y=ecat, x=estimate))
-p <- p + geom_density_ridges(scale = 3) + scale_x_continuous(limits=c(-.5, .5))
-p <- p + theme_bw() + ylab("") + xlab("Adjusted Estimate")
-p <- p + theme(legend.position = "none")   
-p
-```
+

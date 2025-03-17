@@ -1,0 +1,395 @@
+---
+title: "Chronic"
+author: "Chirag Patel"
+date: "2025-03-10"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+# MCQ
+CHDs
+Stroke
+Heart Attack
+Heart Failure
+Angina Pectoris
+CVD: is any of CHD, Stroke, HF, Angina
+
+Emphysema
+Chronic Bhronchitis
+
+Asthma
+
+Cancers
+
+Diabetes: look at DIQ
+
+```{r}
+library(tidyverse)
+library(DBI)
+library(survey)
+library(tictoc)
+devtools::load_all(".")
+```
+
+
+```{r}
+con <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/nhanes_031725.sqlite') ## path to the sqlite 
+table_description <- tbl(con, "table_names_epcf")
+variable_description <- tbl(con, "variable_names_epcf")
+```
+
+
+
+
+```{r}
+
+cycle_years <- list(
+  "A" = c(1999, 2000),
+  "B" = c(2001, 2002),
+  "C" = c(2003, 2004),
+  "D" = c(2005, 2006),
+  "E" = c(2007, 2008),
+  "F" = c(2009, 2010),
+  "G" = c(2011, 2012),
+  "H" = c(2013, 2014),
+  "I" = c(2015, 2016),
+  "J" = c(2017, 2018))
+
+```
+
+
+```{r}
+
+mcq <- tbl(con, "MCQ") |> collect()
+mcq_b <- tbl(con, "MCQ_B") |> collect()
+mcq_c <- tbl(con, "MCQ_C") |> collect()
+mcq_d <- tbl(con, "MCQ_D") |> collect()
+mcq_e <- tbl(con, "MCQ_E") |> collect()
+mcq_f <- tbl(con, "MCQ_F") |> collect()
+mcq_g <- tbl(con, "MCQ_G") |> collect()
+mcq_h <- tbl(con, "MCQ_H") |> collect()
+mcq_i <- tbl(con, "MCQ_I") |> collect()
+mcq_j <- tbl(con, "MCQ_J") |> collect()
+```
+
+```{r heart disease and cancer}
+classify_p1 <- function(mcq_table) {
+  mcq_table <- mcq_table |> mutate(
+    # Cardiovascular diseases
+    CHD = case_when(
+      MCQ160B == 1 ~ 1,  # Coronary heart disease
+      MCQ160B == 2 ~ 0,  # No CHD
+      TRUE ~ NA_integer_
+    ),
+    
+    STROKE = case_when(
+      MCQ160C == 1 ~ 1,  # Stroke
+      MCQ160C == 2 ~ 0,  # No stroke
+      TRUE ~ NA_integer_
+    ),
+    
+    HEART_ATTACK = case_when(
+      MCQ160E == 1 ~ 1,  # Heart attack
+      MCQ160E == 2 ~ 0,  # No heart attack
+      TRUE ~ NA_integer_
+    ),
+    
+    HEART_FAILURE = case_when(
+      MCQ160F == 1 ~ 1,  # Congestive heart failure
+      MCQ160F == 2 ~ 0,  # No heart failure
+      TRUE ~ NA_integer_
+    ),
+    
+    ANGINA = case_when(
+      MCQ160D == 1 ~ 1,  # Angina pectoris
+      MCQ160D == 2 ~ 0,  # No angina
+      TRUE ~ NA_integer_
+    ),
+    
+    # Respiratory diseases
+    EMPHYSEMA = case_when(
+      MCQ160G == 1 ~ 1,  # Emphysema
+      MCQ160G == 2 ~ 0,  # No emphysema
+      TRUE ~ NA_integer_
+    ),
+    
+    BRONCHITIS = case_when(
+      MCQ160K == 1 ~ 1,  # Chronic bronchitis
+      MCQ160K == 2 ~ 0,  # No chronic bronchitis
+      TRUE ~ NA_integer_
+    ),
+    
+    ASTHMA = case_when(
+      MCQ010 == 1 ~ 1,  # Asthma
+      MCQ010 == 2 ~ 0,  # No asthma
+      TRUE ~ NA_integer_
+    ),
+    
+    # Any cancer
+    CANCER = case_when(
+      MCQ220 == 1 ~ 1,  # Any cancer
+      MCQ220 == 2 ~ 0,  # No cancer
+      TRUE ~ NA_integer_
+    )
+  )
+  
+  mcq_table <- mcq_table |> mutate(
+    CVD = case_when(
+      CHD == 1 | STROKE == 1 | HEART_ATTACK == 1 | HEART_FAILURE == 1 | ANGINA == 1 ~ 1,
+      CHD == 0 & STROKE == 0 & HEART_ATTACK == 0 & HEART_FAILURE == 0 & ANGINA == 0 ~ 0,
+      TRUE ~ NA_integer_
+    )
+  )
+  
+  
+  mcq_table
+
+}
+
+
+
+d_mcq <- classify_p1(mcq) 
+d_mcq_b <- classify_p1(mcq_b) 
+d_mcq_c <- classify_p1(mcq_c) 
+d_mcq_d <- classify_p1(mcq_d) 
+d_mcq_e <- classify_p1(mcq_e) 
+d_mcq_f <- classify_p1(mcq_f) 
+d_mcq_g <- classify_p1(mcq_g) 
+d_mcq_h <- classify_p1(mcq_h) 
+d_mcq_i <- classify_p1(mcq_i) 
+d_mcq_j <- classify_p1(mcq_j) 
+
+
+# |> select(SEQN, CANCER, ASTHMA, BRONCHITIS, EMPHYSEMA, ANGINA, HEART_FAILURE, HEART_ATTACK, STROKE, CHD)
+
+glimpse(d_mcq |> select(SEQN, CANCER, ASTHMA, BRONCHITIS, EMPHYSEMA, ANGINA, HEART_FAILURE, HEART_ATTACK, STROKE, CHD))
+glimpse(d_mcq_b |> select(SEQN, CANCER, ASTHMA, BRONCHITIS, EMPHYSEMA, ANGINA, HEART_FAILURE, HEART_ATTACK, STROKE, CHD))
+glimpse(d_mcq_c |> select(SEQN, CANCER, ASTHMA, BRONCHITIS, EMPHYSEMA, ANGINA, HEART_FAILURE, HEART_ATTACK, STROKE, CHD))
+glimpse(d_mcq_d |> select(SEQN, CANCER, ASTHMA, BRONCHITIS, EMPHYSEMA, ANGINA, HEART_FAILURE, HEART_ATTACK, STROKE, CHD))
+glimpse(d_mcq_e |> select(SEQN, CANCER, ASTHMA, BRONCHITIS, EMPHYSEMA, ANGINA, HEART_FAILURE, HEART_ATTACK, STROKE, CHD))
+glimpse(d_mcq_f |> select(SEQN, CANCER, ASTHMA, BRONCHITIS, EMPHYSEMA, ANGINA, HEART_FAILURE, HEART_ATTACK, STROKE, CHD))
+glimpse(d_mcq_g |> select(SEQN, CANCER, ASTHMA, BRONCHITIS, EMPHYSEMA, ANGINA, HEART_FAILURE, HEART_ATTACK, STROKE, CHD))
+glimpse(d_mcq_h |> select(SEQN, CANCER, ASTHMA, BRONCHITIS, EMPHYSEMA, ANGINA, HEART_FAILURE, HEART_ATTACK, STROKE, CHD))
+glimpse(d_mcq_i |> select(SEQN, CANCER, ASTHMA, BRONCHITIS, EMPHYSEMA, ANGINA, HEART_FAILURE, HEART_ATTACK, STROKE, CHD))
+glimpse(d_mcq_j |> select(SEQN, CANCER, ASTHMA, BRONCHITIS, EMPHYSEMA, ANGINA, HEART_FAILURE, HEART_ATTACK, STROKE, CHD))
+
+```
+
+
+
+```{r cancer}
+
+classify_cancer <- function(mcq_table) {
+  mcq_table <- mcq_table |> mutate(CANCER_LUNG = case_when(
+      CANCER == 1 & MCQ230A == 23 ~ 1,
+      CANCER == 0 ~ 0,
+      TRUE ~ NA_integer_
+    )
+  )
+  
+  mcq_table <- mcq_table |> mutate(CANCER_BREAST = case_when(
+      CANCER == 1 & MCQ230A == 14 ~ 1,
+      CANCER == 0 ~ 0,
+      TRUE ~ NA_integer_
+    )
+  )
+  
+  mcq_table <- mcq_table |> mutate(CANCER_COLON = case_when(
+      CANCER == 1 & MCQ230A == 16 ~ 1,
+      CANCER == 1 & MCQ230A == 35 ~ 1,
+      CANCER == 0 ~ 0,
+      TRUE ~ NA_integer_
+    )
+  )
+  
+  mcq_table <- mcq_table |> mutate(CANCER_ESOPHAGEAL = case_when(
+      CANCER == 1 & MCQ230A == 17 ~ 1,
+      CANCER == 0 ~ 0,
+      TRUE ~ NA_integer_
+    )
+  )
+  
+  mcq_table <- mcq_table |> mutate(CANCER_PROSTATE = case_when(
+      CANCER == 1 & MCQ230A == 30 ~ 1,
+      CANCER == 0 ~ 0,
+      TRUE ~ NA_integer_
+    )
+  )
+  
+  mcq_table <- mcq_table |> mutate(CANCER_MOUTH = case_when(
+      CANCER == 1 & MCQ230A == 26 ~ 1,
+      CANCER == 0 ~ 0,
+      TRUE ~ NA_integer_
+    )
+  )
+  
+  mcq_table
+}
+
+
+d_mcq <- classify_cancer(d_mcq) 
+d_mcq_b <- classify_cancer(d_mcq_b) 
+d_mcq_c <- classify_cancer(d_mcq_c) 
+d_mcq_d <- classify_cancer(d_mcq_d) 
+d_mcq_e <- classify_cancer(d_mcq_e) 
+d_mcq_f <- classify_cancer(d_mcq_f) 
+d_mcq_g <- classify_cancer(d_mcq_g) 
+d_mcq_h <- classify_cancer(d_mcq_h) 
+d_mcq_i <- classify_cancer(d_mcq_i) 
+d_mcq_j <- classify_cancer(d_mcq_j) 
+
+
+```
+
+
+
+# diabetes
+
+```{r diabetes}
+
+diq <- tbl(con, "DIQ") |> collect()
+diq_b <- tbl(con, "DIQ_B") |> collect()
+diq_c <- tbl(con, "DIQ_C") |> collect()
+diq_d <- tbl(con, "DIQ_D") |> collect()
+diq_e <- tbl(con, "DIQ_E") |> collect()
+diq_f <- tbl(con, "DIQ_F") |> collect()
+diq_g <- tbl(con, "DIQ_G") |> collect()
+diq_h <- tbl(con, "DIQ_H") |> collect()
+diq_i <- tbl(con, "DIQ_I") |> collect()
+diq_j <- tbl(con, "DIQ_J") |> collect()
+```
+
+```{r}
+classify_diabetes<- function(mcq_table) {
+  mcq_table <- mcq_table |> mutate(DIABETES = case_when(
+      DIQ010 == 1 ~ 1,  # diabetes
+      DIQ010 == 3 ~ 1,  # borderline
+      DIQ010 == 2 ~ 0,  # Nothing
+      TRUE ~ NA_integer_
+    )
+  )
+  mcq_table
+}
+
+d_diq <- classify_diabetes(diq) 
+d_diq_b <- classify_diabetes(diq_b) 
+d_diq_c <- classify_diabetes(diq_c) 
+d_diq_d <- classify_diabetes(diq_d) 
+d_diq_e <- classify_diabetes(diq_e) 
+d_diq_f <- classify_diabetes(diq_f) 
+d_diq_g <- classify_diabetes(diq_g) 
+d_diq_h <- classify_diabetes(diq_h) 
+d_diq_i <- classify_diabetes(diq_i) 
+d_diq_j <- classify_diabetes(diq_j) 
+
+```
+
+
+```{r put together}
+# |> select(SEQN, CANCER, ASTHMA, BRONCHITIS, EMPHYSEMA, ANGINA, HEART_FAILURE, HEART_ATTACK, STROKE, CHD)
+d_outcome <- full_join(
+  d_mcq |> select(SEQN, ASTHMA, BRONCHITIS, EMPHYSEMA, ANGINA, HEART_FAILURE, HEART_ATTACK, STROKE, CHD, CVD, CANCER_BREAST, CANCER_COLON, CANCER_LUNG, CANCER_ESOPHAGEAL, CANCER_PROSTATE, CANCER_MOUTH),
+  d_diq |> select(SEQN, DIABETES), by = "SEQN"
+)
+
+d_outcome_b <- full_join(
+  d_mcq_b |> select(SEQN, ASTHMA, BRONCHITIS, EMPHYSEMA, ANGINA, HEART_FAILURE, HEART_ATTACK, STROKE, CHD, CVD, CANCER_BREAST, CANCER_COLON, CANCER_LUNG, CANCER_ESOPHAGEAL, CANCER_PROSTATE, CANCER_MOUTH),
+  d_diq_b |> select(SEQN, DIABETES), by = "SEQN"
+)
+
+d_outcome_c <- full_join(
+  d_mcq_c |> select(SEQN, ASTHMA, BRONCHITIS, EMPHYSEMA, ANGINA, HEART_FAILURE, HEART_ATTACK, STROKE, CHD, CVD,CANCER_BREAST, CANCER_COLON, CANCER_LUNG, CANCER_ESOPHAGEAL, CANCER_PROSTATE, CANCER_MOUTH),
+  d_diq_c |> select(SEQN, DIABETES), by = "SEQN"
+)
+
+d_outcome_d <- full_join(
+  d_mcq_d |> select(SEQN, ASTHMA, BRONCHITIS, EMPHYSEMA, ANGINA, HEART_FAILURE, HEART_ATTACK, STROKE, CHD, CVD, CANCER_BREAST, CANCER_COLON, CANCER_LUNG, CANCER_ESOPHAGEAL, CANCER_PROSTATE, CANCER_MOUTH),
+  d_diq_d |> select(SEQN, DIABETES), by = "SEQN"
+)
+
+d_outcome_e <- full_join(
+  d_mcq_e |> select(SEQN, ASTHMA, BRONCHITIS, EMPHYSEMA, ANGINA, HEART_FAILURE, HEART_ATTACK, STROKE, CHD, CVD, CANCER_BREAST, CANCER_COLON, CANCER_LUNG, CANCER_ESOPHAGEAL, CANCER_PROSTATE, CANCER_MOUTH),
+  d_diq_e |> select(SEQN, DIABETES), by = "SEQN"
+)
+
+d_outcome_f <- full_join(
+  d_mcq_f |> select(SEQN, ASTHMA, BRONCHITIS, EMPHYSEMA, ANGINA, HEART_FAILURE, HEART_ATTACK, STROKE, CHD, CVD, CANCER_BREAST, CANCER_COLON, CANCER_LUNG, CANCER_ESOPHAGEAL, CANCER_PROSTATE, CANCER_MOUTH),
+  d_diq_f |> select(SEQN, DIABETES), by = "SEQN"
+)
+
+d_outcome_g <- full_join(
+  d_mcq_g |> select(SEQN, ASTHMA, BRONCHITIS, EMPHYSEMA, ANGINA, HEART_FAILURE, HEART_ATTACK, STROKE, CHD, CVD, CANCER_BREAST, CANCER_COLON, CANCER_LUNG, CANCER_ESOPHAGEAL, CANCER_PROSTATE, CANCER_MOUTH),
+  d_diq_g |> select(SEQN, DIABETES), by = "SEQN"
+)
+
+d_outcome_h <- full_join(
+  d_mcq_h |> select(SEQN, ASTHMA, BRONCHITIS, EMPHYSEMA, ANGINA, HEART_FAILURE, HEART_ATTACK, STROKE, CHD, CVD, CANCER_BREAST, CANCER_COLON, CANCER_LUNG, CANCER_ESOPHAGEAL, CANCER_PROSTATE, CANCER_MOUTH),
+  d_diq_h |> select(SEQN, DIABETES), by = "SEQN"
+)
+
+d_outcome_i <- full_join(
+  d_mcq_i |> select(SEQN, ASTHMA, BRONCHITIS, EMPHYSEMA, ANGINA, HEART_FAILURE, HEART_ATTACK, STROKE, CHD, CVD, CANCER_BREAST, CANCER_COLON, CANCER_LUNG, CANCER_ESOPHAGEAL, CANCER_PROSTATE, CANCER_MOUTH),
+  d_diq_i |> select(SEQN, DIABETES), by = "SEQN"
+)
+
+d_outcome_j <- full_join(
+  d_mcq_j |> select(SEQN, ASTHMA, BRONCHITIS, EMPHYSEMA, ANGINA, HEART_FAILURE, HEART_ATTACK, STROKE, CHD, CVD, CANCER_BREAST, CANCER_COLON, CANCER_LUNG, CANCER_ESOPHAGEAL, CANCER_PROSTATE, CANCER_MOUTH),
+  d_diq_j |> select(SEQN, DIABETES), by = "SEQN"
+)
+```
+
+```{r upload}
+
+
+new_tabs <- tibble(Data.File.Name = c("d_outcome_mcq", "d_outcome_mcq_b", "d_outcome_mcq_c", "d_outcome_mcq_d", "d_outcome_mcq_e", "d_outcome_mcq_f", "d_outcome_mcq_g", "d_outcome_mcq_h", "d_outcome_mcq_i", "d_outcome_mcq_j"), 
+                   component=rep("QUESTIONAIRE", times=10),
+                   series = LETTERS[1:10],
+                   epcf = rep("p", times=10)
+                  )
+
+variable_names <- setdiff(names(d_outcome_j), "SEQN")
+table_names <-  c("d_outcome_mcq", "d_outcome_mcq_b", "d_outcome_mcq_c", "d_outcome_mcq_d", "d_outcome_mcq_e", "d_outcome_mcq_f", "d_outcome_mcq_g", "d_outcome_mcq_h", "d_outcome_mcq_i", "d_outcome_mcq_j")
+begin_years <- c()
+new_vars <- tibble()
+for(nme in 1:length(variable_names)) {
+  for (series in 1:length(table_names)) {
+    new_vars_f <- tibble(
+      Variable.Name = variable_names[nme],
+      Variable.Description = sprintf("%s (%s)", variable_names[nme], "MCQ"),
+      Use.Constraints = "None",
+      Data.File.Name = table_names[series],
+      Data.File.Description = "Derived MCQ Outcome", 
+      Begin.Year = cycle_years[[series]][[1]],
+      EndYear = cycle_years[[series]][[2]],
+      Component = "Questionnaire"
+    )
+    
+    new_vars <- new_vars |> rbind(new_vars_f)
+    
+  }
+}
+
+
+```
+
+```{r upload}
+
+table_description_lcl <- table_description |> collect() |> rbind(new_tabs)
+variable_description_lcl <- variable_description |> collect() |> rbind(new_vars)
+dbWriteTable(con, "table_names_epcf", table_description_lcl, overwrite=T)
+dbWriteTable(con, "variable_names_epcf", variable_description_lcl, overwrite=T)
+dbWriteTable(con, "d_outcome_mcq", d_outcome,overwrite=T) # derived outcome
+dbWriteTable(con, "d_outcome_mcq_b", d_outcome_b, overwrite=T) # derived outcome 
+dbWriteTable(con, "d_outcome_mcq_c", d_outcome_c,overwrite=T) # derived outcome
+dbWriteTable(con, "d_outcome_mcq_d", d_outcome_d,overwrite=T) # derived outcome
+dbWriteTable(con, "d_outcome_mcq_e", d_outcome_e,overwrite=T) # derived outcome 
+dbWriteTable(con, "d_outcome_mcq_f", d_outcome_f,overwrite=T) # derived outcome 
+dbWriteTable(con, "d_outcome_mcq_g", d_outcome_g,overwrite=T) # derived outcome 
+dbWriteTable(con, "d_outcome_mcq_h", d_outcome_h,overwrite=T) # derived outcome
+dbWriteTable(con, "d_outcome_mcq_i", d_outcome_i,overwrite=T) # derived outcome
+dbWriteTable(con, "d_outcome_mcq_j", d_outcome_j,overwrite=T) # derived outcome 
+
+dbDisconnect(con)
+```

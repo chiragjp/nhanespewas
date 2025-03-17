@@ -25,7 +25,6 @@ if(exists("con")) {
 library(tidyverse)
 library(DBI)
 library(survey)
-library(tictoc)
 devtools::load_all(".")
 ```
 
@@ -34,6 +33,7 @@ devtools::load_all(".")
 con <- DBI::dbConnect(RSQLite::SQLite(), dbname='./db/nhanes_112824.sqlite')
 varnames <- dplyr::tbl(con, "variable_names_epcf") 
 ```
+
 
 
 # C-Reactive Protein (P) and Cotinine (E)
@@ -50,6 +50,49 @@ crp_cot$base_models[[2]]$r2
 # full-base
 crp_cot$models[[2]]$r2$rsq - crp_cot$base_models[[2]]$r2$rsq
 ```
+
+Age?
+```{r}
+ptables <- get_table_names_for_varname(con, varname = "RIDAGEYR") |> rename(p_name = Data.File.Name)
+etables <- get_table_names_for_varname(con, varname = "LBXCOT") |> rename(e_name = Data.File.Name)
+table_set <- ptables |> inner_join(etables, by = "Begin.Year")
+tab_obj <- get_x_y_tables_as_list(con,table_set$p_name,table_set$e_name)
+tab_obj <- tab_obj |> figure_out_multiyear_weight()
+age_cot <- pe_flex_adjust("RIDAGEYR", "LBXCOT", adjustment_models |> filter(scenario=="base"), con, scale_p=T)
+```
+
+Lead and RDW
+```{r}
+
+
+test_scenario <- adjustment_models |> filter(scenario == 'age_sex_ethnicity_income_education')
+
+test_scenario <- test_scenario |> 
+  rbind(tibble(scenario = 'age_sex_ethnicity_income_education', variables='as.factor(SDDSRVYR)', domain='default'))
+
+rdw_bpb <- pe_flex_adjust("LBXRDW", "LBXBPB", test_scenario, con, scale_p=T, scale_e = T, logxform_e = T)
+
+#rdw_bpb <- pe_flex_adjust("LBXRDW", "LBXCOT", test_scenario, con, scale_p=T, scale_e = T, logxform_e = T)
+
+
+ptables <- get_table_names_for_varname(con, varname = "LBXRDW") |> rename(p_name = Data.File.Name)
+etables <- get_table_names_for_varname(con, varname = "LBXBPB") |> rename(e_name = Data.File.Name)
+table_set <- ptables |> inner_join(etables, by = "Begin.Year")
+if(nrow(table_set) == 0) {
+    stop("Y and X variables not collected in the same survey")
+}
+
+
+  ## get table names for each series
+tab_obj <- get_x_y_tables_as_list(con,table_set$p_name,table_set$e_name)
+tab_obj <- tab_obj |> figure_out_multiyear_weight()
+
+```
+
+```{r}
+
+```
+
 
 # Explore the uBiome and alpha diversity
 

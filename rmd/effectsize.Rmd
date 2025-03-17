@@ -28,7 +28,8 @@ library(ggridges)
 
 
 ```{r connect to db of summary stats}
-con <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/pe_summary_stats_08_2024.sqlite')
+#con <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/pe_summary_stats_08_2024.sqlite')
+con <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/pe_summary_stats_01_2025.sqlite')
 varnames <- tbl(con, "variable_names_epcf")
 adjusted_meta <- tbl(con, "adjusted_meta_uwls") |> rename(term_name=expo_name)
 mvr2 <- read_rds('../pe_summary_060623/mvr2.rds') |> mutate(mv = mve_rsq-base_rsq)
@@ -58,12 +59,16 @@ expos_wide <- expos_wide |> left_join(varnames |> select(Variable.Name, Data.Fil
 
 expos_wide <- expos_wide |> collect() |> select(-Use.Constraints) |> rename(e_data_file_desc=Data.File.Description.x, p_data_file_desc=Data.File.Description.y,e_variable_description=Variable.Description.x, p_variable_description=Variable.Description.y)
 
-#expos_wide_summary <- expos_wide |> filter(term == 'expo' | term == 'expo1' | term == 'expo2') |> group_by(evarname, pvarname) |> summarize(mean_adjusted_base_r2_diff = mean(rsq_adjusted_base_diff), mean_unadjusted_r2_diff=mean(rsq_adjusted_diff), total_n = sum(nobs_2_0)) |> ungroup()
-
 glanced_summary <- glanced_overall_wide |> mutate(total_n = nobs_2_0, rsq_adjusted_base_diff = rsq_2_0-rsq_2_1, rsq_adjusted_diff=rsq_2_0-rsq_1_0) |> 
   select(evarname, pvarname, rsq_adjusted_base_diff, rsq_adjusted_diff, total_n)
 
 adjusted_meta_full <- adjusted_meta |> filter(model_number == 2)  |> left_join(glanced_summary, by=c("evarname", "pvarname")) |> collect() ## fully adjusted model
+
+model_concordia <- adjusted_meta |> select(term_name, evarname, pvarname, estimate.uwls, model_number) |> group_by(term_name, evarname, pvarname) |> summarize(model_concordance = sum(sign(estimate.uwls))) |> collect()
+
+model_concordia_12 <- adjusted_meta |> filter(model_number <= 2) |> select(term_name, evarname, pvarname, estimate.uwls) |> group_by(term_name, evarname, pvarname) |> summarize(model_concordance_1_2 = sum(sign(estimate.uwls))) |> collect()
+
+adjusted_meta_full <- adjusted_meta_full |> left_join(model_concordia |> inner_join(model_concordia_12, by = c("term_name", "evarname", "pvarname")),  by = c("term_name", "evarname", "pvarname"))
 
 p_variable_domain <- variable_domain |> filter(epcf == 'p') |> collect() |> group_by(Variable.Name) |> summarise(pvardesc=first(Variable.Description),pcategory=first(category),psubcategory=first(subcategory))
 e_variable_domain <- variable_domain |> filter(epcf == 'e') |> collect() |> group_by(Variable.Name) |> summarise(evardesc=first(Variable.Description),ecategory=first(category),esubcategory=first(subcategory))
@@ -134,8 +139,16 @@ adjusted_meta_2 <- adjusted_meta_2 |> mutate(sig_levels = case_when(
   pval_BY < 0.05 ~ 'BY<0.05',
   TRUE ~ '> BY & Bonf.'
 ))
+
 ```
 
+## Sample for LLM 
+```{r}
+#set.seed(123)
+#adjusted_meta_2 |> select(sig_levels, estimate, evarname, pvarname, evardesc, pvardesc) |> group_by(sig_levels) |> slice_sample(n=500) |> write_csv("../exwas_sample.csv")
+
+
+```
 
 
 ```{r rename subcategories}
@@ -165,10 +178,23 @@ adjusted_meta_2 <- adjusted_meta_2 |> mutate(enewsubcategory = ifelse(enewsubcat
 adjusted_meta_2 <- adjusted_meta_2 |> group_by(pvarname) |> mutate(pval_BY_pheno=p.adjust(p.value_overall, method="BY")) |> ungroup()
 ```
 
+```{r estimate check}
+adjusted_meta_2 |> filter(evarname == 'LBXBPB', pvarname == 'LBXRDW') |> select(p.value_overall, p.value.uwls, estimate.uwls, estimate_overall)
+
+p <- ggplot(adjusted_meta_2, aes(estimate_overall, estimate.uwls))
+p <- p + geom_point() + facet_grid(~I(p.value_overall < 1e-5))
+adjusted_meta_2 |> mutate(estimate_match = sign(estimate_overall) == sign(estimate.uwls)) |>  group_by(sig_levels) |> count(estimate_match)
+adjusted_meta_2 |> mutate(estimate_match = sign(estimate_overall) == sign(estimate.uwls)) |> filter(!estimate_match) |> filter(sig_levels == 'Bonf.<0.05') |> arrange(p.value_overall)
+
+adjusted_meta_2 |> mutate(estimate_match = sign(estimate_overall) == sign(estimate.uwls)) |> filter(!estimate_match) |> filter(sig_levels == 'Bonf.<0.05') |> group_by(pvarname) |> count() |> arrange(-n)
+
+```
+
+
 
 
 ```{r}
-con_q  <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/pe_summary_stats_percentile_10_2024.sqlite')
+con_q  <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/pe_summary_stats_percentile_scale_p_01_2025_v2.sqlite')
 pe_overall_q <- tbl(con_q, "pe_overall")
 pe_quantile <- pe_overall_q |> filter( model_number == 2) |> filter(term == 'expoq2' | term =='expoq3' | term == 'expoq4' | term=='expoq5') |> collect()
 dbDisconnect(con_q)
@@ -176,10 +202,10 @@ dbDisconnect(con_q)
 
 pe_quantile <- pe_quantile |> rename(evarname=exposure, pvarname=phenotype)
 pe_quantile <- pe_quantile |> mutate(exposure_level = case_when(
-  term == 'expoq2' ~ 'Q[25-50)',
-  term == 'expoq3' ~ 'Q[50-75)',
-  term == 'expoq4' ~ 'Q[75-90)',
-  term == 'expoq5' ~ 'Q[90-100)',
+  term == 'expoq2' ~ 'P[25-50)',
+  term == 'expoq3' ~ 'P[50-75)',
+  term == 'expoq4' ~ 'P[75-90)',
+  term == 'expoq5' ~ 'P[90-100)',
   TRUE ~ NA_character_
 ))
 
@@ -194,7 +220,7 @@ p <- p + geom_boxplot()+ scale_x_continuous(limits=c(0, .7))
 p <- p + xlab("Absolute Value of Effect Size [1SD of Phenotype]") + ylab("Quantile of Exposure") + scale_fill_nejm()
 p1 <- p + theme_bw() + theme(legend.position = "bottom")
 
-ggsave("./paper figs/EffectSize.pdf", p1, width=5, height=5)
+#ggsave("./paper figs/EffectSize.pdf", p1, width=5, height=5)
 
 keep_p <- c("anthropometric", "blood", "blood pressure", "bone", "electrolyte", "inflammation", "kidney", "liver", "hormone", "metabolic", "nutrition", "dexa")
 
@@ -203,38 +229,8 @@ p <- p + geom_boxplot()+ scale_x_continuous(limits=c(0, .7))
 p <- p + xlab("Absolute value of Effect Size [1SD of Phenotype]") + ylab("Quantile of Exposure")
 p2 <- p + theme_bw() + theme(legend.position = "none")
 
-
-
-enewsubcategory_labels <- c("DI",
-                            "OR",
-                            "DB",
-                            "VO",
-                            "PP",
-                            "HM",
-                            "HY",
-                            "DA",
-                            "PH",
-                            "AA",
-                            "SB",
-                            "PT",
-                            "PO",
-                            "IN", "SU", "SM")
-names(enewsubcategory_labels) <- c("dietary interview",
-                                   "organochlorine",
-                                   "dietary biomarker",
-                                   "VOC",
-                                   "priority pesticide",
-                                   "heavy metals",
-                                   "hydrocarbon",
-                                   "diakyl",
-                                   "phenols",
-                                   "amine/amide",
-                                   "smoking biomarker",
-                                   "phthalates",
-                                   "polyfluoro",
-                                   "infection",
-                                   "supplements",
-                                   "smoking behavior" )
+enewsubcategory_labels <- c("DI","OR","DB","VO","PP","HM","HY","DA","PH","AA","SB","PT","PO","IN", "SU", "SM")
+names(enewsubcategory_labels) <- c("dietary interview","organochlorine","dietary biomarker","VOC","priority pesticide","heavy metals","hydrocarbon","diakyl","phenols","amine/amide","smoking biomarker","phthalates","polyfluoro","infection","supplements","smoking behavior" )
 
 p <- ggplot(pe_quantile_top |> filter(pnewsubcategory %in% keep_p) , aes(x=exposure_level, y=I(abs(estimate)), fill=enewsubcategory))
 p <- p + geom_boxplot() + scale_y_continuous(limits=c(0, .7)) 
@@ -248,7 +244,90 @@ ggsave("./paper figs/EffectSize_matrix.pdf", p, width=8.5, height=10)
 ```
 
 
-## cdf of the R2
+
+
+# Examples on the original units
+
+- HABC% (LBXGH)
+- Fasting glucose (LBXGLU)
+- LDL (LBDLDL)
+- Triglycerides (LBXSTR)
+- Serum Creatinine (LBXSCR)
+- CRP (LBXCRP)
+- Thyroid (LBXTSH1)
+- AST/ALT (LBXSATSI/LBXSASSI)
+- Blood Pressure (MSYSTOLIC)
+
+
+```{r}
+con_q  <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/pe_summary_stats_percentile_noscale_p_01_2025_v2.sqlite')
+pe_overall_q <- tbl(con_q, "pe_overall")
+pe_quantile_ns <- pe_overall_q |> filter( model_number == 2) |> filter(term == 'expoq2' | term =='expoq3' | term == 'expoq4' | term=='expoq5') |> collect()
+dbDisconnect(con_q)
+
+
+pe_quantile_ns <- pe_quantile_ns |> rename(evarname=exposure, pvarname=phenotype)
+pe_quantile_ns <- pe_quantile_ns |> mutate(exposure_level = case_when(
+  term == 'expoq2' ~ 'P[25-50)',
+  term == 'expoq3' ~ 'P[50-75)',
+  term == 'expoq4' ~ 'P[75-90)',
+  term == 'expoq5' ~ 'P[90-100)',
+  TRUE ~ NA_character_
+))
+
+
+linear_res <- adjusted_meta_2 |> filter(term_name == 'expo') |> select(evarname, pvarname, estimate_overall, estimate.uwls, sig_levels, ecategory, esubcategory, pcategory, psubcategory, enewsubcategory, pnewsubcategory, evardesc, pvardesc, model_concordance, model_concordance_1_2) 
+
+pe_quantile_ns <- pe_quantile_ns |> left_join(linear_res, by=c("evarname", "pvarname"))
+pe_quantile_ns_top <- pe_quantile_ns |> filter(sig_levels == 'Bonf.<0.05', abs(model_concordance_1_2) == 2, evarname != "LBXHCT", sign(estimate_overall) == sign(estimate.uwls))
+
+
+pe_quantile_ns |> group_by(sig_levels, abs(model_concordance_1_2==2), sign(estimate_overall) == sign(estimate.uwls)) |> count()
+```
+
+```{r}
+## top ones
+plot_effect_size_top_n <- function(quantile_assoc_data, pname, top_number = 7, show_legend="bottom", ylabel="Effect Size vs. 0-25% Exposure", xlabel="") {
+  top_evars <- quantile_assoc_data |> filter(pvarname == pname, term=='expoq5') |> slice_min(n=top_number, order_by = p.value) |> select (evarname)
+  top_evars <-  top_evars |> left_join(quantile_assoc_data |> filter(pvarname==pname))
+  p <- ggplot(top_evars, aes(exposure_level, estimate, group=evardesc, color=evardesc))
+  p <- p + geom_point() + geom_line() 
+  p <- p + geom_errorbar(aes(ymin=estimate-std.error*1.96, ymax=estimate+std.error*1.96), width=.1)
+  p <- p + geom_line()  + ylab(ylabel) + xlab(xlabel) + scale_color_tron()
+  p <- p + theme_bw() + theme(legend.position=show_legend)
+  p
+}
+
+plot_effect_sizes <- function(pname) {
+  p <- ggplot(pe_quantile_ns_top, aes(exposure_level, estimate, group = evardesc))
+  p <- p + geom_point() + geom_line()  + ylab("Effect Size [XXX vs. lowest group]")
+  p <- p + geom_line()  + ylab("Effect Size [ lowest group]") + xlab("Exposure Group")
+  p <- p + theme_bw()
+  p
+}
+
+plot_effect_size_top_n(pe_quantile_ns_top, "LBXGLU", top_number = 6) + ggtitle("Glucose") # show
+plot_effect_size_top_n(pe_quantile_ns_top, "LBXGH", top_number = 6) + ggtitle("Hemoglobin A1C (%)") # show
+plot_effect_size_top_n(pe_quantile_ns_top, "LBXCRP", top_number = 6) + ggtitle("Serum C-Reactive Protein (mg/dL)") # show
+plot_effect_size_top_n(pe_quantile_ns_top, "BMXHT", top_number = 8)  + ggtitle("Height (cm)")
+plot_effect_size_top_n(pe_quantile_ns_top, "BMXBMI", top_number = 6) + ggtitle("Body Mass Index (kg/m2)") # show
+plot_effect_size_top_n(pe_quantile_ns_top, "LBDLDL", top_number = 6) + ggtitle("LDL Cholesterol (mg/dL)")
+plot_effect_size_top_n(pe_quantile_ns_top, "LBXSCR", top_number = 6) + ggtitle("Serum Creatinine (mg/dL)") # show 
+plot_effect_size_top_n(pe_quantile_ns_top, "LBXTSH1", top_number = 6) + ggtitle("Thyroid Stimulating Hormone (mcIU/mL)")
+plot_effect_size_top_n(pe_quantile_ns_top, "LBXSATSI", top_number = 6) + ggtitle("Aspartate Aminotransferase (U/L)")
+plot_effect_size_top_n(pe_quantile_ns_top, "LBXSASSI", top_number = 6) + ggtitle(" Alanine Aminotransferase (U/L)")
+q # show 
+plot_effect_size_top_n(pe_quantile_ns_top, "LBXWBCSI", top_number = 6) + ggtitle("White Blood Cells (1000 cells/uL)") # show
+plot_effect_size_top_n(pe_quantile_ns_top, "SPXNFEV1", top_number = 8) + ggtitle("Forced Expiratory Volume in 1 Second (mL)") # show
+plot_effect_size_top_n(pe_quantile_ns_top, "LBXEOPCT", top_number = 6)
+plot_effect_size_top_n(pe_quantile_ns_top, "LBXHCT", top_number = 6)
+plot_effect_size_top_n(pe_quantile_ns_top, "LBXRDW", top_number = 6) + ggtitle("Red cell Distribution Width (%)") # 
+```
+
+
+
+
+# cdf of the R2
 
 ```{r cdfs}
 
@@ -295,6 +374,7 @@ ggsave("./paper figs/r2_CDF.pdf", p, width=5, height=5)
 
 
 ```
+
 
 
 Compare the pvalues from the two different approaches

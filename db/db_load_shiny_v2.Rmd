@@ -12,7 +12,8 @@ library(DBI)
 ```
 
 ```{r}
-con <- DBI::dbConnect(RSQLite::SQLite(), dbname='./pe_summary_stats_08_2024.sqlite')
+#con <- DBI::dbConnect(RSQLite::SQLite(), dbname='./pe_summary_stats_08_2024.sqlite')
+con <- DBI::dbConnect(RSQLite::SQLite(), dbname='./pe_summary_stats_01_2025.sqlite')
 varnames <- tbl(con, "variable_names_epcf")
 adjusted_meta <- tbl(con, "adjusted_meta_uwls") |> rename(term_name=expo_name)
 mvr2 <- read_rds('../pe_summary_060623/mvr2.rds') |> mutate(mv = mve_rsq-base_rsq)
@@ -135,10 +136,12 @@ load_quantile_data <- function(con_q) {
   return(pe_quantile_all)
 }
 
-con_q  <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/pe_summary_stats_percentile_10_2024.sqlite')
+#con_q  <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/pe_summary_stats_percentile_10_2024.sqlite')
+con_q  <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/pe_summary_stats_percentile_scale_p_01_2025_v2.sqlite')
 pe_quantile_all <- load_quantile_data(con_q)
 dbDisconnect(con_q)
-con_q  <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/pe_summary_stats_percentile_noscale_p_10_2024.sqlite')
+#con_q  <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/pe_summary_stats_percentile_noscale_p_10_2024.sqlite')
+con_q  <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/pe_summary_stats_percentile_noscale_p_01_2025_v2.sqlite')
 pe_quantile_ns <- load_quantile_data(con_q)
 dbDisconnect(con_q)
 pe_quantile_ns |> filter(pvarname == 'LBXGLU', evarname=='LBXGTC')
@@ -225,6 +228,7 @@ pp <- read_rds('../rmd/pp_corrs.rds')
 ```
 
 ```{r LD score correlation}
+library(corrr)
 to_array <- adjusted_meta_2 |> filter(term_name == 'expo') |>
   select(evarname, pvarname, estimate, p.value) |> mutate(estimate= ifelse(p.value >= 0.05, 0, estimate)) |>
   mutate(estimate = ifelse(is.na(estimate), 0, estimate))  |> select(-p.value) |> pivot_wider(names_from = pvarname, values_from = estimate)

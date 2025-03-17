@@ -39,5 +39,7 @@ output: html_document
 -   correlation between exposures? - done
 -  package - done
 
-
+## bugs:
+-- why is cotinine not showing up with quantile estimates for FEV?
+-- HCT - confounding by survey year
 
