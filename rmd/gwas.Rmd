@@ -1,0 +1,48 @@
+---
+title: "gwas.rmd"
+author: "Chirag Patel"
+date: "2025-04-06"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(data.table)
+library(ggsci)
+```
+
+
+
+Sample header
+       variant minor_allele   minor_AF low_confidence_variant n_complete_samples        AC        ytx    beta     se  tstat    pval
+        <char>       <char>      <num>                 <lgcl>              <int>     <num>      <num>   <num>  <num>  <num>   <num>
+1: 1:15791:C:T            T 5.6969e-09                   TRUE             344182 0.0039216 -0.0010197 -35.974 243.06 -0.148 0.88234
+
+```{r}
+
+compile_gwas_exwas <- function(gwas_data, exwas_data_rds, phenoname) {
+  ha1c <- fread(gwas_data, select = c("beta", "pval", "n_complete_samples")) |> filter(pval < 1e-7) |> mutate(type="GWAS")
+  ha1c_exwas_t <- read_rds(exwas_data_rds)
+  ha1c_exwas <- ha1c_exwas_t$pe_tidied |> filter(term == 'expo', model_number == 2)
+  ha1c_exwas <- ha1c_exwas_t$pe_glanced |> filter(model_number == 2, aggregate_base_model==F) |> select(exposure, phenotype, nobs) |> right_join(ha1c_exwas, by=c("exposure", "phenotype"))
+  ha1c_exwas <- ha1c_exwas |> select(p.value, estimate, nobs) |> rename(beta=estimate, pval=p.value, n_complete_samples = nobs) |> mutate(type="ExWAS")
+  ha1c_exwas_gwas <- ha1c |> rbind(ha1c_exwas) |> mutate(phenotype=phenoname)
+}
+
+ha1c <- compile_gwas_exwas('./ivt/30750_irnt.gwas.imputed_v3.both_sexes.varorder.tsv.bgz', './ivt/LBXGH_gh_sig_e.rds', "HbA1C%")
+crp <- compile_gwas_exwas('./ivt/30710_irnt.gwas.imputed_v3.both_sexes.varorder.tsv.bgz', './ivt/LBXCRP_crp_sig_e.rds', "C-Reactive Protein")
+ldl <- compile_gwas_exwas('./ivt/30780_irnt.gwas.imputed_v3.both_sexes.varorder.tsv.bgz', './ivt/LBDLDL_ldl_sig_e.rds', "LDL-C")
+architecture <- rbind(ha1c, crp, ldl)
+```
+
+
+```{r fig.height=4, fig.width=7}
+p <- ggplot(architecture, aes(beta, colour = type))
+p <- p + stat_ecdf() + theme_bw() + scale_color_aaas() + scale_x_continuous(limits=c(-.25, .25))
+p <- p + xlab("Association Coefficient") + ylab("Percentile") + facet_wrap(~phenotype)
+p
+```

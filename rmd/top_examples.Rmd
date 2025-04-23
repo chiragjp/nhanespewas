@@ -1,0 +1,78 @@
+---
+title: "examples.Rmd"
+author: "Chirag Patel"
+date: "2025-04-07"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(gt)
+```
+
+## create a table of each category of phenotype, exposure, and the top 5 factors associated with it (and the top effect size)
+
+Exposure and Phenotype Categories, supplementary table; provide up to 5 examples for each
+```{r}
+load("adjusted_meta_2.Rdata")
+adjusted_meta_2 |> group_by(super_ecat_name, enewsubcategory) |> summarize(n=n(), evardesc_sample=first(evardesc)) |> rename(Num_Variables=n, Sample=evardesc_sample) |> gt()
+adjusted_meta_2 |> group_by(pnewsubcategory) |> summarize(n=n(), pvardesc_sample=first(pvardesc)) |> rename(Num_Variables=n, Sample=pvardesc_sample) |> gt()
+```
+
+
+```{r}
+con_q  <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/pe_summary_stats_percentile_noscale_p_01_2025_v2.sqlite')
+pe_overall_q <- tbl(con_q, "pe_overall")
+pe_quantile_ns <- pe_overall_q |> filter( model_number == 2) |> filter(term == 'expoq2' | term =='expoq3' | term == 'expoq4' | term=='expoq5') |> collect()
+DBI::dbDisconnect(con_q)
+
+
+adjusted_meta_3 <- adjusted_meta_2 |> left_join(pe_quantile_ns |> filter(term == 'expoq5', model_number==2) |> select(phenotype, exposure, term, estimate) |> rename(term_q=term, estimate_q=estimate), by=c("evarname"="exposure", "pvarname"="phenotype")) 
+```
+
+
+## top exposure for each category
+```{r}
+adjusted_meta_3 |> filter(sig_levels != "> BY & Bonf.", evarname != 'LBXHCT') |> group_by(enewsubcategory) |> arrange(-rsq_adjusted_base_diff) |> 
+  summarize(edesc=first(evardesc), 
+  pdesc=first(pvardesc), 
+  pcategory=first(pnewsubcategory),
+  association=first(estimate),
+  i.squared = first(i.squared.uwls),
+  p.value = first(p.value_overall),
+  r.sq = first(rsq_adjusted_base_diff),
+  estimate_q=first(estimate_q),
+  n=first(total_n)
+  ) |> gt() |> 
+  fmt_number(columns = c("association", "r.sq", "estimate_q"), decimals = 2,use_seps= FALSE) |>
+  fmt_number(columns = c("i.squared"), decimals = 1,use_seps= FALSE) |>
+  fmt_scientific(columns = c("p.value"), decimals = 1)
+
+```
+
+## top phenotype for each phenotypic category
+
+```{r}
+adjusted_meta_3 |> filter(sig_levels != "> BY & Bonf.", evarname != 'LBXHCT') |> group_by(pnewsubcategory) |> arrange(-rsq_adjusted_base_diff) |> 
+  summarize(pdesc=first(pvardesc), 
+  edesc=first(evardesc), 
+  ecategory=first(enewsubcategory),
+  association=first(estimate),
+  i.squared = first(i.squared.uwls),
+  p.value = first(p.value_overall),
+  r.sq = first(rsq_adjusted_base_diff),
+  estimate_q=first(estimate_q),
+  n=first(total_n)
+  ) |> gt() |> 
+  fmt_number(columns = c("association", "r.sq", "estimate_q"), decimals = 2,use_seps= FALSE) |>
+  fmt_number(columns = c("i.squared"), decimals = 1,use_seps= FALSE) |>
+  fmt_scientific(columns = c("p.value"), decimals = 1)
+
+```
+
+
+

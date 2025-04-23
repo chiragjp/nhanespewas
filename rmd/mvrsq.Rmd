@@ -1,0 +1,54 @@
+---
+title: "mvrsq.Rmd"
+author: "Chirag Patel"
+date: "2025-04-14"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(ggrepel)
+```
+
+```{r}
+load('../pipeline/rsq/mvrsq_20.Rdata')
+rsq_summary_20 <- rsq_summary
+load('../pipeline/rsq/mvrsq_10.Rdata')
+rsq_summary_10 <- rsq_summary
+load('../pipeline/rsq/mvrsq_50.Rdata')
+rsq_summary_50 <- rsq_summary
+
+rsq_summary <- rsq_summary_10 |> left_join(rsq_summary_20, by = "phenotype", suffix = c("_10", "_20")) #|> left_join(rsq_summary_50, suffix=c("", "_50"), by="phenotype")
+
+```
+
+
+```{r}
+load('./adjusted_meta_2.Rdata')
+pheno_desc <- adjusted_meta_2 |> select(pvarname, pvardesc) |> unique()
+rsq_summary <- rsq_summary |> left_join(pheno_desc, by=c("phenotype"="pvarname"))
+
+rsq_summary |> filter(rsq_exposures_20 > 0) |> summarize(m=median(rsq_exposures_20), q25=quantile(rsq_exposures_20, probs=.25), q75=quantile(rsq_exposures_20, probs=.75))
+
+```
+
+```{r}
+
+p <- ggplot(rsq_summary |> filter(rsq_exposures_20 > 0, phenotype != 'LBXHCT'), aes(number_exposures_in_model_20, rsq_exposures_20*100, label=pvardesc))
+p <- p + geom_point() + theme_bw() +geom_text_repel(size=3) + xlab("Number of Exposures in Model") + ylab("R-squared*100")
+p
+
+p <- ggplot(rsq_summary |> filter(rsq_exposures_20 > 0), aes(rsq_uni_20, rsq_exposures_20, label=pvardesc))
+p <- p + geom_point() + theme_bw() + geom_text_repel(size=3)
+p
+
+
+p <- ggplot(rsq_summary |> filter(rsq_exposures_20 > 0), aes(rsq_base_20, rsq_base_20+rsq_exposures_20))
+p <- p + geom_point() + theme_bw() 
+p
+
+```

@@ -1,0 +1,242 @@
+---
+title: "globe"
+author: "Chirag Patel"
+date: "2025-03-31"
+output: html_document
+---
+
+
+```{r}
+library(tidyverse)
+library(DBI)
+library(ggsci)
+library(DT)
+library(ggrepel)
+library(cowplot)
+library(reactable)
+library(gt)
+library(broom)
+library(ggridges)
+library(ComplexHeatmap)
+library(circlize)
+library(corrr)
+library(ggpubr)
+```
+
+```{r}
+load('adjusted_meta_2.Rdata')
+```
+
+```{r globe}
+process_data <- function(dbdata, e_or_p='p') {
+  expos <- dbdata$pe |> filter(term %like% 'expo%') |> rename(xvarname=xvar, yvarname=yvar)
+  expos_wide <- expos |> pivot_wider(names_from = "model_number", values_from = c("estimate", "std.error", "statistic", "p.value")) 
+  glanced_wide <- dbdata$glanced |> select(-c(adj.r2, df.residual, null.deviance, df.null, deviance)) |> pivot_wider(names_from=c("model_number", "aggregate_base_model"), values_from = c("rsq", "nobs", "AIC", "BIC")) |>  rename(xvarname=xvar, yvarname=yvar)
+  
+  glanced_wide <- glanced_wide |> mutate(rsq_adjusted_base_diff=rsq_2_0-rsq_2_1, rsq_adjusted_diff = rsq_2_0-rsq_1_0) 
+  
+  expos_wide <- expos_wide |> left_join(glanced_wide |> select(-c(series, log_y, log_x, scaled_y, scaled_x)), by=c("xvarname", "yvarname", "x_table_name", "y_table_name"))
+  expos_wide <- expos_wide |> left_join(dbdata$varnames, by=c("xvarname"="Variable.Name", "x_table_name"="Data.File.Name"))
+  expos_wide <- expos_wide |> left_join(dbdata$varnames |> select(Variable.Name, Data.File.Name, Variable.Description, Data.File.Description), 
+                                      by=c("yvarname"="Variable.Name", "y_table_name"="Data.File.Name"))
+
+  expos_wide <- expos_wide |> collect() |> select(-Use.Constraints) |> rename(x_data_file_desc=Data.File.Description.x, y_data_file_desc=Data.File.Description.y,x_variable_description=Variable.Description.x, y_variable_description=Variable.Description.y)
+  
+  expos_wide_summary <- expos_wide |> filter(term == 'expo' | term == 'expo1' | term == 'expo2') |> group_by(xvarname, yvarname) |> summarize(mean_adjusted_base_r2_diff = mean(rsq_adjusted_base_diff), mean_unadjusted_r2_diff=mean(rsq_adjusted_diff), total_n = sum(nobs_2_0)) |> ungroup()
+
+  
+  
+  adjusted_meta_full <- dbdata$adjusted_meta |> filter(model_number == 2) |> collect() |> left_join(expos_wide_summary, by=c("xvarname", "yvarname")) ## fully adjusted model
+  adjusted_meta_raw <- dbdata$adjusted_meta |> filter(model_number == 1) |> collect() |> left_join(expos_wide_summary, by=c("xvarname", "yvarname")) 
+
+  y_variable_domain <- dbdata$variable_domain |> filter(epcf == e_or_p) |> collect() |> group_by(Variable.Name) |> summarise(yvardesc=first(Variable.Description),ycategory=first(category),ysubcategory=first(subcategory))
+  x_variable_domain <- dbdata$variable_domain |> filter(epcf == e_or_p) |> collect() |> group_by(Variable.Name) |> summarise(xvardesc=first(Variable.Description),xcategory=first(category),xsubcategory=first(subcategory))
+  
+  
+  adjusted_meta_full <- adjusted_meta_full |> left_join(y_variable_domain, by=c("yvarname"="Variable.Name"))
+  adjusted_meta_full <- adjusted_meta_full |> left_join(x_variable_domain, by=c("xvarname"="Variable.Name"))
+
+  adjusted_meta_raw <- adjusted_meta_raw |> left_join(y_variable_domain, by=c("yvarname"="Variable.Name"))
+  adjusted_meta_raw <- adjusted_meta_raw |> left_join(x_variable_domain, by=c("xvarname"="Variable.Name"))
+
+  expos_wide <- expos_wide |> left_join(y_variable_domain, by=c("yvarname"="Variable.Name"))
+  expos_wide <- expos_wide |> left_join(x_variable_domain, by=c("xvarname"="Variable.Name"))
+  processed_data <- list(expos=expos, expos_wide=expos_wide, adjusted_meta_full=adjusted_meta_full, adjusted_meta_raw=adjusted_meta_raw, expos_wide=expos_wide, y_variable_domain=y_variable_domain, x_variable_domain=x_variable_domain, expos_wide_summary=expos_wide_summary, glanced_wide=glanced_wide) 
+}
+
+get_data <- function(dbname) {
+  con <- DBI::dbConnect(RSQLite::SQLite(), dbname=dbname)
+  varnames <- tbl(con, "variable_names_epcf")
+  adjusted_meta <- tbl(con, "adjusted_meta")
+  pe <- tbl(con, "pe")
+  pe_r2 <- tbl(con, "rsq")
+  glanced <- tbl(con, "glanced")
+  glanced <- glanced |> left_join(pe_r2 |> select(xvar, yvar, series, model_number,aggregate_base_model, rsq, adj.r2), by=c("xvar", "yvar", "model_number", "aggregate_base_model", "series"))
+  variable_domain <- tbl(con, "variable_domain")
+  dbdata <- list(connection=con, varnames=varnames, adjusted_meta = adjusted_meta, pe=pe, pe_r2=pe_r2, glanced=glanced, variable_domain=variable_domain)
+}
+
+ee <- get_data('../db/ee_summary_stats_03_2024.sqlite')
+ee_process <- process_data(ee, 'e')
+```
+
+```{r fig.height=5, fig.width=5}
+library(igraph)
+E_CORR_THRESHOLD_NEG <- -0.25
+E_CORR_THRESHOLD_POS <- 0.25
+
+exposome_globe <- function(corr_tibble, exposure_tibble) {
+  
+  ff <- corr_tibble |> right_join(exposure_tibble |> select("exposure") |> collect(), by=c("xvarname"="exposure"))
+  sig <- ff |> right_join(exposure_tibble |> select("exposure") |> collect(), by=c("yvarname"="exposure")) 
+
+  sig_to_plot <- sig |> filter(estimate > E_CORR_THRESHOLD_POS | estimate < E_CORR_THRESHOLD_NEG) ## filter among the highest correlations -- choose some background distribution
+
+  sig_graph <- sig_to_plot |> select(-term_name) |> select(xvarname, yvarname, everything()) 
+  sig_vertex <- sig_graph |> select(xvarname, xcategory) |> unique() |> rename(varname = xvarname, category=xcategory)
+  sig_vertex2 <- sig_graph |> select(yvarname, ycategory) |> unique() |> rename(varname = yvarname, category=ycategory)
+  sig_vertex <- sig_vertex |> rbind(sig_vertex2) |> unique()
+  sig_graph <- sig_graph |> mutate(estimate = ifelse(estimate > 1, 1, estimate)) |> mutate(estimate = ifelse(estimate < -1, -1, estimate))
+
+  g <- graph_from_data_frame(sig_graph, directed = FALSE) 
+  E(g)$color <- ifelse(E(g)$estimate > 0, "black", "grey")
+  V(g)$category <- sig_vertex$category[match(V(g)$name, sig_vertex$varname)]
+  categories <- unique(V(g)$category)
+  # Assign colors to each category
+  color_pal <- ggsci::pal_tron("legacy", alpha = 0.7)
+  category_colors <- setNames(color_pal(length(categories)), categories)
+  # Map the colors to vertices based on category
+  vertex_colors <- category_colors[V(g)$category]
+  coords <- layout_in_circle(g)
+  scaling_factor <- 3
+  plot(g, vertex.color = vertex_colors, layout=coords,
+     vertex.size = 14,
+     vertex.color = vertex_colors,
+     vertex.label = substr(V(g)$name, nchar(V(g)$name)-2, nchar(V(g)$name)),      # Label each vertex with its name
+     vertex.label.cex = 0.7,         # Control the size of the labels
+     vertex.label.color = "black",   # Color of the labels
+    vertex.label.family = "sans",
+    edge.curved=FALSE,
+    edge.width = abs(E(g)$estimate) * scaling_factor)
+}
+
+#exposome_globe(ee_process$adjusted_meta_raw, adjusted_meta_2 |> rename(phenotype=pvarname, exposure=evarname) |> filter(phenotype == 'LBXGH', p.value_overall < 1e-5) |> slice_min(n=10, order_by = -rsq_adjusted_base_diff))
+```
+
+
+```{r select a random sample of exposures}
+set.seed(42)
+exposures_selected <- adjusted_meta_2 |> filter(evarname != 'LBXHCT')  |> group_by(evarname) |> summarize(median_rsq = median(rsq_adjusted_base_diff)) 
+exposures_selected <- exposures_selected |> sample_n(50) |> pull(evarname)
+exposures_selected_random <- exposures_selected
+
+```
+
+
+```{r fig.height=9, fig.width=9}
+#uniq_exposures <- unique(exposure_selected$label)
+uniq_exposures <- exposures_selected_random
+temp_am <- adjusted_meta_2 |>  rename(phenotype=pvarname, exposure=evarname) |> filter(p.value_overall < 1e-5)
+to_globe <- vector("list", length = length(uniq_exposures))
+for(ii in 1:length(uniq_exposures)) {
+  to_globe[[ii]] <- temp_am |> filter(exposure == uniq_exposures[ii]) |> slice_min(n=10, order_by = -rsq_adjusted_base_diff)
+}
+
+to_globe <- to_globe |> bind_rows() |> select(exposure) |> group_by(exposure) |> count() |> ungroup()
+
+exposome_globe(ee_process$adjusted_meta_raw, to_globe)
+
+## distribution of correlations
+exposure_corr_for_random<- ee_process$adjusted_meta_raw |> right_join(to_globe |> select("exposure") |> collect(), by=c("xvarname"="exposure")) |> right_join(to_globe |> select("exposure") |> collect(), by=c("yvarname"="exposure")) 
+
+mean(exposure_corr_for_random$estimate)
+
+```
+
+```{r fig.height=9, fig.width=9}
+# evar_examples <- c(
+#  "LBXGH",
+#  "BMXBMI",
+#  'LBXSCR',
+#  "LBDLDL",
+#  "MSYSTOLIC",
+#  "LABSATSI",
+#  "LBXCRP"
+# )
+
+evar_examples <- c(
+  "BMXBMI",
+  "LBXGH"
+)
+
+temp_am <- adjusted_meta_2 |>  rename(phenotype=pvarname, exposure=evarname) |> filter(sig_levels == 'Bonf.<0.05')
+to_globe <- vector("list", length = length(evar_examples))
+for(ii in 1:length(evar_examples)) {
+  to_globe[[ii]] <- temp_am |> filter(phenotype == evar_examples[ii]) |> slice_min(n=10, order_by = -rsq_adjusted_base_diff)
+}
+
+to_globe <- to_globe |> bind_rows() |> select(exposure) |> group_by(exposure) |> count() |> ungroup()
+
+exposome_globe(ee_process$adjusted_meta_raw, to_globe)
+
+exposure_corr_for_sig <- ee_process$adjusted_meta_raw |> right_join(to_globe |> select("exposure") |> collect(), by=c("xvarname"="exposure")) |> right_join(to_globe |> select("exposure") |> collect(), by=c("yvarname"="exposure")) 
+
+
+
+```
+
+
+
+
+unique variables
+```{r}
+ee_process$adjusted_meta_raw |> mutate(pair1 = pmin(xvarname, yvarname),
+         pair2 = pmax(xvarname, yvarname)) |>
+  distinct(pair1, pair2) |>
+  nrow()
+
+length(unique(ee_process$adjusted_meta_raw$xvarname)) 
+
+
+
+```
+
+```{r}
+
+#exposure_corr_for_random |> summarize(q5 = median(abs(estimate)))
+am_raw <- ee_process$adjusted_meta_raw |> mutate(pair1 = pmin(xvarname, yvarname),pair2 = pmax(xvarname, yvarname))
+am_raw <- am_raw |> group_by(pair1, pair2) |> summarize(estimate=mean(estimate, na.rm=T), p.value=median(p.value))
+am_raw <- am_raw |> ungroup()
+
+am_raw |> summarize(q50=median(estimate), q50_abs=median(abs(estimate)))
+am_raw |> mutate(p.bonf=p.adjust(p.value)) |> filter(p.bonf < 0.05) |> summarize(q50=median(estimate), q50_abs=median(abs(estimate)))
+am_raw |> mutate(p.bonf=p.adjust(p.value)) |> filter(p.bonf < 0.05) |> summarize(q25=quantile(estimate, probs=.25), q75=quantile(estimate, probs=.75))
+am_raw |> mutate(p.bonf=p.adjust(p.value)) |> filter(p.bonf < 0.05) |> summarize(q25=quantile(abs(estimate), probs=.25), q75=quantile(abs(estimate), probs=.75))
+
+am_raw |> mutate(p.bonf=p.adjust(p.value)) |> filter(p.bonf < 0.05) |> summarize(q95=quantile(estimate, probs=.95), q95_abs=quantile(abs(estimate), probs=.95))
+
+
+```
+
+```{r}
+
+#ee_process$adjusted_meta_raw <- ee_process$adjusted_meta_raw  |> filter(xvarname %in% adjusted_meta_2$evarname) |> filter(yvarname %in% adjusted_meta_2$evarname)
+#ee_process$adjusted_meta_raw <- ee_process$adjusted_meta_raw  |> mutate(selected = xvarname %in% exposure_corr_for_selected$xvarname | yvarname %in% exposure_corr_for_selected$yvarname)
+#()  filter(xvarname %in% adjusted_meta_2$evarname) |> filter(yvarname %in% adjusted_meta_2$evarname)
+
+
+p <- ggplot(ee_process$adjusted_meta_raw |> mutate(p.bonf=p.adjust(p.value), p_sig=p.bonf<.05) |> filter(p.bonf < 0.05), aes(estimate))
+p <- p + stat_ecdf() + scale_x_continuous(limits=c(-1,1))  + xlab("Exposure-Exposure Correlation")
+p <- p + stat_ecdf(data=exposure_corr_for_sig, aes(estimate), color="blue")
+p <- p + stat_ecdf(data=exposure_corr_for_random, aes(estimate), color="grey")
+p <- p + ylab("Percentile") + theme_bw() + geom_vline(xintercept = c(E_CORR_THRESHOLD_NEG, E_CORR_THRESHOLD_POS)) + theme(legend.position = "none")
+
+p_cdf <- p
+#p_cdf <- p + geom_rect(data=rect_data, mapping=aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax, fill = "yellow"),inherit.aes = FALSE, alpha=.2)
+#png("../rmd/paper figs/png/globe_cdf.png", width = 500, height=500, units="px")
+#p_cdf
+#dev.off()
+
+p_cdf
+
+```

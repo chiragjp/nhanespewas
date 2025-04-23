@@ -1,0 +1,28 @@
+---
+title: "pheno_to_rsq.Rmd"
+author: "Chirag Patel"
+date: "2025-04-14"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Choose phenotypes to estimate R2
+
+```{r}
+load('../../rmd/adjusted_meta_2.Rdata')
+
+#to_run <- adjusted_meta_2 |> filter(pnewsubcategory == 'microbiome' | pnewsubcategory == 'psa' | pnewsubcategory == 'dexa') |> group_by(pvarname) |> count()
+#to_run <- adjusted_meta_2 |> filter(pnewsubcategory != 'microbiome', pnewsubcategory != 'psa', pnewsubcategory != 'dexa') |> group_by(pvarname) |> count()
+to_run <- adjusted_meta_2  |> group_by(pvarname) |> count()
+
+## write out script to call
+for(ii in 1:nrow(to_run)) {
+  pvar <- to_run |> slice(ii) |> pull(pvarname)
+  runs <- sprintf("Rscript create_impute_rsq.R -p %s -m 40\n", pvar)
+  cat(runs)
+}
+
+```

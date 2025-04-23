@@ -1,0 +1,136 @@
+---
+title: "consistency"
+author: "Chirag Patel"
+date: "2025-04-08"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(ggsci)
+```
+
+```{r}
+load("adjusted_meta_2.Rdata")
+```
+
+# consistency in exposures across different types of measures.
+
+
+
+# supplement
+```{r}
+ds1 <- adjusted_meta_2 |> collect() |> filter(grepl("^DS1", evarname))
+ds2 <- adjusted_meta_2 |> collect() |> filter(grepl("^DS2", evarname))
+ds1 <- ds1 |> mutate(evarnameds=substr(evarname, 4, 20))
+ds2 <- ds2 |> mutate(evarnameds=substr(evarname, 4, 20))
+ds <- ds1 |> left_join(ds2, by=c("evarnameds", "pvarname"), suffix=c("_DS1", "_DS2"))
+```
+
+
+
+```{r}
+## plot a scatter of the estimates
+ds 
+p <- ggplot(ds, aes(estimate_DS1, estimate_DS2, color=pval_BY_DS1 < 0.05))
+p <- p + geom_point()
+p <- p + geom_abline() + geom_hline(yintercept=0) + geom_vline(xintercept =0)
+p <- p + xlab("Association Size Estimate (Day 1)")
+p <- p + ylab("Association Size Estimate (Day 2)") + facet_grid(~I(pval_BY_DS1 < 0.05)) +scale_color_aaas()
+p <- p  +  theme_bw() + theme(legend.title=element_blank()) 
+p
+
+ds |> group_by(I(pval_BY_DS1 < 0.05)) |> summarize(cr = cor(estimate_DS1, estimate_DS2, use="pairwise.complete.obs"))
+```
+
+
+# dietary recall
+```{r}
+dr1 <- adjusted_meta_2 |> collect() |> filter(grepl("^DR1", evarname))
+dr2 <- adjusted_meta_2 |> collect() |> filter(grepl("^DR2", evarname))
+dr1 <- dr1 |> mutate(evarnamedr=substr(evarname, 4, 20))
+dr2 <- dr2 |> mutate(evarnamedr=substr(evarname, 4, 20))
+dr <- dr1 |> left_join(dr2, by=c("evarnamedr", "pvarname"), suffix=c("_DR1", "_DR2"))
+
+p <- ggplot(dr, aes(estimate_DR1, estimate_DR2))
+p <- p + geom_point()
+p <- p + geom_abline() + geom_hline(yintercept=0) + geom_vline(xintercept =0)
+p <- p + xlab("Association Size Estimate (Day 1)")
+p <- p + ylab("Association Size Estimate (Day 2)")
+p <- p  +  theme_bw() + theme(legend.title=element_blank()) 
+p
+
+dr |> summarize(cr = cor(estimate_DR1, estimate_DR2, use="pairwise.complete.obs"))
+```
+
+Self-report vs. biomarker
+
+```{r}
+lbx_sr_mapping <- tibble(sr_evarname=c("DR1TVB12", "DR1TBCAR", "DR1TBCAR", "DR1TACAR", "DR1TCRYP", "DR1TRET", "DR1TVD"), 
+                      lbx_evarname=c("LBXB12", "LBXBEC","LBXCBC", "LBXALC", "LBXCRY", "LBXVIA", "LBXVIDMS"),
+                      lbx_sr_name = c('B12', 'TBCAR', 'CBCAR', "ACAR", "CRYP", "RET", "VD")) 
+
+sr_dat <- adjusted_meta_2 |> collect() |> right_join(lbx_sr_mapping, by=c("evarname"="sr_evarname"))
+lbx2_dat <- adjusted_meta_2 |> collect() |> right_join(lbx_sr_mapping, by=c("evarname"="lbx_evarname"))
+lbx_sr <- lbx2_dat |> inner_join(sr_dat, by=c("lbx_sr_name", "pvarname"), suffix=c("_lbx", "_sr"))
+
+
+
+p <- ggplot(lbx_sr, aes(estimate_lbx, estimate_sr, color=sig_levels_lbx))
+p <- p + geom_point() 
+p <- p + geom_abline() + geom_hline(yintercept=0) + geom_vline(xintercept =0) + facet_grid(lbx_sr_name~sig_levels_lbx) +scale_color_aaas()
+p <- p +  theme_bw() + theme(legend.title=element_blank())  + xlab("Association Size Estimate of Blood Biomarker") + ylab("Association Size Estimate of Self-Report Exposure")
+p
+
+lbx_sr |> summarize(cr=cor(estimate_lbx,estimate_sr))
+lbx_sr |> group_by(sig_levels_lbx) |> summarize(cr=cor(estimate_lbx,estimate_sr))
+lbx_sr |> group_by(sig_levels_lbx != '> BY & Bonf.') |> summarize(cr=cor(estimate_lbx,estimate_sr))
+lbx_sr |> group_by(sig_levels_sr != '> BY & Bonf.') |> summarize(cr=cor(estimate_lbx,estimate_sr))
+```
+
+
+## Urine vs. Blood
+
+```{r}
+
+lbx_vars <- adjusted_meta_2 |> collect() |> filter(grepl("^LBX", evarname)) |> select(evarname, evardesc) |> unique()
+urx_vars <- adjusted_meta_2 |> collect() |> filter(grepl("^URX", evarname)) |> select(evarname, evardesc) |> unique()
+
+
+# mapping:
+lbx_urx_mapping <- tibble(urx_evarname=c("URXUHG", "URXUCD", "URXBPB", "URXCOTT"), 
+                      lbx_evarname=c("LBXTHG", "LBXBCD", "LBXBPB", "LBXCOT"), 
+                      urx_lbx_name = c('HG', 'CD', 'PB', 'COT'))
+
+lbx_dat <- adjusted_meta_2 |> collect() |> right_join(lbx_urx_mapping, by=c("evarname"="lbx_evarname"))
+urx_dat <- adjusted_meta_2 |> collect() |> right_join(lbx_urx_mapping, by=c("evarname"="urx_evarname"))
+
+lbx_urx <- lbx_dat |> inner_join(urx_dat, by=c("urx_lbx_name", "pvarname"), suffix=c("_lbx", "_urx"))
+
+p <- ggplot(lbx_urx, aes(estimate_lbx, estimate_urx, color=sig_levels_lbx))
+p <- p + geom_point() 
+p <- p + geom_abline() + geom_hline(yintercept=0) + geom_vline(xintercept =0) + facet_grid(urx_lbx_name~sig_levels_lbx) +scale_color_aaas()
+p <- p +  theme_bw() + theme(legend.title=element_blank()) + xlab("Association Size Estimate of Blood Biomarker") + ylab("Association Size Estimate of Urinary Biomarker")
+p
+
+
+lbx_urx |> group_by(urx_lbx_name, sig_levels_lbx) |> summarize(cr=cor(estimate_lbx, estimate_urx))
+lbx_urx |> summarize(cr=cor(estimate_lbx, estimate_urx))
+```
+
+## Raw correlations
+
+```{r}
+library(DBI)
+path_to_dbname <- "../db/nhanes_031725.sqlite" ## change this to your path
+## connect:
+con <- DBI::dbConnect(RSQLite::SQLite(), dbname=path_to_dbname) 
+## list tables:
+DBI::dbListTables(con)
+
+
+```

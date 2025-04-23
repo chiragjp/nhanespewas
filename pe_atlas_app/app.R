@@ -240,7 +240,7 @@ exposome_globe_plot <- function(exposure_tibble) {
   sig_vertex <- sig_graph |> select(xvarname, xcategory) |> unique() |> rename(varname = xvarname, category=xcategory)
   sig_vertex2 <- sig_graph |> select(yvarname, ycategory) |> unique() |> rename(varname = yvarname, category=ycategory)
   sig_vertex <- sig_vertex |> rbind(sig_vertex2) |> unique()
-  sig_graph <- sig_graph |> mutate(estimate = ifelse(estimate > 1, 1, estimate)) |> mutate(estimate = ifelse(estimate < 1, -1, estimate))
+  sig_graph <- sig_graph |> mutate(estimate = ifelse(estimate > 1, 1, estimate)) |> mutate(estimate = ifelse(estimate < -1, -1, estimate))
 
   g <- graph_from_data_frame(sig_graph, directed = FALSE)
   E(g)$color <- ifelse(E(g)$estimate > 0, "black", "grey")
@@ -252,7 +252,7 @@ exposome_globe_plot <- function(exposure_tibble) {
   # Map the colors to vertices based on category
   vertex_colors <- category_colors[V(g)$category]
   coords <- layout_in_circle(g)
-  scaling_factor <- 2
+  scaling_factor <- 5
   par(mar = c(0, 0, 0, 0))
   plot(g, vertex.color = vertex_colors, layout=coords,
        vertex.size = 10,

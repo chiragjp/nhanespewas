@@ -1,0 +1,43 @@
+---
+title: "new strategy"
+author: "Chirag Patel"
+date: "2025-04-17"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(finalfit)
+library(tidyverse)
+library(mice)
+
+```
+
+```{r}
+glu <- read_rds("LBXGLU_mv.rds")
+sum_stats <- glu$summ_stats
+sum_stats |> arrange(-rsq_adj)
+
+## impute the data with the 10 largest Rsq
+cols <- c("SDMVPSU", "WTMEC2YR", "INDFMPIR", "SDDSRVYR", 
+          "ETHNICITY_NONHISPANICWHITE", "ETHNICITY_MEXICAN", "ETHNICITY_OTHERHISPANIC",  "ETHNICITY_OTHER", "ETHNICITY_NONHISPANICBLACK", "AGE_SQUARED", "RIAGENDR", "RIDAGEYR",
+          "EDUCATION_LESS9",  "EDUCATION_9_11", "EDUCATION_HSGRAD", "EDUCATION_AA", "EDUCATION_COLLEGEGRAD", "BORN_INUSA")
+
+top_5 <- sum_stats |> slice_max(rsq_adj, n = 10, with_ties = FALSE) 
+to_select <- c(cols, "LBXGLU",  top_5$evarname)
+
+dat <- glu$big_data %>% select(all_of(to_select)) |> filter(!is.na(LBXGLU), !is.na(INDFMPIR))
+test <- mice(dat,  print=F)
+
+fit1 <- with(test, lm(scale(LBXGLU) ~ RIDAGEYR + RIAGENDR))
+fit2 <- with(test, lm(scale(LBXGLU) ~ RIDAGEYR + RIAGENDR + LBXGTC + LBXHPE + LBXBEC + LBXCBC + LBX118 + LBDVIDMS + LBXPCB + LBXTNA + LBXPDT + LBXOXY))
+pool.r.squared(fit2)
+pool.r.squared(fit1)
+
+
+
+
+```

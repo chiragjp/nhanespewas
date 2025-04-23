@@ -1,0 +1,101 @@
+---
+title: "P-values and I-squared"
+author: "Chirag Patel"
+date: "2025-04-03"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+```
+
+
+```{r}
+load('./adjusted_meta_2.Rdata')
+load('./pe_condensed.Rdata')
+```
+
+```{r}
+significant <- adjusted_meta_2 |> filter(sig_levels != '> BY & Bonf.') |> group_by(sig_levels, nobs) ## how many in each of these groups had pvalues that were less than 0.05?
+survey_specific_threshold <- 0.05
+pe_condensed <- pe_condensed |> mutate(p.value = ifelse(is.na(p.value), 1, p.value))
+
+pct_sig_survey <- pe_condensed |> filter(term == 'expo' ) |> 
+  group_by(exposure, phenotype) |> 
+  summarize(n=n(), num_sig = sum(p.value < survey_specific_threshold), pct_sig = num_sig/n)
+
+pct_sig_survey <- pct_sig_survey |> ungroup()
+
+## filter for those in significant
+pct_sig_survey_2 <- pct_sig_survey |> inner_join(significant |> ungroup() |> filter(term_name == 'expo') |> select(evarname, pvarname), by=c("exposure"="evarname", "phenotype"="pvarname"))
+
+sig_by_nobs <- pct_sig_survey_2 |> group_by(n,num_sig) |> summarize(total=n()) |> ungroup() |> arrange(n)
+
+sig_by_nobs <- sig_by_nobs |> 
+  left_join(sig_by_nobs |> group_by(n) |> 
+              summarize(n_tests = sum(total))) |> mutate(pct_tests=total/n_tests)
+
+sig_by_nobs |> filter(num_sig==0) |> summarize(m=mean(pct_tests)) ## over half were not significant in one survey at p<0.05
+sig_by_nobs |> filter(num_sig==1) |> summarize(m=mean(pct_tests)) ## 25%
+sig_by_nobs |> filter(num_sig > 1) |> group_by(n) |> summarize(pct_over_2 = sum(pct_tests))    ## 
+sig_by_nobs |> filter(num_sig > 1) |> group_by(n) |> summarize(pct_over_2 = sum(pct_tests)) |> summarize(m=mean(pct_over_2)) 
+```
+
+
+
+```{r}
+p <- ggplot(sig_by_nobs, aes(factor(num_sig), I(pct_tests*100)))
+p <- p + geom_bar(stat = "identity") + facet_wrap(~n) + xlab("Number of Surveys P-E achieved p<0.05") + ylab("% of total P-E identified [FDR < 0.05]") + theme_bw()
+p
+```
+
+
+
+```{r i2, fig.height=8, fig.width=8}
+p <- ggplot(adjusted_meta_2 |> filter(sig_levels != '> BY & Bonf.'), aes(enewsubcategory, i.squared.uwls))
+p <- p + geom_jitter(alpha=.2) + geom_boxplot() + facet_wrap(~nobs) + coord_flip() + theme_bw()
+p <- p + xlab("Exposure Category") + ylab("I-squared")
+p
+
+
+adjusted_meta_2 |> filter(sig_levels != '> BY & Bonf.') |> group_by(nobs) |> summarize(m=median(i.squared.uwls))
+```
+
+```{r i2 simple, fig.height=7, fig.width=7}
+p <- ggplot(adjusted_meta_2 |> filter(sig_levels != '> BY & Bonf.'), aes(enewsubcategory, i.squared.uwls))
+p <- p + geom_jitter(alpha=.2) + geom_boxplot()  + coord_flip() + theme_bw()
+p <- p + xlab("Exposure Category") + ylab("I-squared")
+p
+
+
+adjusted_meta_2 |> filter(sig_levels != '> BY & Bonf.') |> group_by(enewsubcategory) |> summarize(m=median(i.squared.uwls)) |> arrange(-m)
+
+adjusted_meta_2 |> filter(sig_levels != '> BY & Bonf.') |> group_by(nobs) |> summarize(m=median(i.squared.uwls)) |> arrange(-nobs)
+
+```
+
+
+## now lets check for associations that were just nominally signficant
+
+```{r}
+significant_2 <- adjusted_meta_2  |> group_by(nobs) ## how many in each of these groups had pvalues that were less than 0.05?
+
+## filter for those in significant
+pct_sig_survey_all <- pct_sig_survey |> inner_join(significant_2 |> ungroup() |> filter(term_name == 'expo') |> select(evarname, pvarname), by=c("exposure"="evarname", "phenotype"="pvarname"))
+sig_by_nobs_all <- pct_sig_survey_all |> group_by(n,num_sig) |> summarize(total=n()) |> ungroup() |> arrange(n)
+
+sig_by_nobs_all <- sig_by_nobs_all |> 
+  left_join(sig_by_nobs_all |> group_by(n) |> 
+              summarize(n_tests = sum(total))) |> mutate(pct_tests=total/n_tests)
+
+sig_by_nobs_all |> filter(num_sig==0) |> summarize(m=mean(pct_tests)) ## over half were not significant in one survey at p<0.05
+sig_by_nobs_all |> filter(num_sig==1) |> summarize(m=mean(pct_tests)) 
+sig_by_nobs_all |> filter(num_sig > 1) |> group_by(n) |> summarize(pct_over_2 = sum(pct_tests))    ## 
+
+sig_by_nobs_all |> filter(num_sig > 1) |> group_by(n) |> summarize(pct_over_2 = sum(pct_tests)) |> summarize(m=mean(pct_over_2)) 
+
+```

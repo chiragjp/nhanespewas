@@ -1,6 +1,6 @@
 # Benchmarking exposome research: An atlas of exposome-phenome associations
 
-06/07/2023
+04/07/25
 
 ## Summary
 
@@ -8,23 +8,16 @@ We build a comprehensive "atlas" of correlations between 278 phenotypes (e.g., b
 
 Specifically, the atlas provides a comprehensive list of exposure-phenome associations across the cohort, document statistical approaches used to associate exposures with phenotype, and systematically assesses replicability across independent cohorts.
 
-<img src="img/pe.png" width="70%" height="70%"/>
+<img src="img/pe_fig1.png" width="70%" height="70%"/>
 
 ## Phenome-Exposome Atlas and Browser
 
 -   [PE Browsable Atlas](http://apps.chiragjpgroup.org/pe_atlas/)
--   [Phenotype by Exposure Associations](rmd/pe.html)
--   [Consistency of Exposome Associations](rmd/consistency.html)
 
 ## nhanespewas: run your own P-E Associations
 
 
-### Installation
 
-```         
-## todo
-
-```
 
 ### Execute an E-P Association
 
@@ -42,7 +35,3 @@ crp_cot <- pe_flex_adjust("LBXCRP", "LBXCOT", adjustment_models, con, scale_p=T)
 disconnect_pewas_data(pedata_con)
 ```
 
-## PEWAS Data
-
--   [Participant-level data](https://www.dropbox.com/s/fvdd60k0nnm8qjb/nhanes_122322.sqlite?dl=0)
--   [Summary statistics](https://www.dropbox.com/s/w84s77cbpifp7fy/pe_summary_stats.sqlite?dl=0)

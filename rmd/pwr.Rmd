@@ -1,0 +1,84 @@
+---
+title: "power"
+author: "Chirag Patel"
+date: "2025-04-01"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(pwr)
+library(tidyverse)
+
+load('./adjusted_meta_2.Rdata')
+quantile(adjusted_meta_2$total_n, probs=c(.25, .5, .75))
+
+power_from_r2 <- function(n, r2, u,pval) {
+  if(is.na(n) | is.na(r2)) {
+    return(NA)
+  }
+  v <- n - u - 1  
+  pr <- pwr.f2.test(u=u,v=v,f2=r2/(1-r2),sig.level=pval)  
+  pr$power
+}
+
+
+p.value <- 1e-6
+r2s <- c(0.001, 0.005, 0.006, 0.007, 0.008, 0.009, 0.01, 0.02, 0.03, 0.04, 0.05)
+n <- seq(200, 10000, by=100)
+u <- 1
+pwr_list <- vector("list", length(r2s))
+for(i in 1:length(r2s)) {
+  pwr_list[[i]] <- tibble(r2=r2s[i], n=n, pwrs=map_dbl(n, ~power_from_r2(.x, r2s[i], u, p.value )))
+}
+
+
+pwr_df <- bind_rows(pwr_list)
+p <- ggplot(pwr_df |> filter(r2==0.01), aes(n, pwrs , color=factor(r2)))
+p <- p + geom_point() + geom_line() + geom_vline(xintercept = c(550, 1000, 7457, 15317))
+p1 <- p + xlab("N") + ylab("Power") + theme_bw() 
+p1
+
+#p <- ggplot(adjusted_meta_full, aes(total_n))
+#p2 <- p + stat_ecdf() + theme_bw() + scale_color_aaas()
+#p2
+```
+
+
+# min r2 to detect at 80% power
+```{r min r2}
+
+quantile(adjusted_meta_2$total_n, probs=c(0,.25, .5, .75, 1))
+r2_from_f2 <- function(f2) {
+  f2 / (1+f2)
+}
+
+n <- 608
+u <- 1
+v <- n- u - 1
+r2_from_f2(pwr.f2.test(u=u,v=v,sig.level=p.value, power=.80)$f2)
+
+n <- 4220
+u <- 1
+v <- n- u - 1
+r2_from_f2(pwr.f2.test(u=u,v=v,sig.level=p.value, power=.80)$f2)
+
+n <- 7464
+u <- 1
+v <- n- u - 1
+r2_from_f2(pwr.f2.test(u=u,v=v,sig.level=p.value, power=.80)$f2)
+
+n <- 15316
+u <- 1
+v <- n- u - 1
+r2_from_f2(pwr.f2.test(u=u,v=v,sig.level=p.value, power=.80)$f2)
+
+n <- 68315
+u <- 1
+v <- n- u - 1
+r2_from_f2(pwr.f2.test(u=u,v=v,sig.level=p.value, power=.80)$f2)
+
+```

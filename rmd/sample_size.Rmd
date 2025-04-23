@@ -1,0 +1,20 @@
+---
+title: "sample_size"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+ss_file <- '../select/sample_size_pe_category_0824.csv'
+ss <- read_csv(ss_file)
+
+first_way <- ss |> filter(n >= 500)
+first_way |> group_by(pvarname, evarname) |> summarize(total_sample=sum(n), n_surveys=n()) |> ungroup() |> filter(n_surveys > 1) |> summarize(n_min=min(total_sample))
+
+ss |> group_by(pvarname, evarname) |> summarize(total_sample = sum(n), n_surveys=n()) |> filter(total_sample <= 1006, total_sample >= 500, n_surveys > 1) ## 5046 pairs lost
+
+ss |> group_by(pvarname, evarname) |> summarize(total_sample = sum(n), n_surveys=n()) |> filter(total_sample <= 1006, total_sample >= 500, n_surveys > 1) ## 5046 pairs lost
+
+
+
+```

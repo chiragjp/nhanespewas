@@ -30,7 +30,8 @@ devtools::load_all(".")
 
 ```{r connect}
 #con <- DBI::dbConnect(RSQLite::SQLite(), dbname='./db/nhanes_012324.sqlite')
-con <- DBI::dbConnect(RSQLite::SQLite(), dbname='./db/nhanes_112824.sqlite')
+#con <- DBI::dbConnect(RSQLite::SQLite(), dbname='./db/nhanes_112824.sqlite')
+con <- DBI::dbConnect(RSQLite::SQLite(), dbname='./db/nhanes_031725.sqlite')
 varnames <- dplyr::tbl(con, "variable_names_epcf") 
 ```
 
@@ -40,7 +41,7 @@ varnames <- dplyr::tbl(con, "variable_names_epcf")
 ```{r serum cotinine and c-reactive protein}
 varnames |> filter(Variable.Name == 'LBXCOT')
 varnames |> filter(Variable.Name == 'LBXCRP')
-crp_cot <- pe_flex_adjust("LBXCRP", "LBXCOT", adjustment_models, con, scale_p=T)
+crp_cot <- pe_flex_adjust("LBXCRP", "LBXCOT", adjustment_models, con, scale_p=T, logxform_p = F, scale_type=3)
 # print out the tidied summary stats for the fully adjusted model
 crp_cot$models[[2]]$tidied
 # R2 for the full adjusted model
@@ -49,6 +50,20 @@ crp_cot$models[[2]]$r2
 crp_cot$base_models[[2]]$r2
 # full-base
 crp_cot$models[[2]]$r2$rsq - crp_cot$base_models[[2]]$r2$rsq
+```
+
+# GH(P) and gamma-tocopherol (E)
+```{r serum cotinine and c-reactive protein}
+gh_gtc <- pe_flex_adjust("LBXGH", "LBXGTC", adjustment_models, con, scale_p=T, logxform_p = F, scale_type=3)
+# 0.1104320348
+# print out the tidied summary stats for the fully adjusted model
+gh_gtc$models[[2]]$tidied
+# R2 for the full adjusted model
+gh_gtc$models[[2]]$r2
+# R2 for base model
+gh_gtc$base_models[[2]]$r2
+# full-base
+gh_gtc$models[[2]]$r2$rsq - crp_cot$base_models[[2]]$r2$rsq
 ```
 
 Age?
@@ -89,7 +104,15 @@ tab_obj <- tab_obj |> figure_out_multiyear_weight()
 
 ```
 
+fatty acid and LBXIN
 ```{r}
+test_scenario <- adjustment_models |> filter(scenario == 'age_sex_ethnicity_income_education')
+
+test_scenario <- test_scenario |> 
+  rbind(tibble(scenario = 'age_sex_ethnicity_income_education', variables='as.factor(SDDSRVYR)', domain='default'),
+        tibble(scenario = 'age_sex_ethnicity_income_education', variables='BMXBMI_adj', domain='default')
+        )
+in_fa <- pe_flex_adjust("LBXIN", "LBXOD9", test_scenario, con, scale_p=T, scale_e = T, logxform_e = T)
 
 ```
 

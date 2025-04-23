@@ -1,0 +1,196 @@
+---
+title: "Adjustments"
+author: "Chirag Patel"
+date: "2025-03-31"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+library(tidyverse)
+library(DBI)
+library(ggsci)
+library(DT)
+library(ggrepel)
+library(cowplot)
+library(reactable)
+library(gt)
+library(broom)
+library(ggridges)
+library(ComplexHeatmap)
+library(circlize)
+library(corrr)
+```
+
+
+```{r}
+## 
+load('pe_overall.Rdata')
+load('adjusted_meta_2.Rdata')
+
+```
+
+```{r}
+adjustment_number_order <- rbind(
+  tibble(model_number=1, scenario="base", order_number=1, scenario_label="Univariate"),
+  tibble(model_number=5, scenario="sex", order_number=2, scenario_label="Sex"),
+  tibble(model_number=4, scenario="age", order_number=3, scenario_label="Age"),
+  tibble(model_number=3, scenario="age_sex", order_number=4, scenario_label="Age+Sex"),
+  tibble(model_number=9, scenario="ethnicity", order_number=5, scenario_label="Ethnicity"),
+  tibble(model_number=6, scenario="age_sex_ethnicity", order_number=6, scenario_label="Age+Sex+Ethnicity"),
+  tibble(model_number=8, scenario="income_education", order_number=7, scenario_label="Income+Education"),
+  tibble(model_number=7, scenario="age_sex_income_education", order_number=8, scenario_label="Age+Sex+Income+Education"),
+  tibble(model_number=2, scenario="age_sex_ethnicity_income_education", order_number=9, scenario_label="Main:Age+Sex+Ethnicity+Income+Education")
+)
+```
+
+```{r}
+pe_overall <- pe_overall |> filter(grepl('expo', term)) |> rename(term_name=term, evarname=exposure, pvarname=phenotype) 
+adjusted_meta_2 <- adjusted_meta_2 |> rename(estimate_adjusted=estimate, p.value_adjusted = p.value, statistic_adjusted=statistic) |> select(-model_number) 
+adjusted_meta_tp <- pe_overall  |> left_join(adjusted_meta_2, by=c("evarname", "pvarname", "term_name"))
+adjusted_meta_tp <- adjusted_meta_tp  |> left_join(adjustment_number_order |> select(c(model_number, scenario, scenario_label, order_number)), by="model_number")
+
+```
+
+```{r scatter}
+p <- ggplot(adjusted_meta_tp |> filter(pvalue_bonferroni < 0.05) |>
+              filter( scenario != 'age_sex_ethnicity_income_education') |> 
+              mutate(scenario = fct_relevel(scenario, "base", "age", "sex", "age_sex", "ethnicity", "income_education", "age_sex_income_education", "age_sex_ethnicity", "age_sex_ethnicity_income_education"),scenario_label=fct_relevel(scenario_label, c("Univariate", "Age", "Sex", "Age+Sex", "Ethnicity", "Income+Education", "Age+Sex+Income+Education", "Age+Sex+Ethnicity", "Main:Age+Sex+Ethnicity+Income+Education"))), 
+            aes(estimate_adjusted, estimate))
+p <- p + geom_point(alpha=.5) + facet_wrap(~scenario_label, ncol = 4) + theme_bw() + ylab("Scenario-based E-P") + xlab("Age+Sex+Ethnicity+Income+Education Corrected E-P")
+p
+
+```
+
+
+
+```{r histogram}
+
+
+p <- ggplot(adjusted_meta_tp |> filter(sig_levels == 'Bonf.<0.05') |> filter( scenario != 'age_sex_ethnicity_income_education') |>
+              mutate(scenario = fct_relevel(scenario, "base", "age", "sex", "age_sex", "ethnicity", "income_education", "age_sex_income_education", "age_sex_ethnicity"), 
+                                       scenario_label=fct_relevel(scenario_label, c("Univariate", "Age", "Sex", "Age+Sex", "Ethnicity", "Income+Education", "Age+Sex+Income+Education", "Age+Sex+Ethnicity", "Main:Age+Sex+Ethnicity+Income+Education"))), aes(estimate-estimate_adjusted))
+p <- p + geom_histogram()  + facet_wrap(~scenario_label, ncol=2) + theme_bw() + scale_x_continuous(limits=c(-.1, .1)) + xlab("Age+Sex+Ethnicity+Income+Education Corrected Estimate minus Scenario-based Estimate") + ylab("Count")
+histogram_p <- p
+
+```
+
+
+
+# Estimate and bias
+```{r}
+to_test <- adjusted_meta_tp  |> filter(model_number != 2) |> filter(sig_levels == 'Bonf.<0.05') 
+
+mod <- lm(estimate_adjusted~estimate + factor(model_number, levels=c(9, 1, 2, 3, 4, 5, 6,7, 8)) + ecategory + pcategory, data=to_test)
+summary(mod)
+
+to_test|> group_by(scenario_label) |> summarize(m_estimate=mean(estimate-estimate_adjusted, na.rm=T),
+  sd_estimate = sd(estimate-estimate_adjusted, na.rm=T)) |> arrange(-sd_estimate)
+
+to_test|> group_by(scenario_label, enewsubcategory) |> summarize(sd_estimate = sd(estimate-estimate_adjusted, na.rm=T)) |> filter(scenario_label=='Univariate') |> arrange(-sd_estimate) 
+to_test |> group_by(enewsubcategory) |> summarize(sd_estimate = sd(estimate-estimate_adjusted, na.rm=T)) |> arrange(-sd_estimate)
+to_test |> group_by(pnewsubcategory) |> summarize(sd_estimate = sd(estimate-estimate_adjusted, na.rm=T)) |> arrange(-sd_estimate)
+to_test |> group_by(sig_levels) |> summarize(sd_estimate = sd(estimate-estimate_adjusted, na.rm=T)) |> arrange(-sd_estimate)
+
+```
+
+```{r univariate by exposure histogram, fig.height=8, fig.width=8}
+
+p <- ggplot(adjusted_meta_tp  |> filter( scenario == 'base'), aes(estimate-estimate_adjusted))
+p <- p + geom_histogram()  + facet_wrap(~enewsubcategory) + theme_bw() + scale_x_continuous(limits=c(-.2, .2)) + xlab("Age+Sex+Ethnicity+Income+Education Corrected Estimate minus Scenario-based Estimate") + ylab("Count")
+histogram_p_2 <- p
+histogram_p_2
+
+```
+
+
+
+```{r fig.height=7, fig.width=9}
+
+# adjusted_meta_tp 
+am2 <- adjusted_meta_tp |> filter(model_number == 1) |> filter(!is.na(sig_levels))
+p <- ggplot(am2 , aes(estimate_adjusted, estimate, color=sig_levels)) 
+p <- p + geom_point(shape='.') + scale_x_continuous(limits=c(-1, 1)) + scale_y_continuous(limits=c(-1, 1)) + scale_color_aaas()
+p <- p + geom_abline()
+p <- p + facet_grid(sig_levels~.) + xlab("Adjusted model estimate [Exposure + Demographics]") + ylab("Unadjusted estimate [Exposure]")
+p <- p + geom_smooth(method="lm")
+p <- p + theme_bw() +theme(legend.position = "none") ## need to get sig_levels
+p
+# 
+# 
+# 
+tidy(lm(estimate_adjusted ~ estimate, am2))
+tidy(lm(estimate_adjusted ~ estimate, am2 |> filter(pvalue_bonferroni < .05)))
+tidy(lm(estimate_adjusted ~ estimate, am2 |> filter(sig_levels == '> BY & Bonf.')))
+tidy(lm(estimate_adjusted ~ estimate, am2 |> filter(sig_levels == 'BY<0.05')))
+
+glance(lm(estimate_adjusted ~ estimate, am2))
+glance(lm(estimate_adjusted ~ estimate, am2 |> filter(pvalue_bonferroni < .05)))
+glance(lm(estimate_adjusted ~ estimate, am2 |> filter(sig_levels == '> BY & Bonf.')))
+glance(lm(estimate_adjusted ~ estimate, am2 |> filter(sig_levels == 'BY<0.05')))
+
+# 
+p <- ggplot(adjusted_meta_tp |> filter(model_number == 1, !is.na(ecategory)) , aes(estimate, estimate_adjusted, color=ecategory))
+p <- p + geom_point(shape='.') + scale_x_continuous(limits=c(-1, 1)) + scale_y_continuous(limits=c(-1, 1)) + scale_color_aaas()
+p <- p + geom_abline()
+p <- p + facet_grid(~ecategory) + ylab("Adjusted model estimate [Exposure + Demographics]") + xlab("Unadjusted estimate [Exposure]")
+p <- p + geom_smooth(method="lm")
+p <- p + theme_bw() +theme(legend.position = "none")
+p
+
+
+p <- ggplot(adjusted_meta_tp |> filter(model_number == 1, !is.na(ecategory)) , aes(estimate-estimate_adjusted, color=ecategory))
+p <- p + geom_histogram() + scale_x_continuous(limits=c(-1, 1)) + scale_color_aaas()
+p <- p + facet_grid(~ecategory) 
+p <- p + theme_bw() +theme(legend.position = "none")
+p
+
+
+tidy(lm(estimate_adjusted ~ estimate, am2 |> filter(ecategory=='pollutant')))
+tidy(lm(estimate_adjusted ~ estimate, am2 |> filter(ecategory=='nutrients')))
+tidy(lm(estimate_adjusted ~ estimate, am2 |> filter(ecategory=='infection')))
+tidy(lm(estimate_adjusted ~ estimate, am2 |> filter(ecategory=='smoking')))
+
+p <- ggplot(adjusted_meta_tp |> filter(model_number == 1, !is.na(pcategory)) , aes(estimate, estimate_adjusted, color=pcategory))
+p <- p + geom_point(shape='.') + scale_x_continuous(limits=c(-1, 1)) + scale_y_continuous(limits=c(-1, 1)) + scale_color_aaas()
+p <- p + geom_abline()
+p <- p + facet_grid(~pcategory) + ylab("Adjusted model estimate [Exposure + Demographics]") + xlab("Unadjusted estimate [Exposure]")
+p <- p + geom_smooth(method="lm")
+p <- p + theme_bw() +theme(legend.position = "none")
+p
+
+
+```
+
+
+Complex population structure uncovers simpsons paradox in many significant findings
+
+Of the significant findings, 932 out of 5194 (15% of total signficant Bonferroni identified pairs) exhibited a switch of coefficient sign between the univariate model (a model with no demographic or social factor adjustment). For example, BMXBMI and LBXBCD, had weak but positive associations (e.g, for a 1SD increase in exposure, there is a 1SD increase in BMI); however, when controlling or adjusting for factors in the "main" model, the association becomes stronger (e.g., the standard errors are reduced) and opposite in the direction. 
+
+```{r}
+adjusted_meta_tp |> filter(model_number == 1)  |> filter(sign(estimate) != sign(estimate_adjusted), sig_levels == "Bonf.<0.05") |> nrow()
+adjusted_meta_tp |> filter(model_number == 1)  |> filter(sign(estimate) == sign(estimate_adjusted), sig_levels == "Bonf.<0.05") |> nrow()
+
+voe <- rbind(
+  adjusted_meta_tp |> filter(pvarname == 'BMXBMI', evarname == 'LBXBCD') |> select(evarname, evardesc, model_number, scenario_label, estimate, p.value, std.error.x, std.error.y, estimate_adjusted, sig_levels),
+adjusted_meta_tp |> filter(pvarname == 'BMXBMI', evarname == 'URXP07') |> select(evarname, evardesc, model_number, scenario_label, estimate, p.value, std.error.x, std.error.y, estimate_adjusted, sig_levels) |> filter(sig_levels == 'Bonf.<0.05') ,
+adjusted_meta_tp |> filter(pvarname == 'BMXBMI', evarname == 'LBXGTC') |> select(evarname, evardesc, model_number, scenario_label, estimate, p.value, std.error.x, std.error.y, estimate_adjusted, sig_levels) |> filter(sig_levels == 'Bonf.<0.05') 
+)
+
+voe <- voe |> mutate(scenario_label=fct_relevel(scenario_label, c("Univariate", "Age", "Sex", "Age+Sex", "Ethnicity", "Income+Education", "Age+Sex+Income+Education", "Age+Sex+Ethnicity", "Main:Age+Sex+Ethnicity+Income+Education")))
+
+p <- ggplot(voe |> filter(model_number != 9), aes(scenario_label, estimate, color=evardesc))
+p <- p + geom_point() +  geom_line(linetype="dotted") 
+p <- p + geom_errorbar(aes(ymin=estimate-2*std.error.x, ymax=estimate+2*std.error.x), width =.2)
+p <- p + coord_flip() + geom_hline(yintercept = c(0)) + scale_fill_aaas()
+p <- p + theme_bw() + theme(legend.title = element_blank(), legend.position = 'bottom') + xlab("Model Specification") + ylab("E-P Association Size") 
+voe_p <- p
+```
+
+```{r fig.height=7, fig.width=7}
+plot_grid(histogram_p,voe_p,nrow = 2, labels=c("A", "B"), rel_heights = c(2,1))
+```

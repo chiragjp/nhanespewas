@@ -1,0 +1,258 @@
+---
+title: "arch.Rmd"
+author: "Chirag Patel"
+date: "2025-03-30"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(DBI)
+library(ggsci)
+library(DT)
+library(ggrepel)
+library(cowplot)
+library(reactable)
+library(gt)
+library(broom)
+library(ggridges)
+library(ComplexHeatmap)
+library(circlize)
+library(corrr)
+```
+
+```{r}
+load('./adjusted_meta_2.Rdata')
+```
+
+```{r}
+super_ecat_colors <- tibble(ecat_name = c(
+  "Dietary Interview+Behavior",
+  "Smoking+Hydrocarbon+Metals",
+  "Consumables",
+  "Pollutants",
+  "Volatile Organics",
+  "Infection"
+), colors=pal_observable()(6))
+
+super_pcat_colors <- tibble(pcat_name=c(
+  "aging",
+  "anthropometric",
+  "lung",
+  "fitness",
+  "blood pressure",
+  "biochemistry",
+  "blood",
+  "microbiome"
+), colors=pal_observable()(8))
+
+pnewcat_colors <- tibble(pnewsubcategory = c(
+  'aging',
+  'anthropometric', 
+  'metabolic',
+  'lipids',
+  'liver',
+  'hormone',
+  'nutrition',
+  'kidney',
+  'electrolyte',
+  'fitness',
+  'blood pressure',
+  'blood', 
+  'inflammation',
+  'iron', 
+  'lung',
+  'bone',
+  'microbiome',
+  'psa'
+),
+  pnewcat_order = 1:18,
+  colors=rep(c('#4269D0FF', '#EFB118FF', '#FF725CFF'), 6)
+)
+
+```
+
+Filter for visualization
+```{r}
+adjusted_meta_to_hm <- adjusted_meta_2 |> filter(pnewsubcategory != 'dexa' ) |> filter(pnewsubcategory != 'microbiome' )
+adjusted_meta_to_hm <-  adjusted_meta_to_hm |> rbind(adjusted_meta_2 |> filter(grepl("^RSV", pvarname)))
+
+
+```
+
+
+```{r}
+adjusted_meta_2 |> group_by(sig_levels) |> summarize(q5=quantile(estimate_overall, probs=c(.05)), q95=quantile(estimate_overall, probs=.95))
+adjusted_meta_2 |> group_by(sig_levels) |> summarize(q5=quantile(abs(estimate_overall), probs=c(.05)), q95=quantile(abs(estimate_overall), probs=.95))
+
+adjusted_meta_2 |> filter(term_name == 'expo1') |> group_by(sig_levels) |> summarize(q5=quantile(estimate_overall, probs=c(.05)), q95=quantile(estimate_overall, probs=.95))
+
+
+```
+
+ExP Map
+```{r r2 architecture}
+to_array_pe <- adjusted_meta_to_hm |> filter(term_name == 'expo' | term_name == 'expo1') |> select(evarname, pvarname, estimate_overall, rsq_adjusted_base_diff, p.value_overall) |> 
+  mutate(estimate_overall= ifelse(p.value_overall >= 0.1, 0, estimate_overall)) |> 
+  mutate(estimate_overall = ifelse(is.na(estimate_overall), 0, estimate_overall))  |> 
+  mutate(rsq_adjusted_base_diff = ifelse(is.na(rsq_adjusted_base_diff), 0, rsq_adjusted_base_diff))  |> 
+  mutate(rsq_adjusted_base_diff = sign(estimate_overall)*rsq_adjusted_base_diff)  |> 
+  select(-p.value_overall) |> 
+  select(-estimate_overall) |>
+  pivot_wider(names_from = pvarname, values_from = rsq_adjusted_base_diff)
+
+col_fun = colorRamp2(c(-.01, 0, .01), c("blue", "white", "red"))
+to_array_pe <- to_array_pe |> as.data.frame() 
+rownames(to_array_pe)  <- to_array_pe$evarname
+to_array_pe <- to_array_pe |> select(-evarname) |> as.matrix()
+Heatmap(to_array_pe, col = col_fun, show_row_names = F, show_column_names = F)
+```
+
+```{r linear beta architecture}
+to_array_pe <- adjusted_meta_to_hm |> filter(term_name == 'expo' | term_name == 'expo1') |> select(evarname, pvarname, estimate_overall, rsq_adjusted_base_diff, p.value_overall) |> 
+  mutate(estimate_overall= ifelse(p.value_overall >= 0.1, 0, estimate_overall)) |> 
+  mutate(estimate_overall = ifelse(is.na(estimate_overall), 0, estimate_overall))  |> 
+  mutate(rsq_adjusted_base_diff = ifelse(is.na(rsq_adjusted_base_diff), 0, rsq_adjusted_base_diff))  |> 
+  mutate(rsq_adjusted_base_diff = sign(estimate_overall)*rsq_adjusted_base_diff)  |> 
+  select(-p.value_overall) |> 
+  select(-rsq_adjusted_base_diff) |>
+  pivot_wider(names_from = pvarname, values_from = estimate_overall)
+
+rownames(to_array_pe)  <- to_array_pe$evarname
+
+
+evardesc <- adjusted_meta_to_hm |> filter(term_name == 'expo' | term_name == 'expo1') |> select(evarname, ecategory, super_ecat_number,enewsubcategory, super_ecat_name) |> unique() |> as.data.frame()
+pvardesc <- adjusted_meta_to_hm |> filter(term_name == 'expo' | term_name == 'expo1') |> select(pvarname, pcategory, pnewsubcategory) |> unique() |> as.data.frame()
+
+pvardesc <- pvardesc |> left_join(pnewcat_colors, by=c("pnewsubcategory"="pnewsubcategory"))
+evardesc <- evardesc |> left_join(super_ecat_colors, by=c("super_ecat_name"="ecat_name"))
+
+
+rownames(evardesc) <- as.character(evardesc$evarname)
+evardesc <- evardesc |> select(-evarname)
+rownames(pvardesc) <- (pvardesc$pvarname)
+pvardesc <- pvardesc |> select(-pvarname)
+
+envec <- evardesc$colors
+names(envec) <- evardesc$enewsubcategory
+pnvec <- pvardesc$colors
+names(pnvec) <- pvardesc$pnewsubcategory
+
+rowAn = rowAnnotation(sc=evardesc$enewsubcategory, show_legend=FALSE, show_annotation_name = FALSE, col=list(sc=envec))
+colAn = columnAnnotation(sc=pvardesc$pnewsubcategory, show_legend=FALSE,show_annotation_name = FALSE, col=list(sc=pnvec))
+row_split_by_ecategory <- fct_reorder(
+  evardesc[rownames(to_array_pe), "enewsubcategory"], 
+  evardesc[rownames(to_array_pe), "super_ecat_number"])
+col_split_by_pcategory <- fct_reorder(
+  pvardesc[colnames(to_array_pe)[-1], "pnewsubcategory"],
+  pvardesc[colnames(to_array_pe)[-1], "pnewcat_order"],
+  )
+
+to_array_pe <- to_array_pe |> select(-evarname) |> as.matrix()
+
+```
+
+```{r draw, fig.height=7, fig.width=7}
+Heatmap(to_array_pe, left_annotation = rowAn, 
+        right_annotation = rowAn, 
+        top_annotation = colAn, 
+        row_split = row_split_by_ecategory,
+        column_split = col_split_by_pcategory,
+        row_title_gp    = gpar(fontsize = 8),   # shrink/enlarge row-split label text
+        row_title_rot   = 0,                    # rotate the row-split labels (default is 90)
+        column_title_gp = gpar(fontsize = 8),   # shrink/enlarge column-split label text
+        column_title_rot= 45,  
+        show_row_names = F, show_column_names = F, cluster_columns = F, cluster_rows = F,
+        name="Adjusted Beta",
+        ) 
+```
+
+
+EE Architecture
+
+```{r ee architecture correlation, fig.height=7, fig.width=7}
+to_array <- adjusted_meta_to_hm |> filter(term_name == 'expo' | term_name == 'expo1') |> select(evarname, pvarname, estimate_overall, p.value_overall) |> mutate(estimate_overall= ifelse(p.value_overall >= 0.1, 0, estimate_overall)) |> mutate(estimate_overall = ifelse(is.na(estimate_overall), 0, estimate_overall))  |> select(-p.value_overall) |> pivot_wider(names_from = evarname, values_from = estimate_overall)
+
+vardesc <- adjusted_meta_to_hm |> filter(term_name == 'expo' | term_name == 'expo1') |> select(evarname, ecategory, esubcategory) |> unique() |> as.data.frame()
+rownames(vardesc) <- vardesc$evarname
+vardesc <- vardesc |> select(-evarname)
+ha <- rowAnnotation(sc=evardesc$enewsubcategory, show_legend=FALSE, show_annotation_name = FALSE, col=list(sc=envec))
+hc <- columnAnnotation(sc=evardesc$enewsubcategory, show_legend=FALSE, show_annotation_name = FALSE, col=list(sc=envec))
+phenome_correlation <- to_array |> select(-pvarname) |> correlate(diagonal = 1)
+m <- phenome_correlation |> as_matrix()
+m[is.na(m)] <- 0
+Heatmap(m, right_annotation = ha, row_split = row_split_by_ecategory,
+        bottom_annotation = hc, column_split = row_split_by_ecategory,
+        row_title_gp    = gpar(fontsize = 8),   # shrink/enlarge row-split label text
+        row_title_rot   = 0,  
+        column_title_gp = gpar(fontsize = 8),   # shrink/enlarge column-split label text
+        column_title_rot= 45,  
+        show_row_names=F, show_column_names = F, cluster_rows = T, cluster_columns = T, show_column_dend = F, show_row_dend = F,
+        name="Correlation")
+
+
+
+
+```
+
+```{r}
+
+phenome_correlation_str <- phenome_correlation |> stretch() |> 
+  right_join(
+    adjusted_meta_to_hm |> select(evarname, enewsubcategory, evardesc) |> unique(), by=c("x"="evarname")) |> 
+  right_join(
+    adjusted_meta_to_hm |> select(evarname, enewsubcategory, evardesc) |> unique(), by=c("y"="evarname")
+    ) 
+  
+
+phenome_correlation_str |> group_by(enewsubcategory.x, enewsubcategory.y) |> summarize(m=median(r, na.rm=T),m_abs=median(abs(r), na.rm=T), q25_abs=quantile(abs(r), probs=.25, na.rm=T),q75_abs=quantile(abs(r), probs=.75, na.rm=T)) 
+
+phenome_correlation_str |> group_by(enewsubcategory.x) |> summarize(m=median(r, na.rm=T),m_abs=median(abs(r), na.rm=T), q25_abs=quantile(abs(r), probs=.25, na.rm=T),q75_abs=quantile(abs(r), probs=.75, na.rm=T)) 
+
+phenome_correlation_str |> summarize(m=median(abs(r), na.rm=T))
+phenome_correlation_str |> filter(x!=y) |> arrange(r) |> head(200) 
+
+phenome_correlation_str |> filter(x=="LBXBCD", y=="URXUCD")
+phenome_correlation_str |> filter(x=="LBXCOT", y=="URXCOTT")
+phenome_correlation_str |> filter(x=="LBXBPB", y=="URXUPB")
+
+
+
+
+```
+
+
+PP Architecture
+```{r pp architecture correlation, fig.height=7, fig.width=7}
+to_array <- adjusted_meta_to_hm |> filter(term_name == 'expo' | term_name == 'expo1') |> select(evarname, pvarname, estimate_overall, p.value_overall) |> mutate(estimate_overall= ifelse(p.value_overall >= 0.1, 0, estimate_overall)) |> mutate(estimate_overall = ifelse(is.na(estimate_overall), 0, estimate_overall))  |> select(-p.value_overall) |> pivot_wider(names_from = pvarname, values_from = estimate_overall)
+
+vardesc <- adjusted_meta_to_hm |> filter(term_name == 'expo' | term_name == 'expo1') |> select(pvarname, pcategory, pnewsubcategory) |> unique() |> as.data.frame()
+rownames(vardesc) <- vardesc$pvarname
+vardesc <- vardesc |> select(-pvarname)
+ha <- rowAnnotation(sc=vardesc$pnewsubcategory, show_legend=FALSE, show_annotation_name = FALSE, col=list(sc=pnvec))
+hc <- columnAnnotation(sc=vardesc$pnewsubcategory, show_legend=FALSE, show_annotation_name = FALSE, col=list(sc=pnvec))
+phenome_correlation <- to_array |> select(-evarname) |> correlate(diagonal = 1)
+m <- phenome_correlation |> as_matrix()
+m[is.na(m)] <- 0
+Heatmap(m, right_annotation = ha, row_split = col_split_by_pcategory,
+        bottom_annotation = hc, column_split = col_split_by_pcategory,
+        row_title_gp    = gpar(fontsize = 8),   # shrink/enlarge row-split label text
+        row_title_rot   = 0,  
+        column_title_gp = gpar(fontsize = 8),   # shrink/enlarge column-split label text
+        column_title_rot= 45,  
+        show_row_names=F, show_column_names = F, cluster_rows = T, cluster_columns = T, show_column_dend = F, show_row_dend = F,
+        name="Correlation")
+
+
+phenome_correlation_str <- phenome_correlation |> stretch() |> right_join(adjusted_meta_to_hm |> select(pvarname, pnewsubcategory, pvardesc) |> unique(), by=c("x"="pvarname"))
+
+phenome_correlation_str |> group_by(pnewsubcategory) |> summarize(m=median(r, na.rm=T),m_abs=median(abs(r), na.rm=T), q25_abs=quantile(abs(r), probs=.25, na.rm=T),q75_abs=quantile(abs(r), probs=.75, na.rm=T)) 
+
+phenome_correlation_str |> summarize(m=median(abs(r), na.rm=T))
+phenome_correlation_str |> filter(x!=y) |> filter(x=='LBXGLU')|> arrange(r) |> head(200) 
+
+```

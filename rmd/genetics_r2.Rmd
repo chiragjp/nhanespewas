@@ -1,0 +1,31 @@
+---
+title: "genetics_r2_compare.Rmd"
+author: "Chirag Patel"
+date: "2025-04-20"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+library(tidyverse)
+library(ggrepel)
+```
+
+```{r}
+quant_genetics_r2 <- read_csv("./QTraits_R2_Ukbiobank.csv", skip = 1)
+quant_genetics_r2 <- quant_genetics_r2 |> filter(!is.na(NHANES))
+p <- ggplot(quant_genetics_r2, aes(`Covariates-only model`, `Full model`, label=`Trait Name`))
+p <- p + geom_point() + theme_bw() + ylab("R^2 Full Model: G + Covariates") + xlab("R^2 Covariates (age, sex, array, PCs)") + geom_abline() +geom_text_repel(size=3)
+p
+
+quant_genetics_r2 |> summarize(m_r2 = median(`Delta(Full, covariates-only)`), 
+                                             q25=quantile(`Delta(Full, covariates-only)`, probs=c(.25)), 
+                                             q75=quantile(`Delta(Full, covariates-only)`, probs=c(.75)),
+                                            qmax=quantile(`Delta(Full, covariates-only)`, probs=c(1)),
+                                             )
+
+```

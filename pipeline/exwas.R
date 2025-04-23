@@ -36,9 +36,10 @@ phenotype <- 'LBXRDW'
 #ss_file <- '../select/sample_size_pe_category_060623.csv'
 ss_file <- '../select/sample_size_pe_category_0824.csv'
 #path_to_db <-   '../db/nhanes_012324.sqlite' # '../nhanes_122322.sqlite'
-path_to_db <- '../db/nhanes_112824.sqlite' # '../nhanes_122322.sqlite'
+#path_to_db <- '../db/nhanes_112824.sqlite' # '../nhanes_122322.sqlite'
+path_to_db <-'../db/nhanes_031725.sqlite'
 path_out <- '.'
-use_quantile <- 1
+use_quantile <- 0
 
 if(!TEST) {
   phenotype <- opt$phenotype
@@ -50,6 +51,7 @@ if(!TEST) {
 
 QUANTILES <- c(0, .25, .5, .75, .9, 1)
 SCALE_P <- T
+SCALE_TYPE <- 3 # IVT
 ############### end DEBUG
 
 con <- DBI::dbConnect(RSQLite::SQLite(), dbname=path_to_db)
@@ -103,24 +105,24 @@ for(ii in 1:N) {
     if(use_quantile==1) {
       mod <- pe_safely(rw$pvarname, rw$evarname, adjustment_model_for_e, con,
                        logxform_p=F, logxform_e=F, scale_e=F, scale_p=SCALE_P,
-                       quantile_expo=QUANTILES, exposure_levels=NULL)
+                       quantile_expo=QUANTILES, exposure_levels=NULL,scale_type=SCALE_TYPE)
     } else {
       mod <- pe_safely(rw$pvarname, rw$evarname, adjustment_model_for_e, con,
                      logxform_p=F, logxform_e=T, scale_e=T, scale_p=SCALE_P,
-                     quantile_expo=NULL, exposure_levels=NULL)
+                     quantile_expo=NULL, exposure_levels=NULL, scale_type=SCALE_TYPE)
     }
 
   } else if(e_levels$vartype == 'categorical') {
     log_info("{ii} categorizing { rw$evarname } ")
     mod <- pe_safely(rw$pvarname, rw$evarname, adjustment_model_for_e, con,
                      logxform_p=F, logxform_e=F, scale_e=F, scale_p=SCALE_P,
-                     quantile_expo=NULL, exposure_levels=e_levels$varlevels)
+                     quantile_expo=NULL, exposure_levels=e_levels$varlevels, scale_type=SCALE_TYPE)
 
   } else if(e_levels$vartype == 'continuous-rank') {
     log_info("{ii} as is { rw$evarname } ")
     mod <- pe_safely(rw$pvarname, rw$evarname, adjustment_model_for_e, con,
                      logxform_p=F, logxform_e=F, scale_e=T, scale_p=SCALE_P,
-                     quantile_expo=NULL, exposure_levels=NULL)
+                     quantile_expo=NULL, exposure_levels=NULL, scale_type=SCALE_TYPE)
 
   }
 

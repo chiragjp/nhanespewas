@@ -1,0 +1,260 @@
+---
+title: "Effect Size v2"
+author: "Chirag Patel"
+date: "2025-03-30"
+output: html_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(DBI)
+library(ggsci)
+library(DT)
+library(ggrepel)
+library(cowplot)
+library(reactable)
+library(gt)
+library(broom)
+library(ggridges)
+```
+
+```{r}
+load('./adjusted_meta_2.Rdata')
+```
+
+```{r}
+super_ecat_colors <- tibble(ecat_name = c(
+  "Dietary Interview+Behavior",
+  "Smoking+Hydrocarbon+Metals",
+  "Consumables",
+  "Pollutants",
+  "Volatile Organics",
+  "Infection"
+), colors=pal_observable()(6))
+
+super_pcat_colors <- tibble(pcat_name=c(
+  "aging",
+  "anthropometric",
+  "lung",
+  "fitness",
+  "blood pressure",
+  "biochemistry",
+  "blood",
+  "microbiome"
+), colors=pal_observable()(8))
+
+pnewcat_colors <- tibble(pnewsubcategory = c(
+  'aging',
+  'anthropometric', 
+  'metabolic',
+  'lipids',
+  'liver',
+  'hormone',
+  'nutrition',
+  'kidney',
+  'electrolyte',
+  'fitness',
+  'blood pressure',
+  'blood', 
+  'inflammation',
+  'iron', 
+  'lung',
+  'bone',
+  'microbiome',
+  'psa'
+),
+  pnewcat_order = 1:18,
+  colors=rep(c('#4269D0FF', '#EFB118FF', '#FF725CFF'), 6)
+)
+
+```
+
+# Examples on the original units
+
+- HABC% (LBXGH)
+- Fasting glucose (LBXGLU)
+- LDL (LBDLDL)
+- Triglycerides (LBXSTR)
+- Serum Creatinine (LBXSCR)
+- CRP (LBXCRP)
+- Thyroid (LBXTSH1)
+- AST/ALT (LBXSATSI/LBXSASSI)
+- Blood Pressure (MSYSTOLIC)
+
+
+```{r}
+con_q  <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/pe_summary_stats_percentile_noscale_p_01_2025_v2.sqlite')
+pe_overall_q <- tbl(con_q, "pe_overall")
+pe_quantile_ns <- pe_overall_q |> filter( model_number == 2) |> filter(term == 'expoq2' | term =='expoq3' | term == 'expoq4' | term=='expoq5') |> collect()
+dbDisconnect(con_q)
+
+
+pe_quantile_ns <- pe_quantile_ns |> rename(evarname=exposure, pvarname=phenotype)
+pe_quantile_ns <- pe_quantile_ns |> mutate(exposure_level = case_when(
+  term == 'expoq2' ~ 'P[25-50)',
+  term == 'expoq3' ~ 'P[50-75)',
+  term == 'expoq4' ~ 'P[75-90)',
+  term == 'expoq5' ~ 'P[90-100)',
+  TRUE ~ NA_character_
+))
+
+
+linear_res <- adjusted_meta_2 |> filter(term_name == 'expo') |> select(evarname, pvarname, estimate_overall, estimate.uwls, sig_levels, p.value_overall,rsq_adjusted_base_diff, ecategory, esubcategory, pcategory, psubcategory, enewsubcategory, pnewsubcategory, evardesc, pvardesc, model_concordance, model_concordance_1_2,super_ecat_number, super_ecat_name) 
+
+pe_quantile_ns <- pe_quantile_ns |> left_join(linear_res, by=c("evarname", "pvarname"))
+pe_quantile_ns_top <- pe_quantile_ns |> filter(sig_levels == 'Bonf.<0.05' | sig_levels == 'BY<0.05') |> 
+                                        filter(abs(model_concordance_1_2) == 2,  sign(estimate_overall) == sign(estimate.uwls))
+
+
+
+pe_quantile_ns_top <- pe_quantile_ns_top |> filter(evarname != 'SMQ720', evarname != 'LBXHCT', evarname != 'LBXB12')
+pe_quantile_ns_top <- pe_quantile_ns_top |> left_join(super_ecat_colors, by=c("super_ecat_name"="ecat_name"))
+
+pe_quantile_ns |> group_by(sig_levels, abs(model_concordance_1_2==2), sign(estimate_overall) == sign(estimate.uwls)) |> count()
+```
+
+```{r fig.height=9, fig.width=8}
+## top ones
+plot_effect_size_top_n <- function(quantile_assoc_data, pname, top_number = 7, show_legend="right", ylabel="", xlabel="") {
+  top_evars <- quantile_assoc_data |> filter(pvarname == pname, term=='expoq5') |> slice_min(n=top_number, order_by = -rsq_adjusted_base_diff) |> select (evarname)
+  top_evars <-  top_evars |> left_join(quantile_assoc_data |> filter(pvarname==pname))
+  
+  top_evars <- top_evars |> mutate(evardesc = substr(evardesc, 1, 25))
+  
+  p <- ggplot(top_evars, aes(exposure_level, estimate, group=evardesc, color=evardesc))
+  p <- p + geom_point() + geom_line() 
+  p <- p + geom_errorbar(aes(ymin=estimate-std.error*1.96, ymax=estimate+std.error*1.96), width=.1)
+  p <- p + geom_line()  + ylab(ylabel) + xlab(xlabel) + scale_color_tron()
+  p <- p + theme_bw() + theme(legend.position=show_legend,
+                              legend.spacing = unit(0, "pt"),
+                              legend.title=element_blank(),
+                              legend.key.spacing.y = unit(.1, "pt"),
+                              legend.text= element_text(size=8),
+                              legend.key.size = unit(1, "lines"),
+                              legend.box.spacing = margin(0.5),
+                              #axis.text.x=element_blank(),
+                              axis.text.x = element_text(size=7),
+                              plot.title=element_text(size=8)
+                              ) 
+  p <- p + guides(col=guide_legend(nrow=5,byrow=TRUE))
+  p
+}
+
+plot_effect_sizes <- function(pname) {
+  p <- ggplot(pe_quantile_ns_top, aes(exposure_level, estimate, group = evardesc))
+  p <- p + geom_point() + geom_line()  + ylab("Effect Size [XXX vs. lowest group]")
+  p <- p + geom_line()  + ylab("Effect Size [ lowest group]") + xlab("Exposure Group")
+  p <- p + theme_bw()
+  p
+}
+
+
+# place legend on the right side and compress main figure
+# show R2 on the top of the figure; Show Pvalue top of the figure
+# rotate x axis label and squeeze
+
+evar_examples <- c(
+  "LBXGH",
+  "BMXBMI",
+  "BMXHT",
+  "LBDLDL",
+  "LABSATSI",
+  "SPXNFEV1",
+  "LBXCRP",
+  "MSYSTOLIC",
+  "LBXWBCSI"
+)
+
+p1 <- plot_effect_size_top_n(pe_quantile_ns_top, "LBXGH", top_number = 5, show_legend = "bottom") + ggtitle("A1C") # show # METABOLIC
+p2 <- plot_effect_size_top_n(pe_quantile_ns_top, "BMXBMI", top_number = 5, show_legend = "bottom") + ggtitle("Body Mass Index (kg/m2)") # show ANTHROPOMETRIC
+p3 <- plot_effect_size_top_n(pe_quantile_ns_top, "BMXHT", top_number = 5, show_legend = "bottom")  + ggtitle("Height (cm)") # show 
+p4 <- plot_effect_size_top_n(pe_quantile_ns_top, "LBDLDL", top_number = 5, show_legend = "bottom")  + ggtitle("LDL Cholesterol (mg/dL)") # 
+p5 <- plot_effect_size_top_n(pe_quantile_ns_top, "MSYSTOLIC", top_number = 5, show_legend="bottom" ) + ggtitle("Systolic Blood Pressure [mm-Hg]") # LIPIDS
+p6 <- plot_effect_size_top_n(pe_quantile_ns_top, "LBXSATSI", top_number = 5, show_legend="bottom" ) + ggtitle("Aspartate Aminotransferase (U/L)") # LIVERS
+#p6 <- plot_effect_size_top_n(pe_quantile_ns_top, "SPXNFEV1", top_number = 5, show_legend="bottom" ) + ggtitle("Forced Expiratory Volume in 1 Second (mL)") # show LUNG
+p7 <- plot_effect_size_top_n(pe_quantile_ns_top, "LBXCRP", top_number = 5, show_legend = "bottom")+ ggtitle("Serum C-Reactive Protein (mg/dL)") # INFLAMMATION 
+p8 <- plot_effect_size_top_n(pe_quantile_ns_top, "LBXSCR", top_number = 5, show_legend="bottom" ) + ggtitle("Serum Creatinine (mg/dL)") # show #KIDNEY
+p9 <- plot_effect_size_top_n(pe_quantile_ns_top, "LBXWBCSI", top_number = 5, show_legend="bottom") + ggtitle("White Blood Cells (1000 cells/uL)") # show INFLAMMATION
+pg <- plot_grid(p1, p2,p3, p8, p4, p5, p6, p7, p9,  ncol=3)
+pg
+#ggsave("./paper figs/EffectSize_v2.pdf", pg, width=8, height=9, units="in")
+
+
+top_number <- 5
+pe_quantile_ns_top |> filter(pvarname == 'LBXGH', term=='expoq5') |> slice_min(n=top_number, order_by = -rsq_adjusted_base_diff) |> select(evardesc,rsq_adjusted_base_diff) 
+pe_quantile_ns_top |> filter(pvarname == 'BMXBMI', term=='expoq5') |> slice_min(n=top_number, order_by = -rsq_adjusted_base_diff) |> select(evardesc,rsq_adjusted_base_diff) |> summarize(mean(rsq_adjusted_base_diff))
+pe_quantile_ns_top |> filter(pvarname == 'BMXHT', term=='expoq5') |> slice_min(n=top_number, order_by = -rsq_adjusted_base_diff) |> select(evardesc,rsq_adjusted_base_diff) |> summarize(mean(rsq_adjusted_base_diff))
+
+
+top_number <- 5
+pe_quantile_ns_top |> filter(pvarname == 'LBDLDL', term=='expoq5') |> slice_min(n=top_number, order_by = -rsq_adjusted_base_diff) |> select(evardesc,rsq_adjusted_base_diff) 
+pe_quantile_ns_top |> filter(pvarname == 'BMXBMI', term=='expoq5') |> slice_min(n=top_number, order_by = -rsq_adjusted_base_diff) |> select(evardesc,rsq_adjusted_base_diff) |> summarize(mean(rsq_adjusted_base_diff))
+pe_quantile_ns_top |> filter(pvarname == 'BMXHT', term=='expoq5') |> slice_min(n=top_number, order_by = -rsq_adjusted_base_diff) |> select(evardesc,rsq_adjusted_base_diff) |> summarize(mean(rsq_adjusted_base_diff))
+
+```
+
+```{r effect size distribution, fig.height=11, fig.width=10}
+plot_effect_size_top_n_anon <- function(quantile_assoc_data, pname, top_number_label = 3, top_number= NA, ylabel="", xlabel="") {
+  top_evars <-  quantile_assoc_data |> filter(pvarname == pname)
+  sample_text <- NULL
+  if(!is.na(top_number_label)) {
+    sample_text <- quantile_assoc_data |> filter(pvarname == pname, term=='expoq5') |> slice_min(n=top_number_label, order_by = -rsq_adjusted_base_diff) |> select (evarname)
+    sample_text <-  sample_text |> left_join(quantile_assoc_data |> filter(pvarname==pname))
+    sample_text <- sample_text |> mutate(evardesc = substr(evardesc, 1, 25))
+  
+  } 
+  if(!is.na(top_number)) {
+    top_evars <- quantile_assoc_data |> filter(pvarname == pname, term=='expoq5') |> slice_min(n=top_number, order_by = -rsq_adjusted_base_diff) |> select (evarname)
+    top_evars <-  top_evars |> left_join(quantile_assoc_data |> filter(pvarname==pname))
+  }
+  
+  p <- ggplot(top_evars, aes(exposure_level, estimate, group=evardesc))
+  p <- p + geom_point(shape = 1, size = 3) + geom_line(linetype="dotted", aes(color=super_ecat_name))
+  if(!is.na(top_number_label)) {
+    p <- p + geom_text_repel(data=sample_text |> filter(term=='expoq5'), aes(exposure_level, estimate, label=evardesc), size=3)  
+  }
+  p <- p +  ylab(ylabel) + xlab(xlabel) 
+  p <- p + scale_x_discrete(expand = c(0, 0.1))
+  p <- p + theme_bw() + theme(legend.position="none", 
+                              axis.text.x=element_blank(),
+                              plot.title=element_text(size=8))
+  
+  p <- p + guides(col=guide_legend(nrow=5,byrow=TRUE))
+  
+  p
+}
+
+
+evar_examples <- c(
+  "LBXGH",
+  "BMXBMI",
+  "BMXHT",
+  "LBDLDL",
+  "LABSATSI",
+  "SPXNFEV1",
+  "LBXCRP",
+  "MSYSTOLIC",
+  "LBXWBCSI"
+)
+
+p1 <- plot_effect_size_top_n_anon(pe_quantile_ns_top, "LBXGH", top_number = 10, top_number_label=10) + ggtitle("A1C %") # show # METABOLIC
+p2 <- plot_effect_size_top_n_anon(pe_quantile_ns_top, "BMXBMI", top_number = 10, top_number_label=10) + ggtitle("Body Mass Index (kg/m2)") # show ANTHROPOMETRIC
+p3 <- plot_effect_size_top_n_anon(pe_quantile_ns_top, "BMXHT", top_number = 10, top_number_label = 10)  + ggtitle("Height (cm)") # show 
+p4 <- plot_effect_size_top_n_anon(pe_quantile_ns_top, "LBDLDL", top_number = 10, top_number_label = 10)  + ggtitle("LDL Cholesterol (mg/mL)") # show 
+p5 <- plot_effect_size_top_n_anon(pe_quantile_ns_top, "LBXSATSI", top_number = 10, top_number_label = 10) + ggtitle("Aspartate Aminotransferase (U/L)") # LIVERS
+p6 <- plot_effect_size_top_n_anon(pe_quantile_ns_top , "SPXNFEV1", top_number = 10, top_number_label = 10) + ggtitle("Forced Expiratory Volume in 1 Second (mL)") 
+p7 <- plot_effect_size_top_n_anon(pe_quantile_ns_top, "LBXCRP", top_number = 10, top_number_label = 10) + ggtitle("C-Reactive Protein (mg/dL)") # show #KIDNEY
+p8 <- plot_effect_size_top_n_anon(pe_quantile_ns_top, "MSYSTOLIC", top_number = 10, top_number_label = 10) + ggtitle("Systolic Blood Pressure [mm-Hg]") # LIPIDS
+p9 <- plot_effect_size_top_n_anon(pe_quantile_ns_top, "LBXWBCSI", top_number = 10, top_number_label = 10) + ggtitle("White Blood Cells (1000 cells/uL)") # show INFLAMMATION
+p10 <- plot_effect_size_top_n_anon(pe_quantile_ns_top, "LBXRBCSI", top_number = 10) + ggtitle("Red Blood Cells (1000 cells/uL)") # show INFLAMMATION
+#p11 <- plot_effect_size_top_n_anon(pe_quantile_ns_top, "LBXIRN", top_number = 10)+ ggtitle("Iron (ug/dL)") # INFLAMMATION 
+
+pg_anon <- plot_grid(p1, p2,p3, p4, p5, p6, p7, p8, p9, p10, ncol=2)
+
+pg_anon
+```

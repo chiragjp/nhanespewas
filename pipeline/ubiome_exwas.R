@@ -45,7 +45,7 @@ ss_file <- '../select/sample_size_ubiome_e_112424.csv'
 path_to_db <-'../db/nhanes_112824.sqlite'
 path_out <- '.'
 use_quantile <- FALSE
-SCALE_CLR <- TRUE
+SCALE_CLR <- 2
 if(!TEST) {
   phenotype <- opt$phenotype
   ss_file <- opt$sample_size_pairs_list_file
@@ -109,24 +109,24 @@ for(ii in 1:N) {
     if(use_quantile==1) {
       mod <- pe_safely(rw$pvarname, rw$evarname, adjustment_model_for_e, con,
                        logxform_p=F, logxform_e=F, scale_e=F, scale_p=T,
-                       quantile_expo=c(0, .25, .5, .75, 1), exposure_levels=NULL, scale_clr=SCALE_CLR)
+                       quantile_expo=c(0, .25, .5, .75, 1), exposure_levels=NULL, scale_type=SCALE_CLR)
     } else {
       mod <- pe_safely(rw$pvarname, rw$evarname, adjustment_model_for_e, con,
                        logxform_p=F, logxform_e=T, scale_e=T, scale_p=T,
-                       quantile_expo=NULL, exposure_levels=NULL, scale_clr=SCALE_CLR)
+                       quantile_expo=NULL, exposure_levels=NULL, scale_type=SCALE_CLR)
     }
 
   } else if(e_levels$vartype == 'categorical') {
     log_info("{ii} categorizing { rw$evarname } ")
     mod <- pe_safely(rw$pvarname, rw$evarname, adjustment_model_for_e, con,
                      logxform_p=F, logxform_e=F, scale_e=F, scale_p=T,
-                     quantile_expo=NULL, exposure_levels=e_levels$varlevels, scale_clr=SCALE_CLR)
+                     quantile_expo=NULL, exposure_levels=e_levels$varlevels, scale_type=SCALE_CLR)
 
   } else if(e_levels$vartype == 'continuous-rank') {
     log_info("{ii} as is { rw$evarname } ")
     mod <- pe_safely(rw$pvarname, rw$evarname, adjustment_model_for_e, con,
                      logxform_p=F, logxform_e=F, scale_e=T, scale_p=T,
-                     quantile_expo=NULL, exposure_levels=NULL, scale_clr=SCALE_CLR)
+                     quantile_expo=NULL, exposure_levels=NULL, scale_type=SCALE_CLR)
 
   }
 

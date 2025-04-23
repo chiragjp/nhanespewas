@@ -137,7 +137,8 @@ svyrsquared <- function(analysisObj) {
 #' result <- run_model(formu, dsn, scale_expo=T, scale_pheno=F, quantile_expo=c(0.25, 0.5, 0.75))
 #' }
 #' @export
-run_model <- function(formu, dsn, scale_expo=T, scale_pheno=F, quantile_expo=NULL, expo_levels=NULL, save_svymodel=F, scale_clr=F) {
+run_model <- function(formu, dsn, scale_expo=T, scale_pheno=F, quantile_expo=NULL, expo_levels=NULL, save_svymodel=F, scale_type=1) { # scale type 1 is mean and SD; scale type 2 == CLR scale type 3 is IVT
+
   cut_points <- NA
   if(scale_expo) {
     logger::log_info("Exposure as scaled")
@@ -155,16 +156,29 @@ run_model <- function(formu, dsn, scale_expo=T, scale_pheno=F, quantile_expo=NUL
     dsn <- stats::update(dsn, expo=factor(expo, levels=expo_levels))
   }
 
-  if(scale_pheno & (scale_clr == F)) {
+  if(scale_pheno & scale_type == 1) {
     logger::log_info("Phenotype scaled by mean and SD")
     s <- sqrt(mean(survey::svyvar(~pheno, dsn, na.rm = T)))
     mn <- mean(survey::svymean(~pheno, dsn, na.rm=T))
     dsn <- stats::update(dsn, pheno=(pheno-mn)/s)
-  } else if(scale_pheno & scale_clr) {
+  } else if(scale_pheno & scale_type == 2) {
+    # centered log ratio transformation
     logger::log_info("Phenotype scaled using CLR")
     dsn <- stats::update(dsn, logpheno=log(pheno+.25))
     mn <- mean(survey::svymean(~logpheno, dsn, na.rm=T))
     dsn <- stats::update(dsn, pheno=logpheno-mn)
+  } else if(scale_pheno & scale_type == 3) {
+    logger::log_info("Phenotype scaled using RankNorm")
+    ## inverse variance transform
+    #dsn <- RNOmni::rankNormal
+    pheno_raw <- dsn$variables$pheno
+    # Create an empty vector (with NA values) of the same length
+    pheno_trans <- rep(NA, length(pheno_raw))
+    # Apply the Rank Normal transformation to non-missing values only
+    non_missing <- !is.na(pheno_raw)
+    pheno_trans[non_missing] <- RNOmni::RankNorm(pheno_raw[non_missing])
+    # Update the survey design object with the transformed phenotype
+    dsn <- stats::update(dsn, pheno = pheno_trans)
   }
 
 
@@ -439,7 +453,7 @@ pe <- function(pheno, exposure, adjustment_variables,con, series=NULL,
 pe_flex_adjust <- function(pheno, exposure, adjustment_variables,con, series=NULL,
                            logxform_p=T, logxform_e=T, scale_e=T, scale_p=F,
                            pheno_table_name=NULL, expo_table_name=NULL,
-                           quantile_expo=NULL, exposure_levels=NULL, scale_clr=F) {
+                           quantile_expo=NULL, exposure_levels=NULL, scale_type=1) {
 
   ptables <- get_table_names_for_varname(con, varname = pheno, series) |> rename(p_name = Data.File.Name)
   etables <- get_table_names_for_varname(con, varname = exposure, series) |> rename(e_name = Data.File.Name)
@@ -482,9 +496,9 @@ pe_flex_adjust <- function(pheno, exposure, adjustment_variables,con, series=NUL
     } else {
       baseadjusted <- addToBase(baseformula, adjust_variables_for_scene)
       basebaseadjusted <- addToBase(basebase, adjust_variables_for_scene)
-      base_models[[mod_num]] <- run_model(basebaseadjusted,dsn, scale_expo = scale_e, scale_pheno = scale_p,  quantile_expo=quantile_expo, expo_levels =  exposure_levels, scale_clr=scale_clr)
+      base_models[[mod_num]] <- run_model(basebaseadjusted,dsn, scale_expo = scale_e, scale_pheno = scale_p,  quantile_expo=quantile_expo, expo_levels =  exposure_levels, scale_type=scale_type)
     }
-    models[[mod_num]] <- run_model(baseadjusted,dsn, scale_expo = scale_e, scale_pheno = scale_p,  quantile_expo=quantile_expo, expo_levels =  exposure_levels,scale_clr=scale_clr)
+    models[[mod_num]] <- run_model(baseadjusted,dsn, scale_expo = scale_e, scale_pheno = scale_p,  quantile_expo=quantile_expo, expo_levels =  exposure_levels,scale_type=scale_type)
   }
   n <- dsn |> nrow()
   list(log_p = logxform_p, log_e = logxform_e, scaled_p = scale_p, scaled_e=scale_e, unweighted_n=n, phenotype=pheno, series=tab_obj$series, exposure=exposure, models=models, base_models=base_models, adjustment_variables=adjustment_variables, demographic_breakdown=demo_break_tbl)

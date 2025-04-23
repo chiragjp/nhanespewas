@@ -1,0 +1,226 @@
+---
+title: "Create Data"
+author: "Chirag Patel"
+date: "2025-03-30"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(DBI)
+library(ggsci)
+library(DT)
+library(ggrepel)
+library(cowplot)
+library(reactable)
+library(gt)
+library(broom)
+library(ggridges)
+```
+
+
+
+```{r connect to db of summary stats}
+#con <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/pe_summary_stats_08_2024.sqlite')
+con <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/pe_summary_stats_01_2025.sqlite')
+varnames <- tbl(con, "variable_names_epcf")
+adjusted_meta <- tbl(con, "adjusted_meta_uwls") |> rename(term_name=expo_name)
+mvr2 <- read_rds('../pe_summary_060623/mvr2.rds') |> mutate(mv = mve_rsq-base_rsq)
+pe <- tbl(con, "pe") ## individual surveys
+pe_r2 <- tbl(con, "rsq")
+glanced <- tbl(con, "glanced")
+glanced <- glanced |> left_join(pe_r2 |> select(exposure, phenotype, series, model_number,aggregate_base_model, rsq, adj.r2), by=c("exposure", "phenotype", "model_number", "aggregate_base_model", "series"))
+variable_domain <- tbl(con, "variable_domain")
+pe_overall <- tbl(con, "pe_overall")
+r2_overall <- tbl(con, "rsq_overall")
+glanced_overall <- tbl(con, "glanced_overall")
+glanced_overall <- glanced_overall |> left_join(r2_overall |> select(exposure, phenotype, model_number,aggregate_base_model, rsq, adj.r2), by=c("exposure", "phenotype", "model_number", "aggregate_base_model"))
+
+```
+
+```{r}
+expos <- pe |> filter(term %like% 'expo%') |> rename(evarname=exposure, pvarname=phenotype)
+expos_wide <- expos |> pivot_wider(names_from = "model_number", values_from = c("estimate", "std.error", "statistic", "p.value")) 
+glanced_wide <- glanced |> select(-c(adj.r2, df.residual, null.deviance, df.null, deviance)) |> pivot_wider(names_from=c("model_number", "aggregate_base_model"), values_from = c("rsq", "nobs", "AIC", "BIC")) |>  rename(evarname=exposure, pvarname=phenotype)
+glanced_wide <- glanced_wide |> mutate(rsq_adjusted_base_diff=rsq_2_0-rsq_2_1, rsq_adjusted_diff = rsq_2_0-rsq_1_0) 
+glanced_overall_wide <- glanced_overall |> select(-c(adj.r2, df.residual, null.deviance, df.null, deviance)) |> pivot_wider(names_from=c("model_number", "aggregate_base_model"), values_from = c("rsq", "nobs", "AIC", "BIC")) |>  rename(evarname=exposure, pvarname=phenotype)
+
+expos_wide <- expos_wide |> left_join(glanced_wide |> select(-c(series, log_p, log_e, scaled_p, scaled_e)), by=c("evarname", "pvarname", "exposure_table_name", "phenotype_table_name"))
+expos_wide <- expos_wide |> left_join(varnames, by=c("evarname"="Variable.Name", "exposure_table_name"="Data.File.Name"))
+expos_wide <- expos_wide |> left_join(varnames |> select(Variable.Name, Data.File.Name, Variable.Description, Data.File.Description), 
+                                      by=c("pvarname"="Variable.Name", "phenotype_table_name"="Data.File.Name"))
+
+expos_wide <- expos_wide |> collect() |> select(-Use.Constraints) |> rename(e_data_file_desc=Data.File.Description.x, p_data_file_desc=Data.File.Description.y,e_variable_description=Variable.Description.x, p_variable_description=Variable.Description.y)
+
+glanced_summary <- glanced_overall_wide |> mutate(total_n = nobs_2_0, rsq_adjusted_base_diff = rsq_2_0-rsq_2_1, rsq_adjusted_diff=rsq_2_0-rsq_1_0) |> 
+  select(evarname, pvarname, rsq_adjusted_base_diff, rsq_adjusted_diff, total_n)
+
+adjusted_meta_full <- adjusted_meta |> filter(model_number == 2)  |> left_join(glanced_summary, by=c("evarname", "pvarname")) |> collect() ## fully adjusted model
+
+model_concordia <- adjusted_meta |> select(term_name, evarname, pvarname, estimate.uwls, model_number) |> group_by(term_name, evarname, pvarname) |> summarize(model_concordance = sum(sign(estimate.uwls))) |> collect()
+
+model_concordia_12 <- adjusted_meta |> filter(model_number <= 2) |> select(term_name, evarname, pvarname, estimate.uwls) |> group_by(term_name, evarname, pvarname) |> summarize(model_concordance_1_2 = sum(sign(estimate.uwls))) |> collect()
+
+adjusted_meta_full <- adjusted_meta_full |> left_join(model_concordia |> inner_join(model_concordia_12, by = c("term_name", "evarname", "pvarname")),  by = c("term_name", "evarname", "pvarname"))
+
+p_variable_domain <- variable_domain |> filter(epcf == 'p') |> collect() |> group_by(Variable.Name) |> summarise(pvardesc=first(Variable.Description),pcategory=first(category),psubcategory=first(subcategory))
+e_variable_domain <- variable_domain |> filter(epcf == 'e') |> collect() |> group_by(Variable.Name) |> summarise(evardesc=first(Variable.Description),ecategory=first(category),esubcategory=first(subcategory))
+
+adjusted_meta_full <- adjusted_meta_full |> left_join(p_variable_domain, by=c("pvarname"="Variable.Name"))
+adjusted_meta_full <- adjusted_meta_full |> left_join(e_variable_domain, by=c("evarname"="Variable.Name"))
+expos_wide <- expos_wide |> left_join(p_variable_domain, by=c("pvarname"="Variable.Name"))
+expos_wide <- expos_wide |> left_join(e_variable_domain, by=c("evarname"="Variable.Name"))
+mvr2 <- mvr2 |> collect() |> left_join(p_variable_domain, by=c("pvarname"="Variable.Name"))
+
+pe_overall_full <- pe_overall |> filter(model_number == 2, term %like% "expo%") |> select(term, estimate, std.error, statistic, p.value, exposure, phenotype) |> 
+  rename(evarname = exposure, pvarname = phenotype, term_name=term) |> collect()
+
+adjusted_meta_full <- adjusted_meta_full |> left_join(pe_overall_full, by=c("term_name", "evarname", "pvarname"), suffix=c("", "_overall"))
+
+adjusted_meta_full <- adjusted_meta_full |> mutate(estimate_overall=ifelse(k.uwls == 1, estimate.uwls, estimate), 
+                                                   p.value_overall=ifelse(k.uwls == 1, p.value.uwls, p.value),
+                                                   std.error_overall=ifelse(k.uwls == 1, std.error.uwls, std.error), 
+                                                   statistic_overall=ifelse(k.uwls == 1, statistic.uwls, statistic)
+                                                   )
+```
+
+```{r filter exposure categories}
+exposure_categories <- c("pollutant", "nutrients", "smoking", "infection")
+adjusted_meta_full <- adjusted_meta_full |> filter(ecategory %in% exposure_categories)
+expos_wide <- expos_wide |> filter(ecategory %in% exposure_categories)
+
+```
+
+
+```{r}
+adjusted_meta_full <- adjusted_meta_full |> mutate(nobs = k.uwls)
+n_obss <- sort(unique(adjusted_meta_full$nobs))
+
+num_tests <- map_df(n_obss, function(n) {
+  n_e <- adjusted_meta_full |> filter(nobs >= n) |> pull(evarname) |> unique() |> length()
+  n_p <- adjusted_meta_full |> filter(nobs >= n) |> pull(pvarname) |> unique() |> length()
+  nn <- nrow(adjusted_meta_full |> filter(nobs == n))
+  tibble(n_expos=n_e, n_phenos=n_p, n_pxe=nn)
+})
+
+num_tests  |> mutate(n_surveys=n_obss) |> gt()
+
+
+
+```
+
+```{r}
+# Keep number of surveys is greater than 2
+adjusted_meta_2 <- adjusted_meta_full |> filter(nobs >= 2)
+n_evars <- length(unique(adjusted_meta_2$evarname))
+n_pvars <- length(unique(adjusted_meta_2$pvarname))
+n_evars
+n_pvars
+```
+
+Sample sizes within and across all surveys
+```{r sample sizes}
+sample_size_per_pair <- expos_wide |> filter(term == 'expo' | term== 'expo1') |> group_by(evarname, pvarname) |> summarize(total_n=sum(nobs_2_0), n_surveys=n(), median_n=median(nobs_2_0))
+
+```
+
+```{r}
+adjusted_meta_2 <- adjusted_meta_2 |> filter(!is.na(estimate_overall), !is.na(p.value_overall))
+adjusted_meta_2 <- adjusted_meta_2 |> ungroup() |>  mutate(pval_BY=p.adjust(p.value_overall, method="BY"), pvalue_bonferroni=p.adjust(p.value_overall, method="bonferroni"))
+adjusted_meta_2 <- adjusted_meta_2 |> mutate(sig_levels = case_when(
+  pvalue_bonferroni < 0.05 ~ 'Bonf.<0.05',
+  pval_BY < 0.05 ~ 'BY<0.05',
+  TRUE ~ '> BY & Bonf.'
+))
+
+```
+
+## Sample for LLM 
+```{r}
+#set.seed(123)
+#adjusted_meta_2 |> select(sig_levels, estimate, evarname, pvarname, evardesc, pvardesc) |> group_by(sig_levels) |> slice_sample(n=500) |> write_csv("../exwas_sample.csv")
+
+
+```
+
+
+```{r rename subcategories}
+
+adjusted_meta_2 <- adjusted_meta_2 |> mutate(
+  pnewsubcategory =  case_when(
+    psubcategory == 'injury' ~ "inflammation",
+    psubcategory == 'liver/kidney' ~ "kidney",
+    psubcategory == 'immunity' ~ "liver",
+    psubcategory == 'exhaled NO' ~ "inflammation",
+    psubcategory == 'lung function' ~ "lung",
+    psubcategory == 'nutritional status' ~ "nutrition",
+    TRUE ~ psubcategory
+  )
+)
+
+adjusted_meta_2 <- adjusted_meta_2 |> mutate(pnewsubcategory = ifelse(is.na(pnewsubcategory), pcategory, pnewsubcategory))
+adjusted_meta_2 <- adjusted_meta_2 |> mutate(enewsubcategory = ifelse(ecategory == 'infection', 'infection', esubcategory))
+adjusted_meta_2 <- adjusted_meta_2 |> mutate(enewsubcategory = ifelse(enewsubcategory == 'pyrethoid', 'pyrethroid', enewsubcategory)) 
+adjusted_meta_2 <- adjusted_meta_2 |> mutate(enewsubcategory = ifelse(enewsubcategory == 'amine' | enewsubcategory == 'amide', 'amine/amide', enewsubcategory))
+adjusted_meta_2 <- adjusted_meta_2 |> mutate(enewsubcategory = ifelse(enewsubcategory == 'deet', 'amine/amide', enewsubcategory))
+
+enew_big_group <- adjusted_meta_2 |> group_by(enewsubcategory) |> count() |> ungroup() |> mutate(
+  super_ecat_number = case_when(
+    enewsubcategory == 'dietary biomarker' | enewsubcategory == 'dietary interview' | enewsubcategory == 'supplements'    ~ 1,
+    enewsubcategory == 'smoking behavior' | enewsubcategory == 'smoking biomarker' | enewsubcategory == 'hydrocarbon' | enewsubcategory == 'heavy metals'   ~ 2,
+    enewsubcategory == 'infection'  ~ 3,
+    enewsubcategory == 'phthalates'  | enewsubcategory == 'phenols' | enewsubcategory == 'polyfluoro' ~ 4,
+    enewsubcategory == 'VOC'  ~ 5,
+    enewsubcategory == 'amine/amide' | enewsubcategory == 'diakyl' | enewsubcategory == 'organochlorine' | enewsubcategory == 'organophosphate' | enewsubcategory == 'priority pesticide' |   enewsubcategory == 'pyrethroid'   ~ 6,
+    TRUE ~ 7
+  )
+) |> mutate(
+  super_ecat_name = case_when(
+    super_ecat_number == 1 ~ "Dietary Interview+Behavior",
+    super_ecat_number == 2 ~ "Smoking+Hydrocarbon+Metals",
+    super_ecat_number == 3 ~ "Infection",
+    super_ecat_number == 4 ~ "Consumables",
+    super_ecat_number == 5 ~ "Volatile Organics",
+    super_ecat_number == 6 ~ "Pollutants",
+    
+  ) 
+)
+
+
+adjusted_meta_2 <- adjusted_meta_2 |> left_join(enew_big_group, by=c("enewsubcategory"))
+enewsubcategory_labels <- c("DI","OR","DB","VO","PP","HM","HY","DA","PH","AA","SB","PT","PO","IN", "SU", "SM")
+names(enewsubcategory_labels) <- c("dietary interview","organochlorine","dietary biomarker","VOC","priority pesticide","heavy metals","hydrocarbon","diakyl","phenols","amine/amide","smoking biomarker","phthalates","polyfluoro","infection","supplements","smoking behavior" )
+
+adjusted_meta_2 |> select(pvarname, pvardesc, pnewsubcategory) |> unique() |> group_by(pnewsubcategory) |> summarize(n=n(), vardesc_sample=first(pvardesc))
+
+
+
+```
+
+```{r}
+## phenotype-specific correction
+adjusted_meta_2 <- adjusted_meta_2 |> group_by(pvarname) |> mutate(pval_BY_pheno=p.adjust(p.value_overall, method="BY")) |> ungroup()
+```
+
+
+
+
+```{r save data}
+#pe_condensed <- pe |> filter(term == "expo" | term == 'expo1' | term == 'expo2') |> filter(model_number == 2) |> collect() 
+#save(pe_condensed, file='pe_condensed.Rdata')
+#adjusted_meta <- adjusted_meta |> collect()
+#save(adjusted_meta, file = 'adjusted_meta.Rdata')
+#pe_overall <- pe_overall |> collect()
+#save(pe_overall, file='pe_overall.Rdata')
+#save(adjusted_meta_2, file = 'adjusted_meta_2.Rdata')
+#save(expos_wide, file = 'expos_wide.Rdata')
+#save(adjusted_meta_full, file = 'adjusted_meta_full.Rdata')
+r2_overall <- r2_overall |> collect()
+save(r2_overall, file = 'rsq_overall_univariate.Rdata')
+```
+
+

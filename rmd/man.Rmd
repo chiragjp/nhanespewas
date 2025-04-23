@@ -1,0 +1,332 @@
+---
+title: "manhattan"
+author: "Chirag Patel"
+date: "2025-03-31"
+output: html_document
+---
+
+
+
+
+```{r}
+library(tidyverse)
+library(DBI)
+library(ggsci)
+library(DT)
+library(ggrepel)
+library(cowplot)
+library(reactable)
+library(gt)
+library(broom)
+library(ggridges)
+library(ComplexHeatmap)
+library(circlize)
+library(corrr)
+library(ggpubr)
+```
+
+```{r}
+load('./adjusted_meta_2.Rdata')
+#adjusted_meta_2 |> filter(enewsubcategory=='dietary biomarker') |> group_by(sig_levels) |> summarize(rsq=median(rsq_adjusted_base_diff), n=n())
+
+adjusted_meta_2 |> group_by(sig_levels, pnewsubcategory) |> count()
+```
+
+
+```{r fig.height=11, fig.width=9}
+PCAP <- 1e-20
+to_plot <- adjusted_meta_2 |> mutate(plot_p = ifelse(p.value_overall < PCAP, PCAP, p.value_overall))
+to_plot <- to_plot |> filter(pnewsubcategory != 'psa')
+to_plot <- to_plot |> filter(pnewsubcategory != 'fitness')
+to_plot <- to_plot |> filter(pnewsubcategory != 'aging')
+
+## order in terms of number found; or R2.
+enewsubcategory_order <- to_plot |> filter(sig_levels == 'Bonf.<0.05') |> group_by(enewsubcategory) |> summarize(med_r2=mean(rsq_adjusted_base_diff)) |> arrange(-med_r2) |> mutate(group_number = row_number())
+
+to_plot <- to_plot |> left_join(enewsubcategory_order |> select(enewsubcategory, group_number))
+eplot_order <- to_plot |> select(evarname ,enewsubcategory, group_number) |> unique() |> arrange(group_number) |> mutate(order_number = row_number())
+
+# anthropometric, blood, blood pressure, bone, electrolyte, inflammation, kidney, liver, hormone, metabolic, nutrition, dexa
+# keep out: microbiome, lung
+keep <- c("anthropometric", "blood", "blood pressure", "bone", "electrolyte", "inflammation", "kidney", "liver", "hormone", "metabolic", "nutrition", "dexa")
+to_plot <- to_plot |> filter(pnewsubcategory %in% keep)
+
+xaxis_labels <- eplot_order |> group_by(group_number,enewsubcategory) |> summarize(med_x=round(median(order_number)), min_x=min(order_number), max_x=max(order_number))
+
+xaxis_labels <- xaxis_labels |> mutate(enewsubcategory = ifelse(enewsubcategory=='priority pesticide', 'organophosphate', enewsubcategory))
+xaxis_labels <- xaxis_labels |> ungroup() |> slice_head(n=-2)
+
+to_plot <- to_plot |> left_join(eplot_order |> select(evarname,order_number))
+p <- ggplot(to_plot |> arrange(order_number), aes(order_number, -log10(plot_p)))
+p <- p + geom_point(aes(color=sig_levels), shape=20) + facet_wrap(pnewsubcategory~., nrow=6, ncol=2) + scale_color_aaas()
+p <- p + scale_y_continuous(limits=c(0, -log10(PCAP)+1))
+p <- p + scale_x_continuous(breaks = xaxis_labels$med_x,  labels = xaxis_labels$enewsubcategory)
+p <- p + geom_vline(data=xaxis_labels, aes(xintercept=max_x), linetype='dotted', col = 'black') + theme_bw()
+p <- p + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1), legend.position = "none")
+p <- p + xlab("") + ylab("-log10(pvalue)") 
+all_p_logp <- p
+
+to_plot <- to_plot |> mutate(rsquared=ifelse(rsq_adjusted_base_diff >= .1, .1, rsq_adjusted_base_diff))
+p <- ggplot(to_plot |> arrange(order_number), aes(order_number, rsquared))
+p <- p + geom_point(aes(color=sig_levels), shape=20) + facet_wrap(pnewsubcategory~., nrow=6, ncol=2) + scale_color_aaas()
+p <- p + scale_y_continuous(limits=c(0, .1))
+p <- p + scale_x_continuous(breaks = xaxis_labels$med_x,  labels = xaxis_labels$enewsubcategory)
+p <- p + geom_vline(data=xaxis_labels, aes(xintercept=max_x), linetype='dotted', col = 'black') + theme_bw()
+p <- p + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1), legend.position = "none")
+p <- p + xlab("") + ylab("R^2") 
+#p
+#ggsave("manhattan_pheno_r2.pdf", p,width=8, height=8, units="in")
+#p
+all_p_r2 <- p
+
+
+```
+
+```{r how many tests sig}
+adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05') |> group_by(pvarname) |> count() |> left_join(adjusted_meta_2 |> group_by(pvarname) |> count() |> rename(total_tests=n)) |> mutate(pct_found=n/total_tests) |> arrange(-pct_found)
+
+adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05') |> group_by(pvarname) |> count() |> left_join(adjusted_meta_2 |> group_by(pvarname) |> count() |> rename(total_tests=n)) |> mutate(pct_found=n/total_tests) |> ungroup() |> summarize(n_low_tests=min(total_tests), n_high_tests=max(total_tests), med_tests=median(total_tests))
+
+adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05') |> group_by(pvarname) |> count() |> left_join(adjusted_meta_2 |> group_by(pvarname) |> count() |> rename(total_tests=n)) |> mutate(pct_found=n/total_tests) |> ungroup() |> summarize(n_low_pct=min(pct_found), n_high_pct=max(pct_found), n_avg_pct=mean(pct_found))
+
+adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05') |> group_by(pvarname) |> count() |> left_join(adjusted_meta_2 |> group_by(pvarname) |> count() |> rename(total_tests=n)) |> mutate(pct_found=n/total_tests) |> ungroup() |> summarize(n_low_sig=min(n), n_high_sig=max(n))
+
+
+```
+
+
+
+```{r cdf of r2}
+p_percent_sig <- adjusted_meta_2 |> group_by(pcategory, pnewsubcategory, sig_levels) |> count() |> pivot_wider(names_from = sig_levels, values_from = n) |> mutate(total_tests = rowSums(across(where(is.numeric)))) |> 
+  mutate(percent_non_sig = `> BY & Bonf.`/total_tests, percent_bonf = `Bonf.<0.05`/total_tests, percent_BY=`BY<0.05`/total_tests) |> 
+  select(pcategory, pnewsubcategory, total_tests, percent_non_sig, percent_bonf, percent_BY) |> ungroup()
+
+p_effect_sizes_per <- adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05') |> group_by(pcategory, pnewsubcategory) |> summarize(median_pvalue=median(p.value), median_r2=median((rsq_adjusted_base_diff))) |> left_join(p_percent_sig)
+
+## how many per phenotype were significant?
+
+
+
+
+
+
+ecdf_for_sig <- adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05') |> pull(rsq_adjusted_base_diff) |> ecdf()
+ecdf_for_non_sig <- adjusted_meta_2 |> filter(sig_levels == '> BY & Bonf.') |> pull(rsq_adjusted_base_diff) |> ecdf()
+
+p_effect_sizes_per <- p_effect_sizes_per |> mutate(q = ecdf_for_sig(median_r2), sig_levels ='Bonf.<0.05')
+p_effect_sizes_per <- p_effect_sizes_per |> mutate(p_cat = pnewsubcategory)
+
+p <- ggplot(adjusted_meta_2, aes(rsq_adjusted_base_diff, color=sig_levels))
+p <- p + stat_ecdf() + scale_x_continuous(limits=c(0, .05)) +scale_color_aaas()
+p <- p + geom_point(data=p_effect_sizes_per |> filter(pnewsubcategory %in% keep), aes(x=median_r2, y = q)) 
+p <- p + geom_text_repel(data=p_effect_sizes_per |> filter(pnewsubcategory %in% keep), aes(x=median_r2, y = q, label=p_cat), size=3)  
+p <- p + xlab("R^2 (adjusted-base model)") + ylab("Percentile") 
+p <- p + theme_bw() + theme(legend.position="none") 
+cdf_p <- p
+
+
+e_percent_sig <- adjusted_meta_2 |> group_by(ecategory, enewsubcategory, sig_levels) |> count() |> pivot_wider(names_from = sig_levels, values_from = n) |> mutate(total_tests = rowSums(across(where(is.numeric)))) |> 
+  mutate(percent_non_sig = `> BY & Bonf.`/total_tests, percent_bonf = `Bonf.<0.05`/total_tests, percent_BY=`BY<0.05`/total_tests) |> 
+  select(ecategory, enewsubcategory, total_tests, percent_non_sig, percent_bonf, percent_BY) |> ungroup()
+
+e_effect_sizes_per <- adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05') |> group_by(ecategory, enewsubcategory) |> summarize(median_pvalue=median(p.value), median_r2=median((rsq_adjusted_base_diff))) |> left_join(e_percent_sig)
+
+#ecdf_for_sig <- adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05') |> pull(rsq_adjusted_base_diff) |> ecdf()
+#ecdf_for_non_sig <- adjusted_meta_2 |> filter(sig_levels == '> BY & Bonf.') |> pull(rsq_adjusted_base_diff) |> ecdf()
+
+e_effect_sizes_per <- e_effect_sizes_per |> mutate(q = ecdf_for_sig(median_r2), sig_levels ='Bonf.<0.05')
+e_effect_sizes_per <- e_effect_sizes_per |> mutate(e_cat = enewsubcategory)
+
+
+p <- ggplot(adjusted_meta_2, aes(rsq_adjusted_base_diff, color=sig_levels))
+p <- p + stat_ecdf() + scale_x_continuous(limits=c(0, .05)) +scale_color_aaas()
+p <- p + geom_point(data=e_effect_sizes_per, aes(x=median_r2, y = q)) 
+p <- p + geom_text_repel(data=e_effect_sizes_per, aes(x=median_r2, y = q, label=e_cat), size=3) 
+p <- p + xlab("R^2 (adjusted-base model)") + ylab("Percentile") 
+p <- p + theme_bw() + theme(legend.position="none") 
+cdf_e_p <- p
+
+
+
+```
+
+```{r fig.height=5, fig.width=7}
+
+p <- ggplot(to_plot, aes(order_number, -log10(plot_p)))
+p <- p + geom_point(aes(color=sig_levels), shape=20) + scale_color_aaas() 
+p <- p + scale_y_continuous(limits=c(0, -log10(PCAP)+1))
+p <- p + scale_x_continuous(breaks = xaxis_labels$med_x,  labels = xaxis_labels$enewsubcategory)
+p <- p + geom_vline(data=xaxis_labels, aes(xintercept=max_x), linetype='dotted', col = 'black')+ theme_bw()
+p <- p + theme(legend.position = "none",  panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),axis.text.x=element_blank(),
+    plot.margin = unit(c(0,1,0,1), 'lines')
+)
+
+p1 <- p + xlab("") + ylab("-log10(pvalue)") 
+
+## cap the r2 at 0.2
+
+xaxis_labels <- xaxis_labels |> left_join(enewsubcategory_order)
+p <- ggplot(to_plot, aes(order_number, rsquared))
+p <- p + geom_point(aes(color=sig_levels), shape=20) + scale_color_aaas() 
+p <- p + scale_y_continuous(limits=c(0, .20))
+p <- p + scale_x_continuous(breaks = xaxis_labels$med_x,  labels = xaxis_labels$enewsubcategory)
+p <- p + geom_vline(data=xaxis_labels, aes(xintercept=max_x), linetype='dotted', col = 'black')+ theme_bw()
+p <- p + geom_segment(data=xaxis_labels, aes(x=min_x, xend=max_x, y=med_r2, yend=med_r2))
+p <- p + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1), legend.position = "none",  panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    plot.margin = unit(c(0,1,0,1), 'lines'))
+p2 <- p + xlab("") + ylab("R^2") 
+
+pp <- plot_grid(p1,p2,nrow=2, labels=c("A", "B"))
+
+
+```
+
+```{r r2 vs base model}
+#load('./expos_wide.Rdata')
+load('./rsq_overall_univariate.Rdata')
+load('../pipeline/rsq/mvrsq_20.Rdata')
+rsq_mv <- rsq_summary 
+rsq_uni <- adjusted_meta_2 |> select(evarname, pvarname) |> unique() |> left_join(r2_overall, by=c("evarname"="exposure", "pvarname"="phenotype"))
+rsq_uni <- rsq_uni |> filter(model_number == 2)
+
+rsq_uni_base <- rsq_uni  |> filter(aggregate_base_model == 0) |> select(evarname, pvarname, series, rsq) |> rename(rsq_adj_e = rsq)
+rsq_uni_e <- rsq_uni  |> filter(aggregate_base_model == 1) |> select(evarname, pvarname, rsq) |> rename(rsq_base = rsq)
+
+rsq_uni <- rsq_uni_base |> left_join(rsq_uni_e)
+rsq_uni <- rsq_uni |> filter(evarname != 'LBXHCT')
+
+
+p <- ggplot(rsq_uni, aes(rsq_base, rsq_adj_e))
+p <- p + geom_point(size=1, shape=1) + xlab("R^2 Base [Demographics]") + ylab("R^2 [Exposure + Demographics]")
+p <- p + geom_point(data=rsq_mv |> mutate(rsq_exposures = ifelse(rsq_exposures < 0, 0, rsq_exposures)), aes(rsq_base, rsq_exposures+rsq_base), size=1, shape=19, col="red") 
+p_r2 <- p + theme_bw() + geom_abline()
+p_r2
+
+rsq_mv |> mutate(rsq_exposures = ifelse(rsq_exposures < 0, 0, rsq_exposures)) |> summarize(q.25=quantile(rsq_exposures, probs=c(.25)), 
+                                                                                          q.5=quantile(rsq_exposures, probs=c(.5)), 
+                                                                                          q.75=quantile(rsq_exposures, probs=c(.75)),
+                                                                                          q.100=quantile(rsq_exposures, probs=c(1))
+)
+```
+
+```{r combine plot, fig.height=8, fig.width=10}
+cdfs_p <- plot_grid(cdf_p, cdf_e_p, p_r2, labels=c("B", "C", "D"),nrow = 3)
+ppp <- plot_grid(all_p_r2, cdfs_p, ncol=2, rel_widths = c(2,1), labels=c("A", ""))
+ppp
+```
+
+```{r}
+manhattan_plot_per_pheno <- function(to_plot_object, phenotype_category) {
+  to_plot <- to_plot_object |> filter(pnewsubcategory==phenotype_category)
+  p <- ggplot(to_plot, aes(order_number, -log10(plot_p)))
+  p <- p + geom_point(aes(color=sig_levels), shape=20) + scale_color_aaas() 
+  p <- p + scale_y_continuous(limits=c(0, -log10(PCAP)+1))
+  p <- p + scale_x_continuous(breaks = xaxis_labels$med_x,  labels = xaxis_labels$enewsubcategory)
+  p <- p + geom_vline(data=xaxis_labels, aes(xintercept=max_x), linetype='dotted', col = 'black')+ theme_bw()
+  p <- p + theme(legend.position = "none",  panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),axis.text.x=element_blank(),
+    plot.margin = unit(c(0,1,0,1), 'lines')
+)
+  p1 <- p + xlab("") + ylab("-log10(pvalue)")
+  p1
+}
+
+manhattan_r2_plot_per_pheno <- function(to_plot_object, phenotype_category) {
+  to_plot <- to_plot_object |> filter(pnewsubcategory==phenotype_category)
+  
+  p <- ggplot(to_plot, aes(order_number, rsquared))
+  p <- p + geom_point(aes(color=sig_levels), shape=20) + scale_color_aaas() 
+  p <- p + scale_y_continuous(limits=c(0, .205))
+  p <- p + scale_x_continuous(breaks = xaxis_labels$med_x,  labels = xaxis_labels$enewsubcategory)
+  p <- p + geom_vline(data=xaxis_labels, aes(xintercept=max_x), linetype='dotted', col = 'black')+ theme_bw()
+  #p <- p + geom_segment(data=xaxis_labels, aes(x=min_x, xend=max_x, y=med_r2, yend=med_r2))
+  p <- p + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1), legend.position = "none",  panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    plot.margin = unit(c(0,1,0,1), 'lines')
+  )
+  p2 <- p + xlab("") + ylab("R^2") 
+  p2
+}
+
+manhattan_plot_wrap <- function(to_plot, phenotype_category) {
+  p1 <- manhattan_plot_per_pheno(to_plot, phenotype_category)
+  p2 <- manhattan_r2_plot_per_pheno(to_plot, phenotype_category)
+  pp <- ggarrange(p1,p2,nrow=2,align="v", heights=c(1, 1))
+  pp
+}
+pp <- manhattan_plot_wrap(to_plot, "dexa")
+#ggsave("test.pdf", pp, width=3.5, height=4, units="in")
+#pp
+```
+
+
+
+## percent found for each E or P variable for each category
+```{r fig.height=4, fig.width=8}
+
+adjusted_meta_2 <- adjusted_meta_2 |> mutate(ecat=ifelse(is.na(enewsubcategory), ecategory, enewsubcategory))
+adjusted_meta_2 <- adjusted_meta_2 |> mutate(pcat=ifelse(is.na(pnewsubcategory), pcategory, pnewsubcategory))
+adjusted_meta_2 <- adjusted_meta_2 |> mutate(continuous_term = (term_name == 'expo'))
+
+
+e_total_found <- adjusted_meta_2  |> group_by(ecat, sig_levels)  |> summarize(n=n(), median.r2=median(rsq_adjusted_base_diff, na.rm=T))
+e_total_found <- e_total_found |> ungroup() |> group_by(ecat) |> summarize(total_tests=sum(n)) |> left_join(e_total_found) |> mutate(pct_sig_per_category = n/total_tests, pct_sig_overall=n/sum(total_tests))
+
+
+p <- ggplot(e_total_found |> filter(sig_levels  == 'Bonf.<0.05'), aes(y=reorder(ecat, pct_sig_per_category, decreasing=F), x=pct_sig_per_category*100))
+p <- p + geom_bar(stat = "identity",position = "dodge") + theme_bw() + ylab("Exposome Group") + xlab("% Identified/Group") + scale_x_continuous(limits=c(0,20))
+p <- p + geom_text(data=e_total_found |> filter(sig_levels == "Bonf.<0.05"), aes(y=reorder(ecat, pct_sig_per_category, decreasing=F),  x=pct_sig_per_category*100,label=total_tests), position=position_dodge(width=0.9), vjust=0, hjust=-.5, size=3) 
+total_found_p <- p + theme_bw() + theme(axis.text.x = element_text(angle = 0, vjust = 0.5), axis.title.y= element_text(size=9), axis.title.x = element_text(size=9))
+total_found_p
+
+
+```
+
+```{r}
+p_total_found <- adjusted_meta_2  |> group_by(pcat, sig_levels)  |> summarize(n=n(), median.r2=median(rsq_adjusted_base_diff, na.rm=T))
+p_total_found <- p_total_found |> ungroup() |> group_by(pcat) |> summarize(total_tests=sum(n)) |> left_join(p_total_found) |> mutate(pct_sig_per_category = n/total_tests, pct_sig_overall=n/sum(total_tests))
+
+p <- ggplot(p_total_found |> filter(sig_levels  == 'Bonf.<0.05'), aes(y=reorder(pcat, pct_sig_per_category, decreasing=F), x=pct_sig_per_category*100))
+p <- p + geom_bar(stat = "identity",position = "dodge") + theme_bw() + ylab("Phenotype Group") + xlab("% Identified/Group") + scale_x_continuous(limits=c(0,20))
+p <- p + geom_text(data=p_total_found |> filter(sig_levels == "Bonf.<0.05"), aes(y=reorder(pcat, pct_sig_per_category, decreasing=F),  x=pct_sig_per_category*100,label=total_tests), position=position_dodge(width=0.9), vjust=0, hjust=-.5, size=3) 
+total_found_p_p <- p + theme_bw() + theme(axis.text.x = element_text(angle = 0, vjust = 0.5), axis.title.y= element_text(size=9), axis.title.x = element_text(size=9))
+total_found_p_p
+
+```
+
+
+
+```{r}
+p_plot <- adjusted_meta_2 |> select(ecategory, pcategory, term_name, enewsubcategory,pnewsubcategory, p.value_overall) 
+
+p <- ggplot(p_plot,aes(p.value_overall))
+p <- p + geom_histogram(aes(y=..density..)) + geom_density()  + theme_bw() + facet_wrap(~enewsubcategory, nrow=2)
+p1 <- p + xlab("P-E association pvalue")
+e_pvalue_histogram_p <- p1
+
+p <- ggplot(p_plot, aes(p.value_overall))
+p <- p + geom_histogram(aes(y=..density..)) + geom_density() + theme_bw() + facet_wrap(~pnewsubcategory, nrow=2)
+p2 <- p + xlab("P-E association pvalue")
+p_pvalue_histogram_p <- p2
+```
+
+```{r fig.width=12, fig.height=11}
+first_row <- plot_grid(e_pvalue_histogram_p, p_pvalue_histogram_p, labels = c("A", "B"), nrow = 2)
+first_row
+
+```
+
+```{r fig.width=12, fig.height=11}
+# replace this with the manhattan across pheno groups
+pl <- plot_grid(all_p_logp,plot_grid(total_found_p_p,total_found_p, nrow = 2, labels=c("B", "C")), labels = c("A", ""), ncol = 2, hjust = 0, rel_widths = c(2, 1))
+pl
+```
+
+
+
+
+
+
+
