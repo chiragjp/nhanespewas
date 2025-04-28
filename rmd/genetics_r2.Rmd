@@ -29,3 +29,25 @@ quant_genetics_r2 |> summarize(m_r2 = median(`Delta(Full, covariates-only)`),
                                              )
 
 ```
+
+# GWAS vs ExWAS
+```{r}
+load('../pipeline/rsq/mvrsq_20.Rdata')
+
+gwas_exwas <- rsq_summary |> inner_join(quant_genetics_r2, by=c("phenotype"="NHANES"))
+
+gwas_exwas <- gwas_exwas |> mutate(rsq_exposures = ifelse(rsq_exposures < 0, 0, rsq_exposures))
+
+p <- ggplot(gwas_exwas, aes(rsq_base, `Covariates-only model`))
+p <- p + geom_point() + geom_abline()
+p
+
+gwas_exwas |> filter(rsq_exposures > `Delta(Full, covariates-only)`) |> nrow()
+
+p <- ggplot(gwas_exwas, aes(`Delta(Full, covariates-only)`, rsq_exposures , label=`Trait Name`))
+p <- p + geom_point() + geom_abline() + theme_bw()  + ggrepel::geom_text_repel(size=3) + xlab("Genetics R^2") + ylab("Exposures R^2")
+p
+
+
+
+```

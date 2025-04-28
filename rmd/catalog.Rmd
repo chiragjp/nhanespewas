@@ -1,0 +1,59 @@
+---
+title: "NHANES Exposome Catalog"
+author: "Chirag Patel"
+date: "2025-04-28"
+output: html_document
+---
+
+
+```{r warning=TRUE, include=FALSE}
+library(kableExtra)
+library(tidyverse)
+library(DBI)
+#load("adjusted_meta_2.Rdata")
+
+con <- DBI::dbConnect(RSQLite::SQLite(), dbname='../pe_atlas_app/pe_shiny_2.sqlite')
+adjusted_meta_2 <- tbl(con, "adjusted_meta_2") |> collect()
+dbDisconnect(con)
+
+enew_big_group <- adjusted_meta_2 |> group_by(enewsubcategory) |> count() |> ungroup() |> mutate(
+  super_ecat_number = case_when(
+    enewsubcategory == 'dietary biomarker' | enewsubcategory == 'dietary interview' | enewsubcategory == 'supplements'    ~ 1,
+    enewsubcategory == 'smoking behavior' | enewsubcategory == 'smoking biomarker' | enewsubcategory == 'hydrocarbon' | enewsubcategory == 'heavy metals'   ~ 2,
+    enewsubcategory == 'infection'  ~ 3,
+    enewsubcategory == 'phthalates'  | enewsubcategory == 'phenols' | enewsubcategory == 'polyfluoro' ~ 4,
+    enewsubcategory == 'VOC'  ~ 5,
+    enewsubcategory == 'amine/amide' | enewsubcategory == 'diakyl' | enewsubcategory == 'organochlorine' | enewsubcategory == 'organophosphate' | enewsubcategory == 'priority pesticide' |   enewsubcategory == 'pyrethroid'   ~ 6,
+    TRUE ~ 7
+  )
+) |> mutate(
+  super_ecat_name = case_when(
+    super_ecat_number == 1 ~ "Dietary Interview+Behavior",
+    super_ecat_number == 2 ~ "Smoking+Hydrocarbon+Metals",
+    super_ecat_number == 3 ~ "Infection",
+    super_ecat_number == 4 ~ "Consumables",
+    super_ecat_number == 5 ~ "Volatile Organics",
+    super_ecat_number == 6 ~ "Pollutants",
+    
+  ) 
+)
+
+adjusted_meta_2 <- adjusted_meta_2 |> left_join(enew_big_group, by=c("enewsubcategory"))
+
+
+```
+
+# Exposure catalog
+```{r echo=FALSE}
+adjusted_meta_2 |> select(evarname, super_ecat_name, enewsubcategory, evardesc) |> unique() |> rename(nhanes_name=evarname, Category=super_ecat_name, Subcategory=enewsubcategory, Description=evardesc) |> kbl() |> kable_styling()
+```
+
+
+# Phenotype Catalog
+
+```{r echo=FALSE}
+
+adjusted_meta_2 |> select(pvarname, pnewsubcategory, pvardesc) |> collect() |> unique() |> rename(nhanes_name=pvarname, Category=pnewsubcategory, Description=pvardesc) |> kbl() |> kable_styling()
+
+```
+

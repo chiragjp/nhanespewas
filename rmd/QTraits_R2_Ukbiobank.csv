@@ -1,0 +1,127 @@
+﻿Trait,,,GLM family,Predictive performance,,,,# genetic variants included in the model,Significance of PRS model,,PGS catalog,,,
+Trait Category,GBE ID,Trait Name,,Genotype-only model,Covariates-only model,Full model,"Delta(Full, covariates-only)",,white British (WB) test set P-value,is significant in WB test set?,PGS catalog score ID,Mapped trait(s) (EFO ID),Mapped trait(s) (EFO label),NHANES
+Anthropometry,INI20015,Sitting height,gaussian,1.28E-01,4.33E-01,5.62E-01,1.30E-01,36345,0.00E+00,TRUE,PGS000969,EFO_0011011,sitting height measurement,
+Anthropometry,INI21001,BMI,gaussian,1.11E-01,1.29E-02,1.21E-01,1.08E-01,27126,0.00E+00,TRUE,PGS001228,EFO_0004340,body mass index,BMXBMI
+Anthropometry,INI21002,Weight,gaussian,1.06E-01,2.16E-01,3.20E-01,1.04E-01,31222,0.00E+00,TRUE,PGS001230,EFO_0004338,body weight,BMXWT
+Anthropometry,INI23099,Body fat %,gaussian,5.28E-02,4.58E-01,5.12E-01,5.41E-02,27396,0.00E+00,TRUE,PGS001101,EFO_0007800,body fat percentage,
+Anthropometry,INI23100,Whole body fat mass,gaussian,9.89E-02,6.52E-02,1.64E-01,9.85E-02,27550,0.00E+00,TRUE,PGS001149,EFO_0005409,fat body mass,
+Anthropometry,INI23101,Whole body fat-free mass,gaussian,5.22E-02,7.09E-01,7.61E-01,5.19E-02,34486,0.00E+00,TRUE,PGS001169,EFO_0004995,lean body mass,
+Anthropometry,INI23102,Whole body water mass,gaussian,5.08E-02,7.05E-01,7.58E-01,5.24E-02,35046,0.00E+00,TRUE,PGS001002,EFO_0009805,whole body water mass,
+Anthropometry,INI23105,Basal metabolic rate,gaussian,5.94E-02,6.29E-01,6.90E-01,6.04E-02,32154,0.00E+00,TRUE,PGS001108,EFO_0007777,base metabolic rate measurement,
+Anthropometry,INI23106,Impedance of whole body,gaussian,8.09E-02,4.39E-01,5.19E-01,8.05E-02,32218,0.00E+00,TRUE,PGS001161,EFO_0005106,body composition measurement,
+Anthropometry,INI23107,Impedance of leg (R),gaussian,1.07E-01,1.91E-01,2.96E-01,1.05E-01,30300,0.00E+00,TRUE,PGS001157,EFO_0005106,body composition measurement,
+Anthropometry,INI23108,Impedance of leg (L),gaussian,1.07E-01,1.79E-01,2.84E-01,1.05E-01,28999,0.00E+00,TRUE,PGS001155,EFO_0005106,body composition measurement,
+Anthropometry,INI23109,Impedance of arm (R),gaussian,5.41E-02,5.22E-01,5.75E-01,5.38E-02,30140,0.00E+00,TRUE,PGS001156,EFO_0005106,body composition measurement,
+Anthropometry,INI23110,Impedance of arm (L),gaussian,5.56E-02,5.28E-01,5.84E-01,5.55E-02,26740,0.00E+00,TRUE,PGS001154,EFO_0005106,body composition measurement,
+Anthropometry,INI23111,Leg fat % (R),gaussian,2.45E-02,7.39E-01,7.64E-01,2.47E-02,28163,0.00E+00,TRUE,PGS001104,EFO_0007800,body fat percentage,
+Anthropometry,INI23112,Leg fat mass (R),gaussian,6.16E-02,3.17E-01,3.79E-01,6.15E-02,23565,0.00E+00,TRUE,PGS001147,EFO_0005409,fat body mass,
+Anthropometry,INI23113,Leg fat-free mass (R),gaussian,4.96E-02,6.49E-01,7.00E-01,5.10E-02,32046,0.00E+00,TRUE,PGS001167,EFO_0004995,lean body mass,
+Anthropometry,INI23114,Leg pred. mass (R),gaussian,4.81E-02,6.60E-01,7.09E-01,4.96E-02,32103,0.00E+00,TRUE,PGS001159,EFO_0005106,body composition measurement,
+Anthropometry,INI23115,Leg fat % (L),gaussian,2.26E-02,7.62E-01,7.85E-01,2.31E-02,28134,0.00E+00,TRUE,PGS001103,EFO_0007800,body fat percentage,
+Anthropometry,INI23117,Leg fat-free mass (L),gaussian,5.06E-02,6.43E-01,6.94E-01,5.09E-02,30340,0.00E+00,TRUE,PGS001166,EFO_0004995,lean body mass,
+Anthropometry,INI23118,Leg pred. mass (L),gaussian,4.90E-02,6.54E-01,7.03E-01,4.94E-02,30421,0.00E+00,TRUE,PGS001158,EFO_0005106,body composition measurement,
+Anthropometry,INI23119,Arm fat % (R),gaussian,4.65E-02,4.61E-01,5.08E-01,4.75E-02,23943,0.00E+00,TRUE,PGS001106,EFO_0007800,body fat percentage,
+Anthropometry,INI23120,Arm fat mass (R),gaussian,7.96E-02,5.79E-02,1.37E-01,7.88E-02,23528,0.00E+00,TRUE,PGS001145,EFO_0005409,fat body mass,
+Anthropometry,INI23121,Arm fat-free mass (R),gaussian,4.08E-02,7.16E-01,7.56E-01,4.01E-02,29063,0.00E+00,TRUE,PGS001146,EFO_0005409,fat body mass,
+Anthropometry,INI23122,Arm pred. mass (R),gaussian,3.93E-02,7.23E-01,7.62E-01,3.91E-02,28988,0.00E+00,TRUE,PGS001235,EFO_0004324,body weights and measures,
+Anthropometry,INI23123,Arm fat % (L),gaussian,4.85E-02,4.64E-01,5.13E-01,4.90E-02,25266,0.00E+00,TRUE,PGS001102,EFO_0007800,body fat percentage,
+Anthropometry,INI23124,Arm fat mass (L),gaussian,7.72E-02,5.59E-02,1.32E-01,7.63E-02,23676,0.00E+00,TRUE,PGS001144,EFO_0005409,fat body mass,
+Anthropometry,INI23125,Arm fat-free mass (L),gaussian,4.54E-02,6.88E-01,7.33E-01,4.46E-02,30360,0.00E+00,TRUE,PGS001165,EFO_0004995,lean body mass,
+Anthropometry,INI23126,Arm pred. mass (L),gaussian,4.38E-02,6.82E-01,7.25E-01,4.33E-02,30666,0.00E+00,TRUE,PGS001234,EFO_0004324,body weights and measures,
+Anthropometry,INI23127,Trunk fat %,gaussian,7.50E-02,1.92E-01,2.68E-01,7.56E-02,25651,0.00E+00,TRUE,PGS001105,EFO_0007800,body fat percentage,
+Anthropometry,INI23128,Trunk fat mass,gaussian,1.09E-01,9.70E-03,1.17E-01,1.08E-01,29233,0.00E+00,TRUE,PGS001148,EFO_0005409,fat body mass,
+Anthropometry,INI23129,Trunk fat-free mass,gaussian,5.25E-02,7.16E-01,7.68E-01,5.26E-02,34749,0.00E+00,TRUE,PGS001168,EFO_0004995,lean body mass,
+Anthropometry,INI23130,Trunk pred. mass,gaussian,5.16E-02,7.23E-01,7.73E-01,5.06E-02,32685,0.00E+00,TRUE,PGS001160,EFO_0005106,body composition measurement,
+Anthropometry,INI48,Waist circumference,gaussian,6.65E-02,2.26E-01,2.91E-01,6.56E-02,25538,0.00E+00,TRUE,PGS001227,EFO_0004342,waist circumference,BMXWAIST
+Anthropometry,INI49,Hip circumference,gaussian,9.54E-02,1.89E-03,9.69E-02,9.50E-02,24605,0.00E+00,TRUE,PGS001162,EFO_0005093,hip circumference,
+Anthropometry,INI50,Standing height,gaussian,1.78E-01,5.38E-01,7.17E-01,1.79E-01,51209,0.00E+00,TRUE,PGS001229,EFO_0004339,body height,BMXHT
+Biomarkers,INI30030650,AST to ALT ratio,gaussian,7.75E-02,8.04E-06,7.73E-02,7.73E-02,15548,0.00E+00,TRUE,PGS000674,EFO_0010934,aspartate aminotransferase to alanine aminotransferase ratio,
+Biomarkers,INI30030700,eGFR,gaussian,7.53E-02,8.63E-06,7.51E-02,7.51E-02,17467,0.00E+00,TRUE,PGS000682,EFO_0005208,glomerular filtration rate,
+Biomarkers,INI30030860,Non-albumin protein,gaussian,1.00E-01,9.96E-07,1.00E-01,1.00E-01,18670,0.00E+00,TRUE,PGS000691,EFO_0004568,serum non-albumin protein measurement,
+Biomarkers,INI30500,Microalbumin in urine,gaussian,5.95E-05,1.88E-03,1.88E-03,1.54E-06,111,2.64E-01,FALSE,PGS000690,EFO_0010967,urinary microalbumin measurement,
+Biomarkers,INI30510,Creatinine (enzymatic) in urine,gaussian,5.04E-03,1.09E-01,1.09E-01,1.55E-06,5469,3.36E-74,TRUE,PGS000679,EFO_0007934,creatinine clearance measurement,
+Biomarkers,INI30520,Potassium in urine,gaussian,1.49E-03,2.06E-02,2.07E-02,7.38E-05,2423,5.55E-23,TRUE,PGS000693,EFO_0010952,urinary potassium measurement,
+Biomarkers,INI30530,Sodium in urine,gaussian,8.36E-03,7.26E-02,7.28E-02,2.50E-04,5833,1.23E-121,TRUE,PGS000695,EFO_0009282|EFO_0005116,sodium measurement|urinary metabolite measurement,
+Biomarkers,INI30600,Albumin,gaussian,6.78E-02,3.53E-02,3.79E-02,2.67E-03,11912,0.00E+00,TRUE,PGS000669,EFO_0004535,serum albumin measurement,LBXSAL
+Biomarkers,INI30610,Alkaline phosphatase,gaussian,1.58E-01,2.86E-02,3.22E-02,3.59E-03,18328,0.00E+00,TRUE,PGS000670,EFO_0004533,alkaline phosphatase measurement,LBDSAPSI
+Biomarkers,INI30620,Alanine aminotransferase,gaussian,3.99E-02,6.62E-02,6.90E-02,2.84E-03,12076,0.00E+00,TRUE,PGS000668,EFO_0004735,serum alanine aminotransferase measurement,LBXSATSI
+Biomarkers,INI30630,Apolipoprotein A,gaussian,1.35E-01,1.54E-01,2.75E-01,1.21E-01,19324,0.00E+00,TRUE,PGS000671,EFO_0004614,apolipoprotein A 1 measurement,
+Biomarkers,INI30640,Apolipoprotein B,gaussian,1.48E-01,3.11E-03,1.51E-01,1.48E-01,18666,0.00E+00,TRUE,PGS000672,EFO_0004615,apolipoprotein B measurement,
+Biomarkers,INI30650,Aspartate aminotransferase,gaussian,3.09E-02,3.03E-02,3.24E-02,2.18E-03,12829,0.00E+00,TRUE,PGS000673,EFO_0004736,aspartate aminotransferase measurement,
+Biomarkers,INI30660,Direct bilirubin,gaussian,2.06E-01,5.08E-02,2.38E-01,1.87E-01,3104,0.00E+00,TRUE,PGS000681,EFO_0004570,bilirubin measurement,LBXSTB
+Biomarkers,INI30670,Urea,gaussian,4.03E-02,7.50E-02,8.87E-02,1.37E-02,12351,0.00E+00,TRUE,PGS000701,EFO_0009795,serum urea measurement,
+Biomarkers,INI30680,Calcium,gaussian,6.19E-02,1.06E-02,6.29E-02,5.23E-02,12334,0.00E+00,TRUE,PGS000676,EFO_0004838,calcium measurement,LBXSCA
+Biomarkers,INI30690,Cholesterol,gaussian,9.87E-02,3.57E-02,7.90E-02,4.33E-02,17204,0.00E+00,TRUE,PGS000677,EFO_0004574,total cholesterol measurement,LBXTC
+Biomarkers,INI30700,Creatinine,gaussian,4.55E-02,2.37E-01,2.39E-01,1.27E-03,21027,0.00E+00,TRUE,PGS000678,EFO_0004518,creatinine measurement,LBXSCR
+Biomarkers,INI30710,C-reactive protein,gaussian,3.41E-02,5.14E-03,3.35E-02,2.83E-02,17378,0.00E+00,TRUE,PGS000675,EFO_0004458,C-reactive protein measurement,LBXRDW
+Biomarkers,INI30720,Cystatin C,gaussian,9.13E-02,1.27E-01,2.20E-01,9.32E-02,24487,0.00E+00,TRUE,PGS000680,EFO_0004617,cystatin C measurement,
+Biomarkers,INI30730,Gamma glutamyltransferase,gaussian,5.02E-02,3.62E-02,3.85E-02,2.23E-03,17323,0.00E+00,TRUE,PGS000683,EFO_0004532,serum gamma-glutamyl transferase measurement,
+Biomarkers,INI30740,Glucose,gaussian,1.44E-02,1.35E-02,1.81E-02,4.67E-03,3313,1.10E-188,TRUE,PGS000684,EFO_0004468,glucose measurement,LBXGLU
+Biomarkers,INI30750,Glycated haemoglobin (HbA1c),gaussian,6.93E-02,4.90E-02,5.26E-02,3.69E-03,14658,0.00E+00,TRUE,PGS000685,EFO_0004541,HbA1c measurement,LBXGH
+Biomarkers,INI30760,HDL cholesterol,gaussian,1.62E-01,1.73E-01,3.22E-01,1.49E-01,25069,0.00E+00,TRUE,PGS000686,EFO_0004612,high density lipoprotein cholesterol measurement,LBDHDD
+Biomarkers,INI30770,IGF-1,gaussian,1.28E-01,6.76E-02,7.98E-02,1.23E-02,23443,0.00E+00,TRUE,PGS000687,EFO_0004627,IGF-1 measurement,
+Biomarkers,INI30780,LDL cholesterol,gaussian,1.09E-01,9.89E-03,9.53E-02,8.54E-02,16184,0.00E+00,TRUE,PGS000688,EFO_0004611,low density lipoprotein cholesterol measurement,LBDLDL
+Biomarkers,INI30790,Lipoprotein A,gaussian,5.34E-01,5.37E-04,1.76E-01,1.76E-01,8308,0.00E+00,TRUE,PGS000689,EFO_0006925,lipoprotein A measurement,
+Biomarkers,INI30810,Phosphate,gaussian,5.78E-02,6.10E-02,1.18E-01,5.73E-02,12448,0.00E+00,TRUE,PGS000692,EFO_0010968,phosphate measurement,
+Biomarkers,INI30830,SHBG,gaussian,1.11E-01,1.61E-01,1.65E-01,4.50E-03,19328,0.00E+00,TRUE,PGS000694,EFO_0004696,sex hormone-binding globulin measurement,
+Biomarkers,INI30840,Total bilirubin,gaussian,3.09E-01,6.35E-02,1.25E-01,6.10E-02,1159,0.00E+00,TRUE,PGS000697,EFO_0004570,bilirubin measurement,
+Biomarkers,INI30850,Testosterone,gaussian,3.19E-03,8.06E-01,8.07E-01,1.56E-03,8223,1.42E-42,TRUE,PGS000696,EFO_0004908,testosterone measurement,
+Biomarkers,INI30860,Total protein,gaussian,8.08E-02,4.92E-03,6.68E-03,1.76E-03,16420,0.00E+00,TRUE,PGS000698,EFO_0004536,total blood protein measurement,
+Biomarkers,INI30870,Triglycerides,gaussian,1.09E-01,4.68E-02,1.40E-01,9.30E-02,16003,0.00E+00,TRUE,PGS000699,EFO_0004530,triglyceride measurement,LBXTR
+Biomarkers,INI30880,Urate,gaussian,1.00E-01,2.74E-01,2.75E-01,6.88E-04,20171,0.00E+00,TRUE,PGS000700,EFO_0004531,urate measurement,
+Biomarkers,INI30890,Vitamin D,gaussian,4.83E-02,9.39E-03,1.12E-02,1.86E-03,8012,0.00E+00,TRUE,PGS000702,EFO_0004631,vitamin D measurement,LBXVID
+Blood_assays,INI23002,GE / gI antigen for Varicella Zoster Virus,gaussian,2.44E-02,1.23E-02,2.71E-02,1.47E-02,5,2.03E-08,TRUE,PGS001399,EFO_0009340,Varicella zoster virus seropositivity,
+Blood_assays,INI23003,VCA p18 antigen for Epstein-Barr Virus,gaussian,5.73E-03,6.22E-03,1.08E-02,4.56E-03,445,6.85E-03,FALSE,,,,
+Blood_assays,INI23004,EBNA-1 antigen for Epstein-Barr Virus,gaussian,7.14E-02,2.72E-04,6.24E-02,6.22E-02,38,2.71E-22,TRUE,PGS001036,EFO_0009271,Epstein Barr virus nuclear antigen-1 seropositivity,
+Blood_assays,INI23005,ZEBRA antigen for Epstein-Barr Virus,gaussian,3.91E-02,1.79E-02,5.79E-02,4.00E-02,158,1.05E-12,TRUE,PGS001772,EFO_0009273,anti-Epstein Barr virus antibody measurement,
+Blood_assays,INI23006,EA-D antigen for Epstein-Barr Virus,gaussian,1.28E-02,1.24E-02,2.28E-02,1.04E-02,146,5.03E-05,FALSE,,,,
+Blood_assays,INI23008,Pp 52 antigen for Human Cytomegalovirus,gaussian,2.53E-04,2.60E-02,2.47E-02,-1.33E-03,116,5.70E-01,FALSE,,,,
+Blood_assays,INI23009,Pp 28 antigen for Human Cytomegalovirus,gaussian,3.31E-05,1.77E-02,1.53E-02,-2.42E-03,115,8.37E-01,FALSE,,,,
+Blood_assays,INI23010,IE1A antigen for Human Herpesvirus-6,gaussian,3.89E-03,7.93E-04,1.89E-05,-7.74E-04,33,2.59E-02,FALSE,,,,
+Blood_assays,INI23011,IE1B antigen for Human Herpesvirus-6,gaussian,1.16E-03,3.32E-03,3.93E-03,6.12E-04,4,2.23E-01,FALSE,,,,
+Blood_assays,INI23013,U14 antigen for Human Herpesvirus-7,gaussian,3.20E-03,2.51E-02,2.87E-02,3.62E-03,109,4.35E-02,FALSE,,,,
+Blood_assays,INI23019,NS3 antigen for Hepatitis C Virus,gaussian,6.19E-04,7.92E-04,7.95E-04,3.94E-06,1,3.75E-01,FALSE,,,,
+Blood_assays,INI23020,P22 antigen for Toxoplasma gondii,gaussian,7.59E-04,1.06E-03,4.24E-04,-6.33E-04,14,3.26E-01,FALSE,,,,
+Blood_assays,INI23022,HTLV-1 gag antigen for Human T-Lymphotropic Virus 1,gaussian,1.75E-02,2.02E-02,3.67E-02,1.64E-02,66,2.09E-06,TRUE,PGS001407,EFO_0007937,blood protein measurement,
+Blood_assays,INI23023,HTLV-1 env antigen for Human T-Lymphotropic Virus 1,gaussian,1.52E-03,4.39E-04,1.49E-04,-2.90E-04,29,1.65E-01,FALSE,,,,
+Blood_assays,INI23025,HIV-1 env antigen for Human Immunodeficiency Virus,gaussian,1.32E-03,8.45E-05,4.61E-08,-8.44E-05,7,1.95E-01,FALSE,,,,
+Blood_assays,INI23026,BK VP1 antigen for Human Polyomavirus BKV,gaussian,1.74E-03,1.47E-02,1.42E-02,-5.44E-04,294,1.37E-01,FALSE,,,,
+Blood_assays,INI23027,JC VP1 antigen for Human Polyomavirus JCV,gaussian,3.59E-02,6.15E-03,3.79E-02,3.17E-02,9,9.36E-12,TRUE,PGS001081,EFO_0007937,blood protein measurement,
+Blood_assays,INI23028,MC VP1 antigen for Merkel Cell Polyomavirus,gaussian,4.94E-02,5.72E-03,5.32E-02,4.75E-02,143,1.00E-15,TRUE,PGS001082,EFO_0007937,blood protein measurement,
+Blood_assays,INI23030,E6 antigen for Human Papillomavirus type-16,gaussian,3.26E-03,8.29E-04,2.50E-04,-5.78E-04,1,4.14E-02,FALSE,,,,
+Blood_assays,INI23032,L1 antigen for Human Papillomavirus type-18,gaussian,3.30E-04,6.14E-04,1.89E-05,-5.95E-04,43,5.17E-01,FALSE,,,,
+Blood_assays,INI23034,Momp A antigen for Chlamydia trachomatis,gaussian,4.00E-05,2.96E-04,2.82E-04,-1.35E-05,1,8.21E-01,FALSE,,,,
+Blood_assays,INI23035,Tarp-D F1 antigen for Chlamydia trachomatis,gaussian,8.36E-04,6.68E-03,6.62E-03,-6.20E-05,1,3.02E-01,FALSE,,,,
+Blood_assays,INI23036,Tarp-D F2 antigen for Chlamydia trachomatis,gaussian,1.50E-03,1.27E-02,1.23E-02,-4.72E-04,1,1.67E-01,FALSE,,,,
+Blood_assays,INI23037,PorB antigen for Chlamydia trachomatis,gaussian,6.99E-05,3.21E-04,2.28E-04,-9.28E-05,8,7.66E-01,FALSE,,,,
+Blood_assays,INI23040,VacA antigen for Helicobacter pylori,gaussian,3.39E-04,5.42E-04,7.35E-04,1.93E-04,4,5.11E-01,FALSE,,,,
+Blood_assays,INI23041,OMP antigen for Helicobacter pylori,gaussian,4.39E-03,9.12E-03,2.52E-03,-6.60E-03,82,1.80E-02,FALSE,,,,
+Blood_assays,INI30000,White blood cell count,gaussian,7.26E-02,5.93E-03,7.77E-02,7.18E-02,13785,0.00E+00,TRUE,PGS001239,EFO_0004308,leukocyte count,LBXWBC
+Blood_assays,INI30010,Red blood cell count,gaussian,1.18E-01,2.57E-01,3.73E-01,1.17E-01,20480,0.00E+00,TRUE,PGS001240,EFO_0004305,erythrocyte count,LBXRBCSI
+Blood_assays,INI30020,Haemoglobin concentration,gaussian,6.68E-02,3.61E-01,4.29E-01,6.78E-02,15602,0.00E+00,TRUE,PGS001400,EFO_0004509,hemoglobin measurement,LBXHGB
+Blood_assays,INI30030,Haematocrit %,gaussian,6.54E-02,3.26E-01,3.91E-01,6.50E-02,15721,0.00E+00,TRUE,PGS001225,EFO_0004348,hematocrit,LBXHCT
+Blood_assays,INI30040,Mean corpuscular volume,gaussian,2.02E-01,1.67E-02,2.16E-01,1.99E-01,17311,0.00E+00,TRUE,PGS001220,EFO_0004526,mean corpuscular volume,
+Blood_assays,INI30050,Mean corpuscular haemoglobin,gaussian,1.70E-01,2.02E-02,1.88E-01,1.68E-01,13003,0.00E+00,TRUE,PGS001219,EFO_0004527,mean corpuscular hemoglobin,
+Blood_assays,INI30060,Mean corpuscular haemoglobin concentration,gaussian,2.53E-02,1.31E-02,3.75E-02,2.45E-02,2359,0.00E+00,TRUE,PGS001218,EFO_0004528,mean corpuscular hemoglobin concentration,
+Blood_assays,INI30070,Red blood cell distribution width,gaussian,7.94E-02,5.95E-03,8.52E-02,7.93E-02,10179,0.00E+00,TRUE,PGS001152,EFO_0005192,red blood cell distribution width,LBXRDW
+Blood_assays,INI30080,Platelet count,gaussian,2.10E-01,5.83E-02,2.67E-01,2.08E-01,24893,0.00E+00,TRUE,PGS001238,EFO_0004309,platelet count,LBXPLTSI
+Blood_assays,INI30090,Platelet crit,gaussian,1.61E-01,8.73E-02,2.47E-01,1.60E-01,20910,0.00E+00,TRUE,PGS001517,EFO_0007985,platelet crit,
+Blood_assays,INI30100,Mean platelet volume,gaussian,3.60E-01,1.83E-03,3.62E-01,3.60E-01,24114,0.00E+00,TRUE,PGS001200,EFO_0004584,mean platelet volume,LBXMPSI
+Blood_assays,INI30110,Platelet distribution width,gaussian,2.05E-01,2.19E-02,2.27E-01,2.06E-01,18814,0.00E+00,TRUE,PGS001079,EFO_0007984,platelet component distribution width,
+Blood_assays,INI30120,Lymphocyte count,gaussian,2.07E-02,5.15E-03,2.57E-02,2.05E-02,4212,2.72E-300,TRUE,PGS001199,EFO_0004587,lymphocyte count,LBDLYMNO
+Blood_assays,INI30130,Monocyte count,gaussian,8.14E-02,3.87E-02,1.20E-01,8.10E-02,9323,0.00E+00,TRUE,PGS001163,EFO_0005091,monocyte count,LBDMONO
+Blood_assays,INI30140,Neutrophill count,gaussian,8.93E-02,5.13E-03,9.38E-02,8.87E-02,15578,0.00E+00,TRUE,PGS001173,EFO_0004833,neutrophil count,LBDNENO
+Blood_assays,INI30150,Eosinophill count,gaussian,9.40E-02,9.20E-03,1.03E-01,9.34E-02,12579,0.00E+00,TRUE,PGS001172,EFO_0004842,eosinophil count,LBDEONO
+Blood_assays,INI30160,Basophill count,gaussian,1.47E-02,2.66E-03,1.72E-02,1.45E-02,3050,1.07E-213,TRUE,PGS001378,EFO_0005090,basophil count,LBDBANO
+Blood_assays,INI30180,Lymphocyte %,gaussian,8.84E-02,2.00E-02,1.08E-01,8.84E-02,15143,0.00E+00,TRUE,PGS001414,EFO_0007993,lymphocyte percentage of leukocytes,LBXLYPCT
+Blood_assays,INI30190,Monocyte %,gaussian,8.57E-02,4.23E-02,1.28E-01,8.53E-02,8762,0.00E+00,TRUE,PGS001078,EFO_0007989,monocyte percentage of leukocytes,LBXMOPCT
+Blood_assays,INI30200,Neutrophill %,gaussian,7.93E-02,2.41E-03,8.18E-02,7.93E-02,13703,0.00E+00,TRUE,PGS001077,EFO_0007990,neutrophil percentage of leukocytes,LBXNEPCT
+Blood_assays,INI30210,Eosinophill %,gaussian,9.59E-02,7.99E-03,1.04E-01,9.57E-02,12563,0.00E+00,TRUE,PGS001076,EFO_0007991,eosinophil percentage of leukocytes,LBXEOPCT
+Blood_assays,INI30220,Basophill %,gaussian,1.50E-02,1.89E-03,1.67E-02,1.49E-02,3205,6.80E-218,TRUE,PGS001377,EFO_0007992,basophil percentage of leukocytes,LBXBAPCT
+Blood_assays,INI30240,Reticulocyte %,gaussian,2.83E-02,1.06E-03,2.93E-02,2.82E-02,6251,0.00E+00,TRUE,PGS000989,EFO_0010700,reticulocyte measurement,
+Blood_assays,INI30250,Reticulocyte count,gaussian,3.97E-02,1.21E-02,5.18E-02,3.97E-02,6262,0.00E+00,TRUE,PGS001528,EFO_0007986,reticulocyte count,
+Blood_assays,INI30260,Mean reticulocyte volume,gaussian,1.46E-01,1.12E-02,1.57E-01,1.46E-01,13277,0.00E+00,TRUE,PGS000987,EFO_0010701,mean reticulocyte volume,
+Blood_assays,INI30280,Immature reticulocyte fraction,gaussian,9.06E-02,9.56E-03,9.98E-02,9.02E-02,10871,0.00E+00,TRUE,PGS001408,EFO_0009253,Immature Reticulocyte Fraction Measurement,
+Blood_assays,INI30290,High light scatter reticulocyte %,gaussian,1.60E-02,6.61E-04,1.67E-02,1.61E-02,7184,2.41E-228,TRUE,PGS000988,EFO_0010700,reticulocyte measurement,
+Blood_assays,INI30300,High light scatter reticulocyte count,gaussian,1.11E-01,1.56E-02,1.27E-01,1.12E-01,15856,0.00E+00,TRUE,PGS001406,EFO_0010700,reticulocyte measurement,
+Blood_assays,INI30820,Rheumatoid factor,gaussian,7.79E-07,1.89E-04,1.75E-04,-1.46E-05,18,9.46E-01,FALSE,,,,

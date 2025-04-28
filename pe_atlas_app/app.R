@@ -6,9 +6,6 @@
 
 
 
-## todo
-
-
 library(tidyverse)
 library(DBI)
 library(ggsci)
@@ -46,7 +43,7 @@ ui <- navbarPage("Phenome-Exposome Atlas",
       mainPanel(h1("Welcome to the Phenome-Exposome Atlas!"),
                 p("How much variation do exposures explain in phenotype?"),
                 p("This is an atlas of 127K correlations between 278 phenotypes (e.g., body mass index, glucose, height, creatinine) and 651 exposures and behaviors (e.g., self-reported nutrient intake; blood lead levels; urinary phthalates; blood PFOA) across the National Health and Nutrition Examination Surveys (NHANES) in individuals from 1999-2017. For each survey, we associate the phenotype and exposure, and summarize the association size across the surveys. We assess the robustness of associations by estimating the false discovery rate, consistency with adjustments, and concordance across multiple waves of the surveys."),
-                img(src="pe.png",height="650px"),
+                img(src="pe_fig1.png",height="650px"),
                 h3("GitHub Repository:"),
                 p(a("nhanes_pewas", href="https://github.com/chiragjp/nhanes_pewas"))
                 )
@@ -123,7 +120,19 @@ ui <- navbarPage("Phenome-Exposome Atlas",
                reactableOutput("by_exposure_group_table"),
                downloadButton("by_exposure_group_table_download", "Download Summary Statistics")
              )
+    ),
+  tabPanel("E Catalog",
+    mainPanel(
+      h1("Exposome Catalog"),
+      reactableOutput("e_catalog_table")
     )
+  ),
+  tabPanel("P Catalog",
+           mainPanel(
+             h1("Phenome Catalog"),
+             reactableOutput("p_catalog_table")
+           )
+  )
 
 )
 
@@ -560,6 +569,15 @@ server <- function(input, output, session) {
 
     })
 
+  output$e_catalog_table <- renderReactable({
+    am2 <- tbl(pool, "adjusted_meta_2") |> select(evarname, enewsubcategory, evardesc) |> collect() |> unique()
+    reactable(am2 |> rename(ID=evarname, Category=enewsubcategory, Description=evardesc), filterable = TRUE, searchable = TRUE, pageSizeOptions = c(50, 100, 200), showPageSizeOptions = TRUE)
+  })
+
+  output$p_catalog_table <- renderReactable({
+    am2 <- tbl(pool, "adjusted_meta_2") |> select(pvarname, pnewsubcategory, pvardesc) |> collect() |> unique()
+    reactable(am2 |> rename(ID=pvarname, Category=pnewsubcategory, Description=pvardesc), filterable = TRUE, searchable = TRUE, pageSizeOptions = c(50, 100, 200), showPageSizeOptions = TRUE)
+  })
 
 }
 

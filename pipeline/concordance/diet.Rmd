@@ -1,0 +1,110 @@
+---
+title: "diet_concordance"
+author: "Chirag Patel"
+date: "2025-04-21"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r}
+library(tidyverse)
+library(devtools)
+load_all('..')
+path_to_nhanes <- '../../db/nhanes_031725.sqlite'
+
+con <- DBI::dbConnect(RSQLite::SQLite(), dbname=path_to_dbname) 
+
+
+```
+
+```{r}
+
+demo_table_for_begin_year <- function(nhanes_con, yr) {
+  demo_name <- "DEMO"
+  # Map the beginning year to the corresponding DEMO table name
+  if(yr == 1999) {
+    demo_name <- "DEMO"
+  } else if (yr == 2001) {
+    demo_name <- "DEMO_B"
+  } else if (yr == 2003) {
+    demo_name <- "DEMO_C"
+  } else if (yr == 2005) {
+    demo_name <- "DEMO_D"
+  } else if (yr == 2007) {
+    demo_name <- "DEMO_E"
+  } else if (yr == 2009) {
+    demo_name <- "DEMO_F"
+  } else if (yr == 2011) {
+    demo_name <- "DEMO_G"
+  } else if (yr == 2013) {
+    demo_name <- "DEMO_H"
+  } else if (yr == 2015) {
+    demo_name <- "DEMO_I"
+  } else if (yr == 2017) {
+    demo_name <- "DEMO_J"
+  } else {
+    stop("Error: The year provided is not valid. Use one of 2001, 2003, 2005, 2007, 2009, 2011, 2013, 2015, or 2017.")
+  }
+
+  # Return the table from the connection corresponding to the determined demo_name
+  return(dplyr::tbl(nhanes_con, demo_name))
+}
+
+get_exposure_across_surveys <- function(nhanes_con, evarname) {
+  etables <- get_table_names_for_varname(nhanes_con, varname = evarname)
+  etable_list <- vector("list", length=nrow(etables))
+  for(ii in 1:nrow(etables)) {
+    dname <- etables |> slice(ii) |> pull(Data.File.Name)
+    etable_list[[ii]] <- tbl(nhanes_con, dname) |> collect()
+  }
+
+  etable_list <- bind_rows(etable_list)
+
+}
+
+
+
+
+
+
+```
+
+
+```{r}
+
+all_demo <- bind_rows(
+  demo_table_for_begin_year(con, 1999) |> collect(),
+  demo_table_for_begin_year(con, 2001) |> collect(),
+  demo_table_for_begin_year(con, 2003) |> collect(),
+  demo_table_for_begin_year(con, 2005) |> collect(),
+  demo_table_for_begin_year(con, 2007) |> collect(),
+  demo_table_for_begin_year(con, 2009) |> collect(),
+  demo_table_for_begin_year(con, 2011) |> collect(),
+  demo_table_for_begin_year(con, 2013) |> collect(),
+  demo_table_for_begin_year(con, 2015) |> collect(),
+  demo_table_for_begin_year(con, 2017) |> collect()
+)
+
+dr_day1 <- get_exposure_across_surveys(con, "DR1TCARB")
+dr_day2 <- get_exposure_across_surveys(con, "DR2TCARB")
+dr_demo <- all_demo |> inner_join(dr_day1) |> inner_join(dr_day2, by="SEQN")
+```
+
+## correlate
+```{r}
+library(corrr)
+dr_corrs <- dr_demo |> select(starts_with("DR")) |> correlate() 
+## select dr1 in the colums 
+## select DR2 in the rows
+
+df_corrs <- dr_corrs |> filter(grepl("DR2", term)) |> select(term, starts_with("DR1")) |> stretch()
+
+df_corrs |> mutate(x_sub=substr(x, 4, 20), y_sub=substr(y, 4, 20)) |> filter(x_sub==y_sub) |> filter(grepl("^T", x_sub)) |> 
+  summarize(n=n(), mcor=median(r), q25=quantile(r, probs=.25), q75=quantile(r, probs=.75))
+
+```
