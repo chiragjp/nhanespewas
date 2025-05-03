@@ -1,0 +1,28 @@
+## Chirag
+## create on load tables to save time
+
+library(dbplyr)
+library(tidyverse)
+library(DBI)
+library(pool)
+library(fst)
+pool <- dbPool(drv = RSQLite::SQLite(), dbname='./pe_shiny_2.sqlite')
+##
+
+p_variables <- tbl(pool, 'adjusted_meta_2') |> group_by(pvarname) |> count() |> left_join(tbl(pool, "p_variable_domain"), by=c("pvarname"="Variable.Name")) |> collect()
+p_variables <- p_variables |> mutate(cat_subcat=ifelse(!is.na(psubcategory), paste(pcategory, psubcategory, sep="-"), pcategory ))
+p_variables <- p_variables |> mutate(pvardesc_selector = sprintf("%s-(%s)", pvardesc, pvarname))
+
+e_variables <- tbl(pool, 'adjusted_meta_2') |> group_by(evarname) |> count() |> left_join(tbl(pool, "e_variable_domain"), by=c("evarname"="Variable.Name")) |> collect()
+e_variables <- e_variables |> mutate(cat_subcat=ifelse(!is.na(esubcategory), paste(ecategory, esubcategory, sep="-"), ecategory ))
+e_variables <- e_variables |> mutate(evardesc_selector = sprintf("%s-(%s)", evardesc, evarname))
+e_category_strs <- e_variables |> ungroup() |> select(ecategory, esubcategory) |> group_by(ecategory, esubcategory) |> count()
+e_category_strs <- e_category_strs |> ungroup() |> mutate(cat_subcat=ifelse(!is.na(esubcategory), paste(ecategory, esubcategory, sep="-"), ecategory ))
+
+poolClose(pool)
+
+write_fst(p_variables, "p_variables.fst")
+write_fst(e_variables, "e_variables.fst")
+write_fst(e_category_strs, "e_category_strs.fst")
+
+

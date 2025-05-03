@@ -56,6 +56,11 @@ xaxis_labels <- eplot_order |> group_by(group_number,enewsubcategory) |> summari
 xaxis_labels <- xaxis_labels |> mutate(enewsubcategory = ifelse(enewsubcategory=='priority pesticide', 'organophosphate', enewsubcategory))
 xaxis_labels <- xaxis_labels |> ungroup() |> slice_head(n=-2)
 
+## clarify labels close to each other
+xaxis_labels <- xaxis_labels |> mutate(enewsubcategory = ifelse(enewsubcategory == 'phthalates', 'phthalates-amine/amide', enewsubcategory))
+xaxis_labels <- xaxis_labels |> mutate(enewsubcategory = ifelse(enewsubcategory == 'amine/amide', '', enewsubcategory))
+
+
 to_plot <- to_plot |> left_join(eplot_order |> select(evarname,order_number))
 p <- ggplot(to_plot |> arrange(order_number), aes(order_number, -log10(plot_p)))
 p <- p + geom_point(aes(color=sig_levels), shape=20) + facet_wrap(pnewsubcategory~., nrow=6, ncol=2) + scale_color_aaas()
@@ -104,10 +109,6 @@ p_percent_sig <- adjusted_meta_2 |> group_by(pcategory, pnewsubcategory, sig_lev
 p_effect_sizes_per <- adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05') |> group_by(pcategory, pnewsubcategory) |> summarize(median_pvalue=median(p.value), median_r2=median((rsq_adjusted_base_diff))) |> left_join(p_percent_sig)
 
 ## how many per phenotype were significant?
-
-
-
-
 
 
 ecdf_for_sig <- adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05') |> pull(rsq_adjusted_base_diff) |> ecdf()
@@ -199,7 +200,7 @@ rsq_uni <- rsq_uni |> filter(evarname != 'LBXHCT')
 
 
 p <- ggplot(rsq_uni, aes(rsq_base, rsq_adj_e))
-p <- p + geom_point(size=1, shape=1) + xlab("R^2 Base [Demographics]") + ylab("R^2 [Exposure + Demographics]")
+p <- p + geom_point(size=1, shape=1) + xlab("R^2 Base [Demo.]") + ylab("R^2 [E + Demo.]")
 p <- p + geom_point(data=rsq_mv |> mutate(rsq_exposures = ifelse(rsq_exposures < 0, 0, rsq_exposures)), aes(rsq_base, rsq_exposures+rsq_base), size=1, shape=19, col="red") 
 p_r2 <- p + theme_bw() + geom_abline()
 p_r2
@@ -214,6 +215,13 @@ rsq_mv |> mutate(rsq_exposures = ifelse(rsq_exposures < 0, 0, rsq_exposures)) |>
 ```{r combine plot, fig.height=8, fig.width=10}
 cdfs_p <- plot_grid(cdf_p, cdf_e_p, p_r2, labels=c("B", "C", "D"),nrow = 3)
 ppp <- plot_grid(all_p_r2, cdfs_p, ncol=2, rel_widths = c(2,1), labels=c("A", ""))
+ppp
+```
+
+
+```{r combine plot 2, fig.height=12, fig.width=12}
+cdfs_p <- plot_grid(cdf_p, cdf_e_p, p_r2, labels=c("B", "C", "D"),nrow = 1)
+ppp <- plot_grid(all_p_r2, cdfs_p, nrow=2, rel_heights = c(3,1), labels=c("A", ""))
 ppp
 ```
 
@@ -281,6 +289,13 @@ p <- p + geom_text(data=e_total_found |> filter(sig_levels == "Bonf.<0.05"), aes
 total_found_p <- p + theme_bw() + theme(axis.text.x = element_text(angle = 0, vjust = 0.5), axis.title.y= element_text(size=9), axis.title.x = element_text(size=9))
 total_found_p
 
+## flip it 
+p <- ggplot(e_total_found |> filter(sig_levels  == 'Bonf.<0.05'), aes(x=reorder(ecat, pct_sig_per_category, decreasing=F), y=pct_sig_per_category*100))
+p <- p + geom_bar(stat = "identity",position = "dodge") + theme_bw() + xlab("Exposome Group") + ylab("% Identified/Group") + scale_y_continuous(limits=c(0,20))
+p <- p + geom_text(data=e_total_found |> filter(sig_levels == "Bonf.<0.05"), 
+                   aes(x=reorder(ecat, pct_sig_per_category, decreasing=F),  y=pct_sig_per_category*100,label=total_tests),position = position_dodge(width = 0.9), vjust=-.5, hjust=0.5, size=3) 
+total_found_p_flip <- p + theme_bw() + theme(axis.text.x =  element_text(angle = 90, vjust=.5, hjust=1), axis.title.y= element_text(size=9), axis.title.x = element_text(size=9))
+total_found_p_flip
 
 ```
 
@@ -293,6 +308,15 @@ p <- p + geom_bar(stat = "identity",position = "dodge") + theme_bw() + ylab("Phe
 p <- p + geom_text(data=p_total_found |> filter(sig_levels == "Bonf.<0.05"), aes(y=reorder(pcat, pct_sig_per_category, decreasing=F),  x=pct_sig_per_category*100,label=total_tests), position=position_dodge(width=0.9), vjust=0, hjust=-.5, size=3) 
 total_found_p_p <- p + theme_bw() + theme(axis.text.x = element_text(angle = 0, vjust = 0.5), axis.title.y= element_text(size=9), axis.title.x = element_text(size=9))
 total_found_p_p
+
+## flip
+p <- ggplot(p_total_found |> filter(sig_levels  == 'Bonf.<0.05'), aes(x=reorder(pcat, pct_sig_per_category, decreasing=F), y=pct_sig_per_category*100))
+p <- p + geom_bar(stat = "identity",position = "dodge") + theme_bw() + xlab("Phenotype Group") + ylab("% Identified/Group") + scale_y_continuous(limits=c(0,20))
+p <- p + geom_text(data=p_total_found |> filter(sig_levels == "Bonf.<0.05"), 
+                   aes(x=reorder(pcat, pct_sig_per_category, decreasing=F),  y=pct_sig_per_category*100,label=total_tests), vjust=-1, size=3) 
+total_found_p_p_flip <- p + theme_bw() + theme(axis.text.x = element_text(angle = 90, vjust=.5, hjust=1), axis.title.y= element_text(size=9), axis.title.x = element_text(size=9))
+total_found_p_p_flip
+
 
 ```
 
@@ -322,6 +346,11 @@ first_row
 # replace this with the manhattan across pheno groups
 pl <- plot_grid(all_p_logp,plot_grid(total_found_p_p,total_found_p, nrow = 2, labels=c("B", "C")), labels = c("A", ""), ncol = 2, hjust = 0, rel_widths = c(2, 1))
 pl
+```
+
+```{r fig.width=12, fig.height=11}
+pl2 <- plot_grid(all_p_logp,plot_grid(total_found_p_p_flip,total_found_p_flip, ncol = 2, labels=c("B", "C")), labels = c("A", ""), nrow = 2, hjust = 0, rel_heights =   c(3, 1))
+pl2
 ```
 
 

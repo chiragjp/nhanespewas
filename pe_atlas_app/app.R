@@ -20,22 +20,15 @@ library(reactable)
 library(igraph)
 library(ggridges)
 library(ggpubr)
+library(fst)
 
 ## get data
 pool <- dbPool(drv = RSQLite::SQLite(), dbname='pe_shiny_2.sqlite')
 ##
 
-p_variables <- tbl(pool, 'adjusted_meta_2') |> group_by(pvarname) |> count() |> left_join(tbl(pool, "p_variable_domain"), by=c("pvarname"="Variable.Name")) |> collect()
-p_variables <- p_variables |> mutate(cat_subcat=ifelse(!is.na(psubcategory), paste(pcategory, psubcategory, sep="-"), pcategory ))
-p_variables <- p_variables |> mutate(pvardesc_selector = sprintf("%s-(%s)", pvardesc, pvarname))
-
-e_variables <- tbl(pool, 'adjusted_meta_2') |> group_by(evarname) |> count() |> left_join(tbl(pool, "e_variable_domain"), by=c("evarname"="Variable.Name")) |> collect()
-e_variables <- e_variables |> mutate(cat_subcat=ifelse(!is.na(esubcategory), paste(ecategory, esubcategory, sep="-"), ecategory ))
-e_variables <- e_variables |> mutate(evardesc_selector = sprintf("%s-(%s)", evardesc, evarname))
-e_category_strs <- e_variables |> ungroup() |> select(ecategory, esubcategory) |> group_by(ecategory, esubcategory) |> count()
-e_category_strs <- e_category_strs |> ungroup() |> mutate(cat_subcat=ifelse(!is.na(esubcategory), paste(ecategory, esubcategory, sep="-"), ecategory ))
-
-
+p_variables <-read_fst('p_variables.fst', as.data.table = T)
+e_variables <-read_fst('e_variables.fst', as.data.table = T)
+e_category_strs <-read_fst('e_category_strs.fst', as.data.table = T)
 
 ## ui
 ui <- navbarPage("Phenome-Exposome Atlas",

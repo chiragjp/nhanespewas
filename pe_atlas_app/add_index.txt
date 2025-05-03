@@ -1,0 +1,7 @@
+## add indices to sqlite database
+## use the sqlite3 command line to do this:
+
+CREATE INDEX IF NOT EXISTS idx_meta2_pvar   ON adjusted_meta_2(pvarname);
+CREATE INDEX IF NOT EXISTS idx_meta2_evar   ON adjusted_meta_2(evarname);
+CREATE INDEX IF NOT EXISTS idx_meta2_ecat   ON adjusted_meta_2(ecategory);
+CREATE INDEX IF NOT EXISTS idx_meta2_pcat   ON adjusted_meta_2(pcategory);
