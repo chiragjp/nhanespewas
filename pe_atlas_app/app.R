@@ -177,7 +177,7 @@ reactable_tibble <- function(meta_obj) {
 
 reactable_summary_stats <- function(meta_obj) {
   to_react <- reactable_tibble(meta_obj)
-  reactable(to_react |> arrange(-neglogpvalue), columns = list(effect.size=colDef(format = colFormat(digits=3)),
+  reactable(to_react |> arrange(-r.squared), columns = list(effect.size=colDef(format = colFormat(digits=3)),
                                                                es_25_50=colDef(format = colFormat(digits=3)),
                                                                es_50_75=colDef(format = colFormat(digits=3)),
                                                                es_75_90=colDef(format = colFormat(digits=3)),
