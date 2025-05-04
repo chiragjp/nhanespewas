@@ -19,6 +19,24 @@ e_variables <- e_variables |> mutate(evardesc_selector = sprintf("%s-(%s)", evar
 e_category_strs <- e_variables |> ungroup() |> select(ecategory, esubcategory) |> group_by(ecategory, esubcategory) |> count()
 e_category_strs <- e_category_strs |> ungroup() |> mutate(cat_subcat=ifelse(!is.na(esubcategory), paste(ecategory, esubcategory, sep="-"), ecategory ))
 
+
+#purrr::walk(DBI::dbListTables(pool), \(tbl) {
+#  df <- DBI::dbReadTable(pool)
+#  write_fst(df, file.path(paste0(tbl, ".fst")), compress = 50)
+#})
+
+tables <- dbListTables(pool)
+# 4. Loop over each table: read it and write to .fst
+for(tbl in tables) {
+  message("Dumping table: ", tbl)
+  df <- dbReadTable(pool, tbl)
+  write_fst(
+    df,
+    path    = file.path(paste0(tbl, ".fst")),
+    compress = 50        # adjust 0–100: higher = smaller file, slightly slower read
+  )
+}
+
 poolClose(pool)
 
 write_fst(p_variables, "p_variables.fst")

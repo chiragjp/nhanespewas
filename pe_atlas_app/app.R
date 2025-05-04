@@ -4,10 +4,7 @@
 # chirag@hms.harvard
 # 12/30/24
 
-
-
 library(tidyverse)
-library(DBI)
 library(ggsci)
 library(DT)
 library(ggrepel)
@@ -15,20 +12,26 @@ library(cowplot)
 library(shiny)
 library(corrr)
 library(gplots)
-library(pool)
 library(reactable)
 library(igraph)
 library(ggridges)
 library(ggpubr)
 library(fst)
 
-## get data
-pool <- dbPool(drv = RSQLite::SQLite(), dbname='pe_shiny_2.sqlite')
+## LOAD data: see: on_load_data.R
+p_variables <-read_fst('data/p_variables.fst', as.data.table = T)
+e_variables <-read_fst('data/e_variables.fst', as.data.table = T)
+e_category_strs <-read_fst('data/e_category_strs.fst', as.data.table = T)
+adjusted_meta_2 <- read_fst('data/adjusted_meta_2.fst', as.data.table = T)
+ee <- read_fst('data/ee.fst', as.data.table = T)
+pe_quantile_ns <-read_fst('data/pe_quantile_ns.fst', as.data.table = T)
+p_variable_domain <-read_fst('data/p_variable_domain.fst', as.data.table = T)
+e_variable_domain <-read_fst('data/e_variable_domain.fst', as.data.table = T)
+exposure_correlation <- read_fst('data/exposure_correlation.fst', as.data.table = T)
+phenotype_correlation <- read_fst('data/phenotype_correlation.fst', as.data.table = T)
+expos_wide <- read_fst("data/expos_wide.fst", as.data.table = T)
 ##
 
-p_variables <-read_fst('p_variables.fst', as.data.table = T)
-e_variables <-read_fst('e_variables.fst', as.data.table = T)
-e_category_strs <-read_fst('e_category_strs.fst', as.data.table = T)
 
 ## ui
 ui <- navbarPage("Phenome-Exposome Atlas",
@@ -231,7 +234,8 @@ exposome_globe_plot <- function(exposure_tibble) {
   E_CORR_THRESHOLD_NEG <- -0.2
   E_CORR_THRESHOLD_POS <- 0.2
   MAX_NUMBER_NODES <- 100
-  corr_tibble <- tbl(pool, "ee")
+  #corr_tibble <- tbl(pool, "ee")
+  corr_tibble <- ee
   ff <- corr_tibble |> right_join(exposure_tibble , by=c("xvarname"="evarname"))
   sig <- ff |> right_join(exposure_tibble, by=c("yvarname"="evarname"))
 
@@ -273,9 +277,12 @@ server <- function(input, output, session) {
     output$by_phenotype_volcano_plot <- renderPlot({
         pvarn <- input$pvarname
         pcat <- p_variables |> filter(pvarname == pvarn) |> pull(pcategory)
-        to_plot <- tbl(pool, "adjusted_meta_2") |> filter(pvarname == pvarn) |> select(estimate, p.value, sig_levels) |> collect()
+
+        #to_plot <- tbl(pool, "adjusted_meta_2") |> filter(pvarname == pvarn) |> select(estimate, p.value, sig_levels) |> collect()
+        to_plot <-adjusted_meta_2 |> filter(pvarname == pvarn) |> select(estimate, p.value, sig_levels)
         to_plot <- to_plot |> mutate(p.value = ifelse(p.value < 1e-20, 1e-20, p.value))
-        bg <- tbl(pool, "adjusted_meta_2") |> filter(pcategory == pcat) |> select(estimate, p.value, sig_levels) |> collect()
+        #bg <- tbl(pool, "adjusted_meta_2") |> filter(pcategory == pcat) |> select(estimate, p.value, sig_levels) |> collect()
+        bg <- adjusted_meta_2 |> filter(pcategory == pcat) |> select(estimate, p.value, sig_levels) #|> collect()
         bg <- bg |> mutate(p.value = ifelse(p.value < 1e-20, 1e-20, p.value))
         plot_volcano(to_plot, bg)
     })
@@ -283,7 +290,8 @@ server <- function(input, output, session) {
     output$by_phenotype_manhattan_plot <- renderPlot({
       pvarn <-input$pvarname
       pcat <- p_variables |> filter(pvarname == pvarn) |> pull(pcategory)
-      to_plot <- tbl(pool, "adjusted_meta_2") |> filter(pvarname == pvarn) |> collect()
+      #to_plot <- tbl(pool, "adjusted_meta_2") |> filter(pvarname == pvarn) |> collect()
+      to_plot <- adjusted_meta_2 |> filter(pvarname == pvarn)
       to_plot <- to_plot |> mutate(p.value = ifelse(p.value < 1e-20, 1e-20, p.value))
       plot_manhattan(to_plot)
     })
@@ -292,40 +300,49 @@ server <- function(input, output, session) {
     output$by_phenotype_globe_plot <- renderPlot({
       pvarn <-input$pvarname
       pcat <- p_variables |> filter(pvarname == pvarn) |> pull(pcategory)
-      exposures_to_plot <- tbl(pool, "adjusted_meta_2") |> filter(pvarname == pvarn, sig_levels == "Bonf.<0.05")|> select(evarname)
+      #exposures_to_plot <- tbl(pool, "adjusted_meta_2") |> filter(pvarname == pvarn, sig_levels == "Bonf.<0.05")|> select(evarname)
+      exposures_to_plot <- adjusted_meta_2 |> filter(pvarname == pvarn, sig_levels == "Bonf.<0.05")|> select(evarname)
       exposome_globe_plot(exposure_tibble = exposures_to_plot)
     })
     output$by_phenotype_globe_legend_table <- renderDT({
       pvarn <- input$pvarname
-      exposures_to_plot <- tbl(pool, "adjusted_meta_2") |> filter(pvarname == pvarn, sig_levels == "Bonf.<0.05")|> select(evarname, evardesc)
-      to_table <- exposures_to_plot |> collect()
+      #exposures_to_plot <- tbl(pool, "adjusted_meta_2") |> filter(pvarname == pvarn, sig_levels == "Bonf.<0.05")|> select(evarname, evardesc)
+      exposures_to_plot <- adjusted_meta_2 |> filter(pvarname == pvarn, sig_levels == "Bonf.<0.05")|> select(evarname, evardesc)
+      to_table <- exposures_to_plot #|> collect()
       to_table <- to_table |> mutate(evarname = substr(evarname, nchar(evarname)-2, nchar(evarname))) |> rename(abbr=evarname, exposure_description=evardesc)
     })
     output$by_phenotype_effect_size <-renderPlot({
       pvarn <-input$pvarname
       pcat <- p_variables |> filter(pvarname == pvarn) |> pull(pcategory)
-      es <- tbl(pool, "pe_quantile_ns") |> filter(pvarname == pvarn) |> collect()
+      #es <- tbl(pool, "pe_quantile_ns") |> filter(pvarname == pvarn) |> collect()
+      es <- pe_quantile_ns |> filter(pvarname == pvarn) #|> collect()
       plot_effect_size(es)
     })
 
     output$by_phenotype_r2_plot <- renderPlot({
         pvarn <- input$pvarname
-        to_plot <- tbl(pool, "adjusted_meta_2") |> filter(pvarname==pvarn) |> select(rsq_adjusted_base_diff,rsq_adjusted_diff, sig_levels) |> collect()
+        #to_plot <- tbl(pool, "adjusted_meta_2") |> filter(pvarname==pvarn) |> select(rsq_adjusted_base_diff,rsq_adjusted_diff, sig_levels) |> collect()
+        to_plot <- adjusted_meta_2 |> filter(pvarname==pvarn) |> select(rsq_adjusted_base_diff,rsq_adjusted_diff, sig_levels) #|> collect()
         to_plot <- to_plot |> rename(r2_adjusted_vs_base=rsq_adjusted_base_diff, r2_adjusted_vs_unadjusted=rsq_adjusted_diff)
         plot_adjusted_r2_cdf(to_plot)
     })
 
     output$by_phenotype_estimate_plot <- renderPlot({
         pvarn <- input$pvarname
-        to_plot <- tbl(pool, "expos_wide") |> filter(pvarname == pvarn) |> select(estimate_2,estimate_1) |> rename(estimate=estimate_2, estimate_unadjusted=estimate_1) |> collect()
+        #to_plot <- tbl(pool, "expos_wide") |> filter(pvarname == pvarn) |> select(estimate_2,estimate_1) |> rename(estimate=estimate_2, estimate_unadjusted=estimate_1) |> collect()
+        to_plot <- expos_wide |> filter(pvarname == pvarn) |> select(estimate_2,estimate_1) |> rename(estimate=estimate_2, estimate_unadjusted=estimate_1) #|> collect()
         plot_estimates(to_plot)
     })
 
     output$by_phenotype_table <- renderReactable({
         pvarn <- input$pvarname
-        to_react <- tbl(pool, "adjusted_meta_2") |> filter(pvarname == pvarn)
-        qns <- tbl(pool, "pe_quantile_ns") |> filter(pvarname == pvarn) |>
+        #to_react <- tbl(pool, "adjusted_meta_2") |> filter(pvarname == pvarn)
+        to_react <- adjusted_meta_2 |> filter(pvarname == pvarn)
+        #qns <- tbl(pool, "pe_quantile_ns") |> filter(pvarname == pvarn) |>
+        #  select(estimate, evarname, pvarname, term) |> pivot_wider(names_from =c("term"), values_from=c("estimate"))
+        qns <- pe_quantile_ns |> filter(pvarname == pvarn) |>
           select(estimate, evarname, pvarname, term) |> pivot_wider(names_from =c("term"), values_from=c("estimate"))
+
         to_react <- to_react |> left_join(qns, by=c("evarname", "pvarname"))
         reactable_summary_stats(to_react)
     })
@@ -338,7 +355,8 @@ server <- function(input, output, session) {
       },
       content = function(file) {
         pvarn <- input$pvarname
-        to_react <- tbl(pool, "adjusted_meta_2") |> filter(pvarname == pvarn) |> reactable_tibble()
+        #to_react <- tbl(pool, "adjusted_meta_2") |> filter(pvarname == pvarn) |> reactable_tibble()
+        to_react <-  adjusted_meta_2 |> filter(pvarname == pvarn) |> reactable_tibble()
         write_csv(x=to_react, file)
       }
     )
@@ -352,25 +370,29 @@ server <- function(input, output, session) {
 
     output$pvariable_description <- renderText({
         pvarn <- input$pvarname
-        ret <- tbl(pool, "p_variable_domain") |> filter(Variable.Name == pvarn) |> pull(pvardesc)
+        #ret <- tbl(pool, "p_variable_domain") |> filter(Variable.Name == pvarn) |> pull(pvardesc)
+        ret <- p_variable_domain |> filter(Variable.Name == pvarn) |> pull(pvardesc)
         ret[1]
     })
 
     output$pvariable_category <- renderText({
       pvarn <- input$pvarname
-      ret <- tbl(pool, "p_variable_domain") |> filter(Variable.Name == pvarn) |> pull(pcategory)
+      #ret <- tbl(pool, "p_variable_domain") |> filter(Variable.Name == pvarn) |> pull(pcategory)
+      ret <- p_variable_domain |> filter(Variable.Name == pvarn) |> pull(pcategory)
       ret[1]
     })
 
     output$evariable_description <- renderText({
         evarn <- input$evarname
-        ret <- tbl(pool, "e_variable_domain") |> filter(Variable.Name == evarn) |> pull(evardesc)
+        #ret <- tbl(pool, "e_variable_domain") |> filter(Variable.Name == evarn) |> pull(evardesc)
+        ret <- e_variable_domain |> filter(Variable.Name == evarn) |> pull(evardesc)
         ret[1]
     })
 
     output$evariable_category <- renderText({
       evarn <- input$evarname
-      ret <- tbl(pool, "e_variable_domain") |> filter(Variable.Name == evarn) |> pull(ecategory)
+      #ret <- tbl(pool, "e_variable_domain") |> filter(Variable.Name == evarn) |> pull(ecategory)
+      ret <- e_variable_domain |> filter(Variable.Name == evarn) |> pull(ecategory)
       ret[1]
     })
 
@@ -389,16 +411,19 @@ server <- function(input, output, session) {
     output$by_exposure_volcano_plot <- renderPlot({
         evarn <- input$evarname
         ecat <- e_variables |> filter(evarname == evarn) |> pull(ecategory)
-        to_plot <- tbl(pool, "adjusted_meta_2") |> filter(evarname == evarn) |> select(estimate, p.value, sig_levels) |> collect()
+        #to_plot <- tbl(pool, "adjusted_meta_2") |> filter(evarname == evarn) |> select(estimate, p.value, sig_levels) |> collect()
+        to_plot <- adjusted_meta_2 |> filter(evarname == evarn) |> select(estimate, p.value, sig_levels) #|> collect()
         to_plot <- to_plot |> mutate(p.value = ifelse(p.value < 1e-20, 1e-20, p.value))
-        bg <- tbl(pool, "adjusted_meta_2") |> filter(ecategory == ecat) |> select(estimate, p.value, sig_levels) |> collect()
+        #bg <- tbl(pool, "adjusted_meta_2") |> filter(ecategory == ecat) |> select(estimate, p.value, sig_levels) |> collect()
+        bg <- adjusted_meta_2 |> filter(ecategory == ecat) |> select(estimate, p.value, sig_levels) #|> collect()
         bg <- bg |> mutate(p.value = ifelse(p.value < 1e-20, 1e-20, p.value))
         plot_volcano(to_plot, bg)
     })
 
     output$by_exposure_r2_plot <- renderPlot({
       evarn <- input$evarname
-      to_plot <- tbl(pool, "adjusted_meta_2") |> filter(evarname==evarn) |> select(rsq_adjusted_base_diff,rsq_adjusted_diff, sig_levels) |> collect()
+      #to_plot <- tbl(pool, "adjusted_meta_2") |> filter(evarname==evarn) |> select(rsq_adjusted_base_diff,rsq_adjusted_diff, sig_levels) |> collect()
+      to_plot <- adjusted_meta_2 |> filter(evarname==evarn) |> select(rsq_adjusted_base_diff,rsq_adjusted_diff, sig_levels) #|> collect()
       to_plot <- to_plot |> rename(r2_adjusted_vs_base=rsq_adjusted_base_diff, r2_adjusted_vs_unadjusted=rsq_adjusted_diff)
       plot_adjusted_r2_cdf(to_plot)
     })
@@ -406,8 +431,11 @@ server <- function(input, output, session) {
 
     output$by_exposure_table <- renderReactable({
       evarn <- input$evarname
-      to_react <- tbl(pool, "adjusted_meta_2") |> filter(evarname == evarn)
-      qns <- tbl(pool, "pe_quantile_ns") |> filter(evarname == evarn) |>
+      #to_react <- tbl(pool, "adjusted_meta_2") |> filter(evarname == evarn)
+      to_react <- adjusted_meta_2 |> filter(evarname == evarn)
+      #qns <- tbl(pool, "pe_quantile_ns") |> filter(evarname == evarn) |>
+      #  select(estimate, evarname, pvarname, term) |> pivot_wider(names_from =c("term"), values_from=c("estimate"))
+      qns <- pe_quantile_ns |> filter(evarname == evarn) |>
         select(estimate, evarname, pvarname, term) |> pivot_wider(names_from =c("term"), values_from=c("estimate"))
       to_react <- to_react |> left_join(qns, by=c("evarname", "pvarname"))
       reactable_summary_stats(to_react)
@@ -422,21 +450,24 @@ server <- function(input, output, session) {
       },
       content = function(file) {
         evarn <- input$evarname
-        to_react <- tbl(pool, "adjusted_meta_2") |> filter(evarname == evarn) |> reactable_tibble()
+        #to_react <- tbl(pool, "adjusted_meta_2") |> filter(evarname == evarn) |> reactable_tibble()
+        to_react <- adjusted_meta_2 |> filter(evarname == evarn) |> reactable_tibble()
         write_csv(x=to_react, file)
       }
     )
 
     output$by_exposure_estimate_plot <- renderPlot({
       evarn <- input$evarname
-      to_plot <- tbl(pool, "expos_wide") |> filter(evarname == evarn) |> select(estimate_2,estimate_1) |> rename(estimate=estimate_2, estimate_unadjusted=estimate_1) |> collect()
+      #to_plot <- tbl(pool, "expos_wide") |> filter(evarname == evarn) |> select(estimate_2,estimate_1) |> rename(estimate=estimate_2, estimate_unadjusted=estimate_1) |> collect()
+      to_plot <- expos_wide |> filter(evarname == evarn) |> select(estimate_2,estimate_1) |> rename(estimate=estimate_2, estimate_unadjusted=estimate_1) #|> collect()
       plot_estimates(to_plot)
     })
 
     output$by_exposure_context_plot <- renderPlot({
       evarn <- input$evarname
-      m <- tbl(pool, "adjusted_meta_2") |> filter(pval_BY < 0.05) |> filter(ecategory != 'allergy')
-      e_estimate <- m |> filter(evarname == evarn) |> select(estimate,sig_levels) |> collect()
+      #m <- tbl(pool, "adjusted_meta_2") |> filter(pval_BY < 0.05) |> filter(ecategory != 'allergy')
+      m <- adjusted_meta_2 |> filter(pval_BY < 0.05) |> filter(ecategory != 'allergy')
+      e_estimate <- m |> filter(evarname == evarn) |> select(estimate,sig_levels) #|> collect()
       vardesc <- e_variables |> filter(evarname == evarn)  |> pull(evardesc)
       vardesc <- vardesc[1]
       other_estimates <- m |> filter(evarname != evarn) |> select(ecategory, esubcategory,estimate, sig_levels) |> collect()
@@ -454,14 +485,16 @@ server <- function(input, output, session) {
 
     output$exposure_corr_table <- renderReactable({
       pvarn <- input$pvarname
-      to_react <- tbl(pool, "exposure_correlation") |> filter(x == pvarn) |> select(-x) |> collect() |> rename(corr=r)
+      #to_react <- tbl(pool, "exposure_correlation") |> filter(x == pvarn) |> select(-x) |> collect() |> rename(corr=r)
+      to_react <- exposure_correlation |> filter(x == pvarn) |> select(-x) |> rename(corr=r)
       to_react <- to_react |> left_join(p_variables, by=c("y"="pvarname")) |> select("pvardesc", "pcategory", "corr")
       reactable(to_react |> arrange(-corr), columns=list(corr=colDef(format=colFormat(digits=3))))
     })
 
     output$phenotype_corr_table <- renderReactable({
       evarn <- input$evarname
-      to_react <- tbl(pool, "phenotype_correlation") |> filter(x == evarn) |> select(-x) |> collect() |> rename(corr=r)
+      #to_react <- tbl(pool, "phenotype_correlation") |> filter(x == evarn) |> select(-x) |> collect() |> rename(corr=r)
+      to_react <- phenotype_correlation |> filter(x == evarn) |> select(-x) |> rename(corr=r)
       to_react <- to_react |> left_join(e_variables, by=c("y"="evarname")) |> select("evardesc", "ecategory", "corr")
       reactable(to_react |> arrange(-corr), columns=list(corr=colDef(format=colFormat(digits=3))))
     })
@@ -475,11 +508,12 @@ server <- function(input, output, session) {
       category_and_sub <- e_category_strs |> filter(cat_subcat == cat_sub)
       subcategory_str <- category_and_sub |> pull(esubcategory)
       ecategory_str <- category_and_sub |> pull(ecategory)
-      to_plot <- tbl(pool, "adjusted_meta_2") |> filter(ecategory == ecategory_str)
+      #to_plot <- tbl(pool, "adjusted_meta_2") |> filter(ecategory == ecategory_str)
+      to_plot <- adjusted_meta_2 |> filter(ecategory == ecategory_str)
       if(!is.na(subcategory_str)) {
         to_plot <- to_plot |> filter(esubcategory == subcategory_str)
       }
-      to_plot <- to_plot |> select(estimate, p.value, sig_levels) |> collect()
+      to_plot <- to_plot |> select(estimate, p.value, sig_levels) #|> collect()
       to_plot <- to_plot |> mutate(p.value = ifelse(p.value < 1e-20, 1e-20, p.value))
       plot_volcano(to_plot)
     })
@@ -490,11 +524,14 @@ server <- function(input, output, session) {
       category_and_sub <- e_category_strs |> filter(cat_subcat == cat_sub)
       subcategory_str <- category_and_sub |> pull(esubcategory)
       ecategory_str <- category_and_sub |> pull(ecategory)
-      to_react <- tbl(pool, "adjusted_meta_2") |> filter(ecategory == ecategory_str)
-      qns <- tbl(pool, "pe_quantile_ns") |> filter(ecategory == ecategory_str)
+      #to_react <- tbl(pool, "adjusted_meta_2") |> filter(ecategory == ecategory_str)
+      #qns <- tbl(pool, "pe_quantile_ns") |> filter(ecategory == ecategory_str)
+      to_react <- adjusted_meta_2 |> filter(ecategory == ecategory_str)
+      qns <- pe_quantile_ns |> filter(ecategory == ecategory_str)
       if(!is.na(subcategory_str)) {
         to_react <- to_react |> filter(esubcategory == subcategory_str)
-        qns <- tbl(pool, "pe_quantile_ns") |> filter(esubcategory == subcategory_str)
+        #qns <- tbl(pool, "pe_quantile_ns") |> filter(esubcategory == subcategory_str)
+        qns <- pe_quantile_ns |> filter(esubcategory == subcategory_str)
       }
       qns <- qns |> select(estimate, evarname, pvarname, term) |> pivot_wider(names_from =c("term"), values_from=c("estimate"))
       to_react <- to_react |> left_join(qns, by=c("evarname", "pvarname"))
@@ -511,7 +548,8 @@ server <- function(input, output, session) {
         category_and_sub <- e_category_strs |> filter(cat_subcat == cat_sub)
         subcategory_str <- category_and_sub |> pull(esubcategory)
         ecategory_str <- category_and_sub |> pull(ecategory)
-        to_react <- tbl(pool, "adjusted_meta_2") |> filter(ecategory == ecategory_str)
+        #to_react <- tbl(pool, "adjusted_meta_2") |> filter(ecategory == ecategory_str)
+        to_react <- adjusted_meta_2 |> filter(ecategory == ecategory_str)
         if(!is.na(subcategory_str)) {
           to_react <- to_react |> filter(esubcategory == subcategory_str)
         }
@@ -525,7 +563,8 @@ server <- function(input, output, session) {
       category_and_sub <- e_category_strs |> filter(cat_subcat == cat_sub)
       subcategory_str <- category_and_sub |> pull(esubcategory)
       ecategory_str <- category_and_sub |> pull(ecategory)
-      to_plot <- tbl(pool, "adjusted_meta_2") |> filter(ecategory == ecategory_str)
+      #to_plot <- tbl(pool, "adjusted_meta_2") |> filter(ecategory == ecategory_str)
+      to_plot <- adjusted_meta_2 |> filter(ecategory == ecategory_str)
       if(!is.na(subcategory_str)) {
         to_plot <- to_plot |> filter(esubcategory == subcategory_str)
       }
@@ -539,7 +578,8 @@ server <- function(input, output, session) {
       category_and_sub <- e_category_strs |> filter(cat_subcat == cat_sub)
       subcategory_str <- category_and_sub |> pull(esubcategory)
       ecategory_str <- category_and_sub |> pull(ecategory)
-      to_plot <- tbl(pool, "expos_wide") |> filter(ecategory == ecategory_str)
+      #to_plot <- tbl(pool, "expos_wide") |> filter(ecategory == ecategory_str)
+      to_plot <- expos_wide |> filter(ecategory == ecategory_str)
       if(!is.na(subcategory_str)) {
         to_plot <- to_plot |> filter(esubcategory == subcategory_str)
       }
@@ -549,8 +589,12 @@ server <- function(input, output, session) {
 
     output$by_exposure_group_context_plot <- renderPlot({
       cat_sub <- input$egroup
-      to_plot <- tbl(pool, "adjusted_meta_2") |> filter(pval_BY < 0.05) |> collect() |>
+      #to_plot <- tbl(pool, "adjusted_meta_2") |> filter(pval_BY < 0.05) |> collect() |>
+      #  mutate(cat_subcat=ifelse(!is.na(esubcategory), paste(ecategory, esubcategory, sep="-"), ecategory ))
+
+      to_plot <- adjusted_meta_2 |> filter(pval_BY < 0.05)  |>
         mutate(cat_subcat=ifelse(!is.na(esubcategory), paste(ecategory, esubcategory, sep="-"), ecategory ))
+
 
       to_plot <- to_plot |> mutate(col=ifelse(cat_subcat == cat_sub, 'red', 'black'))
       to_plot <- to_plot |> mutate(cat_subcat=fct_relevel(cat_subcat, cat_sub, after = 0 ))
@@ -563,12 +607,14 @@ server <- function(input, output, session) {
     })
 
   output$e_catalog_table <- renderReactable({
-    am2 <- tbl(pool, "adjusted_meta_2") |> select(evarname, enewsubcategory, evardesc) |> collect() |> unique()
+    #am2 <- tbl(pool, "adjusted_meta_2") |> select(evarname, enewsubcategory, evardesc) |> collect() |> unique()
+    am2 <- adjusted_meta_2 |> select(evarname, enewsubcategory, evardesc) |> unique()
     reactable(am2 |> rename(ID=evarname, Category=enewsubcategory, Description=evardesc), filterable = TRUE, searchable = TRUE, pageSizeOptions = c(50, 100, 200), showPageSizeOptions = TRUE)
   })
 
   output$p_catalog_table <- renderReactable({
-    am2 <- tbl(pool, "adjusted_meta_2") |> select(pvarname, pnewsubcategory, pvardesc) |> collect() |> unique()
+    #am2 <- tbl(pool, "adjusted_meta_2") |> select(pvarname, pnewsubcategory, pvardesc) |> collect() |> unique()
+    am2 <- adjusted_meta_2 |> select(pvarname, pnewsubcategory, pvardesc) |> unique()
     reactable(am2 |> rename(ID=pvarname, Category=pnewsubcategory, Description=pvardesc), filterable = TRUE, searchable = TRUE, pageSizeOptions = c(50, 100, 200), showPageSizeOptions = TRUE)
   })
 
