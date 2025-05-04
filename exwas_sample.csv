@@ -1,0 +1,1501 @@
+sig_levels,estimate,evarname,pvarname,evardesc,pvardesc
+> BY & Bonf.,0.0013398820078318796,URX14D,DXDTOBMC,"2,5-dichlorophenol (ug/L)",Total Bone Mineral Content (g)
+> BY & Bonf.,-0.006722708562588038,SMQ_how_long_since_quit_years,DXXPEA,How long since quit,Pelvis Area (cm^2)
+> BY & Bonf.,-0.05085680515854864,DR2TVB1,RB_ObservedOTUsSD,Thiamin (Vitamin B1) (mg),RB_ObservedOTUsSD
+> BY & Bonf.,0.04151247895098019,LBXVFN,LBDEONO,Blood Furan (ng/mL),Eosinophils number (1000 cells/uL)
+> BY & Bonf.,-0.05964194026161697,DRXTZINC,LBXSGTSI,Zinc (mg),Gamma glutamyl transferase (U/L)
+> BY & Bonf.,-0.0028972137575765246,DR1TFA,LBXTST,Folic acid (mcg),Testosterone total (ng/dL)
+> BY & Bonf.,0.05460834503213547,LBDRPCR,DXXNKBMD,Roche HPV linear array (LA) summary result,Femoral neck bone mineral density (gm/cm^2)
+> BY & Bonf.,-0.00961019670899777,DR2TP184,DXXTATM,PFA 18:4 (Octadecatetraenoic) (gm),Total abdominal fat mass
+> BY & Bonf.,0.00609820335394544,DS2TVC,DXDSTBMC,Vitamin C (mg),Subtotal Bone Mineral Content (grams)
+> BY & Bonf.,-0.007208347154734607,LBXVME,DXXSATM,Blood Methyl t-Butyl Ether (MTBE) Result (pg/mL),Subcutaneous fat mass
+> BY & Bonf.,-0.008669494138276472,DSQTSELE,DXDTOPF,Selenium (mcg),Total Percent Fat
+> BY & Bonf.,-0.007194903281208542,LBXEPAH,LBXSTR,2-(N-Ethyl-perfluorooctane sulfonamido) acetic acid,Triglycerides (mg/dL)
+> BY & Bonf.,-0.031796389927312124,LBXMFOS,DXXRAFAT,Perfluoromethylheptane sulfonic acid isomers (Sm-PFOS) (ng/mL),Right Arm Fat (grams)
+> BY & Bonf.,0.05795271618236358,SMQ710,DXXLLBMD,"During the past 5 days {including today}, on how many days did {you/he/she}",Left Leg Bone Mineral Density (grams/cm^2)
+> BY & Bonf.,0.013484483965043367,LBXD04,LBXSCR,"1,2,3,7,8,9-Hexachlorodibenzo-p-dioxin (hxcdd) (fg/g)",Creatinine (mg/dL)
+> BY & Bonf.,0.028943337898880525,LBXVST,LBXSGB,Blood Styrene Result (ng/mL),Globulin (g/dL)
+> BY & Bonf.,-0.020996171987757113,URXMB3,LBXSCH,N-acetyl-s-(4-hydroxy-2-butenyl)-L-cysteine (ng/mL),Cholesterol (mg/dL)
+> BY & Bonf.,-0.03086412971194253,LBXVIC,LBDLYMNO,Vitamin C (mg/dL),Lymphocyte number (1000 cells/uL)
+> BY & Bonf.,0.03213986013680267,LBXF04,LBXBAP,"1,2,3,4,7,8-Hexachlorodibenzofuran (hxcdf) (fg/g)",Bone alkaline phosphotase (ug/L)
+> BY & Bonf.,-0.03719296656454614,LBXS16MK,LBXSGTSI,HPV 16 (Merck competitive Luminex assay),Gamma glutamyl transferase (U/L)
+> BY & Bonf.,0.01097479510972881,URXPHE,LBXNEPCT,N-acetyl-S-(phenyl-2-hydroxyethyl)-L-cysteine(ng/mL),Segmented neutrophils percent (%)
+> BY & Bonf.,-0.02604384159534009,LBXV2A,DXXLLBMD,"Blood 1,2-Dichloroethane Result",Left Leg Bone Mineral Density (grams/cm^2)
+> BY & Bonf.,-0.012928151529410554,DRXTFOLA,LBXSCA,Total Folate (mcg),Total calcium (mg/dL)
+> BY & Bonf.,0.0021925388863620323,DR2TM201,LBXSCR,MFA 20:1 (Eicosenoic) (gm),Creatinine (mg/dL)
+> BY & Bonf.,0.011028854668547076,URXMX1,LBXSPH,1-methylxanthine (umol/L),Phosphorus (mg/dL)
+> BY & Bonf.,-0.03885580974522155,DR2TB12A,LBXP2,Added vitamin B12 (mcg),"Prostate specific antigen (PSA), free (ng/mL)"
+> BY & Bonf.,4.3648783971606453e-4,URXCOP,LBXAPB,Mono(carboxyoctyl) phthalate(ng/mL),Apolipoprotein (B) (mg/dL)
+> BY & Bonf.,0.014069406817971574,URXDEA,LBXSF4SI,DEET acid (ug/L),Tetrahydrofolate (nmol/L)
+> BY & Bonf.,0.033714494741553594,URXMU4,LBDLYMNO,"1,3-dimethyluric acid (umol/L)",Lymphocyte number (1000 cells/uL)
+> BY & Bonf.,-0.011549904897597872,URXUMO,DXDSTFAT,"Molybdenum, urine (ng/mL)",Subtotal Fat (g)
+> BY & Bonf.,0.015430113912841553,DSQTZINC,LBXEOPCT,Zinc (mg),Eosinophils percent (%)
+> BY & Bonf.,-0.014339239360558857,DR1TM181,URXUMA,MFA 18:1 (Octadecenoic) (gm),"Albumin, urine (ug/mL)"
+> BY & Bonf.,0.02906618355372485,DS1TIODI,LBXSATSI,Iodine (mcg),Alanine aminotransferase ALT (U/L)
+> BY & Bonf.,-0.011585003091452632,LBXVEC,DXAFMRD0,Blood Chloroethane (ng/mL),Calculated DO for femur
+> BY & Bonf.,0.004678626710849423,URX14D,DXDSTBMC,"2,5-dichlorophenol (ug/L)",Subtotal Bone Mineral Content (grams)
+> BY & Bonf.,-0.1004483506528809,SMD630,LBXRBCSI,How old were you when you smoked a whole cigarette for the first time?,Red blood cell count (million cells/uL)
+> BY & Bonf.,-0.0048613590375847756,LBXVEC,DXXRABMC,Blood Chloroethane (ng/mL),Right Arm Bone Mineral Content (grams)
+> BY & Bonf.,-0.03205861254230326,URX3TB,DXXL4BMD,"2,4,6-trichlorophenol (ug/L) result",L4 Bone Mineral Density
+> BY & Bonf.,-0.010599102878422872,DR2TVD,DXDLATOT,Vitamin D (D2 + D3) (mcg),Left Arm Total (grams)
+> BY & Bonf.,-8.073727578293572e-4,LBXVIA,DXASPNK,Retinol(ug/dL),Calculated K for spine
+> BY & Bonf.,0.006621932252882955,DS2TVB1,LBXAPB,Thiamin (Vitamin B1) (mg),Apolipoprotein (B) (mg/dL)
+> BY & Bonf.,-0.10994603326808461,URXUCL,DXXHEA,Urinary Chlamydia,Head Area (cm^2)
+> BY & Bonf.,0.12310139343484607,SMD630,MDIASTOLIC,How old were you when you smoked a whole cigarette for the first time?,Diastolic Mean
+> BY & Bonf.,-0.00990634369456889,DR2TLYCO,DXDLATOT,Lycopene (mcg),Left Arm Total (grams)
+> BY & Bonf.,0.012765015808373463,LBXEPAH,LBXSTB,2-(N-Ethyl-perfluorooctane sulfonamido) acetic acid,Total bilirubin (mg/dL)
+> BY & Bonf.,-0.004909239923482295,LBXVCF,LBXSF5SI,Blood Chloroform Result (pg/mL),"5,10-Methenyl-tetrahydrofolate (nmol/L)"
+> BY & Bonf.,0.03685533318391321,URXOP2,LBXSNASI,Diethylphosphate (ug/L),Sodium (mmol/L)
+> BY & Bonf.,-0.015932298456855735,URXGNS,LBDBANO,Genistein (ng/mL),Basophils number (1000 cells/uL)
+> BY & Bonf.,-0.028373429818751204,LBXVEA,BMXARML,Blood Ethyl Acetate (ng/mL),Upper Arm Length (cm)
+> BY & Bonf.,-6.584561451598519e-4,DR2TS180,LBXSCK,SFA 18:0 (Octadecanoic) (gm),Creatine Phosphokinase(CPK) (IU/L)
+> BY & Bonf.,-0.037033370508780424,URXUAC,DXXSATA,Urinary Arsenocholine (ug/L),Subcutaneous fat area
+> BY & Bonf.,0.016351416352967822,LBXVD2MS,DXAFMRD0,25-hydroxyvitamin D2 (nmol/L),Calculated DO for femur
+> BY & Bonf.,0.005626486154955946,DS2TVB12,DXXRLLI,Vitamin B12 (mcg),Right Leg Lean incl Bone Mineral Content (grams)
+> BY & Bonf.,0.09651096148224443,SMD630,LBXEPP,How old were you when you smoked a whole cigarette for the first time?,Protoporphyrin(ug/dL RBC)
+> BY & Bonf.,-0.01444069713271915,DRXTVB1,LBXNEPCT,Thiamin (Vitamin B1) (mg),Segmented neutrophils percent (%)
+> BY & Bonf.,0.01817613373170528,URXUCS,DXXTOTBS,"Cesium, urine (ng/mL)",Total Trabecular Bone Score
+> BY & Bonf.,-0.004288302865947631,URXMHP,ENXMEAN,Mono-(2-ethyl)-hexyl phthalate (ng/mL),"Mean of two reproducible FENO measurements, in parts per billion"
+> BY & Bonf.,-0.014255950485724471,DS2TFA,DXXINA,Folic acid (mcg),Intertrochanter area (cm^2)
+> BY & Bonf.,0.014697838720164254,URXMU3,DXXRLBMC,7-methyluric acid (umol/L),Right Leg Bone Mineral Content (grams)
+> BY & Bonf.,-0.011477731850041518,DRXTCALC,BMXARML,Calcium (mg),Upper Arm Length (cm)
+> BY & Bonf.,-0.07541066985953244,LBDHBG,LBXMOPCT,Hepatitis B surface antigen,Monocyte percent (%)
+> BY & Bonf.,-0.013804870495226797,LBXVTC,LBXSUA,Blood Trichloroethene Result (ng/mL),Uric acid (mg/dL)
+> BY & Bonf.,-0.0544357070385112,URXNAL,LBXSCK,"NNAL , urine (ng/mL)",Creatine Phosphokinase(CPK) (IU/L)
+> BY & Bonf.,-0.010285286298156003,URXCYHA,MSYSTOLIC,N-Acetyl-S-(1-cyano-2-hydroxyethyl)-L-cysteine (CYHA) (ng/mL),Systolic Mean
+> BY & Bonf.,-0.04784219994372106,DR2TCOPP,LBXP1,Copper (mg),"Prostate specific antigen, total (ng/mL)"
+> BY & Bonf.,0.005797042764598741,DR1TFIBE,DXXLSBMC,Dietary fiber (gm),Lumbar Spine Bone Mineral Content (grams)
+> BY & Bonf.,-0.0102978146171932,DS2TIODI,LBXSTP,Iodine (mcg),Total protein (g/dL)
+> BY & Bonf.,-0.00466521095567582,URXMNP,LBDRFO,Mono-isononyl phthalate (ng/mL),RBC folate (ng/mL)
+> BY & Bonf.,-0.051091454394393256,URXUCS,DXXOSBMD,"Cesium, urine (ng/mL)",Total spine BMD
+> BY & Bonf.,0.010021365951971988,DR2TMOIS,DXXHEBMD,Moisture (gm),Head Bone Mineral Density (grams/cm^2)
+> BY & Bonf.,-0.0077175106396217665,DR1TCRYP,DXXTSBMC,Beta-cryptoxanthin (mcg),Thoracic Spine Bone Mineral Content (grams)
+> BY & Bonf.,-0.015498557606131284,DS1TCOPP,LBXSHBG,Copper (mg),"Sex Hormone Binding Globulin (SHBG, nmol/L)"
+> BY & Bonf.,0.03713439917277288,ORXHPV,LBXGH,Oral HPV Result,Glycohemoglobin (%)
+> BY & Bonf.,-0.012266196034662395,LBXALD,BMXTHICR,Aldrin (ng/g),Thigh Circumference (cm)
+> BY & Bonf.,0.025406862262527415,URXDHD,LBXCRP,Desethyl hydroxy DEET (ug/L),C-reactive protein (mg/dL)
+> BY & Bonf.,0.011101285717423257,LBXVCM,LBXTSH1,Blood Dibromochloromethane Result (pg/mL),Thyroid stimulating hormone (uIU/mL)
+> BY & Bonf.,-0.03005921204543786,LBXMFOS,DXDTRTOT,Perfluoromethylheptane sulfonic acid isomers (Sm-PFOS) (ng/mL),Trunk Total (grams)
+> BY & Bonf.,-0.002669166342961181,DS2TVB1,LBXGLU,Thiamin (Vitamin B1) (mg),Fasting Glucose (mg/dL)
+> BY & Bonf.,0.03992584255283124,DR2TP182,DXDTOFAT,PFA 18:2 (Octadecadienoic) (gm),Total Fat (g)
+> BY & Bonf.,0.02983238321115191,LBXF06,LBXSGTSI,"1,2,3,7,8,9-Hexachlorodibenzofuran (hxcdf) (fg/g)",Gamma glutamyl transferase (U/L)
+> BY & Bonf.,0.01887283383837927,DR2TZINC,DXDRALE,Zinc (mg),Right Arm Lean excl Bone Mineral Content (grams)
+> BY & Bonf.,-0.007101398705399266,DR1TSUGR,DXDSTPF,Total sugars (gm),Subtotal Percent Fat
+> BY & Bonf.,0.0028746309738631013,DR1TP226,SPXNFEV1,PFA 22:6 (Docosahexaenoic) (gm),"Baseline 1st Test Spirometry, Forced Expiratory Volume in the first 1.0 sec"
+> BY & Bonf.,0.013182776671278977,DSQTSELE,LBXSF6SI,Selenium (mcg),Mefox oxidation product (nmol/L)
+> BY & Bonf.,-0.0011551780837962006,URXMOP,DXXOSBMC,Mono-n-octyl phthalate (ng/mL),Total spine BMC
+> BY & Bonf.,-0.026571989488669925,LBXPFNA,LBXTIB,Perfluorononanoic acid,"TIBC, Frozen Serum (ug/dL)"
+> BY & Bonf.,0.01862114644542008,DS1TVD,DXXRLA,Vitamin D (D2 + D3) (mcg),Right Leg Area (cm^2)
+> BY & Bonf.,-0.01061979283774692,DRXTTFAT,LBXRDW,Total fat (gm),Red cell distribution width (%)
+> BY & Bonf.,0.042855216526469425,DS2TMAGN,DXXRLFAT,Magnesium (mg),Right Leg Fat (grams)
+> BY & Bonf.,-0.008678655563742277,LBX138,URXUCR,PCB138 & 158 (ng/g),"Creatinine, urine (mg/dL)"
+> BY & Bonf.,0.02314547581525552,DR1TS040,DXDHETOT,SFA 4:0 (Butanoic) (gm),Head Total (grams)
+> BY & Bonf.,-0.024461844414960496,DS2TLYCO,LBXLYPCT,Lycopene (mcg),Lymphocyte percent (%)
+> BY & Bonf.,0.004633246931702763,SMD415A,DXXINBMC,Total # of cigarette smokers in home,Intertrochanter bone mineral content (gm)
+> BY & Bonf.,-0.5579478221263171,SMD630,URXUCR,How old were you when you smoked a whole cigarette for the first time?,"Creatinine, urine (mg/dL)"
+> BY & Bonf.,-0.024733438963211896,DS1TCALC,DXXLSBMC,Calcium (mg),Lumbar Spine Bone Mineral Content (grams)
+> BY & Bonf.,0.004571785695292262,DR2TRET,DXXRALI,Retinol (mcg),Right Arm Lean incl Bone Mineral Content (grams)
+> BY & Bonf.,-0.0032181173353232964,URXMPB,DXXRABMD,Methyl paraben (ng/ml),Right Arm Bone Mineral Density (grams/cm^2)
+> BY & Bonf.,7.369911402366042e-4,DSQTKCAL,DXXAGRAT,Energy (kcal),Android to gynoid ratio
+> BY & Bonf.,-0.005917486592145528,DSQTIODI,LBXSUA,Iodine (mcg),Uric acid (mg/dL)
+> BY & Bonf.,0.01985868880836527,DR1TATOA,LBXSF2SI,Added alpha-tocopherol (Vitamin E) (mg),Folic acid (nmol/L)
+> BY & Bonf.,0.004808829753869294,URXMNP,DXXHEFAT,Mono-isononyl phthalate (ng/mL),Head Fat (grams)
+> BY & Bonf.,0.028132236533201675,URXETL,LBXEOPCT,Enterolactone (ng/mL),Eosinophils percent (%)
+> BY & Bonf.,0.029213456636175666,URXUAC,LBXTST,Urinary Arsenocholine (ug/L),Testosterone total (ng/dL)
+> BY & Bonf.,-0.05168081047946633,URXMNM,LBXTFR,Mono-n-methyl phthalate (ng/mL),Transferrin receptor (mg/L)
+> BY & Bonf.,-0.04756384672145778,URXMX1,DXDSTLI,1-methylxanthine (umol/L),Subtotal Lean incl BMC (g)
+> BY & Bonf.,0.004198274397610656,DS2TNIAC,URXUMA,Niacin (mg),"Albumin, urine (ug/mL)"
+> BY & Bonf.,0.004784484482823552,URXUBA,LBXSGTSI,"Barium, urine (ng/mL)",Gamma glutamyl transferase (U/L)
+> BY & Bonf.,0.43463725427147726,LBDRPCR,DXDLLTOT,Roche HPV linear array (LA) summary result,Left Leg Total (grams)
+> BY & Bonf.,0.02369789326241643,URXPMA,LBXPLTSI,N-acetyl-s-(phenyl)-L-cysteine(ng/mL),Platelet count SI (1000 cells/uL)
+> BY & Bonf.,-0.013344976463807395,DR2TTFAT,DXXTSA,Total fat (gm),Thoracic Spine Area (cm^2)
+> BY & Bonf.,0.03380284275876507,DR2TCRYP,DXXTOTBS,Beta-cryptoxanthin (mcg),Total Trabecular Bone Score
+> BY & Bonf.,-0.021150139194258233,URXUMMA,LBXSCK,Urinary Monomethylarsonic acid (ug/L),Creatine Phosphokinase(CPK) (IU/L)
+> BY & Bonf.,0.004490637461743395,URXP06,LBXNEPCT,1-phenanthrene (ng/L),Segmented neutrophils percent (%)
+> BY & Bonf.,0.05125917178422139,URXPMM,DXASPNK,N-acetyl-s-(3-hydroxypropyl-1-methyl)-L-cysteine(ng/mL),Calculated K for spine
+> BY & Bonf.,0.003026945817591629,DS1TVB2,DXDTRLE,Riboflavin (Vitamin B2) (mg),Trunk Lean excl Bone Mineral Content (grams)
+> BY & Bonf.,0.019721884220870685,DR1TATOC,LBXSKSI,Vitamin E as alpha-tocopherol (mg),Potassium (mmol/L)
+> BY & Bonf.,0.05849896148749849,LBXHP2C,DXXLLBMD,Cobas HPV Swab High Risk,Left Leg Bone Mineral Density (grams/cm^2)
+> BY & Bonf.,-0.03525054400178839,URXUTL,DXDSTBMD,"Thallium, urine (ng/mL)",Subtotal Bone Mineral Density (grams/cm^2)
+> BY & Bonf.,0.06191192155374591,LBXBSE,DXXINBMD,Blood selenium(ug/L),Intertrochanter bone mineral density (gm/cm^2)
+> BY & Bonf.,-0.04738390866747279,SMQ725,DXDRATOT,When did {you/he/she} smoke {your/his/her} last cigarette? Was it...,Right Arm Total (grams)
+> BY & Bonf.,0.013456580415937862,DR1TBCAR,DXXWDBMC,Beta-carotene (mcg),Ward's triangle bone mineral content (gm)
+> BY & Bonf.,0.24749075293477774,LBDHBG,DXDSTA,Hepatitis B surface antigen,Subtotal Area (cm^2)
+> BY & Bonf.,-0.01049562603153889,SMQ710,LBXCRP,"During the past 5 days {including today}, on how many days did {you/he/she}",C-reactive protein (mg/dL)
+> BY & Bonf.,-0.005173998004125102,DR1TALCO,DXXINBMD,Alcohol (gm),Intertrochanter bone mineral density (gm/cm^2)
+> BY & Bonf.,0.03761450713695836,LBXF02,CVDFITLV,"1,2,3,7,8-Pentachlorodibenzofuran (pncdf) (fg/g)",Cardiovascular fitness level
+> BY & Bonf.,0.04743838101695495,LBXD07,LBXSCA,"1,2,3,4,6,7,8,9-Octachlorodibenzo-p-dioxin (ocdd) (fg/g)",Total calcium (mg/dL)
+> BY & Bonf.,-0.031080156891892537,URXETD,DXAFMRK,Enterodiol (ng/mL),Calculated K for femur
+> BY & Bonf.,-0.010801084216187796,DR2TLZ,LBXFER,Lutein + zeaxanthin (mcg),Ferritin(ng/mL)
+> BY & Bonf.,-0.0011313420443566423,LBXV1D,DXXRLA,"Blood 1,2-Dichlorobenzene Result",Right Leg Area (cm^2)
+> BY & Bonf.,0.013130579611952435,LBXPFHP,BMXWAIST,Perfluoroheptanoic acid,Waist Circumference (cm)
+> BY & Bonf.,0.020303554607724227,DSQTIRON,DXXLLA,Iron (mg),Left Leg Area(cm^2)
+> BY & Bonf.,0.004412966715645664,DR2TS060,DXXNKBMC,SFA 6:0 (Hexanoic) (gm),Femoral neck bone mineral content (gm)
+> BY & Bonf.,-0.011211988908727257,DR2TFDFE,RSV_ObservedOTUsSD,Folate as dietary folate equivalents (mcg),RSV_ObservedOTUsSD
+> BY & Bonf.,-0.016633757706907056,DR1TRET,DXXAPFAT,Retinol (mcg),Android percent fat
+> BY & Bonf.,0.027579732541329418,DS2TPOTA,LBXSF6SI,Potassium (mg),Mefox oxidation product (nmol/L)
+> BY & Bonf.,-0.047244235394495314,URXDHB,DXXRAA,"N-acetyl-S-(3,4-Dihidroxybutyl)-L-cysteine(ng/mL)",Right Arm Area (cm^2)
+> BY & Bonf.,-0.00855262886038461,LBXF08,CVDFITLV,"1,2,3,4,6,7,8-Heptachlorodibenzofuran (hpcdf) (fg/g)",Cardiovascular fitness level
+> BY & Bonf.,0.04552952149638191,ORXHPV,DXXTATA,Oral HPV Result,Total abdominal fat area
+> BY & Bonf.,-0.01941044600127397,DR2TFIBE,LBXSATSI,Dietary fiber (gm),Alanine aminotransferase ALT (U/L)
+> BY & Bonf.,0.025134407347870275,URXMAD,DXASPND0,Mandelic acid(ng/mL),Calculated D0 for spine
+> BY & Bonf.,0.006126895754226482,LBDHCV,LBDP3,Hepatitis C antibody (confirmed),Prostate specific antigen ratio (%)
+> BY & Bonf.,0.011735646261645237,URXBUP,LBXLYPCT,Butyl paraben (ng/ml),Lymphocyte percent (%)
+> BY & Bonf.,0.020830975096971828,DSQTCALC,DXXGYLM,Calcium (mg),Gynoid lean mass
+> BY & Bonf.,-0.043206232895877536,URXP10,DXXOSBMC,1-pyrene (ng/L),Total spine BMC
+> BY & Bonf.,0.008870790189272872,URXUSB,DXXVFATM,"Antimony, urine (ng/mL)",Visceral adipose tissue mass
+> BY & Bonf.,-0.004949346575173352,DS1DSCNT,LBXHGB,Number of dietary supplements reported,Hemoglobin (g/dL)
+> BY & Bonf.,0.026193213881039137,URXGAM,DXDLAPF,N-acetyl-S-(2-carbamoyl-2-hydroxyethyl)-L-cysteine(ng/mL),Left Arm Percent Fat
+> BY & Bonf.,0.006592680110338407,DS1TVB12,DXXL2BMD,Vitamin B12 (mcg),L2 Bone Mineral Density
+> BY & Bonf.,0.008784253461795132,DS2TZINC,BMXBMI,Zinc (mg),Body Mass Index (kg/m**2)
+> BY & Bonf.,0.002586064751271836,DR1TRET,DXXWDBMC,Retinol (mcg),Ward's triangle bone mineral content (gm)
+> BY & Bonf.,-0.018299138812317227,DRXTS040,LBXIRN,SFA 4:0 (Butanoic) (gm),"Iron, Frozen Serum (ug/dL)"
+> BY & Bonf.,-0.006193709330197596,URXUAB,MSYSTOLIC,Urinary Arsenobetaine (ug/L),Systolic Mean
+> BY & Bonf.,0.02746865196028905,URXCCC,LBXSGTSI,"cis-3-(2,2-dichlorovinyl)-2,2-dimethylcyclopropane carboxylic acid",Gamma glutamyl transferase (U/L)
+> BY & Bonf.,0.0314678233198666,DS2TCOPP,DXXAGRAT,Copper (mg),Android to gynoid ratio
+> BY & Bonf.,0.026793232157575016,URXTCC,DXASPNK,"trans-3-(2,2-dichlorovinyl)-2,2-dimethylcyclopropane carboxylic acid",Calculated K for spine
+> BY & Bonf.,0.00999104054555993,DSQTVB12,DXXTATV,Vitamin B12 (mcg),Total abdominal fat volume
+> BY & Bonf.,-0.0031928755987381996,LBXBPB,DXXHEA,Lead (ug/dL),Head Area (cm^2)
+> BY & Bonf.,-2.101709919074045e-4,DR2TSODI,LBXSF5SI,Sodium (mg) (adjusted for salt use in food preparation),"5,10-Methenyl-tetrahydrofolate (nmol/L)"
+> BY & Bonf.,-0.015154226521691279,LBXVBM,DXXL1A,Blood Bromodichloromethane Result (pg/mL),L1 area
+> BY & Bonf.,-0.03050659272838925,SMQ725,LBXSF2SI,When did {you/he/she} smoke {your/his/her} last cigarette? Was it...,Folic acid (nmol/L)
+> BY & Bonf.,-0.004329766262442647,URXMNP,DXXRLA,Mono-isononyl phthalate (ng/mL),Right Leg Area (cm^2)
+> BY & Bonf.,-0.011314292533704506,LBXVEA,LBXSNASI,Blood Ethyl Acetate (ng/mL),Sodium (mmol/L)
+> BY & Bonf.,9.210515059209725e-5,DR1TBCAR,LBXSATSI,Beta-carotene (mcg),Alanine aminotransferase ALT (U/L)
+> BY & Bonf.,-0.272106946598072,LBDHBG,LBXSGB,Hepatitis B surface antigen,Globulin (g/dL)
+> BY & Bonf.,-0.0064886977627269405,DR1TVARA,DXDTOBMC,Vitamin A as retinol activity equivalents (mcg),Total Bone Mineral Content (g)
+> BY & Bonf.,0.04945521902027234,URXMX2,LBXEOPCT,3-methylxanthine (umol/L),Eosinophils percent (%)
+> BY & Bonf.,0.006043398286093005,DSQTFDFE,DXXOFA,"Folate, DFE (mcg)",Total femur area (cm^2)
+> BY & Bonf.,0.048793630802776516,LBXMS1,LEXBRPM,S. aureus present 1,Mean brachial systolic blood pressure (in millimeters of mercury)
+> BY & Bonf.,0.02886014890945622,DS1TPOTA,DXXL1BMC,Potassium (mg),L1 Bone Mineral Composition
+> BY & Bonf.,0.006426528033290994,DSQTCOPP,LBXGLU,Copper (mg),Fasting Glucose (mg/dL)
+> BY & Bonf.,-0.02596167825767544,DR1TSELE,RSV_ObservedOTUsSD,Selenium (mcg),RSV_ObservedOTUsSD
+> BY & Bonf.,0.041127100814019435,DR2TSFAT,DXDLLTOT,Total saturated fatty acids (gm),Left Leg Total (grams)
+> BY & Bonf.,-0.057059048436453916,DRXTCOPP,BPXPLS,Copper (mg),60 sec. pulse (30 sec. pulse * 2):
+> BY & Bonf.,0.023003530950188537,DR2TP225,DXXPEA,PFA 22:5 (Docosapentaenoic) (gm),Pelvis Area (cm^2)
+> BY & Bonf.,0.09418777488495549,SMQ725,LBDLDL,When did {you/he/she} smoke {your/his/her} last cigarette? Was it...,LDL-cholesterol (mg/dL)
+> BY & Bonf.,0.01890379475068928,LBXVCT,DXXTRLI,Blood Carbon Tetrachloride Result (ng/mL),Trunk Lean incl Bone Mineral Content (grams)
+> BY & Bonf.,-0.005103839130782451,DR1TS080,DXXRRBMC,SFA 8:0 (Octanoic) (gm),Right Ribs Bone Mineral Content (grams)
+> BY & Bonf.,0.05857226971284295,LBXPDE,LBXIRN,ppDDE (ng/g),"Iron, Frozen Serum (ug/dL)"
+> BY & Bonf.,-0.04394604681865808,URXP02,DXXL3TBS,2-napthol(ng/L),L3 TBS
+> BY & Bonf.,-0.026944704019454997,DR1TVK,DXDLAPF,Vitamin K (mcg),Left Arm Percent Fat
+> BY & Bonf.,0.025033378537213706,LBXPFBS,DXXL2BMC,Perfluorobutane sulfonic acid,L2 Bone Mineral Composition
+> BY & Bonf.,0.06693018210716861,DSQTSELE,DXDTRBMC,Selenium (mcg),Trunk Bone Mineral Content (grams)
+> BY & Bonf.,-0.011403466704350617,DR2TS100,DXXL1A,SFA 10:0 (Decanoic) (gm),L1 area
+> BY & Bonf.,0.011595363320091303,SMQ_current_ever_never,URXUIO,"Smoking: current, ever, never","Iodine, urine (ng/mL)"
+> BY & Bonf.,0.026638742205995814,SMD415,DXXTRA,Total number of smokers in home,Trochanter area (cm^2)
+> BY & Bonf.,-0.0054420627655028045,DR2TP204,LBXSIR,PFA 20:4 (Eicosatetraenoic) (gm),"Iron, refigerated (ug/dL)"
+> BY & Bonf.,-0.4834700936723586,SMQ670,LBXNEPCT,"During the past 12 months, have you stopped smoking for one day or longer b",Segmented neutrophils percent (%)
+> BY & Bonf.,0.014663148047267916,LBXMPAH,DXXL3TBS,2-(N-Methyl-perfluorooctane sulfonamido) acetic acid,L3 TBS
+> BY & Bonf.,-0.011309691307935682,URXMC1,BMXSUB,Mono-(3-carboxypropyl) phthalate (ng/mL),Subscapular Skinfold (mm)
+> BY & Bonf.,-0.09565041624470193,URXOPM,DXXPEBMD,3-phenoxybenzoic (ug/L) acid result,Pelvis Bone Mineral Density (grams/cm^2)
+> BY & Bonf.,-0.017300588629826003,URXNOS,LBDNENO,Nicosulfuron (ug/L),Segmented neutrophils num (1000 cell/uL)
+> BY & Bonf.,-0.019659948580037404,DR1TFF,URXUMA,Food folate (mcg),"Albumin, urine (ug/mL)"
+> BY & Bonf.,-8.666514908079755e-5,DR2TATOA,LBXSOSSI,Added alpha-tocopherol (Vitamin E) (mg),Osmolality (mmol/Kg)
+> BY & Bonf.,-0.01963442468726957,LBXPFDO,RSV_FaPhyloDivSD,Perfluorododecanoic acid,RSV_FaPhyloDivSD
+> BY & Bonf.,0.03417786681052901,DSQTFDFE,DXXHEBMD,"Folate, DFE (mcg)",Head Bone Mineral Density (grams/cm^2)
+> BY & Bonf.,0.02261129241439876,LBXPFHP,DXXTRA,Perfluoroheptanoic acid,Trochanter area (cm^2)
+> BY & Bonf.,-0.03413399524157207,URXMOH,DXXTSBMC,Mono-(2-ethyl-5-oxohexl) phthalate (ng/mL),Thoracic Spine Bone Mineral Content (grams)
+> BY & Bonf.,-0.02044875609167058,DR2TS160,LBXPT21,SFA 16:0 (Hexadecanoic) (gm),Parathyroid Hormone(Elecys method) pg/mL
+> BY & Bonf.,0.0024227096093475085,DS2TVB2,DXXTRBMD,Riboflavin (Vitamin B2) (mg),Trochanter bone mineral density (gm/cm^2)
+> BY & Bonf.,0.021484483186755554,DS1TVD,LBXSUA,Vitamin D (D2 + D3) (mcg),Uric acid (mg/dL)
+> BY & Bonf.,-0.006261612142917392,URXMX2,DXDSTA,3-methylxanthine (umol/L),Subtotal Area (cm^2)
+> BY & Bonf.,0.012378994676099986,URXDMA,LBXMMA,o-Desmethylangolensin (O-DMA) (ng/mL),Methylmalonic acid (umol/L)
+> BY & Bonf.,0.00517992213828067,DSQTFDFE,DXXOFBMD,"Folate, DFE (mcg)",Total femur bone mineral density (gm/cm^2)
+> BY & Bonf.,0.03413820476295051,LBX187,URXUMA,PCB187 (ng/g),"Albumin, urine (ug/mL)"
+> BY & Bonf.,-0.04358945282159308,URXMOH,DXXL3A,Mono-(2-ethyl-5-oxohexl) phthalate (ng/mL),L3 area
+> BY & Bonf.,0.17833688107956425,SMD630,LBXCRP,How old were you when you smoked a whole cigarette for the first time?,C-reactive protein (mg/dL)
+> BY & Bonf.,0.001355373755409115,DR2TM221,RB_ObservedOTUsMean,MFA 22:1 (Docosenoic) (gm),RB_ObservedOTUsMean
+> BY & Bonf.,0.015077369581565843,DS2DS,DXXLSA,Any Dietary Supplements taken in the past 24 hour?,Lumbar Spine Area (cm^2)
+> BY & Bonf.,3.9960795404742197e-4,DR1TPROT,RB_ShanWienDivSD,Protein (gm),RB_ShanWienDivSD
+> BY & Bonf.,-0.005209147547440671,DS1TLYCO,BMXARMC,Lycopene (mcg),Arm Circumference (cm)
+> BY & Bonf.,-0.005327436947754693,LBXHE1,DXXLSBMD,Herpes Simplex Virus I,Lumbar Spine Bone Mineral Density (grams/cm^2)
+> BY & Bonf.,-0.0014304353644604517,URXDHD,LBDFOT,Desethyl hydroxy DEET (ug/L),Serum total folate (ng/mL)
+> BY & Bonf.,0.0038674985326992775,DR1TMOIS,LBXAPB,Moisture (gm),Apolipoprotein (B) (mg/dL)
+> BY & Bonf.,0.012212401139590576,DR1TPFAT,LBXSF5SI,Total polyunsaturated fatty acids (gm),"5,10-Methenyl-tetrahydrofolate (nmol/L)"
+> BY & Bonf.,-0.02309620999420988,LBX2DF,DXXLRBMC,"Blood 2,5 Dimethylfuran result",Left Ribs Bone Mineral Content (grams)
+> BY & Bonf.,0.008783134715703128,URX25T,LBXTR,"2,4,5-T (ug/L) result",Triglyceride (mg/dL)
+> BY & Bonf.,-0.009375198230005828,DSQTVD,DXXL1BMC,Vitamin D (D2 + D3) (mcg),L1 Bone Mineral Composition
+> BY & Bonf.,0.02302835030483908,URXAMC,LBXSHBG,N-acetyl-S-(N-methylcarbamoyl)-L-cysteine(ng/mL),"Sex Hormone Binding Globulin (SHBG, nmol/L)"
+> BY & Bonf.,0.052109560292019415,LBX101,TeloStd,PCB101 (ng/g),Asso. Std. Dev. of Mean T/S ratio
+> BY & Bonf.,-0.0013314894409285395,DR1TP205,DXXWDA,PFA 20:5 (Eicosapentaenoic) (gm),Ward's triangle area (cm^2)
+> BY & Bonf.,-0.04608888548155262,LBXMPAH,DXXGYFM,2-(N-Methyl-perfluorooctane sulfonamido) acetic acid,Gynoid fat mass
+> BY & Bonf.,-0.006073030182993514,DSQTFDFE,DXASPNK,"Folate, DFE (mcg)",Calculated K for spine
+> BY & Bonf.,0.030914106262730175,LBXD07,LBXMPSI,"1,2,3,4,6,7,8,9-Octachlorodibenzo-p-dioxin (ocdd) (fg/g)",Mean platelet volume (fL)
+> BY & Bonf.,0.015853303793397656,DSQTSELE,DXXRABMC,Selenium (mcg),Right Arm Bone Mineral Content (grams)
+> BY & Bonf.,-0.010014026176855291,DR1TCRYP,RSV_FaPhyloDivMean,Beta-cryptoxanthin (mcg),RSV_FaPhyloDivMean
+> BY & Bonf.,0.013547877992559496,DRXTVB12,LBXTSH,Vitamin B12 (mcg),Thyroid stimulating hormone (TSH) (IU/L)
+> BY & Bonf.,-0.058724018904534915,URXUMO,DXXLLBMD,"Molybdenum, urine (ng/mL)",Left Leg Bone Mineral Density (grams/cm^2)
+> BY & Bonf.,0.009936748340242368,DR1TSELE,LBXLYPCT,Selenium (mcg),Lymphocyte percent (%)
+> BY & Bonf.,0.003671959920794475,DR2TVB6,DXXL4BMD,Vitamin B6 (mg),L4 Bone Mineral Density
+> BY & Bonf.,0.03327843756241219,DS1TNIAC,DXXHEA,Niacin (mg),Head Area (cm^2)
+> BY & Bonf.,-0.020649480644434493,DS2TPOTA,LBXSHBG,Potassium (mg),"Sex Hormone Binding Globulin (SHBG, nmol/L)"
+> BY & Bonf.,-0.0035676018719292216,DSQTZINC,RB_ShanWienDivSD,Zinc (mg),RB_ShanWienDivSD
+> BY & Bonf.,-0.003786700109019028,DR2TIRON,LBXSTR,Iron (mg),Triglycerides (mg/dL)
+> BY & Bonf.,0.03676799543287538,LBXHP2C,DXXPEBMD,Cobas HPV Swab High Risk,Pelvis Bone Mineral Density (grams/cm^2)
+> BY & Bonf.,-0.006665987935349753,DR1TVB12,BPXPLS,Vitamin B12 (mcg),60 sec. pulse (30 sec. pulse * 2):
+> BY & Bonf.,-0.001953577554102242,DR2TP226,DXXINA,PFA 22:6 (Docosahexaenoic) (gm),Intertrochanter area (cm^2)
+> BY & Bonf.,-0.04444480204887355,LBXMPAH,LBXIN,2-(N-Methyl-perfluorooctane sulfonamido) acetic acid,Insulin (uU/mL )
+> BY & Bonf.,-0.024252077280160694,URXUAB,DXDTRLE,Urinary Arsenobetaine (ug/L),Trunk Lean excl Bone Mineral Content (grams)
+> BY & Bonf.,-0.04596219049445029,URXOXY,DXDTOFAT,Oxypyrimidine (ug/L) result,Total Fat (g)
+> BY & Bonf.,0.0011889644875028567,DR2TFA,LBDNENO,Folic acid (mcg),Segmented neutrophils num (1000 cell/uL)
+> BY & Bonf.,0.027168545229835844,LBXVXY,LBXAPB,Blood m-/p-Xylene Result (ng/mL),Apolipoprotein (B) (mg/dL)
+> BY & Bonf.,0.009237965873870792,URXOP3,DXAFMRK,Dimethylthiophosphate (ug/L),Calculated K for femur
+> BY & Bonf.,0.0011930516444211327,DR2TVARA,LBXP1,Vitamin A as retinol activity equivalents (mcg),"Prostate specific antigen, total (ng/mL)"
+> BY & Bonf.,-0.006373066367457732,URXMHP,LBXFB,Mono-(2-ethyl)-hexyl phthalate (ng/mL),Fibrinogen (mg/dL)
+> BY & Bonf.,-0.15258761644432964,LBXVCF,DXDLLTOT,Blood Chloroform Result (pg/mL),Left Leg Total (grams)
+> BY & Bonf.,0.006728269305067024,DS1TVD,BMXARML,Vitamin D (D2 + D3) (mcg),Upper Arm Length (cm)
+> BY & Bonf.,-0.015470021763064017,LBXVD2MS,DXXLAA,25-hydroxyvitamin D2 (nmol/L),Left Arm Area (cm^2)
+> BY & Bonf.,0.20138645050024503,LBDHBG,DXXHELI,Hepatitis B surface antigen,Head Lean incl Bone Mineral Content (grams)
+> BY & Bonf.,0.0072075161241555346,DR2TVK,LBXSCK,Vitamin K (mcg),Creatine Phosphokinase(CPK) (IU/L)
+> BY & Bonf.,-0.00445175860869824,URXOP6,DXXTSBMC,Diethyldithiophosphate (ug/L),Thoracic Spine Bone Mineral Content (grams)
+> BY & Bonf.,-0.017661848358761584,LBX167,LBXRBCSI,PCB167 (ng/g),Red blood cell count (million cells/uL)
+> BY & Bonf.,-0.01181209341883709,DR2TTFAT,LBXHGB,Total fat (gm),Hemoglobin (g/dL)
+> BY & Bonf.,-0.0028292572128387626,LBXVE3MS,RB_FaPhyloDivMean,epi-25-hydroxyvitamin D3 (nmol/L),RB_FaPhyloDivMean
+> BY & Bonf.,0.01587951511891801,DR2TM221,DXDLLLE,MFA 22:1 (Docosenoic) (gm),Left Leg Lean excl Bone Mineral Content (grams)
+> BY & Bonf.,-0.024116503117922475,DR2TACAR,DXXANLM,Alpha-carotene (mcg),Android lean mass
+> BY & Bonf.,0.04222029036402031,DR1TS140,DXXRAFAT,SFA 14:0 (Tetradecanoic) (gm),Right Arm Fat (grams)
+> BY & Bonf.,-0.005155933192131527,URX1TB,DXXTRA,"2,4,5-trichlorophenol (ug/L) result",Trochanter area (cm^2)
+> BY & Bonf.,-0.007407907359753502,LBXVFN,MSYSTOLIC,Blood Furan (ng/mL),Systolic Mean
+> BY & Bonf.,-0.037137446311345045,URXUMMA,DXDSTBMC,Urinary Monomethylarsonic acid (ug/L),Subtotal Bone Mineral Content (grams)
+> BY & Bonf.,0.007249563625688567,URXMZP,RB_InverseSimpsonMean,Mono-benzyl phthalate (ng/mL),RB_InverseSimpsonMean
+> BY & Bonf.,0.022405590716404192,SMQ_current_ever_never,LBXSCLSI,"Smoking: current, ever, never",Chloride (mmol/L)
+> BY & Bonf.,-0.023348264492422825,URXETD,DXXL3BMC,Enterodiol (ng/mL),L3 Bone Mineral Composition
+> BY & Bonf.,0.01256675789219072,URXETL,SPXNFVC,Enterolactone (ng/mL),"Baseline 1st Test Spirometry, Forced Vital Capacity, in mL."
+> BY & Bonf.,8.923879931781272e-4,DR1TS060,BMXARML,SFA 6:0 (Hexanoic) (gm),Upper Arm Length (cm)
+> BY & Bonf.,0.06009991736310091,DSQTLYCO,DXXL4BMD,Lycopene (mcg),L4 Bone Mineral Density
+> BY & Bonf.,0.0038383043746405203,URXMU2,LBXNEPCT,3-methyluric acid (umol/L),Segmented neutrophils percent (%)
+> BY & Bonf.,0.028360328332986087,DSQTVB6,DXXLAA,Vitamin B6 (mg),Left Arm Area (cm^2)
+> BY & Bonf.,-0.01884295654568849,LBXV07N,DXDLLPF,Blood Heptane (ng/mL),Left Leg Percent Fat
+> BY & Bonf.,-0.0040739353591605475,DR1TP184,DXXLRBMC,PFA 18:4 (Octadecatetraenoic) (gm),Left Ribs Bone Mineral Content (grams)
+> BY & Bonf.,-0.03625101562050515,URXMHP,DXXL3A,Mono-(2-ethyl)-hexyl phthalate (ng/mL),L3 area
+> BY & Bonf.,0.0025172303461851245,URXMZP,LBXTIB,Mono-benzyl phthalate (ng/mL),"TIBC, Frozen Serum (ug/dL)"
+> BY & Bonf.,7.864363399854541e-4,LBXHE1,LBXSATSI,Herpes Simplex Virus I,Alanine aminotransferase ALT (U/L)
+> BY & Bonf.,0.018073672797662452,DSQTCALC,LBXEST,Calcium (mg),Estradiol (pg/mL)
+> BY & Bonf.,-0.013374997969753773,URXMX3,DXXOFA,7-methylxanthine (umol/L),Total femur area (cm^2)
+> BY & Bonf.,0.048735848281697074,DRXTS140,LBXIN,SFA 14:0 (Tetradecanoic) (gm),Insulin (uU/mL )
+> BY & Bonf.,0.11120697018986082,LBXS11MK,LBXFOL,HPV 11(Merck competitive Luminex assay),"Folate, serum (ng/mL)"
+> BY & Bonf.,-0.003695387394412747,LBXVCT,DXXRALI,Blood Carbon Tetrachloride Result (ng/mL),Right Arm Lean incl Bone Mineral Content (grams)
+> BY & Bonf.,-0.007701899524987405,DR2TM181,LBDLYMNO,MFA 18:1 (Octadecenoic) (gm),Lymphocyte number (1000 cells/uL)
+> BY & Bonf.,0.05233271657256319,LBXPDE,LBDLYMNO,ppDDE (ng/g),Lymphocyte number (1000 cells/uL)
+> BY & Bonf.,-0.026320959403086364,DR1TATOA,DXXTSBMD,Added alpha-tocopherol (Vitamin E) (mg),Thoracic Spine Bone Mineral Density (grams/cm^2)
+> BY & Bonf.,0.07785844047541596,LBDHBG,DXDRLPF,Hepatitis B surface antigen,Right Leg Percent Fat
+> BY & Bonf.,-0.0014086010968665903,DR2TSFAT,LBXNEPCT,Total saturated fatty acids (gm),Segmented neutrophils percent (%)
+> BY & Bonf.,0.026906333415129883,LBXMFOS,DXXVFATV,Perfluoromethylheptane sulfonic acid isomers (Sm-PFOS) (ng/mL),Visceral adipose tissue volume
+> BY & Bonf.,-0.017205304118003556,DR1TP204,LBXSLDSI,PFA 20:4 (Eicosatetraenoic) (gm),Lactate dehydrogenase LDH (U/L)
+> BY & Bonf.,0.027764664633355498,DR2TM181,DXDTRPF,MFA 18:1 (Octadecenoic) (gm),Trunk Percent Fat
+> BY & Bonf.,0.005987645185693828,DR1TNUMF,RB_InverseSimpsonSD,Total number of foods reported in the individual foods file,RB_InverseSimpsonSD
+> BY & Bonf.,-0.021138975880374885,URXBPS,DXXLLBMD,"Urinary 4,4'sulfonyldiphenol",Left Leg Bone Mineral Density (grams/cm^2)
+> BY & Bonf.,0.023212041595207285,LBXVCT,DXXGYFM,Blood Carbon Tetrachloride Result (ng/mL),Gynoid fat mass
+> BY & Bonf.,0.03168833785378487,DS2TIODI,BMXLEG,Iodine (mcg),Upper Leg Length (cm)
+> BY & Bonf.,1.9654288203068397e-4,LBXVDEE,DXXGPFAT,Blood Diethyl Ether (ng/mL),Gynoid percent fat
+> BY & Bonf.,0.03473897604888646,LBXPFDO,LBXSTB,Perfluorododecanoic acid,Total bilirubin (mg/dL)
+> BY & Bonf.,-0.041253244374254525,DR1TCOPP,DXDSTTOT,Copper (mg),Subtotal (Total excl Head) (g)
+> BY & Bonf.,0.01564911166475796,URXSCN,RSV_InverseSimpsonMean,Urinary thiocyanate (ng/mL),RSV_InverseSimpsonMean
+> BY & Bonf.,0.014362598840446519,DR1TS080,DXXTATV,SFA 8:0 (Octanoic) (gm),Total abdominal fat volume
+> BY & Bonf.,-0.04710345869607033,DR2TS160,LBXIRN,SFA 16:0 (Hexadecanoic) (gm),"Iron, Frozen Serum (ug/dL)"
+> BY & Bonf.,-0.013916330141079883,LBXPFOS,RB_FaPhyloDivSD,Perfluorooctane sulfonic acid,RB_FaPhyloDivSD
+> BY & Bonf.,0.016931558953827124,URXGNS,CVDFITLV,Genistein (ng/mL),Cardiovascular fitness level
+> BY & Bonf.,0.027856220356823322,DSQTVB1,DXXL2A,Thiamin (Vitamin B1) (mg),L2 area
+> BY & Bonf.,-0.028265770265973343,LBXRST,LBXEPP,Retinyl stearate(ug/dL),Protoporphyrin(ug/dL RBC)
+> BY & Bonf.,0.048622145364312475,SMQ670,LBXSTB,"During the past 12 months, have you stopped smoking for one day or longer b",Total bilirubin (mg/dL)
+> BY & Bonf.,-0.014060048929575932,DR2TP225,DXXTOTBS,PFA 22:5 (Docosapentaenoic) (gm),Total Trabecular Bone Score
+> BY & Bonf.,-0.0187250653379943,URXDIZ,LBXMC,Oxypyrimidine (ug/L) result,Mean cell hemoglobin concentration (g/dL)
+> BY & Bonf.,-0.05375204604150229,URXUMO,DXXRLBMC,"Molybdenum, urine (ng/mL)",Right Leg Bone Mineral Content (grams)
+> BY & Bonf.,0.009158113068880105,DRXTS060,BMXTRI,SFA 6:0 (Hexanoic) (gm),Triceps Skinfold (mm)
+> BY & Bonf.,-0.0016203664785490934,SMD415A,LBDBANO,Total # of cigarette smokers in home,Basophils number (1000 cells/uL)
+> BY & Bonf.,-0.013877024336571541,URX24D,DXXLLBMC,"2,4-D (ug/L) result",Left Leg Bone Mineral Content (grams)
+> BY & Bonf.,0.01142510249864127,DR2TVB2,DXXRABMD,Riboflavin (Vitamin B2) (mg),Right Arm Bone Mineral Density (grams/cm^2)
+> BY & Bonf.,-0.009064732315936998,URXUSR,LBDMONO,"Strontium, urine (ug/L)",Monocyte number (1000 cells/uL)
+> BY & Bonf.,-0.005763860393498872,DR1TS100,DXXTRBMC,SFA 10:0 (Decanoic) (gm),Trochanter bone mineral content (gm)
+> BY & Bonf.,0.029507483766139233,DR1TM201,DXXRLFAT,MFA 20:1 (Eicosenoic) (gm),Right Leg Fat (grams)
+> BY & Bonf.,0.033914593275654256,LBXTNA,CVDFITLV,Trans-nonachlor (ng/g),Cardiovascular fitness level
+> BY & Bonf.,0.015177231706316536,SMD415A,LBXMOPCT,Total # of cigarette smokers in home,Monocyte percent (%)
+> BY & Bonf.,0.04213386324842058,DR1TM181,BMXTHICR,MFA 18:1 (Octadecenoic) (gm),Thigh Circumference (cm)
+> BY & Bonf.,6.515111880090733e-4,DR2TP183,LBXRBF,PFA 18:3 (Octadecatrienoic) (gm),"Folate, RBC (ng/mL RBC)"
+> BY & Bonf.,0.010644867234333085,DR1TS040,LBDNENO,SFA 4:0 (Butanoic) (gm),Segmented neutrophils num (1000 cell/uL)
+> BY & Bonf.,-0.05035418423222614,URXP17,DXXOFBMD,9-fluorene (ng/L),Total femur bone mineral density (gm/cm^2)
+> BY & Bonf.,0.03936334521927974,DSQTFDFE,DXXGYLM,"Folate, DFE (mcg)",Gynoid lean mass
+> BY & Bonf.,0.024198677685182163,LBXGLY,LBXCRP,Glycideamide (pmol/g Hb),C-reactive protein (mg/dL)
+> BY & Bonf.,0.004908354449338619,DS1TVB1,DXDSTLE,Thiamin (Vitamin B1) (mg),Subtotal Lean excl BMC (g)
+> BY & Bonf.,-0.005436069096019939,DS2TZINC,DXDRALE,Zinc (mg),Right Arm Lean excl Bone Mineral Content (grams)
+> BY & Bonf.,-0.13449571959465872,URXUTRI,DXXLRA,"Trichomonas, urine",Left Ribs Area(cm^2)
+> BY & Bonf.,-0.03596478036421584,DR2TKCAL,DXXL3BMC,Energy (kcal),L3 Bone Mineral Composition
+> BY & Bonf.,0.04548775844443674,DR1TPROT,DXXL2BMD,Protein (gm),L2 Bone Mineral Density
+> BY & Bonf.,-0.041223829277098244,URXUAS3,LBXTT4,Urinary Arsenous acid (ug/L),"Thyroxine, total (T4) (ug/dL)"
+> BY & Bonf.,-0.011526492897581049,DSQTVD,BMXHT,Vitamin D (D2 + D3) (mcg),Standing Height (cm)
+> BY & Bonf.,0.023076297273993802,SMQ_current_ever_never,RSV_InverseSimpsonMean,"Smoking: current, ever, never",RSV_InverseSimpsonMean
+> BY & Bonf.,-2.7200331933139996e-4,URXMNM,DXXWDA,Mono-n-methyl phthalate (ng/mL),Ward's triangle area (cm^2)
+> BY & Bonf.,0.025158763918731893,DR1TSODI,DXXHEBMD,Sodium (mg) (adjusted for salt use in food preparation),Head Bone Mineral Density (grams/cm^2)
+> BY & Bonf.,0.382439662065608,LBXHCR,LBXAPB,Hepatitis C RNA (HCV-RNA),Apolipoprotein (B) (mg/dL)
+> BY & Bonf.,-0.002958041459231195,DR1TLYCO,DXXL1A,Lycopene (mcg),L1 area
+> BY & Bonf.,0.0825544441753962,LBXCRY,LBXFOL,b-cryptoxanthin(ug/dL),"Folate, serum (ng/mL)"
+> BY & Bonf.,0.003006640432240619,DSQTIODI,URXUMA,Iodine (mcg),"Albumin, urine (ug/mL)"
+> BY & Bonf.,-0.013509433962092096,DR1TSUGR,DXXL3A,Total sugars (gm),L3 area
+> BY & Bonf.,-0.02067795876990891,URXTRS,DXXLLLI,"Urinary  2,4,4'-Trichloro-2'-hydroxyphenyl ether (Triclosan)",Left Leg Lean incl Bone Mineral Content (grams)
+> BY & Bonf.,-0.01361047974880575,DSQTPHOS,LBDMONO,Phosphorus (mg),Monocyte number (1000 cells/uL)
+> BY & Bonf.,0.01983849762386175,DR2TIRON,LBXSPH,Iron (mg),Phosphorus (mg/dL)
+> BY & Bonf.,0.007583253938126866,LBXVC6,DXDRAPF,Blood Cyclohexane (ng/mL),Right Arm Percent Fat
+> BY & Bonf.,-0.010846267182808346,DR2TS080,RSV_InverseSimpsonMean,SFA 8:0 (Octanoic) (gm),RSV_InverseSimpsonMean
+> BY & Bonf.,0.11272846292912814,LBXHCR,LBXRBCSI,Hepatitis C RNA (HCV-RNA),Red blood cell count (million cells/uL)
+> BY & Bonf.,0.015714313514282503,URXMC1,BMXWAIST,Mono-(3-carboxypropyl) phthalate (ng/mL),Waist Circumference (cm)
+> BY & Bonf.,-0.005118192182762817,DR1TVB6,LBXSGL,Vitamin B6 (mg),"Glucose, serum (mg/dL)"
+> BY & Bonf.,0.00666821981352277,DR2TSFAT,LBXTSH1,Total saturated fatty acids (gm),Thyroid stimulating hormone (uIU/mL)
+> BY & Bonf.,-0.024475042771522026,URXMCP,DXXL2BMD,Mono-cyclohexyl phthalate (ng/mL),L2 Bone Mineral Density
+> BY & Bonf.,2.5018453420323517e-4,DRXTP225,TeloStd,PFA 22:5 (Docosapentaenoic) (gm),Asso. Std. Dev. of Mean T/S ratio
+> BY & Bonf.,-0.016703410665458388,DS2TVC,DXXLAA,Vitamin C (mg),Left Arm Area (cm^2)
+> BY & Bonf.,0.016603761948520947,LBXPFHP,LBXSIR,Perfluoroheptanoic acid,"Iron, refigerated (ug/dL)"
+> BY & Bonf.,0.06754453295910609,URXMX7,DXXTATA,"1,3,7-trimethylxanthine(caffeine)(umol/L)",Total abdominal fat area
+> BY & Bonf.,0.01932402916302004,URXAPE,BMXTRI,Acephate (ug/L),Triceps Skinfold (mm)
+> BY & Bonf.,-0.05552536242001943,URXAAM,DXXL4BMD,N-acetyl-S-(2-carbamoylethyl)-L-cysteine(ng/mL),L4 Bone Mineral Density
+> BY & Bonf.,-0.059164278069735315,URXP04,DXDHETOT,2-fluorene (ng/L),Head Total (grams)
+> BY & Bonf.,-0.022216312854651213,DR2TPOTA,LBXT4F,Potassium (mg),"Thyroxine, free (ng/dL)"
+> BY & Bonf.,-0.04949733085808849,URXP10,DXDTRLE,1-pyrene (ng/L),Trunk Lean excl Bone Mineral Content (grams)
+> BY & Bonf.,0.005531435897112307,DR1TRET,LBXTC,Retinol (mcg),Total cholesterol (mg/dL)
+> BY & Bonf.,0.03558847147575564,SMQ720,DXXHEFAT,"During the past 5 days, on the days {you/he/she} smoked, how many cigarette",Head Fat (grams)
+> BY & Bonf.,-0.016670518567461302,DR2TCALC,LBXTSH1,Calcium (mg),Thyroid stimulating hormone (uIU/mL)
+> BY & Bonf.,0.004208509992741332,DR1TVD,DXXRABMD,Vitamin D (D2 + D3) (mcg),Right Arm Bone Mineral Density (grams/cm^2)
+> BY & Bonf.,-0.017372407065029728,URX14D,LBXP1,"2,5-dichlorophenol (ug/L)","Prostate specific antigen, total (ng/mL)"
+> BY & Bonf.,-0.023155464679281097,LBXPFOA,RSV_ObservedOTUsSD,Perfluorooctanoic acid,RSV_ObservedOTUsSD
+> BY & Bonf.,-0.002568859430133277,URXMCP,DXAFMRK,Mono-cyclohexyl phthalate (ng/mL),Calculated K for femur
+> BY & Bonf.,-0.019752363694114632,DR1TVARA,DXDSTLI,Vitamin A as retinol activity equivalents (mcg),Subtotal Lean incl BMC (g)
+> BY & Bonf.,-0.01963259345695357,DR1TFDFE,DXDTRBMC,Folate as dietary folate equivalents (mcg),Trunk Bone Mineral Content (grams)
+> BY & Bonf.,-0.08139110930785144,SMD415A,LBXIN,Total # of cigarette smokers in home,Insulin (uU/mL )
+> BY & Bonf.,-0.011920466628313338,DR2TS040,RB_ShanWienDivSD,SFA 4:0 (Butanoic) (gm),RB_ShanWienDivSD
+> BY & Bonf.,0.0022201355082720944,LBXV1D,DXXLLA,"Blood 1,2-Dichlorobenzene Result",Left Leg Area(cm^2)
+> BY & Bonf.,-0.00819271642875711,DS2TFDFE,DXDTOBMC,"Folate, DFE (mcg)",Total Bone Mineral Content (g)
+> BY & Bonf.,-0.2790429917290703,LBXHE1,LBXT4F,Herpes Simplex Virus I,"Thyroxine, free (ng/dL)"
+> BY & Bonf.,0.008702870452780195,URXMNP,DXDSTBMD,Mono-isononyl phthalate (ng/mL),Subtotal Bone Mineral Density (grams/cm^2)
+> BY & Bonf.,0.013704367884810116,DSQTVB12,DXXL4BMD,Vitamin B12 (mcg),L4 Bone Mineral Density
+> BY & Bonf.,-0.008969331871539565,LBXIHG,DXXOSA,"Mercury, inorganic (ug/L)",Total spine area
+> BY & Bonf.,0.00899030605681116,URXBPF,DXDRLTOT,"Urinary 4,4' dihydroxydiphenylmethane",Right Leg Total (grams)
+> BY & Bonf.,-0.029851907588708714,DR2TATOC,DXXNKBMC,Vitamin E as alpha-tocopherol (mg),Femoral neck bone mineral content (gm)
+> BY & Bonf.,0.02794403936139997,LBDHCV,LBXT4,Hepatitis C antibody (confirmed),Thyroxine (T4) (ug/dL)
+> BY & Bonf.,0.02899052252181858,URXDEA,LBXMC,DEET acid (ug/L),Mean cell hemoglobin concentration (g/dL)
+> BY & Bonf.,-0.01654075916076521,URXP04,DXXL4BMC,2-fluorene (ng/L),L4 Bone Mineral Composition
+> BY & Bonf.,0.08749250701953963,SMD415A,LBXMMA,Total # of cigarette smokers in home,Methylmalonic acid (umol/L)
+> BY & Bonf.,0.0026923641329173347,DS1TVB12,BMXWAIST,Vitamin B12 (mcg),Waist Circumference (cm)
+> BY & Bonf.,0.019312466424171972,URX1TB,LBXSPH,"2,4,5-trichlorophenol (ug/L) result",Phosphorus (mg/dL)
+> BY & Bonf.,-0.032337943434256694,DR2TSFAT,RB_ObservedOTUsMean,Total saturated fatty acids (gm),RB_ObservedOTUsMean
+> BY & Bonf.,0.05051765767900403,URXBPH,RB_FaPhyloDivSD,Urinary Bisphenol A,RB_FaPhyloDivSD
+> BY & Bonf.,0.020600794988046175,DS2DS,LBDEONO,Any Dietary Supplements taken in the past 24 hour?,Eosinophils number (1000 cells/uL)
+> BY & Bonf.,0.017415083897156364,URXMX1,LBXMCVSI,1-methylxanthine (umol/L),Mean cell volume (fL)
+> BY & Bonf.,-0.019304149744997143,LBDRPCR,LBXSUA,Roche HPV linear array (LA) summary result,Uric acid (mg/dL)
+> BY & Bonf.,0.013850733023619298,LBXVD2MS,LBXTR,25-hydroxyvitamin D2 (nmol/L),Triglyceride (mg/dL)
+> BY & Bonf.,0.008378159082280585,DR2TCAFF,LBXSUA,Caffeine (mg),Uric acid (mg/dL)
+> BY & Bonf.,-0.017781039513810718,DR1TPROT,LBXCRP,Protein (gm),C-reactive protein (mg/dL)
+> BY & Bonf.,-0.06728757264578902,URXP05,DXXNKBMD,3-phenanthrene (ng/L),Femoral neck bone mineral density (gm/cm^2)
+> BY & Bonf.,0.018332549059423973,DR2TNIAC,LBXSF2SI,Niacin (mg),Folic acid (nmol/L)
+> BY & Bonf.,0.01578838598263151,DR2TSELE,DXDSTPF,Selenium (mcg),Subtotal Percent Fat
+> BY & Bonf.,-0.019592797077667208,URXETU,DXXWDBMC,Ethylenethio urea (ug/L),Ward's triangle bone mineral content (gm)
+> BY & Bonf.,-0.028019596503791905,LBX180,LBDNENO,PCB180 (ng/g),Segmented neutrophils num (1000 cell/uL)
+> BY & Bonf.,-0.005346628982529466,URXMOP,LBXSBU,Mono-n-octyl phthalate (ng/mL),Blood urea nitrogen (mg/dL)
+> BY & Bonf.,-0.5531668078074788,SMD630,LBXLYPCT,How old were you when you smoked a whole cigarette for the first time?,Lymphocyte percent (%)
+> BY & Bonf.,0.03278418544470202,LBXBMN,LBXSUA,Blood manganese (ug/L),Uric acid (mg/dL)
+> BY & Bonf.,0.0030658384396531372,URXCNP,LBDLYMNO,Mono(carboxynonyl) phthalate (ng/mL),Lymphocyte number (1000 cells/uL)
+> BY & Bonf.,-0.016783652794308945,URXBMA,DXDLLPF,N-acetyl-S-(benzyl)-L-cysteine(ng/mL),Left Leg Percent Fat
+> BY & Bonf.,-0.04663743245322783,DR2TVB1,LBDLDL,Thiamin (Vitamin B1) (mg),LDL-cholesterol (mg/dL)
+> BY & Bonf.,-0.05692081196569522,URXMAD,DXXWDBMC,Mandelic acid(ng/mL),Ward's triangle bone mineral content (gm)
+> BY & Bonf.,-0.0031883470942508122,DR2TCAFF,DXXLSBMC,Caffeine (mg),Lumbar Spine Bone Mineral Content (grams)
+> BY & Bonf.,0.02410217757159225,LBXD05,LBXSPH,"1,2,3,4,6,7,8-Heptachlororodibenzo-p-dioxin (hpcdd) (fg/g)",Phosphorus (mg/dL)
+> BY & Bonf.,-0.008388762444144892,LBXPFBS,BMXLEG,Perfluorobutane sulfonic acid,Upper Leg Length (cm)
+> BY & Bonf.,0.029685314135561736,DRXTCAFF,LBXSCLSI,Caffeine (mg),Chloride (mmol/L)
+> BY & Bonf.,0.013002214493047061,DR2TS100,BPXPLS,SFA 10:0 (Decanoic) (gm),60 sec. pulse (30 sec. pulse * 2):
+> BY & Bonf.,-0.012641111034793592,DR2TS180,LBXPS4,SFA 18:0 (Octadecanoic) (gm),Complexed prostate specific antigen (ng/mL)
+> BY & Bonf.,0.018905877652959438,DR2TS160,DXXRABMD,SFA 16:0 (Hexadecanoic) (gm),Right Arm Bone Mineral Density (grams/cm^2)
+> BY & Bonf.,0.01635344792404741,DR2TCHL,LBXSF4SI,Total choline (mg),Tetrahydrofolate (nmol/L)
+> BY & Bonf.,0.08147717448185834,SMQ710,DXDLAPF,"During the past 5 days {including today}, on how many days did {you/he/she}",Left Arm Percent Fat
+> BY & Bonf.,0.00497836403008305,DRXTZINC,URXUMA,Zinc (mg),"Albumin, urine (ug/mL)"
+> BY & Bonf.,-0.07548480113121878,LBXPFDO,LBXGLU,Perfluorododecanoic acid,Fasting Glucose (mg/dL)
+> BY & Bonf.,0.09407939154374095,LBD199,LBXSAL,PCB199 (ng/g),Albumin (g/dL)
+> BY & Bonf.,0.0025537195188975693,DR1TPFAT,DXDTOBMD,Total polyunsaturated fatty acids (gm),Total Bone Mineral Density (g/cm^2)
+> BY & Bonf.,-0.0036342812455096123,DR2TFA,LBXATG,Folic acid (mcg),Thyroglobulin antibodies (IU/mL)
+> BY & Bonf.,-0.049585179430640454,DR1TTFAT,DXXL3TBS,Total fat (gm),L3 TBS
+> BY & Bonf.,0.016371016590498444,DR2TSFAT,LBXTGN,Total saturated fatty acids (gm),Thyroglobulin (ng/mL)
+> BY & Bonf.,-0.009489038835644892,DR1TRET,DXDTRPF,Retinol (mcg),Trunk Percent Fat
+> BY & Bonf.,0.04332239669475657,URXMU1,LBDNENO,1-methyluric acid (umol/L),Segmented neutrophils num (1000 cell/uL)
+> BY & Bonf.,0.04764168377450122,DSQTZINC,DXXLRA,Zinc (mg),Left Ribs Area(cm^2)
+> BY & Bonf.,0.05087471817499971,DR1TATOC,DXXHEA,Vitamin E as alpha-tocopherol (mg),Head Area (cm^2)
+> BY & Bonf.,0.05139676637263654,DS2DS,DXXWDBMC,Any Dietary Supplements taken in the past 24 hour?,Ward's triangle bone mineral content (gm)
+> BY & Bonf.,0.008988664410037171,DR1TM161,DXXINA,MFA 16:1 (Hexadecenoic) (gm),Intertrochanter area (cm^2)
+> BY & Bonf.,-0.0626979949476747,URXPHG,DXXTATV,Phenylglyoxylic acid(ng/mL),Total abdominal fat volume
+> BY & Bonf.,0.023059691420249204,DR1TS120,LBXATG,SFA 12:0 (Dodecanoic) (gm),Thyroglobulin antibodies (IU/mL)
+> BY & Bonf.,-0.0037931553071945704,DR1TP183,LBXSF6SI,PFA 18:3 (Octadecatrienoic) (gm),Mefox oxidation product (nmol/L)
+> BY & Bonf.,0.05616881733747401,DR1TFF,LBXIRN,Food folate (mcg),"Iron, Frozen Serum (ug/dL)"
+> BY & Bonf.,-0.04621533716728589,URXEQU,DXASPNK,Equol (ng/mL),Calculated K for spine
+> BY & Bonf.,-0.003907265143098582,DR1TVB12,LBXRDW,Vitamin B12 (mcg),Red cell distribution width (%)
+> BY & Bonf.,-0.01673002848338477,DR2TCHL,DXASPNK,Total choline (mg),Calculated K for spine
+> BY & Bonf.,0.01675642900616086,DR1TS060,DXXHEBMD,SFA 6:0 (Hexanoic) (gm),Head Bone Mineral Density (grams/cm^2)
+> BY & Bonf.,-0.041081133225774454,DR2TPHOS,DXDHEPF,Phosphorus (mg),Head Percent Fat
+> BY & Bonf.,-0.006130578669288312,DR2TMFAT,DXXWDBMC,Total monounsaturated fatty acids (gm),Ward's triangle bone mineral content (gm)
+> BY & Bonf.,0.013912492365827301,URXMMI,LBXHGB,Methamidaphos (ug/L),Hemoglobin (g/dL)
+> BY & Bonf.,0.002664352853127836,URXMOP,DXXL1BMC,Mono-n-octyl phthalate (ng/mL),L1 Bone Mineral Composition
+> BY & Bonf.,-0.022410730366868383,URXUSB,LBXBAPCT,"Antimony, urine (ng/mL)",Basophils percent (%)
+> BY & Bonf.,0.008541624152210181,URXUAB,LBXSF2SI,Urinary Arsenobetaine (ug/L),Folic acid (nmol/L)
+> BY & Bonf.,-0.02410385444245071,DR1TVARA,RB_ShanWienDivSD,Vitamin A as retinol activity equivalents (mcg),RB_ShanWienDivSD
+> BY & Bonf.,0.01899577194806398,URXP06,LBXCRP,1-phenanthrene (ng/L),C-reactive protein (mg/dL)
+> BY & Bonf.,0.057628649228749496,SMQ725,RSV_ShanWienDivSD,When did {you/he/she} smoke {your/his/her} last cigarette? Was it...,RSV_ShanWienDivSD
+> BY & Bonf.,-0.039795945606997174,DR2TS160,LBXSC3SI,SFA 16:0 (Hexadecanoic) (gm),Bicarbonate (mmol/L)
+> BY & Bonf.,-0.031485835540964006,URXP04,DXXLABMC,2-fluorene (ng/L),Left Arm Body Mineral Content (grams)
+> BY & Bonf.,0.0010840249991689466,DS2TZINC,DXXL1BMD,Zinc (mg),L1 Bone Mineral Density
+> BY & Bonf.,0.053129385546499534,LBXHA,DXXLLA,Hepatitis A Antibody (Anti-HAV),Left Leg Area(cm^2)
+> BY & Bonf.,-0.010632199454513613,LBXIHG,DXDLLLE,"Mercury, inorganic (ug/L)",Left Leg Lean excl Bone Mineral Content (grams)
+> BY & Bonf.,0.02422255111419047,URXCPM,TeloStd,"3,5,6-trichloropyridinol (ug/L) result",Asso. Std. Dev. of Mean T/S ratio
+> BY & Bonf.,-0.03272934479551515,SMQ725,DXXGYTOM,When did {you/he/she} smoke {your/his/her} last cigarette? Was it...,Gynoid total mass
+> BY & Bonf.,-0.003702629764141754,DS1DSCNT,DXDSTBMC,Number of dietary supplements reported,Subtotal Bone Mineral Content (grams)
+> BY & Bonf.,0.02352428140772703,DR2TS160,LBDLDL,SFA 16:0 (Hexadecanoic) (gm),LDL-cholesterol (mg/dL)
+> BY & Bonf.,0.015427632559822832,DR1TNIAC,LBXTIB,Niacin (mg),"TIBC, Frozen Serum (ug/dL)"
+> BY & Bonf.,-0.008698802464718217,DS2TVB12,LBXTR,Vitamin B12 (mcg),Triglyceride (mg/dL)
+> BY & Bonf.,0.016597565074891223,DSQTVB1,LBXSKSI,Thiamin (Vitamin B1) (mg),Potassium (mmol/L)
+> BY & Bonf.,-0.012917978450406561,URXMU7,BMXHT,"1,3,7-trimethyluric acid (umol/L)",Standing Height (cm)
+> BY & Bonf.,-0.0813271632650788,SMD415,DXXNKBMC,Total number of smokers in home,Femoral neck bone mineral content (gm)
+> BY & Bonf.,0.010438630975464372,DR1TS160,DXXRLBMD,SFA 16:0 (Hexadecanoic) (gm),Right Leg Bone Mineral Density (grams/cm^2)
+> BY & Bonf.,0.017171701167403228,DR1TS100,DXXRLBMD,SFA 10:0 (Decanoic) (gm),Right Leg Bone Mineral Density (grams/cm^2)
+> BY & Bonf.,-0.0031436081738327767,URX24D,DXXRABMC,"2,4-D (ug/L) result",Right Arm Bone Mineral Content (grams)
+> BY & Bonf.,0.02552021666251764,DR1TS160,DXDTOLE,SFA 16:0 (Hexadecanoic) (gm),Total Lean excl BMC (g)
+> BY & Bonf.,0.007763001107803357,DR2TM221,BMXARML,MFA 22:1 (Docosenoic) (gm),Upper Arm Length (cm)
+> BY & Bonf.,-0.002676797794722134,URX4FP,BMXWAIST,4-fluoro-3-phenoxybenzoic (ug/L) acid,Waist Circumference (cm)
+> BY & Bonf.,0.003747249087900655,URX3TB,LBDMONO,"2,4,6-trichlorophenol (ug/L) result",Monocyte number (1000 cells/uL)
+> BY & Bonf.,0.027511657379880834,DR2TMFAT,DXXTATA,Total monounsaturated fatty acids (gm),Total abdominal fat area
+> BY & Bonf.,0.0029599950458182567,DRXTPROT,LBXLYPCT,Protein (gm),Lymphocyte percent (%)
+> BY & Bonf.,0.002706320205163767,DR2TIRON,DXXL4A,Iron (mg),L4 area
+> BY & Bonf.,-0.0159593610071195,DR2TCOPP,DXXRAA,Copper (mg),Right Arm Area (cm^2)
+> BY & Bonf.,0.004460751504153101,DR2TM221,DXXAGRAT,MFA 22:1 (Docosenoic) (gm),Android to gynoid ratio
+> BY & Bonf.,-0.017606098111616574,DR1TFF,LBXP1,Food folate (mcg),"Prostate specific antigen, total (ng/mL)"
+> BY & Bonf.,-0.003920640873143535,LBXVBF,LBXEST,Blood Bromoform Result (pg/mL),Estradiol (pg/mL)
+> BY & Bonf.,0.022508219690918513,ORXHPV,LBXSCR,Oral HPV Result,Creatinine (mg/dL)
+> BY & Bonf.,-0.0050942468427677065,URX4FP,DXXOSBMC,4-fluoro-3-phenoxybenzoic (ug/L) acid,Total spine BMC
+> BY & Bonf.,-0.005508229882383572,DSQTSODI,LBXSCR,Sodium (mg),Creatinine (mg/dL)
+> BY & Bonf.,0.01947390286691102,URXECP,RB_ObservedOTUsMean,mono-2-ethyl-5-carboxypentyl phthalate (ng/mL),RB_ObservedOTUsMean
+> BY & Bonf.,-0.013741299486984406,DR2TFIBE,BMXLEG,Dietary fiber (gm),Upper Leg Length (cm)
+> BY & Bonf.,-0.043576112254272915,DRXTMAGN,LBDMONO,Magnesium (mg),Monocyte number (1000 cells/uL)
+> BY & Bonf.,0.05219979611267751,URXP01,LBXSHBG,1-napthol (ng/L),"Sex Hormone Binding Globulin (SHBG, nmol/L)"
+> BY & Bonf.,0.039004642585909785,SMD630,URXUMA,How old were you when you smoked a whole cigarette for the first time?,"Albumin, urine (ug/mL)"
+> BY & Bonf.,0.011293963075075375,DR2TS060,DXDTOLI,SFA 6:0 (Hexanoic) (gm),Total Lean incl BMC (g)
+> BY & Bonf.,0.051537934283733246,LBXHDT,LBXSGB,Trans 9-Hexadecenoic acid concentrt (umol/L),Globulin (g/dL)
+> BY & Bonf.,0.004091475203589966,LBXVIPB,DXXRALI,Blood Isopropylbenzene (ng/mL),Right Arm Lean incl Bone Mineral Content (grams)
+> BY & Bonf.,-0.01066353108377146,URXBUP,LBXSGTSI,Butyl paraben (ng/ml),Gamma glutamyl transferase (U/L)
+> BY & Bonf.,-0.008675041898147488,DR2TCALC,DXDLAPF,Calcium (mg),Left Arm Percent Fat
+> BY & Bonf.,0.0067534287593159015,LBXIHG,LBXATG,"Mercury, inorganic (ug/L)",Thyroglobulin antibodies (IU/mL)
+> BY & Bonf.,-0.033411237077619386,LBXMPAH,DXDTRPF,2-(N-Methyl-perfluorooctane sulfonamido) acetic acid,Trunk Percent Fat
+> BY & Bonf.,-0.0013613290350798929,DSQTZINC,LBXSGB,Zinc (mg),Globulin (g/dL)
+> BY & Bonf.,-0.002666500312130364,DR1TRET,LBXSAL,Retinol (mcg),Albumin (g/dL)
+> BY & Bonf.,0.004875447896888789,DR2TTFAT,LBXLYPCT,Total fat (gm),Lymphocyte percent (%)
+> BY & Bonf.,-0.009787791542181196,LBXV07N,DXXRAA,Blood Heptane (ng/mL),Right Arm Area (cm^2)
+> BY & Bonf.,-0.0018296357265969994,URXAAM,DXXAGST,N-acetyl-S-(2-carbamoylethyl)-L-cysteine(ng/mL),Android/gynoid region status
+> BY & Bonf.,0.05401074987488207,LBXHE1,DXXL4TBS,Herpes Simplex Virus I,L4 TBS
+> BY & Bonf.,0.015290881159098354,DR1TM201,DXXLALI,MFA 20:1 (Eicosenoic) (gm),Left Arm Lean incl BMC (grams)
+> BY & Bonf.,0.12198643155694118,LBXHP2C,DXXSATA,Cobas HPV Swab High Risk,Subcutaneous fat area
+> BY & Bonf.,0.006359107281114384,DSQTNIAC,LBXPS4,Niacin (mg),Complexed prostate specific antigen (ng/mL)
+> BY & Bonf.,-0.031456015014871545,URXUAC,DXDLAPF,Urinary Arsenocholine (ug/L),Left Arm Percent Fat
+> BY & Bonf.,-0.03954739315706329,URXUBA,SPXNFEV1,"Barium, urine (ng/mL)","Baseline 1st Test Spirometry, Forced Expiratory Volume in the first 1.0 sec"
+> BY & Bonf.,0.03478011134746474,DR2TP226,RSV_FaPhyloDivMean,PFA 22:6 (Docosahexaenoic) (gm),RSV_FaPhyloDivMean
+> BY & Bonf.,-0.029544996476087316,URXTTC,DXASPND0,2-thioxothiazolidine-4-carboxylic acid(ng/mL),Calculated D0 for spine
+> BY & Bonf.,-0.011132369226101405,DR1TFA,DXXRLLI,Folic acid (mcg),Right Leg Lean incl Bone Mineral Content (grams)
+> BY & Bonf.,-0.0010342233977784266,DR1TS140,LBXSF5SI,SFA 14:0 (Tetradecanoic) (gm),"5,10-Methenyl-tetrahydrofolate (nmol/L)"
+> BY & Bonf.,-0.008122323367404273,DR2TATOA,DXDTOLE,Added alpha-tocopherol (Vitamin E) (mg),Total Lean excl BMC (g)
+> BY & Bonf.,-0.07131141511617856,LBXHE2,DXXOFBMC,Herpes Simplex Virus II,Total femur bone mineral content (gm)
+> BY & Bonf.,-0.009299605790598723,DS2TFDFE,LBXGH,"Folate, DFE (mcg)",Glycohemoglobin (%)
+> BY & Bonf.,-0.03043900944057549,DRXTCALC,MDIASTOLIC,Calcium (mg),Diastolic Mean
+> BY & Bonf.,0.010242029194147406,DRXTALCO,LBXSC3SI,Alcohol (gm),Bicarbonate (mmol/L)
+> BY & Bonf.,-0.011411893862098309,DR1TFA,BMXTHICR,Folic acid (mcg),Thigh Circumference (cm)
+BY<0.05,-0.07508541769286257,URXECP,DXDTRBMC,mono-2-ethyl-5-carboxypentyl phthalate (ng/mL),Trunk Bone Mineral Content (grams)
+BY<0.05,0.024616615759620798,URXECP,LBDLYMNO,mono-2-ethyl-5-carboxypentyl phthalate (ng/mL),Lymphocyte number (1000 cells/uL)
+BY<0.05,0.008422057937429242,URX1DC,DXXRLA,"N-acetyl-S-(1,2-dichlorovinyl)-L-cysteine (ng/mL)",Right Leg Area (cm^2)
+BY<0.05,-0.049941274884015736,URXOP1,LBXSUA,Dimethylphosphate (ug/L),Uric acid (mg/dL)
+BY<0.05,-0.0706418680223175,URXP04,DXXPEBMC,2-fluorene (ng/L),Pelvis Bone Mineral Content (grams)
+BY<0.05,0.06856861654751487,URXNAL,RB_ObservedOTUsMean,"NNAL , urine (ng/mL)",RB_ObservedOTUsMean
+BY<0.05,-0.09797473647905952,LBXBEC,LEXBRPM,trans-b-carotene(ug/dL),Mean brachial systolic blood pressure (in millimeters of mercury)
+BY<0.05,0.12233529921053166,LBXCRY,DXAFMRD0,b-cryptoxanthin(ug/dL),Calculated DO for femur
+BY<0.05,-0.07527168138578325,URXMB2,DXXRLLI,N-acetyl-s-(2-hydroxy-3-butenyl)-L-cysteine (ng/mL),Right Leg Lean incl Bone Mineral Content (grams)
+BY<0.05,-0.06488792637885571,URX34M,DXXHEFAT,3-methylhippuric acid & 4-methylhippuric acid(ng/mL),Head Fat (grams)
+BY<0.05,-0.04794535834406981,URXMZP,DXXOFA,Mono-benzyl phthalate (ng/mL),Total femur area (cm^2)
+BY<0.05,0.053009526361327795,URXCEM,BMXWAIST,N-acetyl-S- (2-Carboxyethyl)-L-cysteine(ng/mL),Waist Circumference (cm)
+BY<0.05,-0.07378903980627907,DR2TMAGN,LBXT3F,Magnesium (mg),"Triiodothyronine (T3), free (pg/mL)"
+BY<0.05,0.3627153316098625,LBDHBG,DXXTRLI,Hepatitis B surface antigen,Trunk Lean incl Bone Mineral Content (grams)
+BY<0.05,-0.07024570011282626,URXUDMA,DXXL1BMC,Urinary Dimethylarsinic acid (ug/L),L1 Bone Mineral Composition
+BY<0.05,-0.08758979839833843,LBXACR,DXDTOLI,Acrylamide (pmol/g Hb),Total Lean incl BMC (g)
+BY<0.05,-0.027240426850380355,DR1TCARB,BMXHT,Carbohydrate (gm),Standing Height (cm)
+BY<0.05,-0.07750647625444243,URXOP4,DXDTOTOT,Diethylthiophosphate (ug/L),Total Lean+Fat (g)
+BY<0.05,0.07189499532161185,LBXALC,DXASPNK,a-carotene(ug/dL),Calculated K for spine
+BY<0.05,-0.09178165762853996,DR1TMAGN,DXXRLFAT,Magnesium (mg),Right Leg Fat (grams)
+BY<0.05,-0.08854324204140865,LBXCRY,DXXL2BMD,b-cryptoxanthin(ug/dL),L2 Bone Mineral Density
+BY<0.05,-0.07140516490800733,DR2TNUMF,DXDTOFAT,Total number of foods reported in the individual foods file,Total Fat (g)
+BY<0.05,0.330473984665265,LBX187,LBXSTR,PCB187 (ng/g),Triglycerides (mg/dL)
+BY<0.05,-0.04484576125012615,DR1TVARA,DXXSATA,Vitamin A as retinol activity equivalents (mcg),Subcutaneous fat area
+BY<0.05,0.09431320643407902,URXMZP,DXXSATA,Mono-benzyl phthalate (ng/mL),Subcutaneous fat area
+BY<0.05,0.026268451626256246,DR1TS060,LBXSCA,SFA 6:0 (Hexanoic) (gm),Total calcium (mg/dL)
+BY<0.05,-0.06894686180525313,DR2TVB2,DXDTRPF,Riboflavin (Vitamin B2) (mg),Trunk Percent Fat
+BY<0.05,-0.03188564023941179,DR1TATOC,BMXWT,Vitamin E as alpha-tocopherol (mg),Weight (kg)
+BY<0.05,0.1748259488441626,LBXNFOS,LBXMC,n-perfluorooctane sulfonic acid (n-PFOS) (ng/mL),Mean cell hemoglobin concentration (g/dL)
+BY<0.05,0.049837150889499054,DR2TS160,DXXANFM,SFA 16:0 (Hexadecanoic) (gm),Android fat mass
+BY<0.05,-0.04909862387556268,LBXBEC,LBXSAPSI,trans-b-carotene(ug/dL),Alkaline phosphotase (U/L)
+BY<0.05,-0.08709962305004247,LBXBGM,DXDTRTOT,"Mercury, methyl (ug/L)",Trunk Total (grams)
+BY<0.05,0.08374624233519751,DR1TM161,BMXTHICR,MFA 16:1 (Hexadecenoic) (gm),Thigh Circumference (cm)
+BY<0.05,-0.06322661947105378,URXUAS,DXXAPFAT,Urinary total Arsenic (ug/L),Android percent fat
+BY<0.05,-0.05124287464524975,URXNO3,DXXL3BMC,Urinary nitrate (ng/mL),L3 Bone Mineral Composition
+BY<0.05,0.04472571080996362,DR1TFF,DXXPEA,Food folate (mcg),Pelvis Area (cm^2)
+BY<0.05,-0.008292064653136595,LBXVCB,LBXSCK,Blood Chlorobenzene Result,Creatine Phosphokinase(CPK) (IU/L)
+BY<0.05,-0.09017895929049577,URXHCTT,DXXRLFAT,"Total Hydroxycotinine, urine (ng/mL)",Right Leg Fat (grams)
+BY<0.05,0.04061467645845519,LBXBSE,DXXTRLI,Blood selenium(ug/L),Trunk Lean incl Bone Mineral Content (grams)
+BY<0.05,0.04446179952544673,DR1TM181,BMXBMI,MFA 18:1 (Octadecenoic) (gm),Body Mass Index (kg/m**2)
+BY<0.05,0.053535402272723236,URXMZP,LBXPLTSI,Mono-benzyl phthalate (ng/mL),Platelet count SI (1000 cells/uL)
+BY<0.05,-0.05760340749285194,LBXVFN,DXDRAPF,Blood Furan (ng/mL),Right Arm Percent Fat
+BY<0.05,-0.050385120954199114,DR1TNUMF,DXDTRBMD,Total number of foods reported in the individual foods file,Trunk Bone BMD (g/cm^2)
+BY<0.05,-0.08139645825788552,URXUDMA,DXDTRA,Urinary Dimethylarsinic acid (ug/L),Trunk Bone area (cm^2)
+BY<0.05,0.15087636247964983,URXMHH,LBXCPSI,Mono-(2-ethyl-5-hydroxyhexyl) phthalate (ng/mL),C-peptide (nmol/L) in SI units
+BY<0.05,-0.06062268481857177,LBXRST,DXXGYFM,Retinyl stearate(ug/dL),Gynoid fat mass
+BY<0.05,0.050799080245566605,URXAAM,URXUIO,N-acetyl-S-(2-carbamoylethyl)-L-cysteine(ng/mL),"Iodine, urine (ng/mL)"
+BY<0.05,0.0472174030059733,DR2TS180,DXXAPFAT,SFA 18:0 (Octadecanoic) (gm),Android percent fat
+BY<0.05,-0.08597230557411926,URX2MH,DXXSATM,2-methylhippuric acid (ng/mL),Subcutaneous fat mass
+BY<0.05,-0.024195422541037504,DR2TVARA,BMXARML,Vitamin A as retinol activity equivalents (mcg),Upper Arm Length (cm)
+BY<0.05,-0.03214267088415003,DR1TM201,LBXSASSI,MFA 20:1 (Eicosenoic) (gm),Aspartate aminotransferase AST (U/L)
+BY<0.05,0.056526824643795645,URXHEM,LBXRDW,N-acetyl-S- (2-Hydroxyethyl)-L-cysteine(ng/mL),Red cell distribution width (%)
+BY<0.05,-0.035108046145158146,DR1TCOPP,MDIASTOLIC,Copper (mg),Diastolic Mean
+BY<0.05,0.039238081943456196,DR1TP225,DXDTRBMC,PFA 22:5 (Docosapentaenoic) (gm),Trunk Bone Mineral Content (grams)
+BY<0.05,-0.14096660617430148,LBXACR,DXDLLTOT,Acrylamide (pmol/g Hb),Left Leg Total (grams)
+BY<0.05,-0.03941711949761945,URXUAS5,DXXVFATA,Urinary Arsenic acid (ug/L),Visceral adipose tissue area
+BY<0.05,0.0316273845325297,DR2TVB6,LBDHDD,Vitamin B6 (mg),Direct HDL-Cholesterol (mg/dL)
+BY<0.05,0.06778309587946411,URXCNP,LBXSOSSI,Mono(carboxynonyl) phthalate (ng/mL),Osmolality (mmol/Kg)
+BY<0.05,0.14587505286756952,LBD199,LBXSCA,PCB199 (ng/g),Total calcium (mg/dL)
+BY<0.05,0.03978434281499857,URXMIB,LBXSAPSI,Mono-isobutyl phthalate (ng/mL),Alkaline phosphotase (U/L)
+BY<0.05,-0.062142251590576125,LBXPFUA,DXDTRA,Perfluoroundecanoic acid,Trunk Bone area (cm^2)
+BY<0.05,-0.07716900529802322,URXHPM,DXDTRBMD,N-acetyl-S-(3-Hydroxypropyl)-L-cysteine(ng/mL),Trunk Bone BMD (g/cm^2)
+BY<0.05,0.028419738215849796,DR1TALCO,DXXL1BMC,Alcohol (gm),L1 Bone Mineral Composition
+BY<0.05,0.06671696608574107,DR1TS180,DXXANTOM,SFA 18:0 (Octadecanoic) (gm),Android total mass
+BY<0.05,-0.0392127197630232,URXUAB,BPXPLS,Urinary Arsenobetaine (ug/L),60 sec. pulse (30 sec. pulse * 2):
+BY<0.05,-0.052876030410830326,DR1TCARB,DXXLALI,Carbohydrate (gm),Left Arm Lean incl BMC (grams)
+BY<0.05,0.03644017537724832,DR2TVARA,LBDHDD,Vitamin A as retinol activity equivalents (mcg),Direct HDL-Cholesterol (mg/dL)
+BY<0.05,-0.056064760476906714,URXP02,LBXLYPCT,2-napthol(ng/L),Lymphocyte percent (%)
+BY<0.05,-0.02482427851873025,DR1TCHOL,LBXMCVSI,Cholesterol (mg),Mean cell volume (fL)
+BY<0.05,-0.05899292064579377,LBXVXY,DXXAGRAT,Blood m-/p-Xylene Result (ng/mL),Android to gynoid ratio
+BY<0.05,-0.06306962955096916,URXETD,BMXTHICR,Enterodiol (ng/mL),Thigh Circumference (cm)
+BY<0.05,-0.027308966128965762,DR1TFOLA,LBXSCLSI,Total Folate (mcg),Chloride (mmol/L)
+BY<0.05,0.05486700948072,URXMIB,LBXGH,Mono-isobutyl phthalate (ng/mL),Glycohemoglobin (%)
+BY<0.05,0.14011833906241378,LBXPCB,BMXWT,"3,3',4,4',5-Pentachlorobiphenyl (pncb) (fg/g)",Weight (kg)
+BY<0.05,-0.06085078419175257,LBXVBZN,DXXHELI,Blood Benzonitrile (ng/mL),Head Lean incl Bone Mineral Content (grams)
+BY<0.05,0.11501096618713864,LBXHA,DXDTRPF,Hepatitis A Antibody (Anti-HAV),Trunk Percent Fat
+BY<0.05,-0.06155566191569599,LBXVFN,DXXTSBMD,Blood Furan (ng/mL),Thoracic Spine Bone Mineral Density (grams/cm^2)
+BY<0.05,0.08075190644793741,URXHCTT,LBXHGB,"Total Hydroxycotinine, urine (ng/mL)",Hemoglobin (g/dL)
+BY<0.05,-0.05687176957226289,LBX2DF,DXDRAPF,"Blood 2,5 Dimethylfuran result",Right Arm Percent Fat
+BY<0.05,-0.05414382695739295,LBXVEA,DXDTRTOT,Blood Ethyl Acetate (ng/mL),Trunk Total (grams)
+BY<0.05,-0.05336943355630585,URXBPH,DXXINBMC,Urinary Bisphenol A,Intertrochanter bone mineral content (gm)
+BY<0.05,-0.07479174717821073,URXUDMA,DXXLAFAT,Urinary Dimethylarsinic acid (ug/L),Left Arm Fat (grams)
+BY<0.05,0.060054451156288664,DR2TFDFE,ENXMEAN,Folate as dietary folate equivalents (mcg),"Mean of two reproducible FENO measurements, in parts per billion"
+BY<0.05,-0.05184249465085747,LBXBMN,LBXSAL,Blood manganese (ug/L),Albumin (g/dL)
+BY<0.05,0.04918687796840243,DR1TSELE,DXXOFBMD,Selenium (mcg),Total femur bone mineral density (gm/cm^2)
+BY<0.05,-0.07345171230481808,DR2TPOTA,DXXSATM,Potassium (mg),Subcutaneous fat mass
+BY<0.05,0.10580236994013667,LBXHBS,LBXIN,Hepatitis B Surface Antibody (Anti-HBs),Insulin (uU/mL )
+BY<0.05,-0.04817732742543031,URXUSN,DXDTOLI,"Tin, urine (ug/L)",Total Lean incl BMC (g)
+BY<0.05,-0.145654508309552,DR1TFOLA,LBXHCY,Total Folate (mcg),Homocysteine (umol/L)
+BY<0.05,-0.05945326689013594,DR2TSUGR,DXXL2BMD,Total sugars (gm),L2 Bone Mineral Density
+BY<0.05,0.04576334545051167,DR2TNIAC,DXXRALI,Niacin (mg),Right Arm Lean incl Bone Mineral Content (grams)
+BY<0.05,-0.05640911130673987,DR2TP204,LBDRFO,PFA 20:4 (Eicosatetraenoic) (gm),RBC folate (ng/mL)
+BY<0.05,0.031013827652835647,DR1TCALC,DXXRALI,Calcium (mg),Right Arm Lean incl Bone Mineral Content (grams)
+BY<0.05,-0.056016463577023036,DR1TFF,DXDTOTOT,Food folate (mcg),Total Lean+Fat (g)
+BY<0.05,0.04799841454659634,DR2TPFAT,DXDSTPF,Total polyunsaturated fatty acids (gm),Subtotal Percent Fat
+BY<0.05,0.022046626589307495,DR2TCRYP,LBXSBU,Beta-cryptoxanthin (mcg),Blood urea nitrogen (mg/dL)
+BY<0.05,0.04362086996501712,LBXVXY,LBDBANO,Blood m-/p-Xylene Result (ng/mL),Basophils number (1000 cells/uL)
+BY<0.05,-0.08769212174440433,LBXVBZ,DXXTRFAT,Blood Benzene Result (ng/mL),Trunk Fat (grams)
+BY<0.05,0.2619117333480761,LBDHCV,DXXTRBMC,Hepatitis C antibody (confirmed),Trochanter bone mineral content (gm)
+BY<0.05,0.004884989888330101,LBXVTHF,DXDSTBMC,Blood Tetrahydrofuran (ng/mL),Subtotal Bone Mineral Content (grams)
+BY<0.05,-0.04441595800480166,DR2TVB2,DXDRAPF,Riboflavin (Vitamin B2) (mg),Right Arm Percent Fat
+BY<0.05,-0.0433254935959773,URXUSB,BMXWT,"Antimony, urine (ng/mL)",Weight (kg)
+BY<0.05,-0.09691446508829692,LBXVEB,DXDLLTOT,Blood Ethylbenzene Result (ng/mL),Left Leg Total (grams)
+BY<0.05,-0.11490372676540613,URXEPB,DXXSATV,Ethyl paraben  (ng/ml),Subcutaneous fat volume
+BY<0.05,-0.07940448453970636,URXHEM,DXDTRLE,N-acetyl-S- (2-Hydroxyethyl)-L-cysteine(ng/mL),Trunk Lean excl Bone Mineral Content (grams)
+BY<0.05,-0.04969223186764548,URXP03,DXXGPFAT,3-fluorene (ng/L),Gynoid percent fat
+BY<0.05,-0.04839240642653591,DR2TTHEO,DXXL1BMD,Theobromine (mg),L1 Bone Mineral Density
+BY<0.05,0.13339972685726897,LBX170,CVDVOMAX,PCB170 (ng/g),Predicted maximal oxygen uptake (ml/kg/min)
+BY<0.05,0.0533833417600942,URXGAM,LBXMCVSI,N-acetyl-S-(2-carbamoyl-2-hydroxyethyl)-L-cysteine(ng/mL),Mean cell volume (fL)
+BY<0.05,-0.03962802170194027,LBXCOT,DXDLLPF,Cotinine (ng/mL),Left Leg Percent Fat
+BY<0.05,0.07033915963170816,LBXBPB,LBXBAP,Lead (ug/dL),Bone alkaline phosphotase (ug/L)
+BY<0.05,-0.13500530551612572,LBXVCF,LBXGH,Blood Chloroform Result (pg/mL),Glycohemoglobin (%)
+BY<0.05,-0.043900678396763364,URXDCB,SPXNFEV1,"2,4-dichlorophenol (ug/L)","Baseline 1st Test Spirometry, Forced Expiratory Volume in the first 1.0 sec"
+BY<0.05,0.05013258354377514,DR1TALCO,DXAFMRD0,Alcohol (gm),Calculated DO for femur
+BY<0.05,0.06769180866798567,URXCPM,LBXSCLSI,"3,5,6-trichloropyridinol (ug/L) result",Chloride (mmol/L)
+BY<0.05,-0.03193922906714383,DR1TTHEO,DXXTRA,Theobromine (mg),Trochanter area (cm^2)
+BY<0.05,0.061851853961494854,LBXPFOA,LBXRBCSI,Perfluorooctanoic acid,Red blood cell count (million cells/uL)
+BY<0.05,-0.02329386507263554,DR1TB12A,LBXSGB,Added vitamin B12 (mcg),Globulin (g/dL)
+BY<0.05,0.06627722393743819,DSQTIODI,DXDRLLE,Iodine (mcg),Right Leg Lean excl Bone Mineral Content (grams)
+BY<0.05,-0.07131642714425551,LBDVIDMS,URXUCR,Vitamin D (nmol/L),"Creatinine, urine (mg/dL)"
+BY<0.05,0.06907524575909162,URXPHE,LBXSPH,N-acetyl-S-(phenyl-2-hydroxyethyl)-L-cysteine(ng/mL),Phosphorus (mg/dL)
+BY<0.05,-0.0657725866661761,URXMNM,DXXGYTOM,Mono-n-methyl phthalate (ng/mL),Gynoid total mass
+BY<0.05,0.020442389917443828,LBXV06,DXAFMRD0,Blood Hexane (ng/mL),Calculated DO for femur
+BY<0.05,-0.07848755996204146,URXUCS,DXXLLA,"Cesium, urine (ng/mL)",Left Leg Area(cm^2)
+BY<0.05,-0.059272067565154414,URXHPM,LBXRBCSI,N-acetyl-S-(3-Hydroxypropyl)-L-cysteine(ng/mL),Red blood cell count (million cells/uL)
+BY<0.05,-0.1009460789366678,LBXACR,DXXLLLI,Acrylamide (pmol/g Hb),Left Leg Lean incl Bone Mineral Content (grams)
+BY<0.05,0.044997341278456816,DR2TFIBE,DXASPND0,Dietary fiber (gm),Calculated D0 for spine
+BY<0.05,-0.04947051923272802,DR2TNUMF,DXDLALE,Total number of foods reported in the individual foods file,Left Arm Lean excl Body Mineral Content (grams)
+BY<0.05,-0.026113374947985536,DR1TBCAR,BMXWT,Beta-carotene (mcg),Weight (kg)
+BY<0.05,0.3850476890639693,LBDHCV,DXXINBMD,Hepatitis C antibody (confirmed),Intertrochanter bone mineral density (gm/cm^2)
+BY<0.05,0.19068353666692767,LBX194,LBXTC,PCB194 (ng/g),Total cholesterol (mg/dL)
+BY<0.05,0.2581650751972507,LBDHBG,DXXTSA,Hepatitis B surface antigen,Thoracic Spine Area (cm^2)
+BY<0.05,0.05310580896885328,LBXPLP,LBXTC,Pyridoxal 5'-phosphate (nmol/L),Total cholesterol (mg/dL)
+BY<0.05,0.040573210790688874,DR2TP204,DXXANTOM,PFA 20:4 (Eicosatetraenoic) (gm),Android total mass
+BY<0.05,-0.07470256845267652,URXAAM,DXXTSBMD,N-acetyl-S-(2-carbamoylethyl)-L-cysteine(ng/mL),Thoracic Spine Bone Mineral Density (grams/cm^2)
+BY<0.05,-0.04575855152245411,URXSCN,LBXSLDSI,Urinary thiocyanate (ng/mL),Lactate dehydrogenase LDH (U/L)
+BY<0.05,0.040741963466576846,DR1TPHOS,DXXTRBMC,Phosphorus (mg),Trochanter bone mineral content (gm)
+BY<0.05,-0.0723917054812008,URXHCTT,DXXTSBMD,"Total Hydroxycotinine, urine (ng/mL)",Thoracic Spine Bone Mineral Density (grams/cm^2)
+BY<0.05,-0.04833409368781265,URXEPB,DXXLAA,Ethyl paraben  (ng/ml),Left Arm Area (cm^2)
+BY<0.05,0.059318171501901,URXPHE,LBDLYMNO,N-acetyl-S-(phenyl-2-hydroxyethyl)-L-cysteine(ng/mL),Lymphocyte number (1000 cells/uL)
+BY<0.05,-0.10391985378032301,URXMAD,DXXTRFAT,Mandelic acid(ng/mL),Trunk Fat (grams)
+BY<0.05,-0.06600766289176245,URXHEM,DXXLSBMC,N-acetyl-S- (2-Hydroxyethyl)-L-cysteine(ng/mL),Lumbar Spine Bone Mineral Content (grams)
+BY<0.05,0.22556619625068058,SMQ710,LBXSIR,"During the past 5 days {including today}, on how many days did {you/he/she}","Iron, refigerated (ug/dL)"
+BY<0.05,-0.02388012753953899,LBXTHG,LBXSGL,"Mercury, total (ug/L)","Glucose, serum (mg/dL)"
+BY<0.05,0.03720074131289511,DR1TVD,LBXSKSI,Vitamin D (D2 + D3) (mcg),Potassium (mmol/L)
+BY<0.05,0.10441970097326478,LBXHA,DXDTOPF,Hepatitis A Antibody (Anti-HAV),Total Percent Fat
+BY<0.05,-0.05973237928812995,DR2TPOTA,DXXLLFAT,Potassium (mg),Left Leg Fat (grams)
+BY<0.05,0.07265078944845003,DR1TPOTA,DXXHEA,Potassium (mg),Head Area (cm^2)
+BY<0.05,-0.08404930385461347,URXPMM,DXXTRFAT,N-acetyl-s-(3-hydroxypropyl-1-methyl)-L-cysteine(ng/mL),Trunk Fat (grams)
+BY<0.05,0.17792290795740162,LBXHBC,DXXAPFAT,Hepatitis B core antibody,Android percent fat
+BY<0.05,-0.05257659674089425,DR1TVB1,DXXAPFAT,Thiamin (Vitamin B1) (mg),Android percent fat
+BY<0.05,0.09299474291107376,URXP25,LBXSAPSI,2-Hydroxyphenanthrene (ng/L) & 3-Hydroxyphenanthrene (ng/L),Alkaline phosphotase (U/L)
+BY<0.05,-0.09317628746082404,URXMAD,LBDFOT,Mandelic acid(ng/mL),Serum total folate (ng/mL)
+BY<0.05,0.026439464775437217,LBXVE3MS,LBXTC,epi-25-hydroxyvitamin D3 (nmol/L),Total cholesterol (mg/dL)
+BY<0.05,0.055578847786366,URXUBA,LBXSPH,"Barium, urine (ng/mL)",Phosphorus (mg/dL)
+BY<0.05,0.039813443491292344,DS2DSCNT,LBXMOPCT,Number of dietary supplements reported,Monocyte percent (%)
+BY<0.05,0.062406596253775475,LBXVIA,LEXLPTSM,Retinol(ug/dL),Left mean posterior tibial systolic blood pressure (in millimeters of mercu
+BY<0.05,-0.06505625457343912,URXPHE,DXXLLFAT,N-acetyl-S-(phenyl-2-hydroxyethyl)-L-cysteine(ng/mL),Left Leg Fat (grams)
+BY<0.05,0.029009394931553766,LBXCOT,URXUCR,Cotinine (ng/mL),"Creatinine, urine (mg/dL)"
+BY<0.05,0.05550300533706427,DR1TFDFE,ENXMEAN,Folate as dietary folate equivalents (mcg),"Mean of two reproducible FENO measurements, in parts per billion"
+BY<0.05,0.10106381660403897,URXAMC,LBDNENO,N-acetyl-S-(N-methylcarbamoyl)-L-cysteine(ng/mL),Segmented neutrophils num (1000 cell/uL)
+BY<0.05,0.10155745144050532,LBX099,BMXBMI,PCB99 (ng/g),Body Mass Index (kg/m**2)
+BY<0.05,-0.06091072044142771,URXHPM,DXDLALE,N-acetyl-S-(3-Hydroxypropyl)-L-cysteine(ng/mL),Left Arm Lean excl Body Mineral Content (grams)
+BY<0.05,0.058444107000173356,DR1TCOPP,DXXPEA,Copper (mg),Pelvis Area (cm^2)
+BY<0.05,0.025071967549473124,DR1TZINC,BMXARMC,Zinc (mg),Arm Circumference (cm)
+BY<0.05,-0.06717084203002834,DR1TCOPP,DXXLLFAT,Copper (mg),Left Leg Fat (grams)
+BY<0.05,-0.07657114534197561,LBXVXY,DXXTATM,Blood m-/p-Xylene Result (ng/mL),Total abdominal fat mass
+BY<0.05,-0.10903002927966428,URXP25,DXXRLA,2-Hydroxyphenanthrene (ng/L) & 3-Hydroxyphenanthrene (ng/L),Right Leg Area (cm^2)
+BY<0.05,0.12365303523625307,LBXF02,LBXWBCSI,"1,2,3,7,8-Pentachlorodibenzofuran (pncdf) (fg/g)",White blood cell count (1000 cells/uL)
+BY<0.05,-0.06289428839806155,LBXBPB,DXXLLBMD,Lead (ug/dL),Left Leg Bone Mineral Density (grams/cm^2)
+BY<0.05,-0.03385364675338403,DR2TVB6,BPXPLS,Vitamin B6 (mg),60 sec. pulse (30 sec. pulse * 2):
+BY<0.05,0.11760790783767366,LBX052,LBXHCT,PCB52 (ng/g),Hematocrit (%)
+BY<0.05,-0.07649950841757393,LBXPFOS,LBXNEPCT,Perfluorooctane sulfonic acid,Segmented neutrophils percent (%)
+BY<0.05,0.05515803471391999,DR2TVB1,DXXHEA,Thiamin (Vitamin B1) (mg),Head Area (cm^2)
+BY<0.05,-0.07863147337165098,URXP03,DXDTOBMC,3-fluorene (ng/L),Total Bone Mineral Content (g)
+BY<0.05,0.2233662860070102,URXNICT,URXUCR,"Nicotine, urine (ng/mL)","Creatinine, urine (mg/dL)"
+BY<0.05,-0.048398085229031655,DR2TTFAT,DXXL3A,Total fat (gm),L3 area
+BY<0.05,0.04180125063691491,DR1TS140,DXXAPFAT,SFA 14:0 (Tetradecanoic) (gm),Android percent fat
+BY<0.05,-0.08024623416234254,URXGNS,DXXINBMD,Genistein (ng/mL),Intertrochanter bone mineral density (gm/cm^2)
+BY<0.05,0.012845699950552857,DR1TP226,BMXHT,PFA 22:6 (Docosahexaenoic) (gm),Standing Height (cm)
+BY<0.05,-0.03522679500957476,DR1TVC,BMXBMI,Vitamin C (mg),Body Mass Index (kg/m**2)
+BY<0.05,-0.027495663486349894,DR1TPFAT,LBXHGB,Total polyunsaturated fatty acids (gm),Hemoglobin (g/dL)
+BY<0.05,-0.09126852440154504,URXMAD,DXXSATA,Mandelic acid(ng/mL),Subcutaneous fat area
+BY<0.05,-0.04243610235382902,URXMHP,BMXWT,Mono-(2-ethyl)-hexyl phthalate (ng/mL),Weight (kg)
+BY<0.05,-0.06382464874317113,LBDVICSI,BMXTRI,Vitamin C (umol/L),Triceps Skinfold (mm)
+BY<0.05,-0.040006762512770404,DR1TSFAT,LBXSAL,Total saturated fatty acids (gm),Albumin (g/dL)
+BY<0.05,-0.07292691466845669,URXPHG,DXDLALE,Phenylglyoxylic acid(ng/mL),Left Arm Lean excl Body Mineral Content (grams)
+BY<0.05,0.06004187035608891,DR2TM201,DXXTATV,MFA 20:1 (Eicosenoic) (gm),Total abdominal fat volume
+BY<0.05,-0.06179500986449481,DR2TVARA,DXDHEPF,Vitamin A as retinol activity equivalents (mcg),Head Percent Fat
+BY<0.05,0.06775545289827734,DSQTVB6,LBDRFO,Vitamin B6 (mg),RBC folate (ng/mL)
+BY<0.05,0.1004151058374959,LBDB12SI,LBXSF5SI,Vitamin B12 (pmol/L),"5,10-Methenyl-tetrahydrofolate (nmol/L)"
+BY<0.05,-0.07404027000813058,DRXTIRON,LBXSGTSI,Iron (mg),Gamma glutamyl transferase (U/L)
+BY<0.05,-0.056752191780112766,LBXPFHS,DXXGYFM,Perfluorohexane sulfonic acid,Gynoid fat mass
+BY<0.05,-0.06789656694304863,URXUMMA,LBDMONO,Urinary Monomethylarsonic acid (ug/L),Monocyte number (1000 cells/uL)
+BY<0.05,-0.03477149635348398,LBXCOT,LBXBAP,Cotinine (ng/mL),Bone alkaline phosphotase (ug/L)
+BY<0.05,-0.05522212580610843,DR1TFDFE,DXXANFM,Folate as dietary folate equivalents (mcg),Android fat mass
+BY<0.05,-0.08781083128274712,URXAAM,DXDLLTOT,N-acetyl-S-(2-carbamoylethyl)-L-cysteine(ng/mL),Left Leg Total (grams)
+BY<0.05,-0.07749739713673702,URXUSN,DXDSTA,"Tin, urine (ug/L)",Subtotal Area (cm^2)
+BY<0.05,-0.14802583593605842,URXMHBP,DXXPEBMC,Mono-3-hydroxy-n-butyl phthalate (ng/mL),Pelvis Bone Mineral Content (grams)
+BY<0.05,-0.015627824142250352,URXUPT,LBXLYPCT,"Platinum, urine (ng/mL)",Lymphocyte percent (%)
+BY<0.05,-0.043460069202079975,DR1TM201,LBXTR,MFA 20:1 (Eicosenoic) (gm),Triglyceride (mg/dL)
+BY<0.05,0.06321889355401655,LBXBPB,LBDIRNSI,Lead (ug/dL),"Iron, Frozen Serum (umol/L)"
+BY<0.05,-0.0539569375847173,DR1TMFAT,LBXSIR,Total monounsaturated fatty acids (gm),"Iron, refigerated (ug/dL)"
+BY<0.05,0.05810127772140528,URXECP,DXDLLPF,mono-2-ethyl-5-carboxypentyl phthalate (ng/mL),Left Leg Percent Fat
+BY<0.05,-0.06093740107645148,DR1TFOLA,DXXRLFAT,Total Folate (mcg),Right Leg Fat (grams)
+BY<0.05,0.05975059777599918,LBXVE3MS,LBXMC,epi-25-hydroxyvitamin D3 (nmol/L),Mean cell hemoglobin concentration (g/dL)
+BY<0.05,0.04137824520336166,LBXLUZ,LBDPCT,Combined Lutein/zeaxanthin(ug/dL),Transferrin saturation (%)
+BY<0.05,-0.04894008355503388,DR2TALCO,LBXSF1SI,Alcohol (gm),5-Methyl-tetrahydrofolate (nmol/L)
+BY<0.05,-0.07096911427756715,URXMB2,DXXGYTOM,N-acetyl-s-(2-hydroxy-3-butenyl)-L-cysteine (ng/mL),Gynoid total mass
+BY<0.05,0.03649169674128956,DR1TSELE,DXDSTLI,Selenium (mcg),Subtotal Lean incl BMC (g)
+BY<0.05,0.20046673520382963,LBXPDT,LBXSTR,ppDDT (ng/g),Triglycerides (mg/dL)
+BY<0.05,-0.0562089934035223,URXMB2,DXXSATA,N-acetyl-s-(2-hydroxy-3-butenyl)-L-cysteine (ng/mL),Subcutaneous fat area
+BY<0.05,-0.036953929600012377,DR2TFF,DXXGPFAT,Food folate (mcg),Gynoid percent fat
+BY<0.05,0.032226325586893645,DR1TS040,LBXSCH,SFA 4:0 (Butanoic) (gm),Cholesterol (mg/dL)
+BY<0.05,-0.08443869784678171,LBX157,BMXCALF,PCB157 (ng/g),Maximal Calf Circumference (cm)
+BY<0.05,-0.06527096169141762,DR2TALCO,DXXLLFAT,Alcohol (gm),Left Leg Fat (grams)
+BY<0.05,0.05639537129275943,LBDVICSI,LBXSTB,Vitamin C (umol/L),Total bilirubin (mg/dL)
+BY<0.05,-0.0657435191579516,DR1TATOC,DXXTATV,Vitamin E as alpha-tocopherol (mg),Total abdominal fat volume
+BY<0.05,-0.08040016994895677,URXMAD,DXDTOBMC,Mandelic acid(ng/mL),Total Bone Mineral Content (g)
+BY<0.05,-0.057604610215568224,URXPHG,DXXGYTOM,Phenylglyoxylic acid(ng/mL),Gynoid total mass
+BY<0.05,0.07712511299559964,LBXTCD,LBXSBU,"2,3,7,8-Tetrachlorodienzo-p-dioxin (tcdd) (fg/g)",Blood urea nitrogen (mg/dL)
+BY<0.05,-0.035931029469075226,LBX4PA,LBXMPSI,4-pyridoxic acid (nmol/L),Mean platelet volume (fL)
+BY<0.05,-0.031175805757893693,DR1TCAFF,LBXSGTSI,Caffeine (mg),Gamma glutamyl transferase (U/L)
+BY<0.05,0.1544858258352447,LBXF02,LBXTC,"1,2,3,7,8-Pentachlorodibenzofuran (pncdf) (fg/g)",Total cholesterol (mg/dL)
+BY<0.05,0.10484518959908393,LBX172,LBXSCH,PCB172 (ng/g),Cholesterol (mg/dL)
+BY<0.05,0.04073971784573233,DR1TZINC,LBXSOSSI,Zinc (mg),Osmolality (mmol/Kg)
+BY<0.05,-0.04968294837592156,DR2TSUGR,DXXTRBMD,Total sugars (gm),Trochanter bone mineral density (gm/cm^2)
+BY<0.05,0.06740346739998461,LBXVOX,LBDNENO,Blood o-Xylene Result (ng/mL),Segmented neutrophils num (1000 cell/uL)
+BY<0.05,-0.005714922049408951,LBXV1D,DXXAGST,"Blood 1,2-Dichlorobenzene Result",Android/gynoid region status
+BY<0.05,-0.0998742747932622,URXCEM,DXXPEA,N-acetyl-S- (2-Carboxyethyl)-L-cysteine(ng/mL),Pelvis Area (cm^2)
+BY<0.05,0.007253974608117023,LBXVTHF,LBXSGB,Blood Tetrahydrofuran (ng/mL),Globulin (g/dL)
+BY<0.05,0.06354049594783158,URXMX4,MSYSTOLIC,"1,3-dimethylxanthine(theophylline)umol/L",Systolic Mean
+BY<0.05,0.045174398703422644,LBXCOT,LBDIRNSI,Cotinine (ng/mL),"Iron, Frozen Serum (umol/L)"
+BY<0.05,-0.13120583481494444,URXP03,LBDP3,3-fluorene (ng/L),Prostate specific antigen ratio (%)
+BY<0.05,-0.13775075065118966,SMQ_current_ever_never,DXXANFM,"Smoking: current, ever, never",Android fat mass
+BY<0.05,0.07130196720629817,DR1TSODI,BMXCALF,Sodium (mg) (adjusted for salt use in food preparation),Maximal Calf Circumference (cm)
+BY<0.05,-0.08931583570527196,URXP01,DXXTATV,1-napthol (ng/L),Total abdominal fat volume
+BY<0.05,-0.06183156374460024,LBXPLP,LBXGLU,Pyridoxal 5'-phosphate (nmol/L),Fasting Glucose (mg/dL)
+BY<0.05,-0.07213434789421506,URXHPM,BMXBMI,N-acetyl-S-(3-Hydroxypropyl)-L-cysteine(ng/mL),Body Mass Index (kg/m**2)
+BY<0.05,-0.0734540856071125,DRXTALCO,BMXCALF,Alcohol (gm),Maximal Calf Circumference (cm)
+BY<0.05,-0.06309133587932442,URXMIB,DXXL3A,Mono-isobutyl phthalate (ng/mL),L3 area
+BY<0.05,-0.040940620703317575,LBXBEC,LBXMMA,trans-b-carotene(ug/dL),Methylmalonic acid (umol/L)
+BY<0.05,-0.06547637002923982,URXUCO,DXXLALI,"Cobalt, urine (ng/mL)",Left Arm Lean incl BMC (grams)
+BY<0.05,0.02792297577658021,DR2TALCO,MDIASTOLIC,Alcohol (gm),Diastolic Mean
+BY<0.05,-0.07560357250192017,DR2TFIBE,DXXVFATM,Dietary fiber (gm),Visceral adipose tissue mass
+BY<0.05,0.034571454767588425,DR1TMOIS,LBXMC,Moisture (gm),Mean cell hemoglobin concentration (g/dL)
+BY<0.05,-0.038807286935245,URXMNM,BMXLEG,Mono-n-methyl phthalate (ng/mL),Upper Leg Length (cm)
+BY<0.05,0.17607067353545713,LBX177,LBXSTR,PCB177 (ng/g),Triglycerides (mg/dL)
+BY<0.05,0.06486956777771258,DS2DS,MDIASTOLIC,Any Dietary Supplements taken in the past 24 hour?,Diastolic Mean
+BY<0.05,0.09780730861396575,LBXPDE,LBXLYPCT,ppDDE (ng/g),Lymphocyte percent (%)
+BY<0.05,-0.0357970287594773,DR1TCOPP,LBXPLTSI,Copper (mg),Platelet count SI (1000 cells/uL)
+BY<0.05,0.03477633364875238,DR1TCHOL,DXXINBMC,Cholesterol (mg),Intertrochanter bone mineral content (gm)
+BY<0.05,-0.043451652272406605,DR2TATOA,DXDLAPF,Added alpha-tocopherol (Vitamin E) (mg),Left Arm Percent Fat
+BY<0.05,-0.032880881918913515,DR2TVB2,LBXRDW,Riboflavin (Vitamin B2) (mg),Red cell distribution width (%)
+BY<0.05,-0.07023418610205653,LBXVTO,BMXWT,Blood Toluene Result (ng/mL),Weight (kg)
+BY<0.05,-0.08183339704169054,DR1TRET,LBXHCY,Retinol (mcg),Homocysteine (umol/L)
+BY<0.05,0.08733072105743174,DR1TCARB,DXXTOTBS,Carbohydrate (gm),Total Trabecular Bone Score
+BY<0.05,-0.054353361381340386,URXBP3,BPXPLS,Urinary 2-Hydroxy-4-metoxybenzophenone (Benzophenone-3),60 sec. pulse (30 sec. pulse * 2):
+BY<0.05,-0.0298143589444683,DR2TFDFE,LBXNEPCT,Folate as dietary folate equivalents (mcg),Segmented neutrophils percent (%)
+BY<0.05,-0.0980372273406166,URXATC,DXXRRBMD,2-aminothiazoline-4-carboxylic acid(ng/mL),Right Ribs Bone Mineral Density (grams/cm^2)
+BY<0.05,-0.06888791244487844,URXUDMA,DXDTOBMC,Urinary Dimethylarsinic acid (ug/L),Total Bone Mineral Content (g)
+BY<0.05,0.07609726545550659,LBXVFN,BPXPLS,Blood Furan (ng/mL),60 sec. pulse (30 sec. pulse * 2):
+BY<0.05,0.07753871025016904,URXP07,BMXSUB,2-phenanthrene (ng/L),Subscapular Skinfold (mm)
+BY<0.05,0.20883322917729888,LBXHBC,DXXANFM,Hepatitis B core antibody,Android fat mass
+BY<0.05,-0.06943884449331617,URXPHE,DXDTRA,N-acetyl-S-(phenyl-2-hydroxyethyl)-L-cysteine(ng/mL),Trunk Bone area (cm^2)
+BY<0.05,-0.03749409593216887,DR2TVC,LBXSGTSI,Vitamin C (mg),Gamma glutamyl transferase (U/L)
+BY<0.05,0.06650264652510875,LBXBPB,LBDPCT,Lead (ug/dL),Transferrin saturation (%)
+BY<0.05,0.04825523589983027,DR1TP204,DXXSATM,PFA 20:4 (Eicosatetraenoic) (gm),Subcutaneous fat mass
+BY<0.05,-0.033906206451255985,DR1TFDFE,DXXGPFAT,Folate as dietary folate equivalents (mcg),Gynoid percent fat
+BY<0.05,0.05142993145429402,LBXVE3MS,DXXPEA,epi-25-hydroxyvitamin D3 (nmol/L),Pelvis Area (cm^2)
+BY<0.05,-0.031659202724259615,DR2TFA,DXXGYTOM,Folic acid (mcg),Gynoid total mass
+BY<0.05,0.0597308263739159,DR1TFOLA,ENXMEAN,Total Folate (mcg),"Mean of two reproducible FENO measurements, in parts per billion"
+BY<0.05,-0.03205536824662339,DR2TB12A,DXXAGRAT,Added vitamin B12 (mcg),Android to gynoid ratio
+BY<0.05,-0.0756827775944042,URXUMMA,DXXOFBMD,Urinary Monomethylarsonic acid (ug/L),Total femur bone mineral density (gm/cm^2)
+BY<0.05,-0.036477939524733494,LBXVIE,BMXWT,Vitamin E (ug/dL),Weight (kg)
+BY<0.05,-0.046027779935190936,URXBUP,DXXTSA,Butyl paraben (ng/ml),Thoracic Spine Area (cm^2)
+BY<0.05,-0.03535319218542959,URXUAC,DXDSTTOT,Urinary Arsenocholine (ug/L),Subtotal (Total excl Head) (g)
+BY<0.05,-0.04753046975787195,LBXV06,DXXL4BMD,Blood Hexane (ng/mL),L4 Bone Mineral Density
+BY<0.05,0.04203015325239793,DR1TZINC,DXXINBMD,Zinc (mg),Intertrochanter bone mineral density (gm/cm^2)
+BY<0.05,0.0539372272916297,DR1TVB2,DXXHEA,Riboflavin (Vitamin B2) (mg),Head Area (cm^2)
+BY<0.05,0.05325124005827284,URXMIB,LBXSPH,Mono-isobutyl phthalate (ng/mL),Phosphorus (mg/dL)
+BY<0.05,0.01843374237786171,LBXVIPB,DXXAGRAT,Blood Isopropylbenzene (ng/mL),Android to gynoid ratio
+BY<0.05,0.061578893997753986,LBXBSE,DXXLRA,Blood selenium(ug/L),Left Ribs Area(cm^2)
+BY<0.05,0.07764675262357423,DR2TPHOS,LBDRFO,Phosphorus (mg),RBC folate (ng/mL)
+BY<0.05,-0.07957108861468129,DR1TPOTA,DXXLAFAT,Potassium (mg),Left Arm Fat (grams)
+BY<0.05,-0.1038901702794392,URXEPB,DXXLLFAT,Ethyl paraben  (ng/ml),Left Leg Fat (grams)
+BY<0.05,-0.05685003502953609,URXMB2,DXDTOBMC,N-acetyl-s-(2-hydroxy-3-butenyl)-L-cysteine (ng/mL),Total Bone Mineral Content (g)
+BY<0.05,0.047630909073430254,URX14D,BMXWAIST,"2,5-dichlorophenol (ug/L)",Waist Circumference (cm)
+BY<0.05,-0.029406528547090673,LBXBGM,BMXARML,"Mercury, methyl (ug/L)",Upper Arm Length (cm)
+BY<0.05,-0.02325711925142936,URXMCP,DXXL3BMC,Mono-cyclohexyl phthalate (ng/mL),L3 Bone Mineral Composition
+BY<0.05,-0.08172661794544876,DR1TCOPP,DXXTATV,Copper (mg),Total abdominal fat volume
+BY<0.05,-0.12299215593737478,LBXBCO,LBXMC,Cobalt (ug/L),Mean cell hemoglobin concentration (g/dL)
+BY<0.05,-0.05296344952082637,DR2TCARB,DXXLAA,Carbohydrate (gm),Left Arm Area (cm^2)
+BY<0.05,-0.04209037421086586,DR1TVB2,LBXGLT,Riboflavin (Vitamin B2) (mg),Two hour oral glucose tolerance (OGTT) (mg/dL)
+BY<0.05,-0.08871493124741539,URXUCO,LBXT4F,"Cobalt, urine (ng/mL)","Thyroxine, free (ng/dL)"
+BY<0.05,0.05223387308738366,DR1TS180,DXDLAPF,SFA 18:0 (Octadecanoic) (gm),Left Arm Percent Fat
+BY<0.05,0.03567906178062095,DR1TMOIS,LBXSCA,Moisture (gm),Total calcium (mg/dL)
+BY<0.05,-0.07963621011948943,DRXTALCO,LBXGH,Alcohol (gm),Glycohemoglobin (%)
+BY<0.05,-0.0530994867039772,DR1TPHOS,LBXSNASI,Phosphorus (mg),Sodium (mmol/L)
+BY<0.05,-0.06331072860635807,URXP01,DXXTRLI,1-napthol (ng/L),Trunk Lean incl Bone Mineral Content (grams)
+BY<0.05,-0.055358162150333644,URXPMA,BMXARMC,N-acetyl-s-(phenyl)-L-cysteine(ng/mL),Arm Circumference (cm)
+BY<0.05,0.07637239654880494,DR1TVB2,DXXL4TBS,Riboflavin (Vitamin B2) (mg),L4 TBS
+BY<0.05,-0.08074754508546464,URXUDMA,DXXTSA,Urinary Dimethylarsinic acid (ug/L),Thoracic Spine Area (cm^2)
+BY<0.05,-0.03389552482756523,DR1TPHOS,LBDNENO,Phosphorus (mg),Segmented neutrophils num (1000 cell/uL)
+BY<0.05,-0.06905171781259865,LBXALC,DXXOSBMC,a-carotene(ug/dL),Total spine BMC
+BY<0.05,-0.047439417893696795,LBXVBZ,LBXSUA,Blood Benzene Result (ng/mL),Uric acid (mg/dL)
+BY<0.05,0.1972166988303614,LBXPDE,LBXTR,ppDDE (ng/g),Triglyceride (mg/dL)
+BY<0.05,0.043515177997529624,DR2TM161,DXXAPFAT,MFA 16:1 (Hexadecenoic) (gm),Android percent fat
+BY<0.05,-0.04456929434033632,DR1TFDFE,LBDLDL,Folate as dietary folate equivalents (mcg),LDL-cholesterol (mg/dL)
+BY<0.05,-0.04513397979910604,DR1TBCAR,DXXVFATA,Beta-carotene (mcg),Visceral adipose tissue area
+BY<0.05,-0.0720842788647112,URXUSB,BMXCALF,"Antimony, urine (ng/mL)",Maximal Calf Circumference (cm)
+BY<0.05,0.03038044600354412,DR1TIRON,LBXSPH,Iron (mg),Phosphorus (mg/dL)
+BY<0.05,0.15977391270983765,LBXHBC,BMXTRI,Hepatitis B core antibody,Triceps Skinfold (mm)
+BY<0.05,-0.03907189014541969,DR2TSUGR,DXXINBMC,Total sugars (gm),Intertrochanter bone mineral content (gm)
+BY<0.05,0.056055659298330895,DR1TSODI,LBXGLU,Sodium (mg) (adjusted for salt use in food preparation),Fasting Glucose (mg/dL)
+BY<0.05,-0.11920491496302231,LBXPFDE,DXDTRTOT,Pefluorodecanoic acid,Trunk Total (grams)
+BY<0.05,-0.05012546085407187,DR1TS180,DXASPND0,SFA 18:0 (Octadecanoic) (gm),Calculated D0 for spine
+BY<0.05,0.03690047918628346,DR2TP204,DXXAPFAT,PFA 20:4 (Eicosatetraenoic) (gm),Android percent fat
+BY<0.05,0.06513945941671485,URXMU7,MDIASTOLIC,"1,3,7-trimethyluric acid (umol/L)",Diastolic Mean
+BY<0.05,-0.0400415590045294,DR2TCRYP,DXXGYFM,Beta-cryptoxanthin (mcg),Gynoid fat mass
+BY<0.05,-0.06662916663902765,LBXVBZ,DXXTSBMC,Blood Benzene Result (ng/mL),Thoracic Spine Bone Mineral Content (grams)
+BY<0.05,0.06338266561814908,DR1TPROT,DXXTRBMD,Protein (gm),Trochanter bone mineral density (gm/cm^2)
+BY<0.05,-0.05562766627971692,URXMB2,DXDLALE,N-acetyl-s-(2-hydroxy-3-butenyl)-L-cysteine (ng/mL),Left Arm Lean excl Body Mineral Content (grams)
+BY<0.05,-0.06668377781100096,URXUSN,LBXTST,"Tin, urine (ug/L)",Testosterone total (ng/dL)
+BY<0.05,-0.054517393740685316,URXEPB,LBXSGL,Ethyl paraben  (ng/ml),"Glucose, serum (mg/dL)"
+BY<0.05,0.04064195326718743,DR2TMOIS,DXXANFM,Moisture (gm),Android fat mass
+BY<0.05,-0.07391163716909446,DR1TM161,DXXL2TBS,MFA 16:1 (Hexadecenoic) (gm),L2 TBS
+BY<0.05,-0.06751774645237434,LBDVIDMS,LBXCRP,Vitamin D (nmol/L),C-reactive protein (mg/dL)
+BY<0.05,0.012675493138806214,URXUTU,URXUIO,"Tungsten, urine (ng/mL)","Iodine, urine (ng/mL)"
+BY<0.05,-0.13329548193477186,LBXNFOS,DXXSATV,n-perfluorooctane sulfonic acid (n-PFOS) (ng/mL),Subcutaneous fat volume
+BY<0.05,-0.0237300392951306,LBXVTE,LBXSCLSI,"Blood 1,1,1-Trichloroethane Result",Chloride (mmol/L)
+BY<0.05,0.04913508150687308,DSQTCALC,LBXSASSI,Calcium (mg),Aspartate aminotransferase AST (U/L)
+BY<0.05,-0.07684865509439165,LBXVOX,DXXGYTOM,Blood o-Xylene Result (ng/mL),Gynoid total mass
+BY<0.05,-0.047166820482108136,URX24D,LBXNEPCT,"2,4-D (ug/L) result",Segmented neutrophils percent (%)
+BY<0.05,0.0619798916826481,DR1TSUGR,DXXL3TBS,Total sugars (gm),L3 TBS
+BY<0.05,0.062259265766911966,DR1TSODI,DXXTATV,Sodium (mg) (adjusted for salt use in food preparation),Total abdominal fat volume
+BY<0.05,0.032792608782831224,DR1TFDFE,LBXSPH,Folate as dietary folate equivalents (mcg),Phosphorus (mg/dL)
+BY<0.05,-0.036968933105933854,DR1TNUMF,DXXL2BMC,Total number of foods reported in the individual foods file,L2 Bone Mineral Composition
+BY<0.05,-0.04096265600976237,DR2TSUGR,DXXL3BMC,Total sugars (gm),L3 Bone Mineral Composition
+BY<0.05,-0.04880392198813702,URXBP3,LBXRDW,Urinary 2-Hydroxy-4-metoxybenzophenone (Benzophenone-3),Red cell distribution width (%)
+BY<0.05,0.17008475292158934,LBXOD9,LBXGH,Trans 9-octadecenoic acid (umol/L),Glycohemoglobin (%)
+BY<0.05,0.032779354099386565,DR1TPROT,LBXRBCSI,Protein (gm),Red blood cell count (million cells/uL)
+BY<0.05,-0.04717994625115715,URXUHG,LBXGH,"Mercury, urine (ng/mL)",Glycohemoglobin (%)
+BY<0.05,-0.07426372290357533,URXGAM,LBXSAL,N-acetyl-S-(2-carbamoyl-2-hydroxyethyl)-L-cysteine(ng/mL),Albumin (g/dL)
+BY<0.05,-0.04805423516291957,URXBPH,DXXOFA,Urinary Bisphenol A,Total femur area (cm^2)
+BY<0.05,-0.03130961956557933,LBXBEC,URXUMA,trans-b-carotene(ug/dL),"Albumin, urine (ug/mL)"
+BY<0.05,-0.025273491467473493,DR1TTHEO,BMXBMI,Theobromine (mg),Body Mass Index (kg/m**2)
+BY<0.05,0.054614144910943255,LBXBGM,DXXHEA,"Mercury, methyl (ug/L)",Head Area (cm^2)
+BY<0.05,0.09793095526047646,LBXHA,DXXHEFAT,Hepatitis A Antibody (Anti-HAV),Head Fat (grams)
+BY<0.05,0.06472011079145427,DR2TSODI,BMXTRI,Sodium (mg) (adjusted for salt use in food preparation),Triceps Skinfold (mm)
+BY<0.05,-0.008584087511891785,LBXVMC,DXXRABMC,Blood Methylene Chloride Result,Right Arm Bone Mineral Content (grams)
+BY<0.05,0.03464323000839687,DR1TM181,BMXWT,MFA 18:1 (Octadecenoic) (gm),Weight (kg)
+BY<0.05,-0.048054839738402334,LBXRST,LBXSCLSI,Retinyl stearate(ug/dL),Chloride (mmol/L)
+BY<0.05,-0.08964629432275127,LBXD05,LBXSKSI,"1,2,3,4,6,7,8-Heptachlororodibenzo-p-dioxin (hpcdd) (fg/g)",Potassium (mmol/L)
+BY<0.05,-0.03924426547417846,URXMAL,LBXHGB,Malathion diacid (ug/L),Hemoglobin (g/dL)
+BY<0.05,-0.047122356213555226,DR2TACAR,DXXSATV,Alpha-carotene (mcg),Subcutaneous fat volume
+BY<0.05,-0.0726603946694317,URXMHH,DXXPEBMC,Mono-(2-ethyl-5-hydroxyhexyl) phthalate (ng/mL),Pelvis Bone Mineral Content (grams)
+BY<0.05,-0.07632109777084535,URXAAM,DXDLATOT,N-acetyl-S-(2-carbamoylethyl)-L-cysteine(ng/mL),Left Arm Total (grams)
+BY<0.05,-0.07969730282428583,URXCYM,DXXTSBMC,N-acetyl-S-(2-cyanoethyl)-L-cysteine(ng/mL),Thoracic Spine Bone Mineral Content (grams)
+BY<0.05,0.04281650789733857,LBXVIDMS,DXXRABMD,25-hydroxyvitamin D2 + D3,Right Arm Bone Mineral Density (grams/cm^2)
+BY<0.05,-0.05443696941796705,URXUCO,DXXTRLI,"Cobalt, urine (ng/mL)",Trunk Lean incl Bone Mineral Content (grams)
+BY<0.05,0.007082926441664028,LBXVTHF,DXXRAFAT,Blood Tetrahydrofuran (ng/mL),Right Arm Fat (grams)
+BY<0.05,-0.06099054133077607,LBX2DF,DXXNKBMD,"Blood 2,5 Dimethylfuran result",Femoral neck bone mineral density (gm/cm^2)
+BY<0.05,3.141493312011278,SMQ710,URXUCR,"During the past 5 days {including today}, on how many days did {you/he/she}","Creatinine, urine (mg/dL)"
+BY<0.05,-0.17357220383486105,LBX196,LBXIN,PCB196 & 203 (ng/g),Insulin (uU/mL )
+BY<0.05,-0.06961727183401024,URXIPM3,BMXHT,N-Acetyl-S-(4-hydroxy-2-methyl-2-buten-1-yl)-L-cysteine (ng/mL),Standing Height (cm)
+BY<0.05,-0.09379640766660369,URXP03,DXDSTLE,3-fluorene (ng/L),Subtotal Lean excl BMC (g)
+BY<0.05,-0.054593653552866335,URXMOH,SPXNFVC,Mono-(2-ethyl-5-oxohexl) phthalate (ng/mL),"Baseline 1st Test Spirometry, Forced Vital Capacity, in mL."
+BY<0.05,-0.08431346251592696,LBXBCD,LBDP3,Cadmium (ug/L),Prostate specific antigen ratio (%)
+BY<0.05,-0.09639993720388063,URXUCD,DXXAGRAT,"Cadmium, urine (ng/mL).",Android to gynoid ratio
+BY<0.05,-0.056314169607493074,DR1TVB6,DXXVFATM,Vitamin B6 (mg),Visceral adipose tissue mass
+BY<0.05,-0.09578899686394121,LBDB12SI,DXXVFATV,Vitamin B12 (pmol/L),Visceral adipose tissue volume
+BY<0.05,0.03364713415966987,LBXVIDMS,LBXLYPCT,25-hydroxyvitamin D2 + D3,Lymphocyte percent (%)
+BY<0.05,-0.029556670076390953,DR2TRET,MSYSTOLIC,Retinol (mcg),Systolic Mean
+BY<0.05,0.11524404756934536,LBX146,LBXSCA,PCB146 (ng/g),Total calcium (mg/dL)
+BY<0.05,-0.07256755733557198,URXUDMA,DXXLLBMC,Urinary Dimethylarsinic acid (ug/L),Left Leg Bone Mineral Content (grams)
+BY<0.05,0.05016701436203702,DR1TP204,DXXTATM,PFA 20:4 (Eicosatetraenoic) (gm),Total abdominal fat mass
+BY<0.05,0.0590020424397752,URXP06,LBDLYMNO,1-phenanthrene (ng/L),Lymphocyte number (1000 cells/uL)
+BY<0.05,-0.027377935194185687,DR1TATOA,LBXSTR,Added alpha-tocopherol (Vitamin E) (mg),Triglycerides (mg/dL)
+BY<0.05,-0.02834331512704414,DR1TTHEO,DXXLALI,Theobromine (mg),Left Arm Lean incl BMC (grams)
+BY<0.05,-0.06398258818495008,URXUCO,DXXLLBMC,"Cobalt, urine (ng/mL)",Left Leg Bone Mineral Content (grams)
+BY<0.05,0.0347724306915332,DR1TSELE,DXXTRBMC,Selenium (mcg),Trochanter bone mineral content (gm)
+BY<0.05,0.03151339904005294,LBDB12SI,LBXLYPCT,Vitamin B12 (pmol/L),Lymphocyte percent (%)
+BY<0.05,-0.12967173285624808,LBX172,BMXBMI,PCB172 (ng/g),Body Mass Index (kg/m**2)
+BY<0.05,-0.04685816832080327,URXUDMA,DXXL2A,Urinary Dimethylarsinic acid (ug/L),L2 area
+BY<0.05,0.05182188749660378,DR2TPROT,DXDLALE,Protein (gm),Left Arm Lean excl Body Mineral Content (grams)
+BY<0.05,-0.05673332207127884,LBXCOT,DXXLLFAT,Cotinine (ng/mL),Left Leg Fat (grams)
+BY<0.05,-0.03649909187609914,DR1TACAR,DXXANFM,Alpha-carotene (mcg),Android fat mass
+BY<0.05,0.36652673535079017,LBXHXC,LBXTR,"3,3',4,4',5,5'-hexachlorobiphenyl (hxcb) (fg/g)",Triglyceride (mg/dL)
+BY<0.05,-0.04938877948556287,URXNO3,DXXTRA,Urinary nitrate (ng/mL),Trochanter area (cm^2)
+BY<0.05,-0.05337098035338307,DR1TCARB,DXXTRLI,Carbohydrate (gm),Trunk Lean incl Bone Mineral Content (grams)
+BY<0.05,0.0916161941247139,LBXHBS,DXDTOPF,Hepatitis B Surface Antibody (Anti-HBs),Total Percent Fat
+BY<0.05,-0.0056257030756180415,LBXVTC,DXDTRPF,Blood Trichloroethene Result (ng/mL),Trunk Percent Fat
+BY<0.05,-0.03884120628532671,DR1TCHOL,LBXSF6SI,Cholesterol (mg),Mefox oxidation product (nmol/L)
+BY<0.05,-0.06882086582508085,URXUDMA,DXXL3BMC,Urinary Dimethylarsinic acid (ug/L),L3 Bone Mineral Composition
+BY<0.05,-0.06221184596142142,URXMB2,DXDRATOT,N-acetyl-s-(2-hydroxy-3-butenyl)-L-cysteine (ng/mL),Right Arm Total (grams)
+BY<0.05,-0.09179233554246712,URX34M,DXXLLFAT,3-methylhippuric acid & 4-methylhippuric acid(ng/mL),Left Leg Fat (grams)
+BY<0.05,-0.06737211498428779,URXGAM,DXDTRA,N-acetyl-S-(2-carbamoyl-2-hydroxyethyl)-L-cysteine(ng/mL),Trunk Bone area (cm^2)
+BY<0.05,-0.038338972809656716,URXETD,MSYSTOLIC,Enterodiol (ng/mL),Systolic Mean
+BY<0.05,0.0400738155023899,DR2TSODI,DXDRALE,Sodium (mg) (adjusted for salt use in food preparation),Right Arm Lean excl Bone Mineral Content (grams)
+BY<0.05,0.14058441545398762,DSQTFA,LBXSF1SI,Folic acid (mcg),5-Methyl-tetrahydrofolate (nmol/L)
+BY<0.05,-0.037000967668295,LBXCOT,LBXSCK,Cotinine (ng/mL),Creatine Phosphokinase(CPK) (IU/L)
+BY<0.05,-0.13069319025670523,URXUCD,DXXPEBMD,"Cadmium, urine (ng/mL).",Pelvis Bone Mineral Density (grams/cm^2)
+BY<0.05,0.03370799960993186,DR2TALCO,LBXHGB,Alcohol (gm),Hemoglobin (g/dL)
+BY<0.05,-0.04983152556049925,DR2TCRYP,BMXTHICR,Beta-cryptoxanthin (mcg),Thigh Circumference (cm)
+BY<0.05,-0.08440933211660548,URXP25,BMXARML,2-Hydroxyphenanthrene (ng/L) & 3-Hydroxyphenanthrene (ng/L),Upper Arm Length (cm)
+BY<0.05,-0.034121212530414904,DR1TS120,LBXMPSI,SFA 12:0 (Dodecanoic) (gm),Mean platelet volume (fL)
+BY<0.05,0.051264944276503084,LBXVXY,LBXMC,Blood m-/p-Xylene Result (ng/mL),Mean cell hemoglobin concentration (g/dL)
+BY<0.05,0.0444670427368673,DR1TP225,DXDRLLE,PFA 22:5 (Docosapentaenoic) (gm),Right Leg Lean excl Bone Mineral Content (grams)
+BY<0.05,0.04277622571910219,DS1TFDFE,BMXARML,"Folate, DFE (mcg)",Upper Arm Length (cm)
+BY<0.05,0.030276580831072094,DR1TFIBE,LBXSPH,Dietary fiber (gm),Phosphorus (mg/dL)
+BY<0.05,-0.05771688598514359,DRXTVB2,BMXWAIST,Riboflavin (Vitamin B2) (mg),Waist Circumference (cm)
+BY<0.05,-0.0252375522240438,DR2TCRYP,LBXHGB,Beta-cryptoxanthin (mcg),Hemoglobin (g/dL)
+BY<0.05,-0.06448310073687583,URXMX2,LBXSIR,3-methylxanthine (umol/L),"Iron, refigerated (ug/dL)"
+BY<0.05,-0.06905216457670228,URXP03,DXDRALE,3-fluorene (ng/L),Right Arm Lean excl Bone Mineral Content (grams)
+BY<0.05,-0.08199334138368362,LBXVEB,DXDSTTOT,Blood Ethylbenzene Result (ng/mL),Subtotal (Total excl Head) (g)
+BY<0.05,0.13801812193271834,LBX156,LBXFER,PCB156 (ng/g),Ferritin(ng/mL)
+BY<0.05,-0.14399702291639715,LBXACR,DXDTRPF,Acrylamide (pmol/g Hb),Trunk Percent Fat
+BY<0.05,-0.023169952799136365,DR2TATOA,LBXSUA,Added alpha-tocopherol (Vitamin E) (mg),Uric acid (mg/dL)
+BY<0.05,0.13197914230799584,LBXPDE,LBXGH,ppDDE (ng/g),Glycohemoglobin (%)
+BY<0.05,0.061158458232303745,SMQ_how_long_since_quit_years,LBXSTB,How long since quit,Total bilirubin (mg/dL)
+BY<0.05,-0.04832279186396254,LBX2DF,LBXSC3SI,"Blood 2,5 Dimethylfuran result",Bicarbonate (mmol/L)
+BY<0.05,-0.0595367054799606,URXGAM,BMXARML,N-acetyl-S-(2-carbamoyl-2-hydroxyethyl)-L-cysteine(ng/mL),Upper Arm Length (cm)
+BY<0.05,-0.048912484893467466,LBXNM,DXXL4A,Blood Nitromethane (pg/mL),L4 area
+BY<0.05,0.035189700681834975,URXP02,BMXWAIST,2-napthol(ng/L),Waist Circumference (cm)
+BY<0.05,-0.04679929876453613,DR1TVB2,DXDLLPF,Riboflavin (Vitamin B2) (mg),Left Leg Percent Fat
+BY<0.05,-0.008499315240966882,URXDPM,LBXSF2SI,N-acetyl-S-(dimethylphenyl)-L-cysteine(ng/mL),Folic acid (nmol/L)
+BY<0.05,-0.04557510021495933,LBXBSE,LBXSF6SI,Blood selenium(ug/L),Mefox oxidation product (nmol/L)
+BY<0.05,-0.08690740018347479,LBXVEB,DXXTATM,Blood Ethylbenzene Result (ng/mL),Total abdominal fat mass
+BY<0.05,0.047516432529133755,DR1TCHOL,DXXLAFAT,Cholesterol (mg),Left Arm Fat (grams)
+BY<0.05,-0.03671202692132099,LBXPLP,LBXMPSI,Pyridoxal 5'-phosphate (nmol/L),Mean platelet volume (fL)
+BY<0.05,0.042250251634617146,LBXBSE,DXDSTLI,Blood selenium(ug/L),Subtotal Lean incl BMC (g)
+BY<0.05,0.06329235459103827,DR1TVK,LBXSF1SI,Vitamin K (mcg),5-Methyl-tetrahydrofolate (nmol/L)
+BY<0.05,0.06997547025078199,URXMHH,LBDEONO,Mono-(2-ethyl-5-hydroxyhexyl) phthalate (ng/mL),Eosinophils number (1000 cells/uL)
+BY<0.05,-0.025584446028039116,DR2TCRYP,BPXPLS,Beta-cryptoxanthin (mcg),60 sec. pulse (30 sec. pulse * 2):
+BY<0.05,0.056859776258502026,URXMOH,DXDRLPF,Mono-(2-ethyl-5-oxohexl) phthalate (ng/mL),Right Leg Percent Fat
+BY<0.05,0.0489023313198354,URXP07,URXUMA,2-phenanthrene (ng/L),"Albumin, urine (ug/mL)"
+BY<0.05,0.12561114754230043,DRXTZINC,LBXSBU,Zinc (mg),Blood urea nitrogen (mg/dL)
+BY<0.05,-0.02633499949863037,DR1TFIBE,LBXTC,Dietary fiber (gm),Total cholesterol (mg/dL)
+BY<0.05,-0.10836641873943326,LBXBEC,DXXOSBMD,trans-b-carotene(ug/dL),Total spine BMD
+BY<0.05,0.07781789451104233,URXNAL,RB_FaPhyloDivMean,"NNAL , urine (ng/mL)",RB_FaPhyloDivMean
+BY<0.05,-0.07681689006309791,URX34M,DXXSATV,3-methylhippuric acid & 4-methylhippuric acid(ng/mL),Subcutaneous fat volume
+BY<0.05,0.5215460827076265,LBXHCR,DXXRRA,Hepatitis C RNA (HCV-RNA),Right Ribs Area (cm^2)
+BY<0.05,-0.053166259891136367,LBXCOT,DXDTOFAT,Cotinine (ng/mL),Total Fat (g)
+BY<0.05,0.11175532267088815,URXP07,RB_FaPhyloDivMean,2-phenanthrene (ng/L),RB_FaPhyloDivMean
+BY<0.05,-0.04622230792256946,URXUTU,LBXSTP,"Tungsten, urine (ng/mL)",Total protein (g/dL)
+BY<0.05,-0.061445942095394154,URXCPM,DXXINBMD,"3,5,6-trichloropyridinol (ug/L) result",Intertrochanter bone mineral density (gm/cm^2)
+BY<0.05,0.04715438290882555,DR1TP204,DXDTRLE,PFA 20:4 (Eicosatetraenoic) (gm),Trunk Lean excl Bone Mineral Content (grams)
+BY<0.05,0.04307367142939699,DR1TMOIS,LBXSIR,Moisture (gm),"Iron, refigerated (ug/dL)"
+BY<0.05,-0.04633188317400983,DR1TB12A,DXXTATM,Added vitamin B12 (mcg),Total abdominal fat mass
+BY<0.05,-0.07845339490892404,URXMX1,LBXSGB,1-methylxanthine (umol/L),Globulin (g/dL)
+BY<0.05,-0.09237279219105218,LBXPFDE,DXXGYFM,Pefluorodecanoic acid,Gynoid fat mass
+BY<0.05,-0.04842931487519597,URXMAD,DXXANLM,Mandelic acid(ng/mL),Android lean mass
+BY<0.05,0.08919001452124121,LBDB12SI,LBXSATSI,Vitamin B12 (pmol/L),Alanine aminotransferase ALT (U/L)
+BY<0.05,-0.09013867129493228,URX34M,DXDSTTOT,3-methylhippuric acid & 4-methylhippuric acid(ng/mL),Subtotal (Total excl Head) (g)
+BY<0.05,-0.027200909671054357,LBXCOT,LBXSAL,Cotinine (ng/mL),Albumin (g/dL)
+BY<0.05,-0.10294386701614414,LBXACR,DXXTRBMD,Acrylamide (pmol/g Hb),Trochanter bone mineral density (gm/cm^2)
+BY<0.05,0.16975134992727023,LBXF07,LBXSCH,"2,3,4,6,7,8-Hexchlorodibenzofuran (hxcdf) (fg/g)",Cholesterol (mg/dL)
+BY<0.05,-0.06426506061144825,URX2MH,DXXTRLI,2-methylhippuric acid (ng/mL),Trunk Lean incl Bone Mineral Content (grams)
+BY<0.05,-0.11636980204920602,URXUCD,DXXLLFAT,"Cadmium, urine (ng/mL).",Left Leg Fat (grams)
+BY<0.05,-0.06141381304055597,URX34M,DXXLALI,3-methylhippuric acid & 4-methylhippuric acid(ng/mL),Left Arm Lean incl BMC (grams)
+BY<0.05,-0.12211909556212731,LBXBCO,DXDSTPF,Cobalt (ug/L),Subtotal Percent Fat
+BY<0.05,-0.05156036166334946,DR2TATOA,DXXTATM,Added alpha-tocopherol (Vitamin E) (mg),Total abdominal fat mass
+BY<0.05,0.04288060261016643,DR1TSODI,DXXINBMC,Sodium (mg) (adjusted for salt use in food preparation),Intertrochanter bone mineral content (gm)
+BY<0.05,0.06156604922786939,URXMC1,LBXSKSI,Mono-(3-carboxypropyl) phthalate (ng/mL),Potassium (mmol/L)
+BY<0.05,0.37456651072851876,LBDHBG,DXXLAFAT,Hepatitis B surface antigen,Left Arm Fat (grams)
+BY<0.05,-0.06322530432092616,DR1TFF,LBXCRP,Food folate (mcg),C-reactive protein (mg/dL)
+BY<0.05,-0.07890999250439347,URXHIBP,DXDHELE,Mono-2-hydroxy-iso-butyl phthalate (ng/mL),Head Lean excl Bone Mineral Content (grams)
+BY<0.05,-0.04366327150951139,DR2TVC,DXXAGRAT,Vitamin C (mg),Android to gynoid ratio
+BY<0.05,-0.14747811798314114,LBXNFOA,LBDRFO,n-perfluorooctanoic acid (n-PFOA) (ng/mL),RBC folate (ng/mL)
+BY<0.05,-0.043506988265536,DR1TMAGN,MSYSTOLIC,Magnesium (mg),Systolic Mean
+BY<0.05,0.042703367508501545,LBXVIC,LBXSBU,Vitamin C (mg/dL),Blood urea nitrogen (mg/dL)
+BY<0.05,-0.057084410752374665,URXUMO,DXXTRBMC,"Molybdenum, urine (ng/mL)",Trochanter bone mineral content (gm)
+BY<0.05,-0.07047835396795253,DR1TCOPP,DXXVFATV,Copper (mg),Visceral adipose tissue volume
+BY<0.05,0.08547122847580807,LBXHPE,LBXSGB,Heptachlor Epoxide (ng/g),Globulin (g/dL)
+BY<0.05,-0.0898805911480605,LBXVEB,DXDTRPF,Blood Ethylbenzene Result (ng/mL),Trunk Percent Fat
+BY<0.05,0.15370507625909532,LBXPCB,LBXSGL,"3,3',4,4',5-Pentachlorobiphenyl (pncb) (fg/g)","Glucose, serum (mg/dL)"
+BY<0.05,-0.06493663339647927,URXUDMA,DXDTRLE,Urinary Dimethylarsinic acid (ug/L),Trunk Lean excl Bone Mineral Content (grams)
+BY<0.05,-0.07717329432227175,URXCYM,LBXSTP,N-acetyl-S-(2-cyanoethyl)-L-cysteine(ng/mL),Total protein (g/dL)
+BY<0.05,-0.08760502117576119,URXUCS,DXXTSA,"Cesium, urine (ng/mL)",Thoracic Spine Area (cm^2)
+BY<0.05,-0.2160620261697447,LBXNFOS,LBDRFO,n-perfluorooctane sulfonic acid (n-PFOS) (ng/mL),RBC folate (ng/mL)
+BY<0.05,-0.06486652892023975,DS1DSCNT,DXXVFATV,Number of dietary supplements reported,Visceral adipose tissue volume
+BY<0.05,-0.06811109008231776,URXMX6,LBXSTP,"3,7-dimethylxanthine(theobromine)(umol/L)",Total protein (g/dL)
+BY<0.05,-0.053823270169367346,DRXTVC,BMXWAIST,Vitamin C (mg),Waist Circumference (cm)
+BY<0.05,0.008252245790863972,LBXVTHF,LBXRBCSI,Blood Tetrahydrofuran (ng/mL),Red blood cell count (million cells/uL)
+BY<0.05,-0.07009407762746214,URXHEM,DXXGYFM,N-acetyl-S- (2-Hydroxyethyl)-L-cysteine(ng/mL),Gynoid fat mass
+BY<0.05,0.06677918899769908,LBXHBS,DXXTSA,Hepatitis B Surface Antibody (Anti-HBs),Thoracic Spine Area (cm^2)
+BY<0.05,-0.04784301227986488,DR1TATOC,DXDRAPF,Vitamin E as alpha-tocopherol (mg),Right Arm Percent Fat
+BY<0.05,-0.04810949170281006,DR1TVC,DXXANFM,Vitamin C (mg),Android fat mass
+BY<0.05,0.040967624011051036,DR1TSELE,BMXSUB,Selenium (mcg),Subscapular Skinfold (mm)
+BY<0.05,-0.07562448361585518,DR2TMAGN,DXXLAFAT,Magnesium (mg),Left Arm Fat (grams)
+BY<0.05,-0.12480366672769652,LBXVEB,BMXCALF,Blood Ethylbenzene Result (ng/mL),Maximal Calf Circumference (cm)
+BY<0.05,-0.06162847261414634,URXP04,DXDLALE,2-fluorene (ng/L),Left Arm Lean excl Body Mineral Content (grams)
+BY<0.05,0.04607026307296756,DSQTVC,LBXSF4SI,Vitamin C (mg),Tetrahydrofolate (nmol/L)
+BY<0.05,-0.05143520958888902,DR2TALCO,DXXSATV,Alcohol (gm),Subcutaneous fat volume
+BY<0.05,0.0718541580123242,DR2TVB6,LBXFOL,Vitamin B6 (mg),"Folate, serum (ng/mL)"
+BY<0.05,-0.05310835366839454,LBXVXY,DXDLLPF,Blood m-/p-Xylene Result (ng/mL),Left Leg Percent Fat
+BY<0.05,0.05055240753858339,URXMU5,BMXARMC,"1,7-dimethyluric acid (umol/L)",Arm Circumference (cm)
+BY<0.05,-0.04292373731010022,DRXTPFAT,BMXHT,Total polyunsaturated fatty acids (gm),Standing Height (cm)
+BY<0.05,0.04126753590444526,URXEQU,LBXSGL,Equol (ng/mL),"Glucose, serum (mg/dL)"
+Bonf.<0.05,0.04941998913728811,DR1TSELE,BMXWT,Selenium (mcg),Weight (kg)
+Bonf.<0.05,-0.11997704263299154,LBXVD3MS,DXDRLPF,25-hydroxyvitamin D3(nmol/L),Right Leg Percent Fat
+Bonf.<0.05,-0.13681886121383738,URXUCO,LBXMCVSI,"Cobalt, urine (ng/mL)",Mean cell volume (fL)
+Bonf.<0.05,-0.04954164311240921,LBXLUZ,BMXHT,Combined Lutein/zeaxanthin(ug/dL),Standing Height (cm)
+Bonf.<0.05,0.053207221822530355,DR1TSFAT,BMXWT,Total saturated fatty acids (gm),Weight (kg)
+Bonf.<0.05,0.08569133362447022,DR1TMOIS,BMXBMI,Moisture (gm),Body Mass Index (kg/m**2)
+Bonf.<0.05,-0.08376538882117841,DR1TNUMF,DXXANFM,Total number of foods reported in the individual foods file,Android fat mass
+Bonf.<0.05,-0.11994405993318975,LBXVE3MS,DXDHEPF,epi-25-hydroxyvitamin D3 (nmol/L),Head Percent Fat
+Bonf.<0.05,0.12212397130171329,LBX2DF,LBXHGB,"Blood 2,5 Dimethylfuran result",Hemoglobin (g/dL)
+Bonf.<0.05,-0.06815790059692661,DR1TMFAT,LBXSGTSI,Total monounsaturated fatty acids (gm),Gamma glutamyl transferase (U/L)
+Bonf.<0.05,0.0727730219703086,LBXGTC,LBXSGTSI,g-tocopherol(ug/dL),Gamma glutamyl transferase (U/L)
+Bonf.<0.05,0.054261786325339643,DR1TTFAT,BMXWT,Total fat (gm),Weight (kg)
+Bonf.<0.05,-0.07096708945027373,URXUCO,DXXLABMC,"Cobalt, urine (ng/mL)",Left Arm Body Mineral Content (grams)
+Bonf.<0.05,-0.09252195608894961,LBXVXY,DXXAPFAT,Blood m-/p-Xylene Result (ng/mL),Android percent fat
+Bonf.<0.05,-0.10895304836038017,DR2TMAGN,DXXAPFAT,Magnesium (mg),Android percent fat
+Bonf.<0.05,-0.06722301196774423,LBXVFN,LBXSUA,Blood Furan (ng/mL),Uric acid (mg/dL)
+Bonf.<0.05,0.07555845534211571,DR2TNUMF,LBDFOT,Total number of foods reported in the individual foods file,Serum total folate (ng/mL)
+Bonf.<0.05,-0.07207733167584328,LBXVD3MS,DXDSTLI,25-hydroxyvitamin D3(nmol/L),Subtotal Lean incl BMC (g)
+Bonf.<0.05,-0.13292137574861337,LBXPFUA,DXXRLFAT,Perfluoroundecanoic acid,Right Leg Fat (grams)
+Bonf.<0.05,-0.09588514031711604,URXMPB,BMXBMI,Methyl paraben (ng/ml),Body Mass Index (kg/m**2)
+Bonf.<0.05,-0.053452250553314574,LBXCBC,MDIASTOLIC,cis-b-carotene(ug/dL),Diastolic Mean
+Bonf.<0.05,-0.12024305857534323,LBXALC,LBXSUA,a-carotene(ug/dL),Uric acid (mg/dL)
+Bonf.<0.05,0.0855911477111482,URXCOP,LBXSBU,Mono(carboxyoctyl) phthalate(ng/mL),Blood urea nitrogen (mg/dL)
+Bonf.<0.05,0.1571455752008494,LBXPFUA,LBDHDD,Perfluoroundecanoic acid,Direct HDL-Cholesterol (mg/dL)
+Bonf.<0.05,0.10483059857785325,DR1TCALC,LBDRFO,Calcium (mg),RBC folate (ng/mL)
+Bonf.<0.05,-0.03228607102680112,LBXVMC,DXXNKA,Blood Methylene Chloride Result,Femoral neck area (cm^2)
+Bonf.<0.05,-0.036382817768395664,URXMNP,LBXRBCSI,Mono-isononyl phthalate (ng/mL),Red blood cell count (million cells/uL)
+Bonf.<0.05,-0.15694875238891523,URXUPB,DXXRLLI,"Lead, urine (ng/mL)",Right Leg Lean incl Bone Mineral Content (grams)
+Bonf.<0.05,0.08929917366782941,LBXBPB,LBXTC,Lead (ug/dL),Total cholesterol (mg/dL)
+Bonf.<0.05,-0.09247447359665781,URXUPB,DXXOSA,"Lead, urine (ng/mL)",Total spine area
+Bonf.<0.05,-0.05689367075668914,URXPTU,BMXTRI,Propylenethio urea (ug/L),Triceps Skinfold (mm)
+Bonf.<0.05,0.07770410788678701,DR1TTFAT,LBXSOSSI,Total fat (gm),Osmolality (mmol/Kg)
+Bonf.<0.05,0.14378458065773106,DS1DSCNT,LBXSF4SI,Number of dietary supplements reported,Tetrahydrofolate (nmol/L)
+Bonf.<0.05,0.09876061326817576,DR2TMOIS,DXXLLLI,Moisture (gm),Left Leg Lean incl Bone Mineral Content (grams)
+Bonf.<0.05,-0.09818198323984541,LBX2DF,DXXAPFAT,"Blood 2,5 Dimethylfuran result",Android percent fat
+Bonf.<0.05,-0.05109847670500778,LBXVD3MS,BMXARML,25-hydroxyvitamin D3(nmol/L),Upper Arm Length (cm)
+Bonf.<0.05,-0.13196364673143351,URXP17,ENXMEAN,9-fluorene (ng/L),"Mean of two reproducible FENO measurements, in parts per billion"
+Bonf.<0.05,-0.07813797122630364,DR2TNUMF,DXXGYTOM,Total number of foods reported in the individual foods file,Gynoid total mass
+Bonf.<0.05,-0.07487183996400518,URXUPB,DXDRALE,"Lead, urine (ng/mL)",Right Arm Lean excl Bone Mineral Content (grams)
+Bonf.<0.05,-0.15713438562365914,URXUCD,DXXOFBMD,"Cadmium, urine (ng/mL).",Total femur bone mineral density (gm/cm^2)
+Bonf.<0.05,-0.15297934045763176,URXUMMA,DXDSTFAT,Urinary Monomethylarsonic acid (ug/L),Subtotal Fat (g)
+Bonf.<0.05,0.12176078043975896,DR2TVB2,LBXFOL,Riboflavin (Vitamin B2) (mg),"Folate, serum (ng/mL)"
+Bonf.<0.05,0.11525610589537501,LBXVTO,LBDNENO,Blood Toluene Result (ng/mL),Segmented neutrophils num (1000 cell/uL)
+Bonf.<0.05,0.31341468902920594,LBXBCO,LBXRDW,Cobalt (ug/L),Red cell distribution width (%)
+Bonf.<0.05,-0.05576331457371301,URXMBP,LBXRBCSI,Mono-n-butyl phthalate (ng/mL),Red blood cell count (million cells/uL)
+Bonf.<0.05,0.12429997186493827,URXUP8,LBXSBU,Urinary Perchlorate,Blood urea nitrogen (mg/dL)
+Bonf.<0.05,-0.13565959325284854,LBXVE3MS,BMXWAIST,epi-25-hydroxyvitamin D3 (nmol/L),Waist Circumference (cm)
+Bonf.<0.05,0.04931412241264139,DS1DSCNT,LBXSAL,Number of dietary supplements reported,Albumin (g/dL)
+Bonf.<0.05,0.17027889892999282,LBXHA,DXXRAFAT,Hepatitis A Antibody (Anti-HAV),Right Arm Fat (grams)
+Bonf.<0.05,-0.13171724381400715,URXP03,DXDLATOT,3-fluorene (ng/L),Left Arm Total (grams)
+Bonf.<0.05,-0.060528722646602334,DR1TVC,DXDTRPF,Vitamin C (mg),Trunk Percent Fat
+Bonf.<0.05,-0.08072523940387101,URXPHE,DXDRLLE,N-acetyl-S-(phenyl-2-hydroxyethyl)-L-cysteine(ng/mL),Right Leg Lean excl Bone Mineral Content (grams)
+Bonf.<0.05,-0.05805367650257747,LBXVE3MS,BPXPLS,epi-25-hydroxyvitamin D3 (nmol/L),60 sec. pulse (30 sec. pulse * 2):
+Bonf.<0.05,-0.07653671266314596,DR1TVB2,DXXAPFAT,Riboflavin (Vitamin B2) (mg),Android percent fat
+Bonf.<0.05,-0.14837815673349775,LBXVIDMS,BMXTRI,25-hydroxyvitamin D2 + D3,Triceps Skinfold (mm)
+Bonf.<0.05,0.04057796647640604,DR1TLZ,LBXSBU,Lutein + zeaxanthin (mcg),Blood urea nitrogen (mg/dL)
+Bonf.<0.05,0.1054467972019935,LBXBCD,DXAFMRD0,Cadmium (ug/L),Calculated DO for femur
+Bonf.<0.05,0.08603636001564861,LBXRPL,LBXMC,Retinyl palmitate(ug/dL),Mean cell hemoglobin concentration (g/dL)
+Bonf.<0.05,-0.16959667345937038,LBXBPB,BMXWAIST,Lead (ug/dL),Waist Circumference (cm)
+Bonf.<0.05,-0.08811912498373434,LBXPFUA,DXDLAPF,Perfluoroundecanoic acid,Left Arm Percent Fat
+Bonf.<0.05,-0.06803156967380487,URXEPB,LBXGLU,Ethyl paraben  (ng/ml),Fasting Glucose (mg/dL)
+Bonf.<0.05,0.07707849656374098,DS1DSCNT,LBDHDD,Number of dietary supplements reported,Direct HDL-Cholesterol (mg/dL)
+Bonf.<0.05,-0.11425004707484958,LBXPFUA,DXXGYTOM,Perfluoroundecanoic acid,Gynoid total mass
+Bonf.<0.05,-0.053212898000146114,DR1TVK,LBDNENO,Vitamin K (mcg),Segmented neutrophils num (1000 cell/uL)
+Bonf.<0.05,-0.013321103356724217,LBXVTHF,LBXSPH,Blood Tetrahydrofuran (ng/mL),Phosphorus (mg/dL)
+Bonf.<0.05,-0.09825034490042021,LBXBCD,DXXLLFAT,Cadmium (ug/L),Left Leg Fat (grams)
+Bonf.<0.05,-0.07412351644887127,URXUTL,LBDMONO,"Thallium, urine (ng/mL)",Monocyte number (1000 cells/uL)
+Bonf.<0.05,-0.0742519316947858,DR2TPOTA,LBDNENO,Potassium (mg),Segmented neutrophils num (1000 cell/uL)
+Bonf.<0.05,-0.04485516959533178,LBXVIDMS,LBXSTR,25-hydroxyvitamin D2 + D3,Triglycerides (mg/dL)
+Bonf.<0.05,-0.11452843764851431,LBXBEC,DXXGPFAT,trans-b-carotene(ug/dL),Gynoid percent fat
+Bonf.<0.05,-0.1009222881729862,URXPMM,DXDSTTOT,N-acetyl-s-(3-hydroxypropyl-1-methyl)-L-cysteine(ng/mL),Subtotal (Total excl Head) (g)
+Bonf.<0.05,-0.11651181855398152,URXAMC,LBXSTP,N-acetyl-S-(N-methylcarbamoyl)-L-cysteine(ng/mL),Total protein (g/dL)
+Bonf.<0.05,-1.1437334706121998,LBDHCV,LBXSGTSI,Hepatitis C antibody (confirmed),Gamma glutamyl transferase (U/L)
+Bonf.<0.05,0.10459159424106722,URXMHH,LBXGLU,Mono-(2-ethyl-5-hydroxyhexyl) phthalate (ng/mL),Fasting Glucose (mg/dL)
+Bonf.<0.05,-0.13390501234849195,URXUCD,DXXTRLI,"Cadmium, urine (ng/mL).",Trunk Lean incl Bone Mineral Content (grams)
+Bonf.<0.05,-0.07351045329932075,URXMC1,BMXARML,Mono-(3-carboxypropyl) phthalate (ng/mL),Upper Arm Length (cm)
+Bonf.<0.05,-0.1021677948174998,URXMB3,DXDLATOT,N-acetyl-s-(4-hydroxy-2-butenyl)-L-cysteine (ng/mL),Left Arm Total (grams)
+Bonf.<0.05,0.14516547217300171,DR2TIRON,LBDFOT,Iron (mg),Serum total folate (ng/mL)
+Bonf.<0.05,0.009781662445970516,LBXVDEE,DXXLSA,Blood Diethyl Ether (ng/mL),Lumbar Spine Area (cm^2)
+Bonf.<0.05,0.08997281463938903,DR2TMOIS,DXXPEA,Moisture (gm),Pelvis Area (cm^2)
+Bonf.<0.05,-0.1814659845513355,LBDVIDMS,BMXWT,Vitamin D (nmol/L),Weight (kg)
+Bonf.<0.05,0.1442375897960071,DR1TMAGN,LBXFOL,Magnesium (mg),"Folate, serum (ng/mL)"
+Bonf.<0.05,-0.10455181267781255,URXCYM,DXXAPFAT,N-acetyl-S-(2-cyanoethyl)-L-cysteine(ng/mL),Android percent fat
+Bonf.<0.05,-0.08002224613926104,URXP01,BMXWT,1-napthol (ng/L),Weight (kg)
+Bonf.<0.05,-0.1807629361006329,URXMOH,LBXSIR,Mono-(2-ethyl-5-oxohexl) phthalate (ng/mL),"Iron, refigerated (ug/dL)"
+Bonf.<0.05,-0.14366864794344267,URXATC,BMXHT,2-aminothiazoline-4-carboxylic acid(ng/mL),Standing Height (cm)
+Bonf.<0.05,-0.17223891859892929,URXUCD,SPXNFEV1,"Cadmium, urine (ng/mL).","Baseline 1st Test Spirometry, Forced Expiratory Volume in the first 1.0 sec"
+Bonf.<0.05,0.09072323817959396,DR1TMOIS,DXDTRBMC,Moisture (gm),Trunk Bone Mineral Content (grams)
+Bonf.<0.05,-0.12581284078127594,LBXPFDE,DXDSTFAT,Pefluorodecanoic acid,Subtotal Fat (g)
+Bonf.<0.05,-0.11343412096254298,LBXPLP,BPXPLS,Pyridoxal 5'-phosphate (nmol/L),60 sec. pulse (30 sec. pulse * 2):
+Bonf.<0.05,0.06137006324491969,LBXCOT,LBXTST,Cotinine (ng/mL),Testosterone total (ng/dL)
+Bonf.<0.05,0.1768902015843128,LBXOTT,LBXWBCSI,"Trans,trans-9,12-Octadecadienoic acid (umol/L)",White blood cell count (1000 cells/uL)
+Bonf.<0.05,-0.059221867634544616,LBXPLP,LBXSUA,Pyridoxal 5'-phosphate (nmol/L),Uric acid (mg/dL)
+Bonf.<0.05,0.0973160626288085,DR2TCALC,LBDFOT,Calcium (mg),Serum total folate (ng/mL)
+Bonf.<0.05,-0.01007591483326363,LBXVTC,DXXTRFAT,Blood Trichloroethene Result (ng/mL),Trunk Fat (grams)
+Bonf.<0.05,-0.09309517863150919,LBXB12,DXXANTOM,Vitamin B12 ( pg/mL),Android total mass
+Bonf.<0.05,0.049720558212558275,URXMZP,URXUMA,Mono-benzyl phthalate (ng/mL),"Albumin, urine (ug/mL)"
+Bonf.<0.05,-0.08452760237613899,URXPHE,DXDLLLE,N-acetyl-S-(phenyl-2-hydroxyethyl)-L-cysteine(ng/mL),Left Leg Lean excl Bone Mineral Content (grams)
+Bonf.<0.05,-0.11065482602365824,LBXLUZ,BMXSUB,Combined Lutein/zeaxanthin(ug/dL),Subscapular Skinfold (mm)
+Bonf.<0.05,-0.06442604110721928,LBXCBC,LBXRDW,cis-b-carotene(ug/dL),Red cell distribution width (%)
+Bonf.<0.05,-0.22137602267051978,LBX170,BMXCALF,PCB170 (ng/g),Maximal Calf Circumference (cm)
+Bonf.<0.05,-0.1457274844810313,LBXVE3MS,BMXTRI,epi-25-hydroxyvitamin D3 (nmol/L),Triceps Skinfold (mm)
+Bonf.<0.05,-0.06864182745524158,URXSCN,LBXSGB,Urinary thiocyanate (ng/mL),Globulin (g/dL)
+Bonf.<0.05,-0.10041866963397443,LBXVBZ,DXXAPFAT,Blood Benzene Result (ng/mL),Android percent fat
+Bonf.<0.05,0.053944801257274626,DR1TALCO,MSYSTOLIC,Alcohol (gm),Systolic Mean
+Bonf.<0.05,-0.14730909969103595,LBXVD3MS,BMXSUB,25-hydroxyvitamin D3(nmol/L),Subscapular Skinfold (mm)
+Bonf.<0.05,0.16902838749533416,LBXF07,LBXRBCSI,"2,3,4,6,7,8-Hexchlorodibenzofuran (hxcdf) (fg/g)",Red blood cell count (million cells/uL)
+Bonf.<0.05,-0.19942759518440858,LBXVD3MS,DXXSATM,25-hydroxyvitamin D3(nmol/L),Subcutaneous fat mass
+Bonf.<0.05,0.14899906612686262,DR1TFIBE,LBDFOT,Dietary fiber (gm),Serum total folate (ng/mL)
+Bonf.<0.05,-0.05067803934846461,LBXCOT,DXXGYTOM,Cotinine (ng/mL),Gynoid total mass
+Bonf.<0.05,-0.08595649259213431,URXUDMA,DXDSTA,Urinary Dimethylarsinic acid (ug/L),Subtotal Area (cm^2)
+Bonf.<0.05,0.3152455230835038,LBXHPE,BMXBMI,Heptachlor Epoxide (ng/g),Body Mass Index (kg/m**2)
+Bonf.<0.05,-0.051686153031054026,DR1TIRON,LBXSGTSI,Iron (mg),Gamma glutamyl transferase (U/L)
+Bonf.<0.05,-0.08126329908550717,URXPPB,BMXARMC,Propyl paraben (ng/ml),Arm Circumference (cm)
+Bonf.<0.05,0.07227420461693604,DR2TMOIS,DXXLAA,Moisture (gm),Left Arm Area (cm^2)
+Bonf.<0.05,0.08419638848457361,URXNAL,LBDBANO,"NNAL , urine (ng/mL)",Basophils number (1000 cells/uL)
+Bonf.<0.05,0.08876573959229887,DR2TMOIS,DXDLATOT,Moisture (gm),Left Arm Total (grams)
+Bonf.<0.05,-0.056937154963370644,URXUAS,BMXBMI,Urinary total Arsenic (ug/L),Body Mass Index (kg/m**2)
+Bonf.<0.05,-0.03852532202315062,LBXVMC,DXXL1A,Blood Methylene Chloride Result,L1 area
+Bonf.<0.05,-0.10661011512362545,LBXBGM,DXDSTFAT,"Mercury, methyl (ug/L)",Subtotal Fat (g)
+Bonf.<0.05,-0.09490758573793015,URXMBP,LBXSAL,Mono-n-butyl phthalate (ng/mL),Albumin (g/dL)
+Bonf.<0.05,0.12906289462164794,URXCOTT,LBDMONO,"Total Cotinine, urine (ng/mL)",Monocyte number (1000 cells/uL)
+Bonf.<0.05,-0.056284346645306085,LBXVE3MS,URXUCR,epi-25-hydroxyvitamin D3 (nmol/L),"Creatinine, urine (mg/dL)"
+Bonf.<0.05,-0.14639054698138784,LBXALC,BMXTHICR,a-carotene(ug/dL),Thigh Circumference (cm)
+Bonf.<0.05,-0.050727035152262276,DR1TNUMF,DXDSTBMC,Total number of foods reported in the individual foods file,Subtotal Bone Mineral Content (grams)
+Bonf.<0.05,-0.11487289186574604,DR1TMAGN,DXXTATV,Magnesium (mg),Total abdominal fat volume
+Bonf.<0.05,-0.056334192927585985,LBXHCT,DXXGPFAT,"Hydroxycotinine, Serum (ng/mL)",Gynoid percent fat
+Bonf.<0.05,0.15433118017935432,LBXHA,DXDTRTOT,Hepatitis A Antibody (Anti-HAV),Trunk Total (grams)
+Bonf.<0.05,-0.0856233393174532,DR1TNUMF,DXDTOTOT,Total number of foods reported in the individual foods file,Total Lean+Fat (g)
+Bonf.<0.05,-0.28825253912362847,SMQ_current_ever_never,LBXRBF,"Smoking: current, ever, never","Folate, RBC (ng/mL RBC)"
+Bonf.<0.05,-0.07436363067192021,LBXBGM,DXDLAPF,"Mercury, methyl (ug/L)",Left Arm Percent Fat
+Bonf.<0.05,0.17939244387771783,DR1TSELE,LBXSBU,Selenium (mcg),Blood urea nitrogen (mg/dL)
+Bonf.<0.05,-0.1614422046122397,LBXBEC,LBXSUA,trans-b-carotene(ug/dL),Uric acid (mg/dL)
+Bonf.<0.05,-0.19765086995884326,LBXVIDMS,DXXAPFAT,25-hydroxyvitamin D2 + D3,Android percent fat
+Bonf.<0.05,0.05846090053586088,LBXRST,LBXLYPCT,Retinyl stearate(ug/dL),Lymphocyte percent (%)
+Bonf.<0.05,0.21478462454047295,DSQTFA,LBDRFO,Folic acid (mcg),RBC folate (ng/mL)
+Bonf.<0.05,0.9903462292688741,LBXHE1,DXAFMRK,Herpes Simplex Virus I,Calculated K for femur
+Bonf.<0.05,-0.17715729489324888,LBXVIDMS,BMXWAIST,25-hydroxyvitamin D2 + D3,Waist Circumference (cm)
+Bonf.<0.05,0.12717272269425114,LBXVD3MS,DXASPND0,25-hydroxyvitamin D3(nmol/L),Calculated D0 for spine
+Bonf.<0.05,0.07792319662886353,DSQTVK,LBDFOT,Vitamin K (mcg),Serum total folate (ng/mL)
+Bonf.<0.05,-0.08342761634741021,LBXBGM,LBXSF6SI,"Mercury, methyl (ug/L)",Mefox oxidation product (nmol/L)
+Bonf.<0.05,-0.07593412977790454,URXP03,LBXSCR,3-fluorene (ng/L),Creatinine (mg/dL)
+Bonf.<0.05,-0.07689883397817256,URXHEM,DXXLLBMC,N-acetyl-S- (2-Hydroxyethyl)-L-cysteine(ng/mL),Left Leg Bone Mineral Content (grams)
+Bonf.<0.05,-0.2809645334648095,LBXHXC,BMXBMI,"3,3',4,4',5,5'-hexachlorobiphenyl (hxcb) (fg/g)",Body Mass Index (kg/m**2)
+Bonf.<0.05,0.12079505832957163,URXUMO,LBXSOSSI,"Molybdenum, urine (ng/mL)",Osmolality (mmol/Kg)
+Bonf.<0.05,-0.13288949421767027,LBDVICSI,BMXBMI,Vitamin C (umol/L),Body Mass Index (kg/m**2)
+Bonf.<0.05,-0.10302378647726201,URXUPB,DXXL2A,"Lead, urine (ng/mL)",L2 area
+Bonf.<0.05,-0.10250107594512722,LBXVBZ,DXXINBMD,Blood Benzene Result (ng/mL),Intertrochanter bone mineral density (gm/cm^2)
+Bonf.<0.05,-0.0744779710064771,URXECP,LBXTST,mono-2-ethyl-5-carboxypentyl phthalate (ng/mL),Testosterone total (ng/dL)
+Bonf.<0.05,0.15762477476831876,LBXHA,DXDSTFAT,Hepatitis A Antibody (Anti-HAV),Subtotal Fat (g)
+Bonf.<0.05,-0.03845351397653717,DR2TATOC,BMXARML,Vitamin E as alpha-tocopherol (mg),Upper Arm Length (cm)
+Bonf.<0.05,0.07958832067279252,LBXGLY,LBDMONO,Glycideamide (pmol/g Hb),Monocyte number (1000 cells/uL)
+Bonf.<0.05,-0.050641012626246894,LBXBPB,LBXNEPCT,Lead (ug/dL),Segmented neutrophils percent (%)
+Bonf.<0.05,-0.12610927779874526,URXP03,DXDLLLE,3-fluorene (ng/L),Left Leg Lean excl Bone Mineral Content (grams)
+Bonf.<0.05,-0.05683422364436091,DR1TNUMF,DXDTRBMC,Total number of foods reported in the individual foods file,Trunk Bone Mineral Content (grams)
+Bonf.<0.05,0.15110828085583497,LBXPLP,DXXL4TBS,Pyridoxal 5'-phosphate (nmol/L),L4 TBS
+Bonf.<0.05,1.1236846373475657,ORXHPV,DXXAGST,Oral HPV Result,Android/gynoid region status
+Bonf.<0.05,-0.07905450859741317,URX2MH,BMXARMC,2-methylhippuric acid (ng/mL),Arm Circumference (cm)
+Bonf.<0.05,-0.04132654599962276,LBXVMC,DXXOSA,Blood Methylene Chloride Result,Total spine area
+Bonf.<0.05,-0.05584081213639364,DR1TMAGN,LBXRDW,Magnesium (mg),Red cell distribution width (%)
+Bonf.<0.05,-0.10254445095574712,LBXBCD,DXXSATM,Cadmium (ug/L),Subcutaneous fat mass
+Bonf.<0.05,-0.06142281362913089,LBXBEC,LBDBANO,trans-b-carotene(ug/dL),Basophils number (1000 cells/uL)
+Bonf.<0.05,-0.11348968666186666,LBXBCD,DXDRATOT,Cadmium (ug/L),Right Arm Total (grams)
+Bonf.<0.05,-0.1395007219048684,LBXPFUA,DXDTOTOT,Perfluoroundecanoic acid,Total Lean+Fat (g)
+Bonf.<0.05,-0.15298947059035922,LBX156,BMXARMC,PCB156 (ng/g),Arm Circumference (cm)
+Bonf.<0.05,0.11069886396075958,LBXCRY,LBXSC3SI,b-cryptoxanthin(ug/dL),Bicarbonate (mmol/L)
+Bonf.<0.05,-0.052792351647455875,DR2TTHEO,DXXNKBMD,Theobromine (mg),Femoral neck bone mineral density (gm/cm^2)
+Bonf.<0.05,0.06250589531764172,LBXVIDMS,LBXMCVSI,25-hydroxyvitamin D2 + D3,Mean cell volume (fL)
+Bonf.<0.05,-0.015681914442143105,LBXVMC,DXXINBMC,Blood Methylene Chloride Result,Intertrochanter bone mineral content (gm)
+Bonf.<0.05,-0.049589213795861314,DR1TMAGN,LBXSGTSI,Magnesium (mg),Gamma glutamyl transferase (U/L)
+Bonf.<0.05,0.05747579945246308,URXP02,LBXHGB,2-napthol(ng/L),Hemoglobin (g/dL)
+Bonf.<0.05,-0.04605218449085364,LBXVE3MS,LBXGH,epi-25-hydroxyvitamin D3 (nmol/L),Glycohemoglobin (%)
+Bonf.<0.05,0.09735937594431827,DR1TPOTA,LBXSAL,Potassium (mg),Albumin (g/dL)
+Bonf.<0.05,-0.09656530998972991,URXMHH,DXXLSA,Mono-(2-ethyl-5-hydroxyhexyl) phthalate (ng/mL),Lumbar Spine Area (cm^2)
+Bonf.<0.05,-0.08431482078222652,URXNAL,LBXSTB,"NNAL , urine (ng/mL)",Total bilirubin (mg/dL)
+Bonf.<0.05,-0.1360425411171262,LBXVIDMS,DXXAGRAT,25-hydroxyvitamin D2 + D3,Android to gynoid ratio
+Bonf.<0.05,0.07305746151631287,URXP17,LBXSGTSI,9-fluorene (ng/L),Gamma glutamyl transferase (U/L)
+Bonf.<0.05,0.11081315499445359,DR1TALCO,LBXSGTSI,Alcohol (gm),Gamma glutamyl transferase (U/L)
+Bonf.<0.05,-0.08859913197590191,LBXVD3MS,LBXSGL,25-hydroxyvitamin D3(nmol/L),"Glucose, serum (mg/dL)"
+Bonf.<0.05,-0.09044910035098051,LBXACR,DXXGYLM,Acrylamide (pmol/g Hb),Gynoid lean mass
+Bonf.<0.05,-0.05154094660916325,DR1TNUMF,DXXRAA,Total number of foods reported in the individual foods file,Right Arm Area (cm^2)
+Bonf.<0.05,0.008288827881927339,LBXVTHF,DXXSATA,Blood Tetrahydrofuran (ng/mL),Subcutaneous fat area
+Bonf.<0.05,-0.06646977511222384,DR2TVC,DXXVFATM,Vitamin C (mg),Visceral adipose tissue mass
+Bonf.<0.05,-0.12166743822408356,URXMOH,LBXSTP,Mono-(2-ethyl-5-oxohexl) phthalate (ng/mL),Total protein (g/dL)
+Bonf.<0.05,-0.07467441802204731,DR2TSUGR,LBXSBU,Total sugars (gm),Blood urea nitrogen (mg/dL)
+Bonf.<0.05,-0.12087583398582688,URXUPB,DXDTRLE,"Lead, urine (ng/mL)",Trunk Lean excl Bone Mineral Content (grams)
+Bonf.<0.05,0.08922244509656542,DR2TMOIS,DXDTRA,Moisture (gm),Trunk Bone area (cm^2)
+Bonf.<0.05,-0.05146017240816781,URXOPM,BMXARML,3-phenoxybenzoic (ug/L) acid result,Upper Arm Length (cm)
+Bonf.<0.05,-0.11983967244282821,LBX2DF,BMXBMI,"Blood 2,5 Dimethylfuran result",Body Mass Index (kg/m**2)
+Bonf.<0.05,0.1791200732331741,URXMB2,LBXWBCSI,N-acetyl-s-(2-hydroxy-3-butenyl)-L-cysteine (ng/mL),White blood cell count (1000 cells/uL)
+Bonf.<0.05,-0.1469119300022743,URXATC,DXDSTBMC,2-aminothiazoline-4-carboxylic acid(ng/mL),Subtotal Bone Mineral Content (grams)
+Bonf.<0.05,-0.125201551911955,LBXBPB,DXXAPFAT,Lead (ug/dL),Android percent fat
+Bonf.<0.05,-0.033779052618230526,DR1TS080,LBXMCVSI,SFA 8:0 (Octanoic) (gm),Mean cell volume (fL)
+Bonf.<0.05,-0.11164783002996496,URXMBP,DXXLSBMC,Mono-n-butyl phthalate (ng/mL),Lumbar Spine Bone Mineral Content (grams)
+Bonf.<0.05,0.09757611277658226,SMQ_current_ever_never,LBXMC,"Smoking: current, ever, never",Mean cell hemoglobin concentration (g/dL)
+Bonf.<0.05,0.09885733472354756,LBX4PA,LBXSPH,4-pyridoxic acid (nmol/L),Phosphorus (mg/dL)
+Bonf.<0.05,-0.12191719937195555,LBXACR,DXXGYTOM,Acrylamide (pmol/g Hb),Gynoid total mass
+Bonf.<0.05,0.01097890900284768,LBXVTHF,DXDRLTOT,Blood Tetrahydrofuran (ng/mL),Right Leg Total (grams)
+Bonf.<0.05,0.06958558273363195,DR1TSODI,LBXGH,Sodium (mg) (adjusted for salt use in food preparation),Glycohemoglobin (%)
+Bonf.<0.05,-0.09709109639245724,LBX2DF,LBXSF1SI,"Blood 2,5 Dimethylfuran result",5-Methyl-tetrahydrofolate (nmol/L)
+Bonf.<0.05,0.0513781053561275,DR2TVARA,LBXSBU,Vitamin A as retinol activity equivalents (mcg),Blood urea nitrogen (mg/dL)
+Bonf.<0.05,0.13181102145275814,URXUPB,DXAFMRD0,"Lead, urine (ng/mL)",Calculated DO for femur
+Bonf.<0.05,-0.09249910441610278,DR1TSODI,URXUCR,Sodium (mg) (adjusted for salt use in food preparation),"Creatinine, urine (mg/dL)"
+Bonf.<0.05,-0.07282756958090168,DR2TNUMF,DXDSTA,Total number of foods reported in the individual foods file,Subtotal Area (cm^2)
+Bonf.<0.05,-0.1478254384057196,LBXBMN,LBXSIR,Blood manganese (ug/L),"Iron, refigerated (ug/dL)"
+Bonf.<0.05,-0.05121187471147311,LBXVIDMS,LBXSCLSI,25-hydroxyvitamin D2 + D3,Chloride (mmol/L)
+Bonf.<0.05,-0.19073766480807677,LBXVIDMS,DXXSATM,25-hydroxyvitamin D2 + D3,Subcutaneous fat mass
+Bonf.<0.05,-0.028278001784231253,DR1TFA,LBXHGB,Folic acid (mcg),Hemoglobin (g/dL)
+Bonf.<0.05,-0.15288087634111627,URXUCD,DXDRATOT,"Cadmium, urine (ng/mL).",Right Arm Total (grams)
+Bonf.<0.05,-0.1907967431660444,LBXVD3MS,DXDTRPF,25-hydroxyvitamin D3(nmol/L),Trunk Percent Fat
+Bonf.<0.05,0.06876631083839119,LBXBMN,DXDSTTOT,Blood manganese (ug/L),Subtotal (Total excl Head) (g)
+Bonf.<0.05,-0.07051918454815209,LBXALC,LBXPLTSI,a-carotene(ug/dL),Platelet count SI (1000 cells/uL)
+Bonf.<0.05,0.10984313346577868,URXSCN,LBXHGB,Urinary thiocyanate (ng/mL),Hemoglobin (g/dL)
+Bonf.<0.05,-0.010126545471117214,LBXVTC,DXDSTLI,Blood Trichloroethene Result (ng/mL),Subtotal Lean incl BMC (g)
+Bonf.<0.05,0.7358512230022217,LBXOTT,LBXSTR,"Trans,trans-9,12-Octadecadienoic acid (umol/L)",Triglycerides (mg/dL)
+Bonf.<0.05,-0.05420552565725944,LBXVIC,LBXSGL,Vitamin C (mg/dL),"Glucose, serum (mg/dL)"
+Bonf.<0.05,-0.0809638230130142,URXPHE,DXXRLLI,N-acetyl-S-(phenyl-2-hydroxyethyl)-L-cysteine(ng/mL),Right Leg Lean incl Bone Mineral Content (grams)
+Bonf.<0.05,-0.08356021840406602,LBDVIDMS,LBXGH,Vitamin D (nmol/L),Glycohemoglobin (%)
+Bonf.<0.05,-0.0930926043548264,URXHEM,DXXTSBMC,N-acetyl-S- (2-Hydroxyethyl)-L-cysteine(ng/mL),Thoracic Spine Bone Mineral Content (grams)
+Bonf.<0.05,-0.09048835995384413,URXMHP,LBXSTB,Mono-(2-ethyl)-hexyl phthalate (ng/mL),Total bilirubin (mg/dL)
+Bonf.<0.05,-0.04001844388078761,DR1TFF,BMXWT,Food folate (mcg),Weight (kg)
+Bonf.<0.05,0.0776487067296079,LBXB12,LBXSLDSI,Vitamin B12 ( pg/mL),Lactate dehydrogenase LDH (U/L)
+Bonf.<0.05,0.013211235052219808,LBXVTHF,BMXWAIST,Blood Tetrahydrofuran (ng/mL),Waist Circumference (cm)
+Bonf.<0.05,0.048041067581401656,DR1TNUMF,LBXSBU,Total number of foods reported in the individual foods file,Blood urea nitrogen (mg/dL)
+Bonf.<0.05,-0.1025728444070466,URXMB3,LBXSTP,N-acetyl-s-(4-hydroxy-2-butenyl)-L-cysteine (ng/mL),Total protein (g/dL)
+Bonf.<0.05,0.22367580237463816,LBDVICSI,LBXRBF,Vitamin C (umol/L),"Folate, RBC (ng/mL RBC)"
+Bonf.<0.05,0.060757239611456626,DR1TMOIS,DXXOSBMD,Moisture (gm),Total spine BMD
+Bonf.<0.05,-0.0907045740725868,LBXBEC,LBXFER,trans-b-carotene(ug/dL),Ferritin(ng/mL)
+Bonf.<0.05,0.011542763442651663,LBXVTHF,DXXRLFAT,Blood Tetrahydrofuran (ng/mL),Right Leg Fat (grams)
+Bonf.<0.05,-0.05970759688058705,URXOP4,LBXHGB,Diethylthiophosphate (ug/L),Hemoglobin (g/dL)
+Bonf.<0.05,-0.06371557970613792,DR1TNUMF,DXDTRA,Total number of foods reported in the individual foods file,Trunk Bone area (cm^2)
+Bonf.<0.05,-0.09789281062235793,LBXBCD,DXDLLLE,Cadmium (ug/L),Left Leg Lean excl Bone Mineral Content (grams)
+Bonf.<0.05,-0.05746570994972607,URXUAS,BMXWAIST,Urinary total Arsenic (ug/L),Waist Circumference (cm)
+Bonf.<0.05,-0.17523083842176954,LBXBPB,DXDTOFAT,Lead (ug/dL),Total Fat (g)
+Bonf.<0.05,-0.061391522050574174,DR1TFDFE,LBXSUA,Folate as dietary folate equivalents (mcg),Uric acid (mg/dL)
+Bonf.<0.05,-0.03367313528853633,LBXCOT,LBXSGB,Cotinine (ng/mL),Globulin (g/dL)
+Bonf.<0.05,-0.05631082090548621,DR1TNUMF,DXDSTA,Total number of foods reported in the individual foods file,Subtotal Area (cm^2)
+Bonf.<0.05,-0.06890483119433365,LBXBPB,DXXINBMC,Lead (ug/dL),Intertrochanter bone mineral content (gm)
+Bonf.<0.05,-0.05113882050032366,DR1TATOA,DXXAPFAT,Added alpha-tocopherol (Vitamin E) (mg),Android percent fat
+Bonf.<0.05,0.1085912521309134,LBXVEB,LBXWBCSI,Blood Ethylbenzene Result (ng/mL),White blood cell count (1000 cells/uL)
+Bonf.<0.05,-0.05822656472192513,DR1TPOTA,LBXSNASI,Potassium (mg),Sodium (mmol/L)
+Bonf.<0.05,-0.08609456748466775,LBXBCD,DXXRRBMC,Cadmium (ug/L),Right Ribs Bone Mineral Content (grams)
+Bonf.<0.05,-0.03670244809017026,DR1TATOA,BMXWAIST,Added alpha-tocopherol (Vitamin E) (mg),Waist Circumference (cm)
+Bonf.<0.05,0.042632135109170216,URXUTU,URXUMA,"Tungsten, urine (ng/mL)","Albumin, urine (ug/mL)"
+Bonf.<0.05,0.057757899218503383,DR2TVB2,LBXSBU,Riboflavin (Vitamin B2) (mg),Blood urea nitrogen (mg/dL)
+Bonf.<0.05,0.11572180239433884,LBXVIC,LBDHDD,Vitamin C (mg/dL),Direct HDL-Cholesterol (mg/dL)
+Bonf.<0.05,0.06511833590190971,LBXALC,LBXSCA,a-carotene(ug/dL),Total calcium (mg/dL)
+Bonf.<0.05,-0.07907980640623631,LBXBPB,DXXL3BMC,Lead (ug/dL),L3 Bone Mineral Composition
+Bonf.<0.05,0.10140788502779621,URXCEM,LBDLYMNO,N-acetyl-S- (2-Carboxyethyl)-L-cysteine(ng/mL),Lymphocyte number (1000 cells/uL)
+Bonf.<0.05,0.06375448769373068,DR2TMOIS,DXDHETOT,Moisture (gm),Head Total (grams)
+Bonf.<0.05,-0.09038872859775389,DR1TPOTA,DXDTRPF,Potassium (mg),Trunk Percent Fat
+Bonf.<0.05,0.0494092293736957,DR2TP204,BMXWAIST,PFA 20:4 (Eicosatetraenoic) (gm),Waist Circumference (cm)
+Bonf.<0.05,0.09857419237778527,LBXHCT,LBXSNASI,"Hydroxycotinine, Serum (ng/mL)",Sodium (mmol/L)
+Bonf.<0.05,0.07549156778084441,URXHPM,LBXMC,N-acetyl-S-(3-Hydroxypropyl)-L-cysteine(ng/mL),Mean cell hemoglobin concentration (g/dL)
+Bonf.<0.05,-0.18147114487259483,SMQ_current_ever_never,DXXGYTOM,"Smoking: current, ever, never",Gynoid total mass
+Bonf.<0.05,-0.07762937918207308,DR1TALCO,DXXLLFAT,Alcohol (gm),Left Leg Fat (grams)
+Bonf.<0.05,0.06804769468617167,DR2TM161,BMXTRI,MFA 16:1 (Hexadecenoic) (gm),Triceps Skinfold (mm)
+Bonf.<0.05,-0.06182129235895764,LBXPFUA,LBDNENO,Perfluoroundecanoic acid,Segmented neutrophils num (1000 cell/uL)
+Bonf.<0.05,-0.08504713710143239,URXUDMA,BMXWT,Urinary Dimethylarsinic acid (ug/L),Weight (kg)
+Bonf.<0.05,-0.10003141237609758,URXBUP,BMXBMI,Butyl paraben (ng/ml),Body Mass Index (kg/m**2)
+Bonf.<0.05,-0.05281087521037283,DR2TFIBE,LBDMONO,Dietary fiber (gm),Monocyte number (1000 cells/uL)
+Bonf.<0.05,-0.06708772827949495,LBXCRY,BMXARML,b-cryptoxanthin(ug/dL),Upper Arm Length (cm)
+Bonf.<0.05,0.07786274101859554,URXMC1,LBXSOSSI,Mono-(3-carboxypropyl) phthalate (ng/mL),Osmolality (mmol/Kg)
+Bonf.<0.05,0.11201170060973982,LBXB12,LBXSAL,Vitamin B12 ( pg/mL),Albumin (g/dL)
+Bonf.<0.05,-0.07357825926906746,DR1TP204,LBXSF1SI,PFA 20:4 (Eicosatetraenoic) (gm),5-Methyl-tetrahydrofolate (nmol/L)
+Bonf.<0.05,0.09423682881935452,URXECP,LBXSOSSI,mono-2-ethyl-5-carboxypentyl phthalate (ng/mL),Osmolality (mmol/Kg)
+Bonf.<0.05,-0.08319128346751181,URXPHE,BMXARMC,N-acetyl-S-(phenyl-2-hydroxyethyl)-L-cysteine(ng/mL),Arm Circumference (cm)
+Bonf.<0.05,-0.05401803806063174,DR2TSUGR,LBXGH,Total sugars (gm),Glycohemoglobin (%)
+Bonf.<0.05,-0.15063671218462726,LBX156,BMXTRI,PCB156 (ng/g),Triceps Skinfold (mm)
+Bonf.<0.05,0.15037099291245618,URXMOH,LBXSBU,Mono-(2-ethyl-5-oxohexl) phthalate (ng/mL),Blood urea nitrogen (mg/dL)
+Bonf.<0.05,0.0725054668701002,DR1TS160,BMXBMI,SFA 16:0 (Hexadecanoic) (gm),Body Mass Index (kg/m**2)
+Bonf.<0.05,-0.09279713402021149,URXHEM,DXDSTBMD,N-acetyl-S- (2-Hydroxyethyl)-L-cysteine(ng/mL),Subtotal Bone Mineral Density (grams/cm^2)
+Bonf.<0.05,0.1634303520817338,LBXD05,BMXTHICR,"1,2,3,4,6,7,8-Heptachlororodibenzo-p-dioxin (hpcdd) (fg/g)",Thigh Circumference (cm)
+Bonf.<0.05,-0.06416937902835507,LBXCOT,LBXSC3SI,Cotinine (ng/mL),Bicarbonate (mmol/L)
+Bonf.<0.05,0.10790800858766385,DR2TCALC,LBXSF1SI,Calcium (mg),5-Methyl-tetrahydrofolate (nmol/L)
+Bonf.<0.05,-0.07419913287620217,URXMAD,BMXARML,Mandelic acid(ng/mL),Upper Arm Length (cm)
+Bonf.<0.05,-0.014407676999054765,LBXVTC,LBDPCT,Blood Trichloroethene Result (ng/mL),Transferrin saturation (%)
+Bonf.<0.05,-0.11527089782269091,LBXPFDE,DXDTOTOT,Pefluorodecanoic acid,Total Lean+Fat (g)
+Bonf.<0.05,0.09800921628934514,LBXVFN,LBDMONO,Blood Furan (ng/mL),Monocyte number (1000 cells/uL)
+Bonf.<0.05,-0.09052572550420794,DR1TVB6,URXUCR,Vitamin B6 (mg),"Creatinine, urine (mg/dL)"
+Bonf.<0.05,-0.08685514297095853,LBXBPB,DXXTSA,Lead (ug/dL),Thoracic Spine Area (cm^2)
+Bonf.<0.05,-0.040314112989560315,DR1TFOLA,LBXRDW,Total Folate (mcg),Red cell distribution width (%)
+Bonf.<0.05,-0.07450935563829499,URXUAS3,BMXARMC,Urinary Arsenous acid (ug/L),Arm Circumference (cm)
+Bonf.<0.05,-0.07606074695568524,DR2TPOTA,DXXAPFAT,Potassium (mg),Android percent fat
+Bonf.<0.05,-0.080643372567168,LBXBGM,BMXBMI,"Mercury, methyl (ug/L)",Body Mass Index (kg/m**2)
+Bonf.<0.05,-0.06390975343306235,URXMC1,LBXSC3SI,Mono-(3-carboxypropyl) phthalate (ng/mL),Bicarbonate (mmol/L)
+Bonf.<0.05,-0.05656280916703786,URXCNP,LBXHCT,Mono(carboxynonyl) phthalate (ng/mL),Hematocrit (%)
+Bonf.<0.05,0.05693155228617342,DR2TCOPP,LBXLYPCT,Copper (mg),Lymphocyte percent (%)
+Bonf.<0.05,0.10183042080416485,LBXVIDMS,LBXSAL,25-hydroxyvitamin D2 + D3,Albumin (g/dL)
+Bonf.<0.05,0.09469080411309137,DR1TFF,LBDHDD,Food folate (mcg),Direct HDL-Cholesterol (mg/dL)
+Bonf.<0.05,0.08910394485882867,URXEPB,DXAFMRD0,Ethyl paraben  (ng/ml),Calculated DO for femur
+Bonf.<0.05,0.10017157905881224,URXP07,BPXPLS,2-phenanthrene (ng/L),60 sec. pulse (30 sec. pulse * 2):
+Bonf.<0.05,-0.17750770405560531,LBXCBC,BMXCALF,cis-b-carotene(ug/dL),Maximal Calf Circumference (cm)
+Bonf.<0.05,-0.11025447061613115,LBXCBC,LBDMONO,cis-b-carotene(ug/dL),Monocyte number (1000 cells/uL)
+Bonf.<0.05,0.17403912229863594,DR1TFDFE,LBXSF1SI,Folate as dietary folate equivalents (mcg),5-Methyl-tetrahydrofolate (nmol/L)
+Bonf.<0.05,-0.0801637377951584,LBXB12,DXXGYTOM,Vitamin B12 ( pg/mL),Gynoid total mass
+Bonf.<0.05,-0.14733236329416705,LBXVIE,LBXHCY,Vitamin E (ug/dL),Homocysteine (umol/L)
+Bonf.<0.05,-0.07797706270875887,URXAMC,DXXGYLM,N-acetyl-S-(N-methylcarbamoyl)-L-cysteine(ng/mL),Gynoid lean mass
+Bonf.<0.05,-0.1327773494319831,LBXBEC,DXXGYLM,trans-b-carotene(ug/dL),Gynoid lean mass
+Bonf.<0.05,-0.05874337637063922,DR2TTHEO,DXXTRBMC,Theobromine (mg),Trochanter bone mineral content (gm)
+Bonf.<0.05,0.07715640960843037,LBXHCT,DXXHELI,"Hydroxycotinine, Serum (ng/mL)",Head Lean incl Bone Mineral Content (grams)
+Bonf.<0.05,-0.09036072137676024,URXETL,LBXSGTSI,Enterolactone (ng/mL),Gamma glutamyl transferase (U/L)
+Bonf.<0.05,0.07819881782604021,LBXHCT,DXXPEBMC,"Hydroxycotinine, Serum (ng/mL)",Pelvis Bone Mineral Content (grams)
+Bonf.<0.05,-0.036194995681901224,URXUAC,DXXOSBMD,Urinary Arsenocholine (ug/L),Total spine BMD
+Bonf.<0.05,-0.04539743078071778,DR1TMAGN,LBXNEPCT,Magnesium (mg),Segmented neutrophils percent (%)
+Bonf.<0.05,0.35343443726344165,LBXOXY,LBXTC,Oxychlordane (ng/g),Total cholesterol (mg/dL)
+Bonf.<0.05,-0.09218778493068548,URXCYM,LBXSF1SI,N-acetyl-S-(2-cyanoethyl)-L-cysteine(ng/mL),5-Methyl-tetrahydrofolate (nmol/L)
+Bonf.<0.05,-0.07720532605827878,LBXVIDMS,BPXPLS,25-hydroxyvitamin D2 + D3,60 sec. pulse (30 sec. pulse * 2):
+Bonf.<0.05,-0.0332933240246959,DR1TACAR,BMXWAIST,Alpha-carotene (mcg),Waist Circumference (cm)
+Bonf.<0.05,0.09789363332062928,DR2TB12A,LBXSF1SI,Added vitamin B12 (mcg),5-Methyl-tetrahydrofolate (nmol/L)
+Bonf.<0.05,-0.09104854536915163,URXUMO,LBXSTB,"Molybdenum, urine (ng/mL)",Total bilirubin (mg/dL)
+Bonf.<0.05,-0.18965217325948458,LBXBPB,BMXBMI,Lead (ug/dL),Body Mass Index (kg/m**2)
+Bonf.<0.05,-0.07582763028202713,URXBUP,DXXGYLM,Butyl paraben (ng/ml),Gynoid lean mass
+Bonf.<0.05,-0.056360081716411735,LBXVIDMS,DXXTSA,25-hydroxyvitamin D2 + D3,Thoracic Spine Area (cm^2)
+Bonf.<0.05,-0.36697946048923735,LBDHCV,DXAFMRD0,Hepatitis C antibody (confirmed),Calculated DO for femur
+Bonf.<0.05,-0.050819720498447865,DR2TFF,LBXWBCSI,Food folate (mcg),White blood cell count (1000 cells/uL)
+Bonf.<0.05,-0.08707992964219971,URXMC1,LBXSAL,Mono-(3-carboxypropyl) phthalate (ng/mL),Albumin (g/dL)
+Bonf.<0.05,-0.07853610099037817,URXEPB,DXDHETOT,Ethyl paraben  (ng/ml),Head Total (grams)
+Bonf.<0.05,0.6808802781463674,LBXHE2,DXXHEA,Herpes Simplex Virus II,Head Area (cm^2)
+Bonf.<0.05,0.059127768712894636,LBXCOT,LBXSGTSI,Cotinine (ng/mL),Gamma glutamyl transferase (U/L)
+Bonf.<0.05,-0.09681085435059164,URXUAS3,DXXVFATM,Urinary Arsenous acid (ug/L),Visceral adipose tissue mass
+Bonf.<0.05,-0.0597444750071908,URXPTU,BMXARMC,Propylenethio urea (ug/L),Arm Circumference (cm)
+Bonf.<0.05,-0.12781677012811163,LBXVE3MS,DXXVFATA,epi-25-hydroxyvitamin D3 (nmol/L),Visceral adipose tissue area
+Bonf.<0.05,-0.10010244828882951,LBXBGM,DXXRLFAT,"Mercury, methyl (ug/L)",Right Leg Fat (grams)
+Bonf.<0.05,0.08222130944945939,URXUCD,LBXSGB,"Cadmium, urine (ng/mL).",Globulin (g/dL)
+Bonf.<0.05,-0.05707527399834496,DR2TATOC,URXUCR,Vitamin E as alpha-tocopherol (mg),"Creatinine, urine (mg/dL)"
+Bonf.<0.05,-0.06433274481990602,DR2TCARB,LBXMCVSI,Carbohydrate (gm),Mean cell volume (fL)
+Bonf.<0.05,0.1639127574114722,LBXRST,LBXSCH,Retinyl stearate(ug/dL),Cholesterol (mg/dL)
+Bonf.<0.05,-0.0727552348513925,DR2TMAGN,DXXGYFM,Magnesium (mg),Gynoid fat mass
+Bonf.<0.05,0.17739128300604412,LBX2DF,LBDNENO,"Blood 2,5 Dimethylfuran result",Segmented neutrophils num (1000 cell/uL)
+Bonf.<0.05,0.09803013100335257,LBX4PA,LBXSCA,4-pyridoxic acid (nmol/L),Total calcium (mg/dL)
+Bonf.<0.05,-0.056886843564652526,URXPTU,BMXBMI,Propylenethio urea (ug/L),Body Mass Index (kg/m**2)
+Bonf.<0.05,-0.08290002598213157,DR1TALCO,DXXLAFAT,Alcohol (gm),Left Arm Fat (grams)
+Bonf.<0.05,-0.11172880447252807,LBXBCD,DXDTOTOT,Cadmium (ug/L),Total Lean+Fat (g)
+Bonf.<0.05,-0.05513386637198758,DR2TPOTA,DXXANTOM,Potassium (mg),Android total mass
+Bonf.<0.05,-0.05109188180659154,LBXTHG,LBXWBCSI,"Mercury, total (ug/L)",White blood cell count (1000 cells/uL)
+Bonf.<0.05,0.0813902275070445,DS2DS,BMXARMC,Any Dietary Supplements taken in the past 24 hour?,Arm Circumference (cm)
+Bonf.<0.05,0.05425831534625445,DR1TLZ,LBDHDD,Lutein + zeaxanthin (mcg),Direct HDL-Cholesterol (mg/dL)
+Bonf.<0.05,-0.11711019821486916,URXUPB,DXXOSBMC,"Lead, urine (ng/mL)",Total spine BMC
+Bonf.<0.05,-0.09663189829113844,LBXLUZ,LBXSUA,Combined Lutein/zeaxanthin(ug/dL),Uric acid (mg/dL)
+Bonf.<0.05,-0.0900731397129755,URXMHP,LBXSTP,Mono-(2-ethyl)-hexyl phthalate (ng/mL),Total protein (g/dL)
+Bonf.<0.05,0.1254953850468466,URXGAM,LBXWBCSI,N-acetyl-S-(2-carbamoyl-2-hydroxyethyl)-L-cysteine(ng/mL),White blood cell count (1000 cells/uL)
+Bonf.<0.05,-0.11307343424332005,LBXBGM,DXXTATA,"Mercury, methyl (ug/L)",Total abdominal fat area
+Bonf.<0.05,0.15233027586304318,DRXTVB1,LBXRBF,Thiamin (Vitamin B1) (mg),"Folate, RBC (ng/mL RBC)"
+Bonf.<0.05,0.04815895167171588,DR1TP204,DXXRALI,PFA 20:4 (Eicosatetraenoic) (gm),Right Arm Lean incl Bone Mineral Content (grams)
+Bonf.<0.05,-0.08280712908852741,DR1TNUMF,DXDTRTOT,Total number of foods reported in the individual foods file,Trunk Total (grams)
+Bonf.<0.05,0.274727977468909,LBXOD9,LBDLDL,Trans 9-octadecenoic acid (umol/L),LDL-cholesterol (mg/dL)
+Bonf.<0.05,0.06435483741268133,LBXBMN,LBXSTP,Blood manganese (ug/L),Total protein (g/dL)
+Bonf.<0.05,0.06717947530159202,LBXHCT,BMXLEG,"Hydroxycotinine, Serum (ng/mL)",Upper Leg Length (cm)
+Bonf.<0.05,-0.061063936318357194,DR2TTHEO,DXXOFBMD,Theobromine (mg),Total femur bone mineral density (gm/cm^2)
+Bonf.<0.05,-0.1668914286617216,LBDVIDMS,BMXARMC,Vitamin D (nmol/L),Arm Circumference (cm)
+Bonf.<0.05,-0.09856344011776161,URXUSN,DXDSTBMD,"Tin, urine (ug/L)",Subtotal Bone Mineral Density (grams/cm^2)
+Bonf.<0.05,-0.10066697911380877,LBXPFUA,DXDTOPF,Perfluoroundecanoic acid,Total Percent Fat
+Bonf.<0.05,0.059211733636607755,URXUHG,LBXSTB,"Mercury, urine (ng/mL)",Total bilirubin (mg/dL)
+Bonf.<0.05,-0.07145825939396931,DR2TSODI,DXASPND0,Sodium (mg) (adjusted for salt use in food preparation),Calculated D0 for spine
+Bonf.<0.05,-0.12065134981021292,URXUPB,DXXTSBMD,"Lead, urine (ng/mL)",Thoracic Spine Bone Mineral Density (grams/cm^2)
+Bonf.<0.05,-0.05389044173491438,DR1TVB2,LBXSGB,Riboflavin (Vitamin B2) (mg),Globulin (g/dL)
+Bonf.<0.05,0.08438202496582325,LBXVD3MS,LBXSIR,25-hydroxyvitamin D3(nmol/L),"Iron, refigerated (ug/dL)"
+Bonf.<0.05,-0.12470324450566268,URXUMO,LBXSCR,"Molybdenum, urine (ng/mL)",Creatinine (mg/dL)
+Bonf.<0.05,-0.05014132892824134,LBXTHG,LBXCRP,"Mercury, total (ug/L)",C-reactive protein (mg/dL)
+Bonf.<0.05,-0.044098461333621296,DR1TFIBE,LBXRDW,Dietary fiber (gm),Red cell distribution width (%)
+Bonf.<0.05,-0.2589604928615117,SMQ_current_ever_never,BMXSUB,"Smoking: current, ever, never",Subscapular Skinfold (mm)
+Bonf.<0.05,-0.14846879519373107,URXATC,DXXRLBMD,2-aminothiazoline-4-carboxylic acid(ng/mL),Right Leg Bone Mineral Density (grams/cm^2)
+Bonf.<0.05,0.1913948409059019,SMQ725,LBXSTB,When did {you/he/she} smoke {your/his/her} last cigarette? Was it...,Total bilirubin (mg/dL)
+Bonf.<0.05,0.08556032295529073,LBXHCT,DXXTSBMC,"Hydroxycotinine, Serum (ng/mL)",Thoracic Spine Bone Mineral Content (grams)
+Bonf.<0.05,0.11438613072405783,LBXVTO,LBDMONO,Blood Toluene Result (ng/mL),Monocyte number (1000 cells/uL)
+Bonf.<0.05,-0.16020069917503355,LBXCBC,LBXCRP,cis-b-carotene(ug/dL),C-reactive protein (mg/dL)
+Bonf.<0.05,0.06639296774722991,URXMHH,LBXGH,Mono-(2-ethyl-5-hydroxyhexyl) phthalate (ng/mL),Glycohemoglobin (%)
+Bonf.<0.05,0.08467446095367928,LBDB12SI,LBXSLDSI,Vitamin B12 (pmol/L),Lactate dehydrogenase LDH (U/L)
+Bonf.<0.05,0.046969361949863855,LBXHCT,BPXPLS,"Hydroxycotinine, Serum (ng/mL)",60 sec. pulse (30 sec. pulse * 2):
+Bonf.<0.05,0.12178904437627928,URXCEM,LBDMONO,N-acetyl-S- (2-Carboxyethyl)-L-cysteine(ng/mL),Monocyte number (1000 cells/uL)
+Bonf.<0.05,-0.08448535858925119,LBXBPB,DXXPEBMC,Lead (ug/dL),Pelvis Bone Mineral Content (grams)
+Bonf.<0.05,0.19518913850265596,LBXHBC,BMXWAIST,Hepatitis B core antibody,Waist Circumference (cm)
+Bonf.<0.05,0.2967702568138223,URXUCO,LBXTIB,"Cobalt, urine (ng/mL)","TIBC, Frozen Serum (ug/dL)"
+Bonf.<0.05,0.23120010541438096,LBXOTT,BMXBMI,"Trans,trans-9,12-Octadecadienoic acid (umol/L)",Body Mass Index (kg/m**2)
+Bonf.<0.05,0.15044941077677665,LBXCBC,CVDVOMAX,cis-b-carotene(ug/dL),Predicted maximal oxygen uptake (ml/kg/min)
+Bonf.<0.05,0.08081770096529123,DR1TCHOL,LBXIN,Cholesterol (mg),Insulin (uU/mL )
+Bonf.<0.05,0.04505225623613445,DR1TP204,DXXNKBMC,PFA 20:4 (Eicosatetraenoic) (gm),Femoral neck bone mineral content (gm)
+Bonf.<0.05,-0.11215557622432606,LBXVIA,LBXRDW,Retinol(ug/dL),Red cell distribution width (%)
+Bonf.<0.05,-0.12542520500938745,URXATC,DXDTOBMD,2-aminothiazoline-4-carboxylic acid(ng/mL),Total Bone Mineral Density (g/cm^2)
+Bonf.<0.05,-0.07827683837430606,URXMB3,DXDTOLE,N-acetyl-s-(4-hydroxy-2-butenyl)-L-cysteine (ng/mL),Total Lean excl BMC (g)
+Bonf.<0.05,0.06829490205885874,LBXVIA,MSYSTOLIC,Retinol(ug/dL),Systolic Mean
+Bonf.<0.05,-0.10436998716833083,DR1TMAGN,DXXVFATM,Magnesium (mg),Visceral adipose tissue mass
+Bonf.<0.05,-0.1912729757892115,LBXCRY,DXXANTOM,b-cryptoxanthin(ug/dL),Android total mass
+Bonf.<0.05,-0.0879431621139252,LBXVBZ,DXXSATV,Blood Benzene Result (ng/mL),Subcutaneous fat volume
+Bonf.<0.05,-0.05219870046434005,DR2TNUMF,LBXHCT,Total number of foods reported in the individual foods file,Hematocrit (%)
+Bonf.<0.05,0.036187414559437546,LBXCOT,DXXOFA,Cotinine (ng/mL),Total femur area (cm^2)
+Bonf.<0.05,0.0854835112027298,LBXBMN,DXXTATV,Blood manganese (ug/L),Total abdominal fat volume
+Bonf.<0.05,-0.0915889339485496,LBXTHG,DXXVFATA,"Mercury, total (ug/L)",Visceral adipose tissue area
+Bonf.<0.05,0.199499602830064,LBXRPL,LBXFOL,Retinyl palmitate(ug/dL),"Folate, serum (ng/mL)"
+Bonf.<0.05,-0.03410398572189116,DR1TTHEO,LBXSUA,Theobromine (mg),Uric acid (mg/dL)
+Bonf.<0.05,-0.05538367181660334,DR1TNUMF,DXDSTLI,Total number of foods reported in the individual foods file,Subtotal Lean incl BMC (g)
+Bonf.<0.05,-0.04125292709813676,LBXVDM,DXXANTOM,Blood Dibromomethane Result,Android total mass
+Bonf.<0.05,-0.11017703973739211,LBXTHG,DXXTATM,"Mercury, total (ug/L)",Total abdominal fat mass
+Bonf.<0.05,0.12979545542536086,URXUCD,LBXCRP,"Cadmium, urine (ng/mL).",C-reactive protein (mg/dL)
+Bonf.<0.05,0.07981976641892928,DR2TNUMF,LBDHDD,Total number of foods reported in the individual foods file,Direct HDL-Cholesterol (mg/dL)
+Bonf.<0.05,-0.06150465868147779,DR1TMAGN,LBXWBCSI,Magnesium (mg),White blood cell count (1000 cells/uL)
+Bonf.<0.05,-0.08373885587786331,LBXBCD,DXXHEFAT,Cadmium (ug/L),Head Fat (grams)
+Bonf.<0.05,-0.04232205197634286,DR2TVC,LBXWBCSI,Vitamin C (mg),White blood cell count (1000 cells/uL)
+Bonf.<0.05,-0.15202488077187826,LBXBPB,DXXTATV,Lead (ug/dL),Total abdominal fat volume
+Bonf.<0.05,0.08692970855959395,DR1TMOIS,DXXRAA,Moisture (gm),Right Arm Area (cm^2)
+Bonf.<0.05,0.05414313745909943,LBXBGM,LBXHCT,"Mercury, methyl (ug/L)",Hematocrit (%)
+Bonf.<0.05,-0.07990764015756328,URXPHE,BMXBMI,N-acetyl-S-(phenyl-2-hydroxyethyl)-L-cysteine(ng/mL),Body Mass Index (kg/m**2)
+Bonf.<0.05,0.08274543643031121,LBXBMN,BMXBMI,Blood manganese (ug/L),Body Mass Index (kg/m**2)
+Bonf.<0.05,0.09967786199582035,URXMIB,LBXIN,Mono-isobutyl phthalate (ng/mL),Insulin (uU/mL )
+Bonf.<0.05,-0.1825927151026492,LBXVIDMS,DXDTRPF,25-hydroxyvitamin D2 + D3,Trunk Percent Fat
+Bonf.<0.05,-0.0890448016059738,URXBUP,BMXARMC,Butyl paraben (ng/ml),Arm Circumference (cm)
+Bonf.<0.05,-0.1295823832353194,URXATC,BMXARML,2-aminothiazoline-4-carboxylic acid(ng/mL),Upper Arm Length (cm)
+Bonf.<0.05,-0.06900251142312674,URXUCO,DXXRALI,"Cobalt, urine (ng/mL)",Right Arm Lean incl Bone Mineral Content (grams)
+Bonf.<0.05,0.010026300518299771,LBXVTHF,DXDSTFAT,Blood Tetrahydrofuran (ng/mL),Subtotal Fat (g)
+Bonf.<0.05,-0.025491190832143764,URXDPM,DXDSTLI,N-acetyl-S-(dimethylphenyl)-L-cysteine(ng/mL),Subtotal Lean incl BMC (g)
+Bonf.<0.05,-0.15033782711444557,SMQ_current_ever_never,SPXNFEV1,"Smoking: current, ever, never","Baseline 1st Test Spirometry, Forced Expiratory Volume in the first 1.0 sec"
+Bonf.<0.05,-0.010161398008561093,LBXVTC,DXXRLFAT,Blood Trichloroethene Result (ng/mL),Right Leg Fat (grams)
+Bonf.<0.05,0.10416578535533362,LBXHBS,DXXAGRAT,Hepatitis B Surface Antibody (Anti-HBs),Android to gynoid ratio
+Bonf.<0.05,0.024472007413366165,LBXVIPB,DXXHEA,Blood Isopropylbenzene (ng/mL),Head Area (cm^2)
+Bonf.<0.05,0.08602511695419655,LBXVIDMS,LBXSBU,25-hydroxyvitamin D2 + D3,Blood urea nitrogen (mg/dL)
+Bonf.<0.05,-0.10075558070689979,URXCEM,LBDHDD,N-acetyl-S- (2-Carboxyethyl)-L-cysteine(ng/mL),Direct HDL-Cholesterol (mg/dL)
+Bonf.<0.05,-0.11066682185884738,URXEPB,DXDRATOT,Ethyl paraben  (ng/ml),Right Arm Total (grams)
+Bonf.<0.05,0.09131633478058301,DR2TVB6,LBXSF1SI,Vitamin B6 (mg),5-Methyl-tetrahydrofolate (nmol/L)
+Bonf.<0.05,-0.08725593604603699,LBXBPB,DXXPEBMD,Lead (ug/dL),Pelvis Bone Mineral Density (grams/cm^2)
+Bonf.<0.05,-0.10784383134047246,LBXVFN,BMXBMI,Blood Furan (ng/mL),Body Mass Index (kg/m**2)
+Bonf.<0.05,-0.12401288604079294,URXUPB,DXXTSBMC,"Lead, urine (ng/mL)",Thoracic Spine Bone Mineral Content (grams)
+Bonf.<0.05,0.14506996140019282,LBXBSE,LBXRBCSI,Blood selenium(ug/L),Red blood cell count (million cells/uL)
+Bonf.<0.05,-0.06267598745207471,DR1TVARA,DXXVFATM,Vitamin A as retinol activity equivalents (mcg),Visceral adipose tissue mass
+Bonf.<0.05,0.11179912835892312,LBXHA,DXXTRLI,Hepatitis A Antibody (Anti-HAV),Trunk Lean incl Bone Mineral Content (grams)
+Bonf.<0.05,-0.06435955457713646,LBXBCD,DXDLAPF,Cadmium (ug/L),Left Arm Percent Fat
+Bonf.<0.05,-0.1042574166237568,DR2TMAGN,LBXIN,Magnesium (mg),Insulin (uU/mL )
+Bonf.<0.05,-0.09025524104295618,LBXVIA,LBXMOPCT,Retinol(ug/dL),Monocyte percent (%)
+Bonf.<0.05,-0.0916651850663271,DR1TBCAR,URXUCR,Beta-carotene (mcg),"Creatinine, urine (mg/dL)"
+Bonf.<0.05,-0.08080361305823582,URXBUP,DXDRATOT,Butyl paraben (ng/ml),Right Arm Total (grams)
+Bonf.<0.05,-0.08555675119426638,LBXBEC,LBXNEPCT,trans-b-carotene(ug/dL),Segmented neutrophils percent (%)
+Bonf.<0.05,-0.08607022404679586,URXP07,SPXNFEV1,2-phenanthrene (ng/L),"Baseline 1st Test Spirometry, Forced Expiratory Volume in the first 1.0 sec"
+Bonf.<0.05,0.15749955118418807,DR1TFDFE,LBXRBF,Folate as dietary folate equivalents (mcg),"Folate, RBC (ng/mL RBC)"
+Bonf.<0.05,0.04029423988717936,DR1TSELE,BMXWAIST,Selenium (mcg),Waist Circumference (cm)
+Bonf.<0.05,0.1720915896758523,LBXHA,DXXTATM,Hepatitis A Antibody (Anti-HAV),Total abdominal fat mass
+Bonf.<0.05,0.20035096634007046,LBXHDT,BMXSUB,Trans 9-Hexadecenoic acid concentrt (umol/L),Subscapular Skinfold (mm)
+Bonf.<0.05,-0.07644274910022565,DR2TCOPP,DXDSTPF,Copper (mg),Subtotal Percent Fat
+Bonf.<0.05,0.1085588216062633,LBXBMN,LBXSGB,Blood manganese (ug/L),Globulin (g/dL)
+Bonf.<0.05,-0.06267625547780327,DR1TVARA,DXXVFATA,Vitamin A as retinol activity equivalents (mcg),Visceral adipose tissue area
+Bonf.<0.05,0.012608990364995607,LBXVTHF,DXXTRLI,Blood Tetrahydrofuran (ng/mL),Trunk Lean incl Bone Mineral Content (grams)
+Bonf.<0.05,0.11811372544731642,LBXHCT,DXDSTA,"Hydroxycotinine, Serum (ng/mL)",Subtotal Area (cm^2)
+Bonf.<0.05,-0.08629756983708269,URXPHE,LBXSTB,N-acetyl-S-(phenyl-2-hydroxyethyl)-L-cysteine(ng/mL),Total bilirubin (mg/dL)
+Bonf.<0.05,0.06515105239099815,DR1TSFAT,BMXWAIST,Total saturated fatty acids (gm),Waist Circumference (cm)
+Bonf.<0.05,-0.09062145809987494,URXECP,LBXSTP,mono-2-ethyl-5-carboxypentyl phthalate (ng/mL),Total protein (g/dL)
+Bonf.<0.05,0.21837758323506,URXP04,LBXWBCSI,2-fluorene (ng/L),White blood cell count (1000 cells/uL)
+Bonf.<0.05,-0.04405349641409727,DR1TVK,LBDMONO,Vitamin K (mcg),Monocyte number (1000 cells/uL)
+Bonf.<0.05,-0.11062576552500646,LBXTHG,DXXTRFAT,"Mercury, total (ug/L)",Trunk Fat (grams)
+Bonf.<0.05,-0.07983353253041066,LBXB12,URXUCR,Vitamin B12 ( pg/mL),"Creatinine, urine (mg/dL)"
+Bonf.<0.05,-0.04798992847021907,URXUP8,BMXLEG,Urinary Perchlorate,Upper Leg Length (cm)
+Bonf.<0.05,0.08031308770971156,LBXBSE,DXXAGRAT,Blood selenium(ug/L),Android to gynoid ratio
+Bonf.<0.05,-0.08971066750817552,LBXVFN,BMXWT,Blood Furan (ng/mL),Weight (kg)
+Bonf.<0.05,0.11836913678605177,LBXPFOA,LBXHCT,Perfluorooctanoic acid,Hematocrit (%)
+Bonf.<0.05,-0.7852085101039238,LBXHCR,LBXSGB,Hepatitis C RNA (HCV-RNA),Globulin (g/dL)
+Bonf.<0.05,0.19741433296101463,LBXVIA,LBXSTR,Retinol(ug/dL),Triglycerides (mg/dL)
+Bonf.<0.05,-0.18287362803453158,LBXVIDMS,DXXRAFAT,25-hydroxyvitamin D2 + D3,Right Arm Fat (grams)
+Bonf.<0.05,-0.06135933224185688,DR1TCARB,LBXSGTSI,Carbohydrate (gm),Gamma glutamyl transferase (U/L)
+Bonf.<0.05,-0.021446597795190907,LBXVMC,DXXL3BMC,Blood Methylene Chloride Result,L3 Bone Mineral Composition
+Bonf.<0.05,0.15420096178074033,LBXCBC,LBXSAL,cis-b-carotene(ug/dL),Albumin (g/dL)
+Bonf.<0.05,0.09536594258965478,URXP06,LBXWBCSI,1-phenanthrene (ng/L),White blood cell count (1000 cells/uL)
+Bonf.<0.05,0.10603491722809937,LBXVFN,DXAFMRD0,Blood Furan (ng/mL),Calculated DO for femur
+Bonf.<0.05,-0.05651041149175992,URXPTU,BMXWAIST,Propylenethio urea (ug/L),Waist Circumference (cm)
+Bonf.<0.05,0.09648295450884654,LBDVIDMS,LBXSIR,Vitamin D (nmol/L),"Iron, refigerated (ug/dL)"
+Bonf.<0.05,0.10229613128377645,DR1TNUMF,LBXSF1SI,Total number of foods reported in the individual foods file,5-Methyl-tetrahydrofolate (nmol/L)
+Bonf.<0.05,-0.12055250904831663,DS2TIRON,LBXHGB,Iron (mg),Hemoglobin (g/dL)
+Bonf.<0.05,0.06980041727798024,DR1TVB6,LBXSAL,Vitamin B6 (mg),Albumin (g/dL)
+Bonf.<0.05,-0.081171416171343,DR1TNUMF,DXXRLFAT,Total number of foods reported in the individual foods file,Right Leg Fat (grams)
+Bonf.<0.05,-0.010228305615229798,URXSSF,LBXSTB,Sulfosulfuron (ug/L),Total bilirubin (mg/dL)
+Bonf.<0.05,-0.05725370616946083,DR2TSUGR,BMXWT,Total sugars (gm),Weight (kg)
+Bonf.<0.05,-0.08169370324855181,LBXVIC,LBXSUA,Vitamin C (mg/dL),Uric acid (mg/dL)
+Bonf.<0.05,-0.045601584505104674,DR1TSUGR,LBXSGL,Total sugars (gm),"Glucose, serum (mg/dL)"
+Bonf.<0.05,0.08264683087760327,LBXVFN,LBDBANO,Blood Furan (ng/mL),Basophils number (1000 cells/uL)
+Bonf.<0.05,0.05202878266857062,DR1TBCAR,LBXSAL,Beta-carotene (mcg),Albumin (g/dL)
+Bonf.<0.05,-0.2151833297059367,LBXLUZ,DXXANFM,Combined Lutein/zeaxanthin(ug/dL),Android fat mass
+Bonf.<0.05,0.049565145898708675,DR1TP204,DXXNKBMD,PFA 20:4 (Eicosatetraenoic) (gm),Femoral neck bone mineral density (gm/cm^2)
+Bonf.<0.05,-0.18850449747000148,LBXCBC,DXXANLM,cis-b-carotene(ug/dL),Android lean mass
+Bonf.<0.05,0.13793007676171595,DR2TFOLA,LBDFOT,Total Folate (mcg),Serum total folate (ng/mL)
+Bonf.<0.05,-0.07090988684790787,LBXBPB,DXXOSBMC,Lead (ug/dL),Total spine BMC
+Bonf.<0.05,0.23450499594872992,LBXF06,LBXRBCSI,"1,2,3,7,8,9-Hexachlorodibenzofuran (hxcdf) (fg/g)",Red blood cell count (million cells/uL)
+Bonf.<0.05,-0.08514741462489832,DR1TNUMF,DXXSATM,Total number of foods reported in the individual foods file,Subcutaneous fat mass
+Bonf.<0.05,-0.07192058679867261,LBDVICSI,MSYSTOLIC,Vitamin C (umol/L),Systolic Mean
+Bonf.<0.05,0.1373700291258878,DR1TIRON,LBXFOL,Iron (mg),"Folate, serum (ng/mL)"
+Bonf.<0.05,0.1040238497594767,LBXVIC,LBXSC3SI,Vitamin C (mg/dL),Bicarbonate (mmol/L)
+Bonf.<0.05,0.013413497926284615,LBXV2T,BMXSUB,"Blood trans-1,2-Dichloroethene Result",Subscapular Skinfold (mm)
+Bonf.<0.05,-0.07247363774352233,URXEMM,LBDPCT,Ethametsulfuron methyl (ug/L),Transferrin saturation (%)
+Bonf.<0.05,-0.08200177334766319,LBXVE3MS,DXXANLM,epi-25-hydroxyvitamin D3 (nmol/L),Android lean mass
+Bonf.<0.05,-0.16679816331439243,LBX187,BMXBMI,PCB187 (ng/g),Body Mass Index (kg/m**2)
+Bonf.<0.05,0.13063682101284751,SMQ720,LBXHGB,"During the past 5 days, on the days {you/he/she} smoked, how many cigarette",Hemoglobin (g/dL)
+Bonf.<0.05,-0.10313761453155296,URXUPB,DXDTOBMC,"Lead, urine (ng/mL)",Total Bone Mineral Content (g)
+Bonf.<0.05,0.0821070877421847,LBXGTC,MDIASTOLIC,g-tocopherol(ug/dL),Diastolic Mean
+Bonf.<0.05,0.07215576102713256,LBXVD3MS,DXXPEBMC,25-hydroxyvitamin D3(nmol/L),Pelvis Bone Mineral Content (grams)
+Bonf.<0.05,-0.0987874919558633,LBXVIDMS,LBXSGB,25-hydroxyvitamin D2 + D3,Globulin (g/dL)
+Bonf.<0.05,-0.07090662275472459,URXBP3,LBXWBCSI,Urinary 2-Hydroxy-4-metoxybenzophenone (Benzophenone-3),White blood cell count (1000 cells/uL)
+Bonf.<0.05,-0.11275649486535906,LBXVE3MS,DXDTOTOT,epi-25-hydroxyvitamin D3 (nmol/L),Total Lean+Fat (g)
+Bonf.<0.05,0.11911105108651439,LBXHCT,DXDTOLE,"Hydroxycotinine, Serum (ng/mL)",Total Lean excl BMC (g)
+Bonf.<0.05,-0.10005430400066737,LBDB12SI,BMXBMI,Vitamin B12 (pmol/L),Body Mass Index (kg/m**2)
+Bonf.<0.05,-0.1499381847277363,LBXVD3MS,BMXTRI,25-hydroxyvitamin D3(nmol/L),Triceps Skinfold (mm)
+Bonf.<0.05,0.2675142073131215,DS1DSCNT,LBDFOT,Number of dietary supplements reported,Serum total folate (ng/mL)
+Bonf.<0.05,-0.06862790289508716,DR1TM181,LBXSGTSI,MFA 18:1 (Octadecenoic) (gm),Gamma glutamyl transferase (U/L)
+Bonf.<0.05,0.11883658125350964,DR1TM161,LBXSBU,MFA 16:1 (Hexadecenoic) (gm),Blood urea nitrogen (mg/dL)
+Bonf.<0.05,-0.06946654401975651,URXUCS,BMXARMC,"Cesium, urine (ng/mL)",Arm Circumference (cm)
