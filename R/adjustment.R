@@ -1,4 +1,8 @@
 ## create a data structure to accommodate multiple scenarios and domains of the exposome
+
+#' A list of adjustmentVariables that match those in the demographic (e.g., demo tables)
+#'
+#' @export
 adjustmentVariables <- c("RIDAGEYR", "AGE_SQUARED",
                          "RIAGENDR",
                          "INDFMPIR",
@@ -7,6 +11,9 @@ adjustmentVariables <- c("RIDAGEYR", "AGE_SQUARED",
 
 SURVEY_YEAR_VARIABLE <- "SDDSRVYR"
 
+#' A list of adjustment model formulas
+#'
+#' @export
 adjustment_models <- rbind(
   tibble(scenario="base", variables=NA),
   tibble(scenario="age_sex_ethnicity_income_education", variables=adjustmentVariables), #5
@@ -19,6 +26,9 @@ adjustment_models <- rbind(
   tibble(scenario="ethnicity", variables=c("ETHNICITY_MEXICAN", "ETHNICITY_OTHERHISPANIC","ETHNICITY_OTHER", "ETHNICITY_NONHISPANICBLACK"))
 ) |> mutate(domain = 'default')
 
+#' A list of adjustment model formulas for dietary exposures
+#'
+#' @export
 adjustment_models_diet_x <- rbind(
   tibble(scenario="base", variables=c("DRXTKCAL_adj")),
   tibble(scenario="age_sex_ethnicity_income_education", variables=c(adjustmentVariables, "DRXTKCAL_adj")),
@@ -31,6 +41,9 @@ adjustment_models_diet_x <- rbind(
   tibble(scenario="ethnicity", variables=c("ETHNICITY_MEXICAN", "ETHNICITY_OTHERHISPANIC","ETHNICITY_OTHER", "ETHNICITY_NONHISPANICBLACK", "DRXTKCAL_adj"))
 ) |> mutate(domain = 'DRX') # dietary recall
 
+#' A list of adjustment model formulas for dietary exposures (day 1)
+#'
+#' @export
 adjustment_models_diet_1 <- rbind(
   tibble(scenario="base", variables=c("DR1TKCAL_adj")),
   tibble(scenario="age_sex_ethnicity_income_education", variables=c(adjustmentVariables, "DR1TKCAL_adj")),
@@ -43,7 +56,9 @@ adjustment_models_diet_1 <- rbind(
   tibble(scenario="ethnicity", variables=c("ETHNICITY_MEXICAN", "ETHNICITY_OTHERHISPANIC","ETHNICITY_OTHER", "ETHNICITY_NONHISPANICBLACK", "DR1TKCAL_adj"))
 ) |> mutate(domain = 'DR1') # dietary recall
 
-
+#' A list of adjustment model formulas for dietary exposures (day 2)
+#'
+#' @export
 adjustment_models_diet_2 <- rbind(
   tibble(scenario="base", variables=c("DR2TKCAL_adj")),
   tibble(scenario="age_sex_ethnicity_income_education", variables=c(adjustmentVariables, "DR2TKCAL_adj")),
@@ -56,6 +71,9 @@ adjustment_models_diet_2 <- rbind(
   tibble(scenario="ethnicity", variables=c("ETHNICITY_MEXICAN", "ETHNICITY_OTHERHISPANIC","ETHNICITY_OTHER", "ETHNICITY_NONHISPANICBLACK", "DR2TKCAL_adj"))
 ) |> mutate(domain = 'DR2') # dietary recall
 
+#' A list of adjustment model formulas for urine exposures
+#'
+#' @export
 adjustment_models_ucr <- rbind(
   tibble(scenario="base", variables=c("URXUCR_adj")),
   tibble(scenario="age_sex_ethnicity_income_education", variables=c(adjustmentVariables, "URXUCR_adj")),
@@ -188,8 +206,13 @@ add_covariate_to_scenario <- function(adjustment_model, scenario_name, variable_
 #' The survey year is added as a factor using `as.factor(SDDSRVYR)`.
 #'
 #' @examples
-#' # Assuming `adjustment_model_for_e` is predefined and compatible:
-#' updated_model <- add_survey_year_to_adjustment_scenarios(adjustment_model_for_e)
+#' # Assuming `adjustment_model_for_e` is predefined and compatible: e.g.
+#' adjustment_model <- tibble::tibble(
+#'   domain = "two_variable",
+#'   scenario = c("age_sex", "age_sex"),
+#'   variables = c("age", "sex")
+#' )
+#' updated_model <- add_survey_year_to_adjustment_scenarios(adjustment_model)
 #'
 #' @export
 add_survey_year_to_adjustment_scenarios <- function(adjustment_model_for_e) {

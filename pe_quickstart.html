@@ -11,9 +11,9 @@
 
 <meta name="author" content="Chirag Patel" />
 
-<meta name="date" content="2024-08-12" />
+<meta name="date" content="2025-05-31" />
 
-<title>Quickstart: Associating a phenotype with an exposure</title>
+<title>Quickstart: Associating a Phenotype with an Exposure</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -299,23 +299,17 @@ overflow-y: auto;
 border: 1px solid #ddd;
 border-radius: 4px;
 }
-.tabset-dropdown > .nav-tabs > li.active:before {
-content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+content: "\e259";
 font-family: 'Glyphicons Halflings';
 display: inline-block;
 padding: 10px;
 border-right: 1px solid #ddd;
 }
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-content: "";
-border: none;
-}
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-content: "";
+content: "\e258";
 font-family: 'Glyphicons Halflings';
-display: inline-block;
-padding: 10px;
-border-right: 1px solid #ddd;
+border: none;
 }
 .tabset-dropdown > .nav-tabs > li.active {
 display: block;
@@ -356,155 +350,354 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">Quickstart: Associating a phenotype with an
-exposure</h1>
+<h1 class="title toc-ignore">Quickstart: Associating a Phenotype with an
+Exposure</h1>
 <h4 class="author">Chirag Patel</h4>
-<h4 class="date">2024-08-12</h4>
+<h4 class="date">2025-05-31</h4>
 
 </div>
 
 
-<pre class="r"><code>if(exists(&quot;con&quot;)) {
-  dbDisconnect(con)
-  remove(list=ls())
-}</code></pre>
-<div id="estimating-an-association-between-an-exposure-and-phenotype-across-multiple-years" class="section level1">
-<h1>Estimating an association between an exposure and phenotype across
-multiple years</h1>
-<pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
-## ✔ ggplot2 3.3.6     ✔ purrr   0.3.4
-## ✔ tibble  3.1.8     ✔ dplyr   1.0.9
-## ✔ tidyr   1.2.0     ✔ stringr 1.4.0
-## ✔ readr   2.1.2     ✔ forcats 0.5.1
-## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-## ✖ dplyr::filter() masks stats::filter()
-## ✖ dplyr::lag()    masks stats::lag()</code></pre>
-<pre class="r"><code>library(DBI)
-library(survey)</code></pre>
-<pre><code>## Warning: package &#39;survey&#39; was built under R version 4.2.3</code></pre>
-<pre><code>## Loading required package: grid
-## Loading required package: Matrix</code></pre>
-<pre><code>## Warning: package &#39;Matrix&#39; was built under R version 4.2.3</code></pre>
-<pre><code>## 
-## Attaching package: &#39;Matrix&#39;
-## 
-## The following objects are masked from &#39;package:tidyr&#39;:
-## 
-##     expand, pack, unpack
-## 
-## Loading required package: survival
-## 
-## Attaching package: &#39;survey&#39;
-## 
-## The following object is masked from &#39;package:graphics&#39;:
-## 
-##     dotchart</code></pre>
-<pre class="r"><code>library(tictoc)
-devtools::load_all(&quot;.&quot;)</code></pre>
-<pre><code>## ℹ Loading nhanespewas</code></pre>
-<pre class="r"><code>con &lt;- DBI::dbConnect(RSQLite::SQLite(), dbname=&#39;./db/nhanes_012324.sqlite&#39;)
-varnames &lt;- dplyr::tbl(con, &quot;variable_names_epcf&quot;) </code></pre>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>This vignette shows how to run a simple exposure–phenotype
+association using the nhanespewas package. We will: 1. Load required
+libraries. 2. Connect to a locally stored NHANES “PE” database
+(1999–2017). 3. Peek at the predefined adjustment‐model objects. 4. Run
+three illustrative associations (CRP vs. Cotinine, Hemoglobin A1c
+vs. gamma-tocopherol, Lead vs. RDW). 5. Demonstrate how to include
+custom adjustment scenarios. 6. Show one example of a binary‐exposure
+model (urinary Chlamydia test positive vs. negative). 7. Finally,
+disconnect the database.</p>
+<p>Throughout, we illustrate how to retrieve tidy summary statistics, R²
+values, and how to tweak scaling or log‐transformation options.</p>
 </div>
-<div id="c-reactive-protein-p-and-cotinine-e" class="section level1">
-<h1>C-Reactive Protein (P) and Cotinine (E)</h1>
-<pre class="r"><code>varnames |&gt; filter(Variable.Name == &#39;LBXCOT&#39;)</code></pre>
-<pre><code>## # Source:   SQL [10 x 8]
-## # Database: sqlite 3.39.4 [/Users/chirag/HMS Dropbox/Chirag Patel/projects/nhanespewas/db/nhanes_012324.sqlite]
-##    Variable.Name Variable.Desc…¹ Data.…² Data.…³ Begin…⁴ EndYear Compo…⁵ Use.C…⁶
-##    &lt;chr&gt;         &lt;chr&gt;           &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;  
-##  1 LBXCOT        Cotinine (ng/m… COT_D   Cotini…    2005    2006 Labora… None   
-##  2 LBXCOT        Cotinine, Seru… COT_H   Cotini…    2013    2014 Labora… None   
-##  3 LBXCOT        Cotinine, Seru… COT_I   Cotini…    2015    2016 Labora… None   
-##  4 LBXCOT        Cotinine, Seru… COT_J   Cotini…    2017    2018 Labora… None   
-##  5 LBXCOT        Cotinine (ng/m… COTNAL… Cotini…    2007    2008 Labora… None   
-##  6 LBXCOT        Cotinine (ng/m… COTNAL… Cotini…    2009    2010 Labora… None   
-##  7 LBXCOT        Cotinine (ng/m… COTNAL… Cotini…    2011    2012 Labora… None   
-##  8 LBXCOT        Cotinine (ng/m… L06_B   Cadmiu…    2001    2002 Labora… None   
-##  9 LBXCOT        Cotinine (ng/m… L06COT… Cotini…    2003    2004 Labora… None   
-## 10 LBXCOT        Cotinine (ng/m… LAB06   Cadmiu…    1999    2000 Labora… None   
-## # … with abbreviated variable names ¹​Variable.Description, ²​Data.File.Name,
-## #   ³​Data.File.Description, ⁴​Begin.Year, ⁵​Component, ⁶​Use.Constraints</code></pre>
-<pre class="r"><code>varnames |&gt; filter(Variable.Name == &#39;LBXCRP&#39;)</code></pre>
-<pre><code>## # Source:   SQL [6 x 8]
-## # Database: sqlite 3.39.4 [/Users/chirag/HMS Dropbox/Chirag Patel/projects/nhanespewas/db/nhanes_012324.sqlite]
-##   Variable.Name Variable.Descr…¹ Data.…² Data.…³ Begin…⁴ EndYear Compo…⁵ Use.C…⁶
-##   &lt;chr&gt;         &lt;chr&gt;            &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;  
-## 1 LBXCRP        C-reactive prot… CRP_D   C-Reac…    2005    2006 Labora… None   
-## 2 LBXCRP        C-reactive prot… CRP_E   C-Reac…    2007    2008 Labora… None   
-## 3 LBXCRP        C-reactive prot… CRP_F   C-Reac…    2009    2010 Labora… None   
-## 4 LBXCRP        C-reactive prot… L11_B   C-Reac…    2001    2002 Labora… None   
-## 5 LBXCRP        C-reactive prot… L11_C   C-Reac…    2003    2004 Labora… None   
-## 6 LBXCRP        C-reactive prot… LAB11   C-Reac…    1999    2000 Labora… None   
-## # … with abbreviated variable names ¹​Variable.Description, ²​Data.File.Name,
-## #   ³​Data.File.Description, ⁴​Begin.Year, ⁵​Component, ⁶​Use.Constraints</code></pre>
-<pre class="r"><code>crp_cot &lt;- pe_flex_adjust(&quot;LBXCRP&quot;, &quot;LBXCOT&quot;, adjustment_models, con, scale_p=T)</code></pre>
-<pre><code>## Joining, by = &quot;Data.File.Name&quot;
-## Joining, by = &quot;Data.File.Name&quot;</code></pre>
-<pre class="r"><code># print out the tidied summary stats for the fully adjusted model
-crp_cot$models[[2]]$tidied</code></pre>
+<div id="load-libraries" class="section level1">
+<h1>1. Load Libraries</h1>
+<p>First, load the core packages you will need. • tidyverse: for
+data‐manipulation functions (e.g., filter, tbl). • DBI: to manage the
+database connection. • survey: (pulled in by nhanespewas internally for
+survey‐based regressions). • nhanespewas: our package of interest.</p>
+<pre class="r"><code>library(tidyverse) # for data‐manipulation (dplyr, %\&gt;%, etc.)
+library(DBI) # for connecting to an SQLite (or other) database
+library(survey) # loaded by nhanespewas for complex‐survey regressions
+library(nhanespewas) # our package for PE associations</code></pre>
+</div>
+<div id="connect-to-the-nhanes-pe-database" class="section level1">
+<h1>2. Connect to the NHANES PE Database</h1>
+<p>We assume that you have already downloaded the SQLite database
+containing all variables (1999–2017) formatted for nhanespewas. Adjust
+the path_to_db to match your local file.</p>
+<pre class="r"><code># Replace &#39;./db/nhanes_031725.sqlite&#39; with your actual file path
+
+path_to_db &lt;- &quot;./db/nhanes_031725.sqlite&quot;
+
+# Establish a connection to the NHANES PE database
+
+con &lt;- connect_pewas_data(path_to_db)
+
+# Once connected, you can reference tables via dplyr::tbl()
+
+varnames &lt;- dplyr::tbl(con, &quot;variable_names_epcf&quot;)</code></pre>
+<p>What is variable_names_epcf? This table contains metadata for all
+NHANES variables used in PE analyses: • Variable.Name (e.g., “LBXCRP”) •
+Label (e.g., “C-reactive protein (mg/dL)”) • Unit, category (Lab,
+Questionnaire, etc.), and which survey cycles the variable appears
+in.</p>
+</div>
+<div id="explore-predefined-adjustment-models" class="section level1">
+<h1>3. Explore Predefined Adjustment Models</h1>
+<p>The nhanespewas package ships with several “adjustment‐model”
+templates (e.g., age + sex + race/ethnicity, the fully adjusted model,
+etc.). These are stored as a data frame named adjustment_models.</p>
+<div id="display-the-builtin-adjustment-scenarios" class="section level2">
+<h2>Display the built‐in adjustment scenarios</h2>
+<pre class="r"><code>adjustment_models</code></pre>
+<pre><code>## # A tibble: 43 × 3
+##    scenario                           variables             domain 
+##    &lt;chr&gt;                              &lt;chr&gt;                 &lt;chr&gt;  
+##  1 base                               &lt;NA&gt;                  default
+##  2 age_sex_ethnicity_income_education RIDAGEYR              default
+##  3 age_sex_ethnicity_income_education AGE_SQUARED           default
+##  4 age_sex_ethnicity_income_education RIAGENDR              default
+##  5 age_sex_ethnicity_income_education INDFMPIR              default
+##  6 age_sex_ethnicity_income_education EDUCATION_LESS9       default
+##  7 age_sex_ethnicity_income_education EDUCATION_9_11        default
+##  8 age_sex_ethnicity_income_education EDUCATION_AA          default
+##  9 age_sex_ethnicity_income_education EDUCATION_COLLEGEGRAD default
+## 10 age_sex_ethnicity_income_education ETHNICITY_MEXICAN     default
+## # ℹ 33 more rows</code></pre>
+<p>What you’ll see: • A tibble with one row per scenario (e.g.,
+age_sex_ethnicity, age_sex_ethnicity_income_education, etc.). • A
+variables column showing the R code (as a string) that identifies which
+covariates to include. • A domain column (usually “default”).</p>
+<p>Later, when you call pe_flex_adjust(), you can pass one of these
+scenarios (or build your own) to specify exactly which covariates to
+include.</p>
+</div>
+</div>
+<div id="example-1-c-reactive-protein-p-vs.-cotinine-e" class="section level1">
+<h1>4. Example 1: C-Reactive Protein (P) vs. Cotinine (E)</h1>
+<p>Let’s run a simple linear regression of C-reactive protein (LBXCRP)
+on serum cotinine (LBXCOT), adjusting for the default covariates and
+scaling the phenotype. 1. Confirm that both variables exist in
+variable_names_epcf. 2. Call pe_flex_adjust() with “LBXCRP” (phenotype),
+“LBXCOT” (exposure), plus the adjustment template. 3. Extract summary
+statistics and R² values.</p>
+<div id="verify-that-lbxcot-and-lbxcrp-are-present-in-the-database" class="section level2">
+<h2>1. Verify that LBXCOT and LBXCRP are present in the database</h2>
+<pre class="r"><code>varnames |&gt; filter(Variable.Name == &quot;LBXCOT&quot;) </code></pre>
+<pre><code>## # Source:   SQL [?? x 8]
+## # Database: sqlite 3.47.1 [/Users/chirag/HMS Dropbox/Chirag Patel/projects/nhanespewas/db/nhanes_031725.sqlite]
+##    Variable.Name Variable.Description    Data.File.Name Data.File.Description   
+##    &lt;chr&gt;         &lt;chr&gt;                   &lt;chr&gt;          &lt;chr&gt;                   
+##  1 LBXCOT        Cotinine (ng/mL)        COT_D          Cotinine - Serum        
+##  2 LBXCOT        Cotinine, Serum (ng/mL) COT_H          Cotinine and Hydroxycot…
+##  3 LBXCOT        Cotinine, Serum (ng/mL) COT_I          Cotinine and Hydroxycot…
+##  4 LBXCOT        Cotinine, Serum (ng/mL) COT_J          Cotinine and Hydroxycot…
+##  5 LBXCOT        Cotinine (ng/mL)        COTNAL_E       Cotinine - Serum &amp; Tota…
+##  6 LBXCOT        Cotinine (ng/mL)        COTNAL_F       Cotinine - Serum &amp; Tota…
+##  7 LBXCOT        Cotinine (ng/mL)        COTNAL_G       Cotinine - Serum &amp; Tota…
+##  8 LBXCOT        Cotinine (ng/mL)        L06_B          Cadmium, Lead, Mercury,…
+##  9 LBXCOT        Cotinine (ng/mL)        L06COT_C       Cotinine - Serum        
+## 10 LBXCOT        Cotinine (ng/mL)        LAB06          Cadmium, Lead, Mercury,…
+## # ℹ 4 more variables: Begin.Year &lt;dbl&gt;, EndYear &lt;dbl&gt;, Component &lt;chr&gt;,
+## #   Use.Constraints &lt;chr&gt;</code></pre>
+<pre class="r"><code>varnames |&gt; filter(Variable.Name == &quot;LBXCRP&quot;)</code></pre>
+<pre><code>## # Source:   SQL [?? x 8]
+## # Database: sqlite 3.47.1 [/Users/chirag/HMS Dropbox/Chirag Patel/projects/nhanespewas/db/nhanes_031725.sqlite]
+##   Variable.Name Variable.Description       Data.File.Name Data.File.Description 
+##   &lt;chr&gt;         &lt;chr&gt;                      &lt;chr&gt;          &lt;chr&gt;                 
+## 1 LBXCRP        C-reactive protein (mg/dL) CRP_D          C-Reactive Protein (C…
+## 2 LBXCRP        C-reactive protein (mg/dL) CRP_E          C-Reactive Protein (C…
+## 3 LBXCRP        C-reactive protein(mg/dL)  CRP_F          C-Reactive Protein (C…
+## 4 LBXCRP        C-reactive protein (mg/dL) L11_B          C-Reactive protein (C…
+## 5 LBXCRP        C-reactive protein (mg/dL) L11_C          C-Reactive Protein (C…
+## 6 LBXCRP        C-reactive protein (mg/dL) LAB11          C-Reactive Protein (C…
+## # ℹ 4 more variables: Begin.Year &lt;dbl&gt;, EndYear &lt;dbl&gt;, Component &lt;chr&gt;,
+## #   Use.Constraints &lt;chr&gt;</code></pre>
+</div>
+<div id="run-pe-association-crp-outcome-cotinine-exposure" class="section level2">
+<h2>2. Run PE association: CRP (outcome) ~ Cotinine (exposure)</h2>
+<ul>
+<li><p>adjustment_models: built‐in set of covariates (age, sex,
+race_ethnicity, etc.)</p></li>
+<li><p>scale_p = TRUE: z‐score the phenotype (LBXCRP) before
+regression</p></li>
+<li><p>logxform_p = FALSE: do NOT log‐transform the phenotype</p></li>
+<li><p>scale_type = 3: use RankNorm (type‐3 scaling)</p></li>
+</ul>
+<pre class="r"><code>crp_cot &lt;- pe_flex_adjust(&quot;LBXCRP&quot;,&quot;LBXCOT&quot;, adjustment_variables   = adjustment_models, con = con, scale_p = TRUE, logxform_p = FALSE, scale_type = 3 )</code></pre>
+</div>
+<div id="extract-and-print-results" class="section level2">
+<h2>3. Extract and print results</h2>
+<p>The <code>models</code> list holds two entries per survey cycle: base
+model (covariates only) and full model (covariates + exposure). Here,
+[[2]] corresponds to the fully adjusted model for the second NHANES
+wave.</p>
+<pre class="r"><code>crp_cot$models[[2]]$tidied # coefficient, SE, p‐value, etc.</code></pre>
 <pre><code>## # A tibble: 14 × 5
 ##    term                        estimate std.error statistic  p.value
 ##    &lt;chr&gt;                          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-##  1 (Intercept)                -1.36     0.0436      -31.2   7.29e-46
-##  2 expo                        0.0604   0.00668       9.04  9.08e-14
-##  3 RIDAGEYR                    0.0481   0.00166      29.0   1.39e-43
-##  4 AGE_SQUARED                -0.000366 0.0000176   -20.8   1.61e-33
-##  5 RIAGENDR                    0.220    0.0136       16.2   1.11e-26
-##  6 INDFMPIR                   -0.0445   0.00464      -9.59  7.76e-15
-##  7 EDUCATION_LESS9            -0.187    0.0203       -9.22  4.08e-14
-##  8 EDUCATION_9_11             -0.0319   0.0162       -1.97  5.25e- 2
-##  9 EDUCATION_AA                0.0125   0.0169        0.739 4.62e- 1
-## 10 EDUCATION_COLLEGEGRAD      -0.121    0.0209       -5.77  1.52e- 7
-## 11 ETHNICITY_MEXICAN           0.213    0.0200       10.7   7.02e-17
-## 12 ETHNICITY_OTHERHISPANIC     0.104    0.0334        3.10  2.65e- 3
-## 13 ETHNICITY_OTHER            -0.147    0.0316       -4.66  1.26e- 5
-## 14 ETHNICITY_NONHISPANICBLACK  0.116    0.0161        7.20  3.29e-10</code></pre>
-<pre class="r"><code># R2 for the full adjusted model
-crp_cot$models[[2]]$r2</code></pre>
+##  1 (Intercept)                -1.19     0.0404      -29.3   6.65e-44
+##  2 expo                        0.0548   0.00621       8.83  2.34e-13
+##  3 RIDAGEYR                    0.0433   0.00154      28.1   1.56e-42
+##  4 AGE_SQUARED                -0.000330 0.0000165   -20.0   1.80e-32
+##  5 RIAGENDR                    0.210    0.0125       16.8   1.22e-27
+##  6 INDFMPIR                   -0.0410   0.00424      -9.68  5.30e-15
+##  7 EDUCATION_LESS9            -0.166    0.0188       -8.85  2.13e-13
+##  8 EDUCATION_9_11             -0.0262   0.0150       -1.74  8.53e- 2
+##  9 EDUCATION_AA                0.0127   0.0159        0.799 4.27e- 1
+## 10 EDUCATION_COLLEGEGRAD      -0.111    0.0193       -5.76  1.59e- 7
+## 11 ETHNICITY_MEXICAN           0.192    0.0185       10.4   2.25e-16
+## 12 ETHNICITY_OTHERHISPANIC     0.0933   0.0308        3.03  3.36e- 3
+## 13 ETHNICITY_OTHER            -0.135    0.0293       -4.62  1.47e- 5
+## 14 ETHNICITY_NONHISPANICBLACK  0.113    0.0150        7.55  6.83e-11</code></pre>
+<pre class="r"><code>crp_cot$models[[2]]$r2 # R² object for the fully adjusted model</code></pre>
 <pre><code>## $rsq
-## residual 
-## 0.186807 
+##  residual 
+## 0.1789174 
 ## 
 ## $adj.r2
 ##  residual 
-## 0.1865452</code></pre>
-<pre class="r"><code># R2 for base model
-crp_cot$base_models[[2]]$r2</code></pre>
-<pre><code>## $rsq
-##  residual 
-## 0.1838137 
-## 
-## $adj.r2
-##  residual 
-## 0.1835712</code></pre>
-<pre class="r"><code># full-base
-crp_cot$models[[2]]$r2$rsq - crp_cot$base_models[[2]]$r2$rsq</code></pre>
-<pre><code>##    residual 
-## 0.002993261</code></pre>
+## 0.1786531</code></pre>
 </div>
-<div id="urinary-creatinine-and-urinary-chlamydia-positive-and-neagtive-test" class="section level1">
-<h1>Urinary Creatinine and Urinary Chlamydia: positive and neagtive
-test</h1>
-<pre class="r"><code>varnames |&gt; filter(Variable.Name == &#39;URXUCL&#39;)</code></pre>
-<pre><code>## # Source:   SQL [9 x 8]
-## # Database: sqlite 3.39.4 [/Users/chirag/HMS Dropbox/Chirag Patel/projects/nhanespewas/db/nhanes_012324.sqlite]
-##   Variable.Name Variable.Descr…¹ Data.…² Data.…³ Begin…⁴ EndYear Compo…⁵ Use.C…⁶
-##   &lt;chr&gt;         &lt;chr&gt;            &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;  
-## 1 URXUCL        Urinary Chlamyd… CHLMDA… Chlamy…    2005    2006 Labora… None   
-## 2 URXUCL        Urinary Chlamyd… CHLMDA… Chlamy…    2007    2008 Labora… None   
-## 3 URXUCL        Urinary Chlamyd… CHLMDA… Chlamy…    2009    2010 Labora… None   
-## 4 URXUCL        Urinary Chlamyd… CHLMDA… Chlamy…    2011    2012 Labora… None   
-## 5 URXUCL        Chlamydia, urine CHLMDA… Chlamy…    2013    2014 Labora… None   
-## 6 URXUCL        Chlamydia, Urine CHLMDA… Chlamy…    2015    2016 Labora… None   
-## 7 URXUCL        Chlamydia, urine L05_B   Chlamy…    2001    2002 Labora… None   
-## 8 URXUCL        Chlamydia, urine L05_C   Chlamy…    2003    2004 Labora… None   
-## 9 URXUCL        Chlamydia, urine LAB05   Chlamy…    1999    2000 Labora… None   
-## # … with abbreviated variable names ¹​Variable.Description, ²​Data.File.Name,
-## #   ³​Data.File.Description, ⁴​Begin.Year, ⁵​Component, ⁶​Use.Constraints</code></pre>
-<pre class="r"><code>ucr_ucl &lt;- pe_flex_adjust(&quot;URXUCR&quot;, &quot;URXUCL&quot;, adjustment_models, con, scale_p=T, scale_e=F, logxform_e = F, exposure_levels = c(1,2))</code></pre>
-<pre><code>## Joining, by = &quot;Data.File.Name&quot;
-## Joining, by = &quot;Data.File.Name&quot;</code></pre>
+<div id="compare-against-base-model-r²" class="section level2">
+<h2>4. Compare against base model R²</h2>
+<pre class="r"><code>base_r2 &lt;- crp_cot$base_models[[2]]$r2$rsq
+full_r2  &lt;- crp_cot$models[[2]]$r2$rsq 
+delta_r2 &lt;- full_r2 - base_r2</code></pre>
+<div id="print-out-δr²" class="section level3">
+<h3>Print out ΔR²</h3>
+<pre class="r"><code>delta_r2</code></pre>
+<pre><code>##   residual 
+## 0.00288334</code></pre>
+<p>Explanation of R² output: • base_models[[2]]<span class="math inline">\(r2\)</span>rsq is the R² from the base model
+(covariates only) in cycle #2. • models[[2]]<span class="math inline">\(r2\)</span>rsq is the R² from the fully adjusted
+model (covariates + Cotinine). • ΔR² = full_r2 − base_r2 shows how much
+additional variance in CRP is explained by adding cotinine.</p>
+</div>
+</div>
+</div>
+<div id="example-2-hemoglobin-a1c-p-vs.-gamma-tocopherol-e" class="section level1">
+<h1>5. Example 2: Hemoglobin A1c (P) vs. Gamma-Tocopherol (E)</h1>
+<p>Next, we’ll examine the relationship between hemoglobin A1c (LBXGH)
+and blood gamma-tocopherol (LBXGTC). Again, we use the same default
+adjustment set, plus SD scaling—no log‐transform.</p>
+</div>
+<div id="run-pe-association-hemoglobin-a1c-lbxgh-gammatocopherol-lbxgtc" class="section level1">
+<h1>Run PE association: Hemoglobin A1c (LBXGH) ~ Gamma‐tocopherol
+(LBXGTC)</h1>
+<pre class="r"><code>gh_gtc &lt;- pe_flex_adjust( &quot;LBXGH&quot;, &quot;LBXGTC&quot;, adjustment_variables = adjustment_models, con = con, scale_p = TRUE,logxform_p = FALSE )</code></pre>
+</div>
+<div id="display-summary-statistics-for-the-fully-adjusted-model-model-2" class="section level1">
+<h1>Display summary statistics for the fully adjusted model (model
+#2)</h1>
+<pre class="r"><code>gh_gtc$models[[2]]$tidied</code></pre>
+<pre><code>## # A tibble: 14 × 5
+##    term                        estimate std.error statistic  p.value
+##    &lt;chr&gt;                          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+##  1 (Intercept)                -0.942    0.0362       -26.0  9.76e-35
+##  2 expo                        0.146    0.0103        14.1  7.74e-21
+##  3 RIDAGEYR                    0.0299   0.00188       15.9  2.56e-23
+##  4 AGE_SQUARED                -0.000116 0.0000201     -5.78 2.77e- 7
+##  5 RIAGENDR                   -0.0928   0.0127        -7.34 6.13e-10
+##  6 INDFMPIR                   -0.00992  0.00419       -2.37 2.12e- 2
+##  7 EDUCATION_LESS9             0.224    0.0268         8.36 1.06e-11
+##  8 EDUCATION_9_11              0.110    0.0195         5.64 4.67e- 7
+##  9 EDUCATION_AA               -0.0352   0.0233        -1.51 1.37e- 1
+## 10 EDUCATION_COLLEGEGRAD      -0.0905   0.0238        -3.79 3.42e- 4
+## 11 ETHNICITY_MEXICAN           0.219    0.0265         8.28 1.44e-11
+## 12 ETHNICITY_OTHERHISPANIC     0.229    0.0398         5.74 3.19e- 7
+## 13 ETHNICITY_OTHER             0.276    0.0361         7.66 1.69e-10
+## 14 ETHNICITY_NONHISPANICBLACK  0.313    0.0215        14.6  1.54e-21</code></pre>
+</div>
+<div id="extract-r²-for-full-vs.-base-model" class="section level1">
+<h1>Extract R² for full vs. base model</h1>
+<pre class="r"><code>base_r2_gh &lt;- gh_gtc$base_models[[2]]$r2$rsq
+full_r2_gh  &lt;- gh_gtc$models[[2]]$r2$rsq 
+delta_r2_gh &lt;- full_r2_gh -base_r2_gh
+delta_r2_gh</code></pre>
+<pre><code>##   residual 
+## 0.01970998</code></pre>
+<p>Note: Once you run gh_gtc, the tibble gh_gtc<span class="math inline">\(models[[2]]\)</span>tidied will show the estimated
+β‐coefficient, standard error, p‐value, and sample size for cycle #2 of
+NHANES.</p>
+</div>
+<div id="example-3-blood-lead-e-vs.-rdw-p-with-a-custom-adjustment-scenario" class="section level1">
+<h1>6. Example 3: Blood Lead (E) vs. RDW (P) with a Custom Adjustment
+Scenario</h1>
+<p>Sometimes you want to tweak the default adjustment set—for example,
+to add survey cycle as a categorical factor or to include body‐mass
+index. In this example, we’ll create a custom scenario named
+“age_sex_ethnicity_income_education_plus_cycle”, then run
+pe_flex_adjust() for RDW (LBXRDW) ~ Blood lead (LBXBPB).</p>
+<div id="start-by-filtering-down-to-the-default-scenario-age_sex_ethnicity_income_education." class="section level2">
+<h2>1. Start by filtering down to the default scenario
+“age_sex_ethnicity_income_education”.</h2>
+</div>
+<div id="append-two-additional-covariates" class="section level2">
+<h2>2. Append two additional covariates:</h2>
+<p>• as.factor(SDDSRVYR): indicator for NHANES cycle • BMXBMI_adj: BMI
+(adjusted; already present in your code base)</p>
+</div>
+<div id="run-pe_flex_adjust-with-scale_p-true-and-also-scale-logtransform-the-exposure-lbxbpb." class="section level2">
+<h2>3. Run pe_flex_adjust() with scale_p = TRUE and also scale &amp;
+log‐transform the exposure (LBXBPB).</h2>
+<div id="extract-default-scenario-rows" class="section level3">
+<h3>1. Extract default scenario rows</h3>
+<pre class="r"><code>test_scenario &lt;- adjustment_models |&gt; filter(scenario == &quot;age_sex_ethnicity_income_education&quot;)</code></pre>
+</div>
+<div id="append-two-new-variables-to-the-same-scenario" class="section level3">
+<h3>2. Append two new variables to the same scenario:</h3>
+<ul>
+<li><p>NHANES cycle indicator (as.factor(SDDSRVYR))</p></li>
+<li><p>Adjusted BMI (BMXBMI_adj)</p></li>
+</ul>
+<pre class="r"><code>test_scenario &lt;- test_scenario |&gt; rbind( tibble(scenario =&quot;age_sex_ethnicity_income_education&quot;, variables = &quot;as.factor(SDDSRVYR)&quot;,domain = &quot;default&quot;), tibble(scenario = &quot;age_sex_ethnicity_income_education&quot;, variables =&quot;BMXBMI_adj&quot;, domain = &quot;default&quot;) )</code></pre>
+</div>
+<div id="run-pe-association-rdw-lbxrdw-blood-lead-lbxbpb" class="section level3">
+<h3>3. Run PE association: RDW (LBXRDW) ~ Blood lead (LBXBPB)</h3>
+<ul>
+<li><p>test_scenario: includes age, sex, race/ethnicity, income,
+education, cycle, BMI</p></li>
+<li><p>scale_p = TRUE: z‐score RDW</p></li>
+<li><p>scale_e = TRUE: z‐score blood lead</p></li>
+<li><p>logxform_e = TRUE: log‐transform blood lead first</p></li>
+</ul>
+<pre class="r"><code>rdw_bpb &lt;- pe_flex_adjust(&quot;LBXRDW&quot;,  &quot;LBXBPB&quot;, adjustment_variables =  test_scenario, con = con, scale_p = TRUE, scale_e = TRUE, logxform_e = TRUE )</code></pre>
+<p>Display summary statistics for the fully adjusted model</p>
+<pre class="r"><code>rdw_bpb$models[[1]]$tidied</code></pre>
+<pre><code>## # A tibble: 24 × 5
+##    term                   estimate std.error statistic  p.value
+##    &lt;chr&gt;                     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+##  1 (Intercept)           -1.29     0.0397       -32.4  3.97e-64
+##  2 expo                   0.0379   0.00752        5.04 1.50e- 6
+##  3 RIDAGEYR              -0.00249  0.00133       -1.87 6.37e- 2
+##  4 AGE_SQUARED            0.000126 0.0000133      9.44 1.95e-16
+##  5 RIAGENDR               0.128    0.00939       13.7  5.92e-27
+##  6 INDFMPIR              -0.0423   0.00393      -10.8  9.39e-20
+##  7 EDUCATION_LESS9        0.0551   0.0171         3.22 1.62e- 3
+##  8 EDUCATION_9_11         0.0636   0.0168         3.78 2.38e- 4
+##  9 EDUCATION_AA          -0.0311   0.0134        -2.32 2.19e- 2
+## 10 EDUCATION_COLLEGEGRAD -0.0561   0.0171        -3.29 1.29e- 3
+## # ℹ 14 more rows</code></pre>
+<p>Compute ΔR²</p>
+<pre class="r"><code>base_r2_rdw &lt;- rdw_bpb$base_models[[1]]$r2$rsq
+full_r2_rdw  &lt;- rdw_bpb$models[[1]]$r2$rsq 
+delta_r2_rdw &lt;- full_r2_rdw - base_r2_rdw
+delta_r2_rdw</code></pre>
+<pre><code>##     residual 
+## 0.0008524944</code></pre>
+<p>Why log‐transform and scale the exposure? • Many environmental
+biomarkers (like lead) have a skewed distribution. • Applying logxform_e
+= TRUE helps ease interpetation and linear modelings. • Afterwards,
+scale_e = TRUE standardizes the log‐transformed exposure so that
+coefficients are per-SD.</p>
+</div>
+</div>
+</div>
+<div id="example-4-binary-exposure-urinary-chlamydia-test-and-urinary" class="section level1">
+<h1>7. Example 4: Binary Exposure (Urinary Chlamydia Test) and
+Urinary</h1>
+<pre><code>Creatinine (Continuous P)</code></pre>
+<p>In this example, we treat urinary Chlamydia test result (URXUCL) as a
+two‐level categorical exposure: “1” (negative) or “2” (positive). We
+want to see how urinary creatinine (URXUCR) differs between those two
+groups, adjusting for the default covariates.</p>
+<div id="verify-the-chlamydia-variable-exists-and-in-what-surveys" class="section level2">
+<h2>1. Verify the Chlamydia variable exists and in what surveys</h2>
+<pre class="r"><code>varnames |&gt; filter(Variable.Name == &quot;URXUCL&quot;)</code></pre>
+<pre><code>## # Source:   SQL [?? x 8]
+## # Database: sqlite 3.47.1 [/Users/chirag/HMS Dropbox/Chirag Patel/projects/nhanespewas/db/nhanes_031725.sqlite]
+##   Variable.Name Variable.Description Data.File.Name Data.File.Description       
+##   &lt;chr&gt;         &lt;chr&gt;                &lt;chr&gt;          &lt;chr&gt;                       
+## 1 URXUCL        Urinary Chlamydia    CHLMDA_D       Chlamydia &amp; Gonorrhea - Uri…
+## 2 URXUCL        Urinary Chlamydia    CHLMDA_E       Chlamydia &amp; Gonorrhea - Uri…
+## 3 URXUCL        Urinary Chlamydia    CHLMDA_F       Chlamydia - Urine           
+## 4 URXUCL        Urinary Chlamydia    CHLMDA_G       Chlamydia - Urine           
+## 5 URXUCL        Chlamydia, urine     CHLMDA_H       Chlamydia - Urine           
+## 6 URXUCL        Chlamydia, Urine     CHLMDA_I       Chlamydia - Urine           
+## 7 URXUCL        Chlamydia, urine     L05_B          Chlamydia &amp; Gonorrhea - Uri…
+## 8 URXUCL        Chlamydia, urine     L05_C          Chlamydia &amp; Gonorrhea - Uri…
+## 9 URXUCL        Chlamydia, urine     LAB05          Chlamydia &amp; Gonorrhea - Uri…
+## # ℹ 4 more variables: Begin.Year &lt;dbl&gt;, EndYear &lt;dbl&gt;, Component &lt;chr&gt;,
+## #   Use.Constraints &lt;chr&gt;</code></pre>
+</div>
+<div id="run-pe-association-urinary-creatinine-urxucr-urinary-chlamydia-urxucl" class="section level2">
+<h2>2. Run PE association: Urinary creatinine (URXUCR) ~ Urinary
+Chlamydia (URXUCL)</h2>
+<ul>
+<li><p>exposure_levels = c(1, 2): explicitly tell the function that
+“1”=negative, “2”=positive</p></li>
+<li><p>scale_p = TRUE: z‐score the outcome (URXUCR)</p></li>
+<li><p>scale_e = FALSE, logxform_e = FALSE: treat URXUCL as a two‐level
+categorical variable (no scaling or log‐transform)</p></li>
+</ul>
+<pre class="r"><code>ucr_ucl &lt;- pe_flex_adjust(&quot;URXUCR&quot;, &quot;URXUCL&quot;, adjustment_variables =adjustment_models, con = con, scale_p = TRUE, scale_e = FALSE, logxform_e = FALSE, exposure_levels = c(1, 2) )</code></pre>
+</div>
+<div id="print-tidied-summary-stats-for-the-model-2-full-model" class="section level2">
+<h2>3. Print tidied summary stats for the model ( #2, full model)</h2>
 <pre class="r"><code>ucr_ucl$models[[2]]$tidied</code></pre>
 <pre><code>## # A tibble: 14 × 5
 ##    term                         estimate std.error statistic  p.value
@@ -523,7 +716,37 @@ test</h1>
 ## 12 ETHNICITY_OTHERHISPANIC     0.0930     0.0374      2.49   1.42e- 2
 ## 13 ETHNICITY_OTHER            -0.0424     0.0390     -1.09   2.78e- 1
 ## 14 ETHNICITY_NONHISPANICBLACK  0.551      0.0228     24.2    5.26e-49</code></pre>
-<pre class="r"><code>dbDisconnect(con)</code></pre>
+<p>What to expect:</p>
+<p>Since URXUCL is now treated as a factor with two levels (baseline =
+1, comparison = 2), the returned coefficient indicates the mean
+difference in urinary creatinine (in SD units) between
+Chlamydia‐positive vs. Chlamydia‐negative, after adjusting for age, sex,
+race/ethnicity, etc.</p>
+</div>
+</div>
+<div id="disconnect-from-the-database" class="section level1">
+<h1>8. Disconnect from the Database</h1>
+<pre class="r"><code>disconnect_pewas_data(con)</code></pre>
+</div>
+<div id="summary-and-next-steps-youve-seen-how-to-perform-four-different-phenotypeexposure-associations" class="section level1">
+<h1>9. Summary and Next Steps: You’ve seen how to perform four different
+phenotype–exposure associations:</h1>
+<pre><code>1.  Continuous P ~ Continuous E (no log for E).
+
+2.  Continuous P ~ Continuous E (no log for E).
+
+3.  Continuous P ~ Continuous E with custom covariate set (cycle + BMI, plus default).
+
+4.  Continuous P ~ Categorical E (two‐level exposure). 
+  • You’ve also learned how to: 
+  • Inspect built-in covariate scenarios
+    (adjustment_models). 
+    • Create your own custom scenario by
+    appending rows. 
+    • Extract tidy regression output and R² differences.
+
+• Check out the web‐based PE Atlas for a broader overview of all associations
+http://apps.chiragjpgroup.org/pe_atlas/</code></pre>
 </div>
 
 

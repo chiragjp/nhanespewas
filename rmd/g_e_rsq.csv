@@ -1,0 +1,30 @@
+Description,R2 E,R2 (G)
+Body Mass Index (kg/m**2),0.0972,0.1080
+Standing Height (cm),0.0314,0.1790
+Waist Circumference (cm),0.0742,0.0656
+Weight (kg),0.0461,0.1040
+Basophils number (1000 cells/uL),0.0168,0.0145
+Eosinophils number (1000 cells/uL),0.0076,0.0934
+Direct HDL-Cholesterol (mg/dL),0.0955,0.1490
+LDL-cholesterol (mg/dL),0.3097,0.0854
+Lymphocyte number (1000 cells/uL),0.0548,0.0205
+Monocyte number (1000 cells/uL),0.0184,0.0810
+Segmented neutrophils num (1000 cell/uL),0.0355,0.0887
+Glycohemoglobin (%),0.0789,0.0037
+Fasting Glucose (mg/dL),0.0809,0.0047
+Hematocrit (%),0.1699,0.0650
+Hemoglobin (g/dL),0.0823,0.0678
+Lymphocyte percent (%),0.0141,0.0884
+Monocyte percent (%),0.0381,0.0853
+Segmented neutrophils percent (%),0.0116,0.0793
+Platelet count SI (1000 cells/uL),0.0289,0.2080
+Red blood cell count (million cells/uL),0.0874,0.1170
+Red cell distribution width (%),0.1865,0.0283
+Red cell distribution width (%),0.1865,0.0793
+Albumin (g/dL),0.1207,0.0027
+Alanine aminotransferase ALT (U/L),0.0120,0.0028
+Total calcium (mg/dL),0.0971,0.0523
+Creatinine (mg/dL),0.1398,0.0013
+Total bilirubin (mg/dL),0.0321,0.1870
+Total cholesterol (mg/dL),0.3513,0.0433
+Triglyceride (mg/dL),0.5747,0.0930

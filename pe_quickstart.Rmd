@@ -1,163 +1,308 @@
 ---
-title: "Quickstart: Associating a phenotype with an exposure"
+title: "Quickstart: Associating a Phenotype with an Exposure"
 author: "Chirag Patel"
 date: "`r Sys.Date()`"
 output: html_document
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+# Set global chunk options: show code by default
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+# Introduction
+
+This vignette shows how to run a simple exposure–phenotype association
+using the nhanespewas package. We will: 1. Load required libraries. 2.
+Connect to a locally stored NHANES “PE” database (1999–2017). 3. Peek at
+the predefined adjustment‐model objects. 4. Run three illustrative
+associations (CRP vs. Cotinine, Hemoglobin A1c vs. gamma-tocopherol,
+Lead vs. RDW). 5. Demonstrate how to include custom adjustment
+scenarios. 6. Show one example of a binary‐exposure model (urinary
+Chlamydia test positive vs. negative). 7. Finally, disconnect the
+database.
+
+Throughout, we illustrate how to retrieve tidy summary statistics, R²
+values, and how to tweak scaling or log‐transformation options.
+
+
+
+# 1.  Load Libraries
+
+First, load the core packages you will need. • tidyverse: for
+data‐manipulation functions (e.g., filter, tbl). • DBI: to manage the
+database connection. • survey: (pulled in by nhanespewas internally for
+survey‐based regressions). • nhanespewas: our package of interest.
+
+```{r load}
+library(tidyverse) # for data‐manipulation (dplyr, %\>%, etc.)
+library(DBI) # for connecting to an SQLite (or other) database
+library(survey) # loaded by nhanespewas for complex‐survey regressions
+library(nhanespewas) # our package for PE associations
 ```
 
 
-```{r start anew}
-if(exists("con")) {
-  dbDisconnect(con)
-  remove(list=ls())
-}
+# 2.  Connect to the NHANES PE Database
 
-```
-
-# Estimating an association between an exposure and phenotype across multiple years
-
-
-```{r}
-library(tidyverse)
-library(DBI)
-library(survey)
-devtools::load_all(".")
-```
+We assume that you have already downloaded the SQLite database
+containing all variables (1999–2017) formatted for nhanespewas. Adjust
+the path_to_db to match your local file.
 
 ```{r connect}
-#con <- DBI::dbConnect(RSQLite::SQLite(), dbname='./db/nhanes_012324.sqlite')
-#con <- DBI::dbConnect(RSQLite::SQLite(), dbname='./db/nhanes_112824.sqlite')
-con <- DBI::dbConnect(RSQLite::SQLite(), dbname='./db/nhanes_031725.sqlite')
-varnames <- dplyr::tbl(con, "variable_names_epcf") 
+# Replace './db/nhanes_031725.sqlite' with your actual file path
+
+path_to_db <- "./db/nhanes_031725.sqlite"
+
+# Establish a connection to the NHANES PE database
+
+con <- connect_pewas_data(path_to_db)
+
+# Once connected, you can reference tables via dplyr::tbl()
+
+varnames <- dplyr::tbl(con, "variable_names_epcf")
+```
+
+What is variable_names_epcf? This table contains metadata for all NHANES
+variables used in PE analyses: • Variable.Name (e.g., "LBXCRP") • Label
+(e.g., “C-reactive protein (mg/dL)”) • Unit, category (Lab,
+Questionnaire, etc.), and which survey cycles the variable appears in.
+
+
+
+# 3.  Explore Predefined Adjustment Models
+
+The nhanespewas package ships with several “adjustment‐model” templates
+(e.g., age + sex + race/ethnicity, the fully adjusted model, etc.).
+These are stored as a data frame named adjustment_models.
+
+## Display the built‐in adjustment scenarios
+```{r}
+adjustment_models
+```
+
+What you’ll see: 
+• A tibble with one row per scenario (e.g.,
+age_sex_ethnicity, age_sex_ethnicity_income_education, etc.). 
+• A variables column showing the R code (as a string) that identifies which
+covariates to include. 
+• A domain column (usually “default”).
+
+Later, when you call pe_flex_adjust(), you can pass one of these
+scenarios (or build your own) to specify exactly which covariates to
+include.
+
+# 4.  Example 1: C-Reactive Protein (P) vs. Cotinine (E)
+
+Let’s run a simple linear regression of C-reactive protein (LBXCRP) on
+serum cotinine (LBXCOT), adjusting for the default covariates and
+scaling the phenotype. 1. Confirm that both variables exist in
+variable_names_epcf. 2. Call pe_flex_adjust() with "LBXCRP" (phenotype),
+"LBXCOT" (exposure), plus the adjustment template. 3. Extract summary
+statistics and R² values.
+
+## 1. Verify that LBXCOT and LBXCRP are present in the database
+
+```{r}
+varnames |> filter(Variable.Name == "LBXCOT") 
+varnames |> filter(Variable.Name == "LBXCRP")
+```
+
+## 2. Run PE association: CRP (outcome) \~ Cotinine (exposure)
+
+ - adjustment_models: built‐in set of covariates (age, sex, race_ethnicity, etc.)
+
+ - scale_p = TRUE: z‐score the phenotype (LBXCRP) before regression
+
+ - logxform_p = FALSE: do NOT log‐transform the phenotype
+
+ - scale_type = 3: use RankNorm (type‐3 scaling)
+
+```{r}
+crp_cot <- pe_flex_adjust("LBXCRP","LBXCOT", adjustment_variables   = adjustment_models, con = con, scale_p = TRUE, logxform_p = FALSE, scale_type = 3 )
 ```
 
 
+## 3. Extract and print results
 
-# C-Reactive Protein (P) and Cotinine (E)
-```{r serum cotinine and c-reactive protein}
-varnames |> filter(Variable.Name == 'LBXCOT')
-varnames |> filter(Variable.Name == 'LBXCRP')
-crp_cot <- pe_flex_adjust("LBXCRP", "LBXCOT", adjustment_models, con, scale_p=T, logxform_p = F, scale_type=3)
-# print out the tidied summary stats for the fully adjusted model
-crp_cot$models[[2]]$tidied
-# R2 for the full adjusted model
-crp_cot$models[[2]]$r2
-# R2 for base model
-crp_cot$base_models[[2]]$r2
-# full-base
-crp_cot$models[[2]]$r2$rsq - crp_cot$base_models[[2]]$r2$rsq
+The `models` list holds two entries per survey cycle: base model (covariates only) and full model (covariates + exposure). Here, [[2]] corresponds to the fully adjusted model for the second NHANES wave.
+
+```{r}
+crp_cot$models[[2]]$tidied # coefficient, SE, p‐value, etc.
+crp_cot$models[[2]]$r2 # R² object for the fully adjusted model
 ```
 
-# GH(P) and gamma-tocopherol (E)
-```{r serum cotinine and c-reactive protein}
-gh_gtc <- pe_flex_adjust("LBXGH", "LBXGTC", adjustment_models, con, scale_p=T, logxform_p = F, scale_type=3)
-# 0.1104320348
-# print out the tidied summary stats for the fully adjusted model
+## 4. Compare against base model R²
+
+```{r}
+base_r2 <- crp_cot$base_models[[2]]$r2$rsq
+full_r2  <- crp_cot$models[[2]]$r2$rsq 
+delta_r2 <- full_r2 - base_r2
+```
+
+### Print out ΔR²
+```{r}
+delta_r2
+```
+Explanation of R² output: 
+• base_models[[2]]$r2$rsq is the R² from the base model (covariates only) in cycle #2. 
+• models[[2]]$r2$rsq is the R²
+from the fully adjusted model (covariates + Cotinine). 
+• ΔR² = full_r2 − base_r2 shows how much additional variance in CRP is explained by adding
+cotinine.
+
+
+# 5.  Example 2: Hemoglobin A1c (P) vs. Gamma-Tocopherol (E)
+
+Next, we’ll examine the relationship between hemoglobin A1c (LBXGH) and
+blood gamma-tocopherol (LBXGTC). Again, we use the same default adjustment set, plus SD scaling—no log‐transform.
+
+# Run PE association: Hemoglobin A1c (LBXGH) \~ Gamma‐tocopherol (LBXGTC)
+
+```{r}
+gh_gtc <- pe_flex_adjust( "LBXGH", "LBXGTC", adjustment_variables = adjustment_models, con = con, scale_p = TRUE,logxform_p = FALSE )
+```
+
+# Display summary statistics for the fully adjusted model (model #2)
+
+```{r}
 gh_gtc$models[[2]]$tidied
-# R2 for the full adjusted model
-gh_gtc$models[[2]]$r2
-# R2 for base model
-gh_gtc$base_models[[2]]$r2
-# full-base
-gh_gtc$models[[2]]$r2$rsq - crp_cot$base_models[[2]]$r2$rsq
 ```
-
-Age?
-```{r}
-ptables <- get_table_names_for_varname(con, varname = "RIDAGEYR") |> rename(p_name = Data.File.Name)
-etables <- get_table_names_for_varname(con, varname = "LBXCOT") |> rename(e_name = Data.File.Name)
-table_set <- ptables |> inner_join(etables, by = "Begin.Year")
-tab_obj <- get_x_y_tables_as_list(con,table_set$p_name,table_set$e_name)
-tab_obj <- tab_obj |> figure_out_multiyear_weight()
-age_cot <- pe_flex_adjust("RIDAGEYR", "LBXCOT", adjustment_models |> filter(scenario=="base"), con, scale_p=T)
-```
-
-Lead and RDW
-```{r}
-
-
-test_scenario <- adjustment_models |> filter(scenario == 'age_sex_ethnicity_income_education')
-
-test_scenario <- test_scenario |> 
-  rbind(tibble(scenario = 'age_sex_ethnicity_income_education', variables='as.factor(SDDSRVYR)', domain='default'))
-
-rdw_bpb <- pe_flex_adjust("LBXRDW", "LBXBPB", test_scenario, con, scale_p=T, scale_e = T, logxform_e = T)
-
-#rdw_bpb <- pe_flex_adjust("LBXRDW", "LBXCOT", test_scenario, con, scale_p=T, scale_e = T, logxform_e = T)
-
-
-ptables <- get_table_names_for_varname(con, varname = "LBXRDW") |> rename(p_name = Data.File.Name)
-etables <- get_table_names_for_varname(con, varname = "LBXBPB") |> rename(e_name = Data.File.Name)
-table_set <- ptables |> inner_join(etables, by = "Begin.Year")
-if(nrow(table_set) == 0) {
-    stop("Y and X variables not collected in the same survey")
-}
-
-
-  ## get table names for each series
-tab_obj <- get_x_y_tables_as_list(con,table_set$p_name,table_set$e_name)
-tab_obj <- tab_obj |> figure_out_multiyear_weight()
-
-```
-
-fatty acid and LBXIN
-```{r}
-test_scenario <- adjustment_models |> filter(scenario == 'age_sex_ethnicity_income_education')
-
-test_scenario <- test_scenario |> 
-  rbind(tibble(scenario = 'age_sex_ethnicity_income_education', variables='as.factor(SDDSRVYR)', domain='default'),
-        tibble(scenario = 'age_sex_ethnicity_income_education', variables='BMXBMI_adj', domain='default')
-        )
-in_fa <- pe_flex_adjust("LBXIN", "LBXOD9", test_scenario, con, scale_p=T, scale_e = T, logxform_e = T)
-
-```
-
-
-# Explore the uBiome and alpha diversity
+# Extract R² for full vs. base model
 
 ```{r}
-varnames |> filter(Variable.Name == 'RB_family1_count')
-
-rb_count <- tbl(con, 'DADA2RB_FAMILY_COUNT_F')
-alpha <- tbl(con, 'ALPHADIVERSITY_F')
-
-rb_count |> colnames()
-
-rb_count |> collect() |> str() ## which ones actually have variation?
-
-p <- ggplot(rb_count, aes((RB_family29_count+.01))) ## looks like it is right skewed
-p + geom_histogram()
-
-```
-
-#  RB_family1_count (P) and Cotinine (E)
-```{r serum cotinine and RB29 count}
-
-varnames |> filter(Variable.Name == 'LBXCOT') # indicator of nicotene (smoke exposure)
-varnames |> filter(Variable.Name == 'RB_family29_count') # Actinomycetaceae
-rb_cot <- pe_flex_adjust("RB_family29_count", "LBXCOT", adjustment_models, con, scale_p=T, logxform_p = T)
-# print out the tidied summary stats for the fully adjusted model
-rb_cot$models[[2]]$tidied
-# R2 for the full adjusted model
-rb_cot$models[[2]]$r2
-# R2 for base model
-rb_cot$base_models[[2]]$r2
-# full-base
-rb_cot$models[[2]]$r2$rsq - rb_cot$base_models[[2]]$r2$rsq
+base_r2_gh <- gh_gtc$base_models[[2]]$r2$rsq
+full_r2_gh  <- gh_gtc$models[[2]]$r2$rsq 
+delta_r2_gh <- full_r2_gh -base_r2_gh
+delta_r2_gh
 ```
 
 
-# Urinary Creatinine and Urinary Chlamydia: positive and negative test
-```{r urinary creatinine}
-varnames |> filter(Variable.Name == 'URXUCL')
-ucr_ucl <- pe_flex_adjust("URXUCR", "URXUCL", adjustment_models, con, scale_p=T, scale_e=F, logxform_e = F, exposure_levels = c(1,2))
+Note: Once you run gh_gtc, the tibble gh_gtc$models[[2]]$tidied will
+show the estimated β‐coefficient, standard error, p‐value, and sample
+size for cycle #2 of NHANES.
+
+# 6.  Example 3: Blood Lead (E) vs. RDW (P) with a Custom Adjustment Scenario
+
+Sometimes you want to tweak the default adjustment set—for example, to
+add survey cycle as a categorical factor or to include body‐mass index.
+In this example, we’ll create a custom scenario named
+"age_sex_ethnicity_income_education_plus_cycle", then run
+pe_flex_adjust() for RDW (LBXRDW) \~ Blood lead (LBXBPB). 
+
+## 1. Start by filtering down to the default scenario "age_sex_ethnicity_income_education". 
+
+## 2. Append two additional covariates: 
+• as.factor(SDDSRVYR): indicator for NHANES cycle 
+• BMXBMI_adj: BMI (adjusted; already present in your code base) 
+
+## 3. Run pe_flex_adjust() with scale_p = TRUE and also scale & log‐transform the exposure (LBXBPB).
+
+### 1. Extract default scenario rows
+
+```{r}
+test_scenario <- adjustment_models |> filter(scenario == "age_sex_ethnicity_income_education")
+```
+### 2. Append two new variables to the same scenario:
+
+- NHANES cycle indicator (as.factor(SDDSRVYR))
+
+- Adjusted BMI (BMXBMI_adj)
+
+```{r}
+test_scenario <- test_scenario |> rbind( tibble(scenario ="age_sex_ethnicity_income_education", variables = "as.factor(SDDSRVYR)",domain = "default"), tibble(scenario = "age_sex_ethnicity_income_education", variables ="BMXBMI_adj", domain = "default") )
+```
+
+### 3. Run PE association: RDW (LBXRDW) \~ Blood lead (LBXBPB)
+
+ - test_scenario: includes age, sex, race/ethnicity, income, education, cycle, BMI
+
+ - scale_p = TRUE: z‐score RDW
+
+ - scale_e = TRUE: z‐score blood lead
+
+ - logxform_e = TRUE: log‐transform blood lead first
+
+```{r}
+rdw_bpb <- pe_flex_adjust("LBXRDW",  "LBXBPB", adjustment_variables =  test_scenario, con = con, scale_p = TRUE, scale_e = TRUE, logxform_e = TRUE )
+```
+Display summary statistics for the fully adjusted model 
+
+```{r}
+rdw_bpb$models[[1]]$tidied
+```
+
+ Compute ΔR² 
+
+```{r}
+base_r2_rdw <- rdw_bpb$base_models[[1]]$r2$rsq
+full_r2_rdw  <- rdw_bpb$models[[1]]$r2$rsq 
+delta_r2_rdw <- full_r2_rdw - base_r2_rdw
+delta_r2_rdw
+```
+
+
+Why log‐transform and scale the exposure? 
+• Many environmental biomarkers (like lead) have a skewed distribution. 
+• Applying logxform_e = TRUE helps ease interpetation and linear modelings. 
+• Afterwards, scale_e = TRUE standardizes the log‐transformed exposure so that coefficients are per-SD.
+
+# 7.  Example 4: Binary Exposure (Urinary Chlamydia Test) and Urinary
+    Creatinine (Continuous P)
+
+In this example, we treat urinary Chlamydia test result (URXUCL) as a two‐level categorical exposure: “1” (negative) or “2” (positive). We want to see how urinary creatinine (URXUCR) differs between those two groups, adjusting for the default covariates.
+
+## 1. Verify the Chlamydia variable exists and in what surveys
+
+```{r}
+varnames |> filter(Variable.Name == "URXUCL")
+```
+## 2. Run PE association: Urinary creatinine (URXUCR) \~ Urinary Chlamydia (URXUCL)
+
+ - exposure_levels = c(1, 2): explicitly tell the function that “1”=negative, “2”=positive
+
+ - scale_p = TRUE: z‐score the outcome (URXUCR)
+
+ - scale_e = FALSE, logxform_e = FALSE: treat URXUCL as a two‐level categorical variable (no scaling or log‐transform)
+
+```{r}
+ucr_ucl <- pe_flex_adjust("URXUCR", "URXUCL", adjustment_variables =adjustment_models, con = con, scale_p = TRUE, scale_e = FALSE, logxform_e = FALSE, exposure_levels = c(1, 2) )
+```
+## 3. Print tidied summary stats for the model ( #2, full model)
+
+```{r}
 ucr_ucl$models[[2]]$tidied
 ```
+What to expect: 
 
-```{r disconnect}
-dbDisconnect(con)
+Since URXUCL is now treated as a factor with two levels (baseline = 1, comparison = 2), the returned coefficient
+indicates the mean difference in urinary creatinine (in SD units) between Chlamydia‐positive vs. Chlamydia‐negative, after adjusting for age, sex, race/ethnicity, etc.
+
+# 8.  Disconnect from the Database
+
+```{r}
+disconnect_pewas_data(con)
 ```
+
+
+# 9.  Summary and Next Steps: You’ve seen how to perform four different phenotype–exposure associations:
+
+    1.  Continuous P ~ Continuous E (no log for E).
+    
+    2.  Continuous P ~ Continuous E (no log for E).
+    
+    3.  Continuous P ~ Continuous E with custom covariate set (cycle + BMI, plus default).
+    
+    4.  Continuous P ~ Categorical E (two‐level exposure). 
+      • You’ve also learned how to: 
+      • Inspect built-in covariate scenarios
+        (adjustment_models). 
+        • Create your own custom scenario by
+        appending rows. 
+        • Extract tidy regression output and R² differences.
+
+    • Check out the web‐based PE Atlas for a broader overview of all associations
+    http://apps.chiragjpgroup.org/pe_atlas/
+    

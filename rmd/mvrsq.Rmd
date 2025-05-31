@@ -22,33 +22,80 @@ rsq_summary_10 <- rsq_summary
 load('../pipeline/rsq/mvrsq_50.Rdata')
 rsq_summary_50 <- rsq_summary
 
-rsq_summary <- rsq_summary_10 |> left_join(rsq_summary_20, by = "phenotype", suffix = c("_10", "_20")) #|> left_join(rsq_summary_50, suffix=c("", "_50"), by="phenotype")
+rsq_summary <- rsq_summary_10 |> left_join(rsq_summary_20, by = "phenotype", suffix = c("_10", "_20")) 
 
 ```
 
 
 ```{r}
 load('./adjusted_meta_2.Rdata')
-pheno_desc <- adjusted_meta_2 |> select(pvarname, pvardesc) |> unique()
+pheno_desc <- adjusted_meta_2 |> select(pvarname, pvardesc, pnewsubcategory) |> unique()
 rsq_summary <- rsq_summary |> left_join(pheno_desc, by=c("phenotype"="pvarname"))
 
-rsq_summary |> filter(rsq_exposures_20 > 0) |> summarize(m=median(rsq_exposures_20), q25=quantile(rsq_exposures_20, probs=.25), q75=quantile(rsq_exposures_20, probs=.75))
+#rsq_summary |> filter(rsq_exposures_20 > 0) |> summarize(m=median(rsq_exposures_20), q25=quantile(rsq_exposures_20, probs=.25), q75=quantile(rsq_exposures_20, probs=.75))
+
+```
+
+
+```{r}
+rsq_summary <- rsq_summary |> mutate(rsq_exposures_10_20 = case_when(
+  rsq_exposures_20 < 0 & rsq_exposures_10 > 0 ~ rsq_exposures_10,
+  is.na(rsq_exposures_20) & rsq_exposures_10 > 0 ~ rsq_exposures_10,
+  rsq_exposures_20 < 0 & rsq_exposures_10 < 0 ~ NA,
+  
+  TRUE ~ rsq_exposures_20
+))
+
+rsq_summary <- rsq_summary |> mutate(number_exposures_in_model_10_20 = case_when(
+  rsq_exposures_20 < 0 & rsq_exposures_10 > 0 ~ number_exposures_in_model_10,
+  is.na(rsq_exposures_20) & rsq_exposures_10 > 0 ~ number_exposures_in_model_10,
+  rsq_exposures_20 < 0 & rsq_exposures_10 < 0 ~ NA,
+  
+  TRUE ~ number_exposures_in_model_20
+  
+))
+
+
 
 ```
 
 ```{r}
+rsq_summary |> filter(!is.na(rsq_exposures_10_20)) |> summarize(m=median(rsq_exposures_10_20), q25=quantile(rsq_exposures_10_20, probs=.25), q75=quantile(rsq_exposures_10_20, probs=.75))
 
-p <- ggplot(rsq_summary |> filter(rsq_exposures_20 > 0, phenotype != 'LBXHCT'), aes(number_exposures_in_model_20, rsq_exposures_20*100, label=pvardesc))
+
+rsq_summary |> filter(!is.na(rsq_exposures_10_20)) |> group_by(pnewsubcategory) |> summarize(m=median(rsq_exposures_10_20), q25=quantile(rsq_exposures_10_20, probs=.25), q75=quantile(rsq_exposures_10_20, probs=.75))
+
+
+rsq_summary |> filter(!is.na(rsq_exposures_10_20)) |> filter(number_exposures_in_model_20 == 20)  |> summarize(m=median(rsq_exposures_10_20), q25=quantile(rsq_exposures_10_20, probs=.25), q75=quantile(rsq_exposures_10_20, probs=.75))
+
+rsq_summary |> filter(!is.na(rsq_exposures_10_20)) |> filter(number_exposures_in_model_20 == 20)  |> summarize(m=median(rsq_exposures_10_20), q25=quantile(rsq_exposures_10_20, probs=.25), q75=quantile(rsq_exposures_10_20, probs=.75)) 
+
+rsq_summary |> filter(!is.na(rsq_exposures_10_20)) |> filter(number_exposures_in_model_20 == 20) |> ggplot() + aes(rsq_exposures_10_20) + geom_histogram() 
+
+rsq_summary |> filter(!is.na(rsq_exposures_10_20)) |> filter(number_exposures_in_model_20 == 20) |> group_by(pnewsubcategory) |> summarize(m=median(rsq_exposures_10_20), q25=quantile(rsq_exposures_10_20, probs=.25), q75=quantile(rsq_exposures_10_20, probs=.75))
+
+## write as as a table
+
+rsq_summary |>  filter(!is.na(rsq_exposures_10_20)) |> filter(number_exposures_in_model_20 == 20) |> group_by(pnewsubcategory) |> 
+  summarize(num_pheno=n(), m=median(rsq_exposures_10_20), q25=quantile(rsq_exposures_10_20, probs=.25), q75=quantile(rsq_exposures_10_20, probs=.75), qmax=quantile(rsq_exposures_10_20, probs=1)) |> write_csv("./pcategory_rsq.csv")
+
+rsq_summary |>  filter(!is.na(rsq_exposures_10_20)) |> select(pvardesc, phenotype, number_exposures_in_model_20,rsq_exposures_10_20 ) |> write_csv("./pheno_rsq.csv")
+
+
+```
+
+```{r}
+p <- ggplot(rsq_summary, aes(number_exposures_in_model_10_20, rsq_exposures_10_20*100, label=pvardesc))
 p <- p + geom_point() + theme_bw() +geom_text_repel(size=3) + xlab("Number of Exposures in Model") + ylab("R-squared*100")
 p
 
-p <- ggplot(rsq_summary |> filter(rsq_exposures_20 > 0), aes(rsq_uni_20, rsq_exposures_20, label=pvardesc))
+p <- ggplot(rsq_summary, aes(rsq_uni_20, rsq_exposures_10_20, label=pvardesc))
 p <- p + geom_point() + theme_bw() + geom_text_repel(size=3)
 p
-
 
 p <- ggplot(rsq_summary |> filter(rsq_exposures_20 > 0), aes(rsq_base_20, rsq_base_20+rsq_exposures_20))
 p <- p + geom_point() + theme_bw() 
 p
+
 
 ```

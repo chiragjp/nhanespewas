@@ -15,39 +15,71 @@ library(tidyverse)
 library(ggrepel)
 ```
 
+Load in the summary stats
 ```{r}
+rsq_summary <- read_csv("./pheno_rsq.csv")
 quant_genetics_r2 <- read_csv("./QTraits_R2_Ukbiobank.csv", skip = 1)
+quant_genetics_r2_orig <- quant_genetics_r2
 quant_genetics_r2 <- quant_genetics_r2 |> filter(!is.na(NHANES))
-p <- ggplot(quant_genetics_r2, aes(`Covariates-only model`, `Full model`, label=`Trait Name`))
-p <- p + geom_point() + theme_bw() + ylab("R^2 Full Model: G + Covariates") + xlab("R^2 Covariates (age, sex, array, PCs)") + geom_abline() +geom_text_repel(size=3)
-p
+```
 
-quant_genetics_r2 |> summarize(m_r2 = median(`Delta(Full, covariates-only)`), 
+
+Genetics summary
+```{r}
+
+#quant_genetics_r2 |> summarize(m_r2 = median(`Delta(Full, covariates-only)`), 
+#                                             q25=quantile(`Delta(Full, covariates-only)`, probs=c(.25)), 
+#                                             q75=quantile(`Delta(Full, covariates-only)`, probs=c(.75)),
+#                                            qmax=quantile(`Delta(Full, covariates-only)`, probs=c(1)),
+#                                             )
+
+## Total Database R2
+quant_genetics_r2_orig |> summarize(m_r2 = median(`Delta(Full, covariates-only)`), 
                                              q25=quantile(`Delta(Full, covariates-only)`, probs=c(.25)), 
                                              q75=quantile(`Delta(Full, covariates-only)`, probs=c(.75)),
                                             qmax=quantile(`Delta(Full, covariates-only)`, probs=c(1)),
+                                    qmin=quantile(`Delta(Full, covariates-only)`, probs=c(0)),
                                              )
-
 ```
 
 # GWAS vs ExWAS
 ```{r}
-load('../pipeline/rsq/mvrsq_20.Rdata')
+#load('../pipeline/rsq/mvrsq_20.Rdata')
+
+# use post-processed data -- see mvrsq.Rmd
 
 gwas_exwas <- rsq_summary |> inner_join(quant_genetics_r2, by=c("phenotype"="NHANES"))
+gwas_exwas <- gwas_exwas |> filter(number_exposures_in_model_20 == 20)
 
-gwas_exwas <- gwas_exwas |> mutate(rsq_exposures = ifelse(rsq_exposures < 0, 0, rsq_exposures))
+gwas_exwas |> summarize(m_r2 = median(`Delta(Full, covariates-only)`), 
+                                             q25=quantile(`Delta(Full, covariates-only)`, probs=c(.25)), 
+                                             q75=quantile(`Delta(Full, covariates-only)`, probs=c(.75)),
+                                            qmax=quantile(`Delta(Full, covariates-only)`, probs=c(1)),
+                                    qmin=quantile(`Delta(Full, covariates-only)`, probs=c(0)),
+                                             )
 
-p <- ggplot(gwas_exwas, aes(rsq_base, `Covariates-only model`))
+gwas_exwas |> summarize(m_rsq=median(rsq_exposures_10_20), 
+                        q25=quantile(rsq_exposures_10_20, probs=.25),
+                        q75=quantile(rsq_exposures_10_20, probs=.75),
+                        qmax=quantile(rsq_exposures_10_20, probs=1))
+
+
+
+
+
+p <- ggplot(gwas_exwas, aes(rsq_exposures_10_20, `Covariates-only model`))
 p <- p + geom_point() + geom_abline()
 p
 
-gwas_exwas |> filter(rsq_exposures > `Delta(Full, covariates-only)`) |> nrow()
+gwas_exwas |> filter(rsq_exposures_10_20 > `Delta(Full, covariates-only)`) |> nrow()
 
-p <- ggplot(gwas_exwas, aes(`Delta(Full, covariates-only)`, rsq_exposures , label=`Trait Name`))
+p <- ggplot(gwas_exwas, aes(`Delta(Full, covariates-only)`, rsq_exposures_10_20 , label=`Trait Name`))
 p <- p + geom_point() + geom_abline() + theme_bw()  + ggrepel::geom_text_repel(size=3) + xlab("Genetics R^2") + ylab("Exposures R^2")
 p
 
+
+
+gwas_exwas |> select(pvardesc, rsq_exposures_10_20, `Delta(Full, covariates-only)`) |> write_csv("./g_e_rsq.csv")
 
 
 ```

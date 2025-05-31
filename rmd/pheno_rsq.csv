@@ -1,0 +1,257 @@
+pvardesc,phenotype,number_exposures_in_model_20,rsq_exposures_10_20
+Arm Circumference (cm),BMXARMC,20,0.049523594310956764
+Upper Arm Length (cm),BMXARML,20,0.015301327529705255
+Body Mass Index (kg/m**2),BMXBMI,20,0.09722100076226375
+Maximal Calf Circumference (cm),BMXCALF,20,0.07934959554889898
+Standing Height (cm),BMXHT,20,0.0314448136096398
+Upper Leg Length (cm),BMXLEG,20,0.007489652525139667
+Subscapular Skinfold (mm),BMXSUB,20,0.06171989341095219
+Thigh Circumference (cm),BMXTHICR,20,0.09538722768389715
+Triceps Skinfold (mm),BMXTRI,20,0.06775955578467285
+Waist Circumference (cm),BMXWAIST,20,0.07420860579457522
+Weight (kg),BMXWT,20,0.04614820673233
+60 sec HR (30 sec HR * 2),BPXCHR,2,0.001008079942647986
+Systolic:  Blood pressure (fourth reading if necessary) mm Hg,BPXSY4,10,0.015305471386283298
+Estimated maximal oxygen uptake (ml/kg/min).,CVDESVO2,14,0.034558570105397785
+Cardiovascular fitness level,CVDFITLV,20,0.046392787806018215
+Predicted maximal oxygen uptake (ml/kg/min),CVDVOMAX,20,0.0583309616813501
+Calculated DO for femur,DXAFMRD0,20,0.040054448978871615
+Calculated K for femur,DXAFMRK,8,0.028320984061189963
+Calculated D0 for spine,DXASPND0,20,0.07386923822733193
+Calculated K for spine,DXASPNK,10,0.00927222879824098
+Head Lean excl Bone Mineral Content (grams),DXDHELE,6,0.004710996915871957
+Head Percent Fat,DXDHEPF,9,0.017026755228360113
+Head Total (grams),DXDHETOT,7,0.004869279229203605
+Left Arm Lean excl Body Mineral Content (grams),DXDLALE,15,0.010292363116312986
+Left Arm Percent Fat,DXDLAPF,15,0.018293881648931254
+Left Arm Total (grams),DXDLATOT,16,0.016375293517264133
+Left Leg Lean excl Bone Mineral Content (grams),DXDLLLE,20,0.02451020562416195
+Left Leg Percent Fat,DXDLLPF,8,0.013310348569429031
+Left Leg Total (grams),DXDLLTOT,16,0.0200906627313176
+Right Arm Lean excl Bone Mineral Content (grams),DXDRALE,16,0.011507737661006878
+Right Arm Percent Fat,DXDRAPF,18,0.0242273082273205
+Right Arm Total (grams),DXDRATOT,15,0.01476312270410124
+Right Leg Lean excl Bone Mineral Content (grams),DXDRLLE,20,0.025773843255009865
+Right Leg Percent Fat,DXDRLPF,8,0.015716511364169516
+Right Leg Total (grams),DXDRLTOT,20,0.0207782026213158
+Subtotal Area (cm^2),DXDSTA,11,0.007567924334036746
+Subtotal Bone Mineral Content (grams),DXDSTBMC,9,0.006379839936531906
+Subtotal Bone Mineral Density (grams/cm^2),DXDSTBMD,13,0.005433224120457658
+Subtotal Fat (g),DXDSTFAT,20,0.024326014991179035
+Subtotal Lean excl BMC (g),DXDSTLE,16,0.009856910723055279
+Subtotal Lean incl BMC (g),DXDSTLI,15,0.011759455217319914
+Subtotal Percent Fat,DXDSTPF,16,0.018484210548351143
+Subtotal (Total excl Head) (g),DXDSTTOT,20,0.022578276307974765
+Total Area (cm^2),DXDTOA,9,0.004198896815745479
+Total Bone Mineral Content (g),DXDTOBMC,9,0.0034304592839962122
+Total Bone Mineral Density (g/cm^2),DXDTOBMD,10,0.0031475554987876464
+Total Fat (g),DXDTOFAT,20,0.023118499265669556
+Total Lean excl BMC (g),DXDTOLE,16,0.01028395349659117
+Total Lean incl BMC (g),DXDTOLI,15,0.008545087267257667
+Total Percent Fat,DXDTOPF,16,0.018617606930811437
+Total Lean+Fat (g),DXDTOTOT,19,0.016611566139681067
+Trunk Bone area (cm^2),DXDTRA,11,0.008595649349359191
+Trunk Bone Mineral Content (grams),DXDTRBMC,9,0.006787923701041976
+Trunk Bone BMD (g/cm^2),DXDTRBMD,10,0.005189585603641578
+Trunk Lean excl Bone Mineral Content (grams),DXDTRLE,17,0.010113369724980115
+Trunk Percent Fat,DXDTRPF,19,0.027980955463511037
+Trunk Total (grams),DXDTRTOT,20,0.018135676712808746
+Android to gynoid ratio,DXXAGRAT,NA,0.050746503140403465
+Android/gynoid region status,DXXAGST,10,0.033752662386942925
+Android fat mass,DXXANFM,20,0.008882237837628426
+Android lean mass,DXXANLM,20,0.03949007552140349
+Android percent fat,DXXAPFAT,NA,0.09690025785247153
+Gynoid percent fat,DXXGPFAT,NA,0.1268402931318961
+Gynoid fat mass,DXXGYFM,20,0.06067068560867023
+Gynoid lean mass,DXXGYLM,20,0.02729024210412634
+Gynoid total mass,DXXGYTOM,20,0.06262914338670128
+Head Bone Mineral Content (grams),DXXHEBMC,2,0.001429324211453531
+Head Bone Mineral Density (grams/cm^2),DXXHEBMD,3,0.0015920546531614788
+Head Fat (grams),DXXHEFAT,9,0.007277717300132769
+Head Lean incl Bone Mineral Content (grams),DXXHELI,6,0.003938558282101989
+Intertrochanter area (cm^2),DXXINA,12,0.005023139995393389
+Intertrochanter bone mineral content (gm),DXXINBMC,20,0.012473638350671834
+Intertrochanter bone mineral density (gm/cm^2),DXXINBMD,20,0.015746768837475
+L1 area,DXXL1A,18,0.001798490868481939
+L1 Bone Mineral Composition,DXXL1BMC,20,0.014963884493684965
+L1 Bone Mineral Density,DXXL1BMD,20,0.024001145330582008
+L1 TBS,DXXL1TBS,8,0.011453543607942207
+L2 area,DXXL2A,17,0.009567916876346061
+L2 Bone Mineral Composition,DXXL2BMC,20,0.013074732196569239
+L2 Bone Mineral Density,DXXL2BMD,20,0.015756086129475322
+L2 TBS,DXXL2TBS,13,0.021066977384365942
+L3 area,DXXL3A,17,0.0043421567056392
+L3 Bone Mineral Composition,DXXL3BMC,20,0.01000532308239932
+L3 TBS,DXXL3TBS,10,0.01448404612073595
+L4 area,DXXL4A,14,0.006450835593009241
+L4 Bone Mineral Composition,DXXL4BMC,20,0.007102888223713355
+L4 Bone Mineral Density,DXXL4BMD,20,0.02069389554684109
+L4 TBS,DXXL4TBS,14,0.019678794290418855
+Left Arm Area (cm^2),DXXLAA,11,0.006659914150402013
+Left Arm Body Mineral Content (grams),DXXLABMC,11,0.0069674599273263915
+Left Arm Body Mineral Density (grams/cm^2),DXXLABMD,10,0.004665219889556149
+Left Arm Fat (grams),DXXLAFAT,17,0.022881885101441318
+Left Arm Lean incl BMC (grams),DXXLALI,15,0.011243668050605393
+Left Leg Area(cm^2),DXXLLA,7,0.0028491557398643286
+Left Leg Bone Mineral Content (grams),DXXLLBMC,7,0.0028904128461554324
+Left Leg Bone Mineral Density (grams/cm^2),DXXLLBMD,9,0.0030251798400954266
+Left Leg Fat (grams),DXXLLFAT,17,0.020204001242631914
+Left Leg Lean incl Bone Mineral Content (grams),DXXLLLI,19,0.024156884464545225
+Left Ribs Area(cm^2),DXXLRA,7,0.009564532811119297
+Left Ribs Bone Mineral Content (grams),DXXLRBMC,11,0.007295600471081132
+Left Ribs Bone Mineral Density (grams/cm^2),DXXLRBMD,8,0.004790685925311067
+Lumbar Spine Area (cm^2),DXXLSA,5,9.778113849185366e-4
+Lumbar Spine Bone Mineral Content (grams),DXXLSBMC,5,0.0016411943620572855
+Lumbar Spine Bone Mineral Density (grams/cm^2),DXXLSBMD,6,0.002763996756312781
+Femoral neck area (cm^2),DXXNKA,NA,0.0052048873379290095
+Femoral neck bone mineral content (gm),DXXNKBMC,20,0.01465413339216498
+Femoral neck bone mineral density (gm/cm^2),DXXNKBMD,20,0.013426018709008114
+Total femur area (cm^2),DXXOFA,18,0.006860745876326457
+Total femur bone mineral content (gm),DXXOFBMC,20,0.014605974504866781
+Total femur bone mineral density (gm/cm^2),DXXOFBMD,20,0.020063602849484774
+Total spine area,DXXOSA,20,0.0042455325463144344
+Total spine BMC,DXXOSBMC,20,0.016554507580210598
+Total spine BMD,DXXOSBMD,20,0.023488382307366773
+Pelvis Area (cm^2),DXXPEA,6,0.0029567140124016067
+Pelvis Bone Mineral Content (grams),DXXPEBMC,6,0.003410751335115314
+Pelvis Bone Mineral Density (grams/cm^2),DXXPEBMD,9,0.004518546695760128
+Right Arm Area (cm^2),DXXRAA,14,0.0067967480526617274
+Right Arm Bone Mineral Content (grams),DXXRABMC,13,0.005784446540179844
+Right Arm Bone Mineral Density (grams/cm^2),DXXRABMD,13,0.0075736837976063676
+Right Arm Fat (grams),DXXRAFAT,18,0.020268206738150413
+Right Arm Lean incl Bone Mineral Content (grams),DXXRALI,19,0.008755010455362866
+Right Leg Area (cm^2),DXXRLA,10,0.0025692495236717683
+Right Leg Bone Mineral Content (grams),DXXRLBMC,8,0.0031041652517618257
+Right Leg Bone Mineral Density (grams/cm^2),DXXRLBMD,9,0.004865598971991014
+Right Leg Fat (grams),DXXRLFAT,17,0.019341756536562615
+Right Leg Lean incl Bone Mineral Content (grams),DXXRLLI,18,0.020935478719497636
+Right Ribs Area (cm^2),DXXRRA,13,0.013448903381673094
+Right Ribs Bone Mineral Content (grams),DXXRRBMC,9,0.008674488929312718
+Right Ribs Bone Mineral Density (grams/cm^2),DXXRRBMD,5,0.0011500038337075025
+Subcutaneous fat area,DXXSATA,20,0.0019000531050598068
+Subcutaneous fat mass,DXXSATM,20,0.0023144884489741946
+Subcutaneous fat volume,DXXSATV,20,0.0010723867997293746
+Total Trabecular Bone Score,DXXTOTBS,15,0.02067091305116292
+Trochanter area (cm^2),DXXTRA,20,0.007703751544542503
+Trochanter bone mineral content (gm),DXXTRBMC,20,0.012984162779443198
+Trochanter bone mineral density (gm/cm^2),DXXTRBMD,20,0.023145257538290165
+Trunk Fat (grams),DXXTRFAT,20,0.030572192867533377
+Trunk Lean incl Bone Mineral Content (grams),DXXTRLI,16,0.009658118478454214
+Thoracic Spine Area (cm^2),DXXTSA,12,0.010211473000517168
+Thoracic Spine Bone Mineral Content (grams),DXXTSBMC,12,0.009486443685373436
+Thoracic Spine Bone Mineral Density (grams/cm^2),DXXTSBMD,10,0.006042921846958871
+Ward's triangle area (cm^2),DXXWDA,5,0.005235065293483471
+Ward's triangle bone mineral content (gm),DXXWDBMC,NA,0.0046308381934764276
+Ward's triangle bone mineral density (gm/cm^2),DXXWDBMD,20,0.008570210246994725
+"Mean of two reproducible FENO measurements, in parts per billion",ENXMEAN,20,0.03326286398319378
+Basophils number (1000 cells/uL),LBDBANO,20,0.016789658335196425
+Eosinophils number (1000 cells/uL),LBDEONO,20,0.007561102251710569
+Serum total folate (ng/mL),LBDFOT,20,0.12706407413752713
+Direct HDL-Cholesterol (mg/dL),LBDHDD,20,0.09546282913863774
+"Iron, Frozen Serum (umol/L)",LBDIRNSI,15,0.05359197810254447
+LDL-cholesterol (mg/dL),LBDLDL,20,0.3097142570855709
+Lymphocyte number (1000 cells/uL),LBDLYMNO,20,0.05483019591087131
+Monocyte number (1000 cells/uL),LBDMONO,20,0.01835637031313931
+Segmented neutrophils num (1000 cell/uL),LBDNENO,20,0.03552100622881918
+Prostate specific antigen ratio (%),LBDP3,3,0.003586032843583985
+Transferrin saturation (%),LBDPCT,9,0.010784182582197557
+RBC folate (ng/mL),LBDRFO,20,0.17314407487835567
+Apolipoprotein (B) (mg/dL),LBXAPB,10,0.018040764080399535
+Bone alkaline phosphotase (ug/L),LBXBAP,7,0.006365913584632565
+Basophils percent (%),LBXBAPCT,6,0.0028720442037863895
+C-peptide (nmol/L) in SI units,LBXCPSI,20,0.11053230732634212
+C-reactive protein (mg/dL),LBXCRP,20,0.048226709642622226
+Eosinophils percent (%),LBXEOPCT,NA,0.007453405066712743
+Protoporphyrin(ug/dL RBC),LBXEPP,13,0.020594008370685687
+Ferritin(ng/mL),LBXFER,20,0.02367413685401437
+"Folate, serum (ng/mL)",LBXFOL,20,0.13317749307879778
+Glycohemoglobin (%),LBXGH,20,0.07890487897179349
+Two hour oral glucose tolerance (OGTT) (mg/dL),LBXGLT,20,0.018948947027782964
+Fasting Glucose (mg/dL),LBXGLU,20,0.08085085636148856
+Hematocrit (%),LBXHCT,20,0.16987337960017734
+Hemoglobin (g/dL),LBXHGB,20,0.08227829240184437
+Insulin (uU/mL ),LBXIN,20,0.09426639380677301
+"Iron, Frozen Serum (ug/dL)",LBXIRN,15,0.053622522099689256
+Lymphocyte percent (%),LBXLYPCT,20,0.014106039014620486
+Mean cell hemoglobin concentration (g/dL),LBXMC,20,0.041149049974889856
+Mean cell volume (fL),LBXMCVSI,NA,0.03389337280664506
+Methylmalonic acid (umol/L),LBXMMA,14,0.0053359476583817594
+Monocyte percent (%),LBXMOPCT,20,0.038054602213982436
+Mean platelet volume (fL),LBXMPSI,12,0.0076589728419481085
+Segmented neutrophils percent (%),LBXNEPCT,20,0.011590030940282853
+"Prostate specific antigen, total (ng/mL)",LBXP1,1,2.452529671784359e-4
+Platelet count SI (1000 cells/uL),LBXPLTSI,20,0.02887260589369753
+Complexed prostate specific antigen (ng/mL),LBXPS4,1,4.569118808128436e-4
+Parathyroid Hormone(Elecys method) pg/mL,LBXPT21,20,0.05950290440157427
+Red blood cell count (million cells/uL),LBXRBCSI,20,0.08741390181361328
+"Folate, RBC (ng/mL RBC)",LBXRBF,20,0.1313118283538084
+Red cell distribution width (%),LBXRDW,20,0.18648822894376646
+Albumin (g/dL),LBXSAL,20,0.12066484180884793
+Alkaline phosphotase (U/L),LBXSAPSI,20,0.022902589955309027
+Aspartate aminotransferase AST (U/L),LBXSASSI,20,0.02039136609576876
+Alanine aminotransferase ALT (U/L),LBXSATSI,20,0.012014956751492133
+Blood urea nitrogen (mg/dL),LBXSBU,20,0.10787428602554938
+Bicarbonate (mmol/L),LBXSC3SI,NA,0.02912990879593351
+Total calcium (mg/dL),LBXSCA,20,0.09713609970474711
+Cholesterol (mg/dL),LBXSCH,20,0.4315886887064744
+Creatine Phosphokinase(CPK) (IU/L),LBXSCK,12,0.025587204454598306
+Chloride (mmol/L),LBXSCLSI,20,0.07703484042533834
+Creatinine (mg/dL),LBXSCR,20,0.13975457918656578
+Selenium(ug/L),LBXSEL,2,0.038408824271402964
+5-Methyl-tetrahydrofolate (nmol/L),LBXSF1SI,20,0.09029714644449063
+Folic acid (nmol/L),LBXSF2SI,18,0.030416167833215012
+5-Formyl-tetrahydrofolate (nmol/L),LBXSF3SI,1,1.6396997681359412e-5
+Tetrahydrofolate (nmol/L),LBXSF4SI,20,0.03498782675795621
+"5,10-Methenyl-tetrahydrofolate (nmol/L)",LBXSF5SI,20,0.4113204212416685
+Mefox oxidation product (nmol/L),LBXSF6SI,20,0.07819613353402335
+Globulin (g/dL),LBXSGB,20,0.02809328663132729
+"Glucose, serum (mg/dL)",LBXSGL,20,0.06857318634462468
+Gamma glutamyl transferase (U/L),LBXSGTSI,20,0.09987170568515816
+"Sex Hormone Binding Globulin (SHBG, nmol/L)",LBXSHBG,3,0.023472245718023144
+"Iron, refigerated (ug/dL)",LBXSIR,20,0.07343909989255157
+Potassium (mmol/L),LBXSKSI,20,0.024013906484678202
+Lactate dehydrogenase LDH (U/L),LBXSLDSI,20,0.03995752783538637
+Sodium (mmol/L),LBXSNASI,10,0.03959151986160446
+Osmolality (mmol/Kg),LBXSOSSI,20,0.0438468984372794
+Phosphorus (mg/dL),LBXSPH,20,0.04510011507265127
+Total bilirubin (mg/dL),LBXSTB,20,0.03205302948779805
+Total protein (g/dL),LBXSTP,20,0.04585783843268572
+Triglycerides (mg/dL),LBXSTR,20,0.5657327852581214
+Uric acid (mg/dL),LBXSUA,20,0.07853742479817874
+"Triiodothyronine (T3), free (pg/mL)",LBXT3F,7,0.004433767648425929
+"Thyroxine, free (ng/dL)",LBXT4F,6,0.013838230399909252
+Total cholesterol (mg/dL),LBXTC,20,0.3512723772673688
+Transferrin receptor (mg/L),LBXTFR,4,0.031403727566296016
+Thyroglobulin (ng/mL),LBXTGN,2,0.002315109289393682
+"TIBC, Frozen Serum (ug/dL)",LBXTIB,1,0.013756505236675175
+Thyroid peroxidase antibodies (IU/mL),LBXTPO,3,2.785417485914564e-4
+Triglyceride (mg/dL),LBXTR,20,0.5746534287660761
+Thyroid stimulating hormone (uIU/mL),LBXTSH1,2,0.00649740629363601
+Testosterone total (ng/dL),LBXTST,20,0.006395405501963158
+"Triiodothyronine (T3), total (ng/dL)",LBXTT3,10,0.011512575629375937
+"Thyroxine, total (T4) (ug/dL)",LBXTT4,20,0.023423511904444416
+White blood cell count (1000 cells/uL),LBXWBCSI,20,0.045884831729279194
+Mean brachial systolic blood pressure (in millimeters of mercury),LEXBRPM,18,0.0278575119881993
+Left mean posterior tibial systolic blood pressure (in millimeters of mercu,LEXLPTSM,11,0.026075939539947107
+Right mean posterior tibial systolic blood pressure (in millimeters of merc,LEXRPTSM,8,0.01812194898246554
+Diastolic Mean,MDIASTOLIC,20,0.02415481614823428
+Systolic Mean,MSYSTOLIC,20,0.027500380658133705
+RB_FaPhyloDivMean,RB_FaPhyloDivMean,7,0.0058282108661947135
+RB_FaPhyloDivSD,RB_FaPhyloDivSD,12,0.007131102077070441
+RB_InverseSimpsonMean,RB_InverseSimpsonMean,3,3.9783850484627174e-4
+RB_InverseSimpsonSD,RB_InverseSimpsonSD,4,0.0018707555498985555
+RB_ObservedOTUsMean,RB_ObservedOTUsMean,7,0.012003751982309921
+RB_ObservedOTUsSD,RB_ObservedOTUsSD,10,0.01011240835319295
+RB_ShanWienDivMean,RB_ShanWienDivMean,3,0.001013414110473572
+RSV_FaPhyloDivMean,RSV_FaPhyloDivMean,8,0.0048201343801463625
+RSV_FaPhyloDivSD,RSV_FaPhyloDivSD,11,0.004149225556751245
+RSV_InverseSimpsonMean,RSV_InverseSimpsonMean,3,4.1416795023261656e-4
+RSV_InverseSimpsonSD,RSV_InverseSimpsonSD,4,0.0022233743894253186
+RSV_ObservedOTUsMean,RSV_ObservedOTUsMean,8,0.013191055713889566
+RSV_ObservedOTUsSD,RSV_ObservedOTUsSD,11,0.01022806537002588
+RSV_ShanWienDivMean,RSV_ShanWienDivMean,3,0.0010153493145191733
+RSV_ShanWienDivSD,RSV_ShanWienDivSD,4,4.8669410645032357e-4
+"Baseline 1st Test Spirometry, Forced Expiratory Volume in the first 1.0 sec",SPXNFEV1,20,0.016826735936903092
+"Baseline 1st Test Spirometry, Forced Vital Capacity, in mL.",SPXNFVC,20,0.01602735002172806
+"Iodine, urine (ng/mL)",URXUIO,20,0.13351347187283893
+"Albumin, urine (ug/mL)",URXUMA,20,0.03630039674845858

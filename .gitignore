@@ -9,6 +9,18 @@ db/pe_summary_stats_02_2024-v2.sqlite
 db/pe_summary_stats_02_2024.sqlite
 db/ee_summary_stats_03_2024.sqlite
 db/pp_summary_stats_03_2024.sqlite
+db/nhanes_031725.sqlite
+db/nhanes_112824.sqlite
+db/pe_summary_stats_01_2025.sqlite
+db/pe_summary_stats_08_2024.sqlite
+db/pe_summary_stats_percentile_10_2024.sqlite
+db/pe_summary_stats_percentile_noscale_p_01_2025.sqlite
+db/pe_summary_stats_percentile_noscale_p_01_2025_v2.sqlite
+db/pe_summary_stats_percentile_noscale_p_10_2024.sqlite
+db/pe_summary_stats_percentile_scale_p_01_2025.sqlite
+db/pe_summary_stats_percentile_scale_p_01_2025_v2.sqlite
+db/pe_summary_stats_quantile_10_2024.sqlite
+db/pe_summary_stats_quantile_noscale_p_10_2024.sqlite
 pe_atlas_app/pe_summary_stats_shiny.sqlite
 db/nhanes_012324.sqlite
 db/nhanes_pewas_test.sqlite
@@ -22,3 +34,13 @@ download/Exposome U01 Feasbility
 rmd/anthro/*
 scratch.R
 wtf.R
+scripts/
+pe_atlas_app/pe_shiny_2.sqlite
+download/beta/
+download/ubiome/
+rmd/scratch/
+pe_atlas_app/data/
+rmd/paper figs
+rmd/ivt/
+select/sample_size_ubiome_e_112424.csv
+select/sample_size_ubiome_y_112424.csv

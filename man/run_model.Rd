@@ -12,7 +12,7 @@ run_model(
   quantile_expo = NULL,
   expo_levels = NULL,
   save_svymodel = F,
-  scale_clr = F
+  scale_type = 1
 )
 }
 \arguments{

@@ -38,7 +38,12 @@ a covariate:
 The survey year is added as a factor using \code{as.factor(SDDSRVYR)}.
 }
 \examples{
-# Assuming `adjustment_model_for_e` is predefined and compatible:
-updated_model <- add_survey_year_to_adjustment_scenarios(adjustment_model_for_e)
+# Assuming `adjustment_model_for_e` is predefined and compatible: e.g.
+adjustment_model <- tibble::tibble(
+  domain = "two_variable",
+  scenario = c("age_sex", "age_sex"),
+  variables = c("age", "sex")
+)
+updated_model <- add_survey_year_to_adjustment_scenarios(adjustment_model)
 
 }

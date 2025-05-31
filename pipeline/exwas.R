@@ -6,7 +6,7 @@ library(getopt)
 library(tidyverse)
 library(logger)
 library(tools)
-devtools::load_all("..")
+library(nhanespewas)
 
 TEST <- F
 spec <- matrix(c(

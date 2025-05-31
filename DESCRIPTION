@@ -23,8 +23,9 @@ Imports:
     rlang,
     tidyselect,
     logger,
-    readr,
-    purrr
+    purrr,
+    stringr
 Suggests:
     ggplot2,
-    metafor
+    readr
+    

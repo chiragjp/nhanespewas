@@ -16,8 +16,16 @@ Specifically, the atlas provides a comprehensive list of exposure-phenome associ
 
 ## nhanespewas: run your own P-E Associations
 
+### Installation
+
+## Download the database
+NHANES 1999-2017
+https://doi.org/10.6084/m9.figshare.29182196.v1
 
 
+## install the R package
+library(devtools)
+devtools::install_github('chiragjp/nhanespewas')
 
 ### Execute an E-P Association
 
@@ -25,12 +33,12 @@ Specifically, the atlas provides a comprehensive list of exposure-phenome associ
 # 
 library(nhanespewas)
 # connect to nhanes data, built for PE analysis
-pedata_con <- connect_pewas_data()
+pedata_con <- connect_pewas_data(PATH_TO_THE_DATABASE)
 
 # conduct an association between c-reactive protein and cotinine
 ## -   See pe_quickstart.Rmd
 
-crp_cot <- pe_flex_adjust("LBXCRP", "LBXCOT", adjustment_models, con, scale_p=T)
+crp_cot <- pe_flex_adjust("LBXCRP", "LBXCOT", pedata_con, scale_p=T)
 # clean up
 disconnect_pewas_data(pedata_con)
 ```
