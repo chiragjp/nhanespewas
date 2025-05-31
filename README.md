@@ -16,21 +16,23 @@ Specifically, the atlas provides a comprehensive list of exposure-phenome associ
 
 ## nhanespewas: run your own P-E Associations
 
-### Installation
 
-## Download the database
-NHANES 1999-2017
-https://doi.org/10.6084/m9.figshare.29182196.v1
+### Download the database
 
+NHANES (.sqlite)
+https://figshare.com/ndownloader/files/54925445
 
-## install the R package
+### Install the R package
+
+```
 library(devtools)
 devtools::install_github('chiragjp/nhanespewas')
+```
 
 ### Execute an E-P Association
 
 ```         
-# 
+# load the package
 library(nhanespewas)
 # connect to nhanes data, built for PE analysis
 pedata_con <- connect_pewas_data(PATH_TO_THE_DATABASE)
