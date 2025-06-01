@@ -16,15 +16,13 @@ Specifically, the atlas provides a comprehensive list of exposure-phenome associ
 
 ## nhanespewas: run your own P-E Associations
 
-
 ### Download the database
 
-NHANES (.sqlite)
-https://figshare.com/ndownloader/files/54925445
+NHANES (.sqlite) <https://figshare.com/ndownloader/files/54925445>
 
 ### Install the R package
 
-```
+```         
 library(devtools)
 devtools::install_github('chiragjp/nhanespewas')
 ```
@@ -45,3 +43,7 @@ crp_cot <- pe_flex_adjust("LBXCRP", "LBXCOT", pedata_con, scale_p=T)
 disconnect_pewas_data(pedata_con)
 ```
 
+### Tutorials
+
+-   [pe_quickstart.Rmd](https://github.com/chiragjp/nhanespewas/blob/main/pe_quickstart.Rmd): a quick tour on querying the database and running an association
+-   [pe_catalog.Rmd](https://github.com/chiragjp/nhanespewas/blob/main/pe_catalog.Rmd): a listing of the variables catalogged for associations
