@@ -6,16 +6,20 @@ output: html_document
 ---
 
 
+# Display the variable lists for exposures and phenotypes
+
 ```{r warning=TRUE, include=FALSE}
 library(kableExtra)
 library(tidyverse)
 library(DBI)
-#load("adjusted_meta_2.Rdata")
 
 con <- DBI::dbConnect(RSQLite::SQLite(), dbname='../pe_atlas_app/pe_shiny_2.sqlite')
 adjusted_meta_2 <- tbl(con, "adjusted_meta_2") |> collect()
 dbDisconnect(con)
 
+```
+
+```{r}
 enew_big_group <- adjusted_meta_2 |> group_by(enewsubcategory) |> count() |> ungroup() |> mutate(
   super_ecat_number = case_when(
     enewsubcategory == 'dietary biomarker' | enewsubcategory == 'dietary interview' | enewsubcategory == 'supplements'    ~ 1,
@@ -56,4 +60,6 @@ adjusted_meta_2 |> select(evarname, super_ecat_name, enewsubcategory, evardesc) 
 adjusted_meta_2 |> select(pvarname, pnewsubcategory, pvardesc) |> collect() |> unique() |> rename(nhanes_name=pvarname, Category=pnewsubcategory, Description=pvardesc) |> kbl() |> kable_styling()
 
 ```
+
+
 

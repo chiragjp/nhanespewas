@@ -1,0 +1,94 @@
+---
+title: "Exploring the Database and Catalogs"
+author: "Chirag Patel"
+date: "2025-06-01"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+In this .rmd, we will show where the meta-data are located, e.g,, how to find what variables are in what tables in the NHANES database
+
+
+```{r}
+library(tidyverse) # for data‐manipulation (dplyr , etc.)
+library(survey) # loaded by nhanespewas for complex‐survey regressions
+library(nhanespewas)
+library(DBI)
+```
+
+# Explore the NHANES database
+
+- each table name corresponds to a type of measurement
+- the NHANES are  grouped into different survey years, and the survey sequence is appended to the table, e.g.:
+- A: 1999-2000, B: 2001-2002, C: 2003-2004, D: 2005-2006, E: 2007-2008, F: 2009-2010, G: 2011-2012, H: 2013-2014, I: 2014-2015, J: 2016-2017
+- each survey uear contains an independent snapshot of the US population.
+- the "demo_X" tables contain the both the entirety of total participants of a certain survey year along with demographic attributes (age, sex, education, income)
+
+```{r}
+# Replace './db/nhanes_031725.sqlite' with your actual file path
+path_to_db <- "./db/nhanes_031725.sqlite"
+# Establish a connection to the NHANES PE database
+con <- connect_pewas_data(path_to_db)
+# Once connected, you can reference tables via dplyr::tbl()
+varnames <- dplyr::tbl(con, "variable_names_epcf") 
+
+table_names <- tibble(table_name=dbListTables(con))
+table_names # see column Variable.Name and Data.File.Name
+
+varnames # this table is an index of variables in tables
+# demographic table for 2001-2002:
+demo_b <- tbl(con, "demo_b")
+```
+
+# Built-in Exposome and Phenome Catalogs
+
+- we have compiled a list of exposures, their descriptions, and the categories they belong to
+- we have done the analogous for phenotypes
+
+```{r explore the catalog}
+data("p_catalog") # load them into the memory
+data("e_catalog")
+
+e_catalog
+p_catalog
+
+```
+
+# "Select" file: a list of exposure-phenotype pairs
+
+- Now that you have seen a listing of phenotypes and exposures, which ones can you correlate?
+- In the following file, we have a list of sample sizes by phenotype and exposure pairs and the tables they belong to (e_table_name, p_table_name)
+- This file is used as input to pipeline code (see: pipeline/exwas.R) to run associations
+- the pvarname is the phenotype NHANES name; the evarname is the NHANES exposure name
+- n is the sample size for the pair of variables (the possible total N for an association)
+
+```{r read in select pairs file}
+select_filename <- system.file("extdata", "sample_size_pe_category_0824.csv", package = "nhanespewas")
+select <- read_csv(select_filename)
+select
+```
+# Run a sample association from the select file
+```{r}
+
+select_pair_1 <- select |> slice_head(n=1)
+evarname <- select_pair_1 |> pull(evarname)
+pvarname <- select_pair_1 |> pull(pvarname)
+evarname
+pvarname
+test <- pe_flex_adjust(pvarname,evarname, adjustment_variables   = adjustment_models, con = con, scale_p = TRUE, logxform_p = TRUE )
+
+test$models[[2]]$tidied # expo corresponds to the evarname exposure 
+
+```
+
+```{r}
+dbDisconnect(con)
+```
+# Next steps
+
+With the database and data structure described above, along with the "Select" file, you are now ready to start associaing each exposure to a phenotype. A script to do this for a phenotype is described in the code: pipeline/exwas.R
+
+

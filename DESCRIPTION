@@ -28,4 +28,6 @@ Imports:
 Suggests:
     ggplot2,
     readr
-    
+Depends: 
+    R (>= 3.5)
+LazyData: true

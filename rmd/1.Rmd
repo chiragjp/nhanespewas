@@ -1,0 +1,32 @@
+---
+title: "1.Rmd"
+author: "Chirag Patel"
+date: "2025-05-31"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+1. Create data resources for package, e.g., the catalogs for the package
+2. Output the summary statistics as .csv and place it into ./papers_figures_tables
+
+
+```{r}
+load('adjusted_meta_2.Rdata')
+```
+
+# Write out for Supplementary Table
+```{r}
+adjusted_meta_2 |> write_csv(file = "./paper_figures_tables/summary_stats.csv")
+```
+# Prepare e and p variables for the catalog for the package user
+
+```{r catalog to data folder}
+p_catalog <- adjusted_meta_2 |> select(pvarname, pnewsubcategory, pvardesc) |> unique() |> rename(pcategory=pnewsubcategory)
+e_catalog <- adjusted_meta_2 |> select(evarname, super_ecat_name, enewsubcategory, evardesc) |> unique()
+usethis::use_data(p_catalog)
+usethis::use_data(e_catalog)
+```

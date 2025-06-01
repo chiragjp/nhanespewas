@@ -2,6 +2,114 @@
 # August 2024
 # exwas.R: perform ExWAS for a phenotype
 
+
+#Description:
+  #   This script performs a Phenotype-Exposure-Wide Association Study (ExWAS) for a
+  #   specified phenotype using NHANES data stored in a SQLite database. It reads a list
+  #   of (phenotype, exposure) pairs that meet minimum sample size criteria, runs survey-
+  #   weighted regression models across different adjustment scenarios, and outputs
+  #   tidy, glance, and R² results for each exposure–phenotype combination. Results
+  #   are saved as an RDS file for downstream meta‐analysis or visualization.
+  #
+  # Usage:
+  #   Rscript exwas.R
+  #     --phenotype           <string>   Name of the phenotype variable to analyze
+  #     --sample_size_pairs_list_file <string>  CSV file listing sample sizes for each (phenotype, exposure) pair
+  #     --path_to_db          <string>   File path to the NHANES SQLite database
+  #     --path_out            <string>   Directory where output RDS will be saved
+  #     [--exposures          <string>   Optional CSV file (one exposure per line) to restrict the exposures processed]
+  #     [--use_quantile       <0 or 1>    Optional flag: if 1, use quantile-based exposure modeling; default is 0]
+  #
+  # Arguments:
+  #   --phenotype
+  #       The NHANES variable name of the phenotype to analyze (e.g., "LBXRDW").
+  #
+  #   --sample_size_pairs_list_file
+  #       Path to a CSV that contains columns: pvarname, evarname, n, etc. This file is
+  #       used to filter all (phenotype,exposure) pairs by sample size (minimum 500)
+  #       and number of surveys (≥2). Each row corresponds to one cohort’s n for a pair.
+  #
+  #   --path_to_db
+  #       Path to an existing SQLite database containing cleaned NHANES tables. The script
+  #       uses DBI and RSQLite to connect and pull data for each exposure and phenotype.
+  #
+  #   --path_out
+  #       Directory where the script will save the output RDS. The filename will be either
+  #       "<phenotype>.rds" or "<phenotype>_<exposures_basename>.rds” if --exposures is given.
+  #
+  #   --exposures (optional)
+  #       Path to a one‐column CSV file (no header) listing specific exposure variable names
+  #       to include. If provided, the script will only run ExWAS on those exposures that
+  #       appear both in the sample‐size file and in this list.
+  #
+  #   --use_quantile (optional)
+  #       Numeric flag (0 or 1). If 1, continuous exposures are modeled using quantile bins
+  #       (quartiles and deciles defined by QUANTILES = c(0, .25, .5, .75, .9, 1)). Default is 0.
+  #
+  # Details:
+  #   1. The script begins by parsing command‐line options via getopt().
+  #   2. It sets a minimum sample size threshold (default 500) and filters out any (phenotype,
+  #      exposure) pairs with fewer than 500 total participants or fewer than 2 survey waves.
+  #   3. If --exposures is supplied, only those exposures will be retained for analysis.
+  #   4. For each remaining (phenotype, exposure) pair, the script:
+  #       a. Determines exposure data type via nhanespewas::check_e_data_type():
+  #          - "continuous": log‐transform, scale, or quantile‐bin according to --use_quantile
+  #          - "categorical": treat as factor with levels returned by check_e_data_type()
+  #          - "continuous-rank": scale as numeric (no log transform)
+  #       b. Builds an adjustment scenario (covariates to include) using
+  #          nhanespewas::adjustment_scenario_for_variable() + survey year.
+  #       c. Calls nhanespewas::pe_flex_adjust() (wrapped in purrr::safely()) with:
+  #          - phenotype name
+  #          - exposure name
+  #          - adjustment formula list
+  #          - database connection
+  #          - options: log_transform phenotype or exposure, scale flags, quantile bins, scale_type
+  #       d. Stores the returned model object (or error) in a list “models”.
+  #   5. After looping over all exposures, the script assembles three tables:
+  #       • pe_tidied: one row per model (tidy regression coefficients and SEs)
+  #       • pe_glanced: one row per model (glance summary: p‐value, df, AIC, etc.)
+  #       • rsq: one row per model (variance explained by each exposure, R²)
+  #      Each record includes metadata columns: model_number, series (survey waves),
+  #      exposure, phenotype, log_p, log_e, scaled_p, scaled_e, and a flag “aggregate_base_model”
+  #      indicating whether the base (minimally adjusted) model was used.
+  #   6. Finally, the script disconnects from the SQLite DB and saves a single RDS object
+  #      containing: list(pe_tidied, pe_glanced, rsq, modls=models). This RDS file is named
+  #      "<phenotype>.rds" or "<phenotype>_<exposures_basename>.rds" under --path_out.
+  #
+  # Dependencies:
+  #   - R (>=3.6)
+  #   - Packages: getopt, tidyverse, logger, tools, nhanespewas, DBI, RSQLite, purrr
+  #
+  # Examples:
+  #   # Run ExWAS for phenotype LBXRDW using sample-size file and full NHANES DB:
+  #   Rscript exwas.R \
+  #     --phenotype LBXRDW \
+  #     --sample_size_pairs_list_file ../select/sample_size_pe_category_0824.csv \
+  #     --path_to_db ../db/nhanes_031725.sqlite \
+  #     --path_out ./results
+  #
+  #   # Restrict to a subset of exposures listed in exposures_to_run.csv, apply quantile bins:
+  #   Rscript exwas.R \
+  #     --phenotype LBXRDW \
+  #     --sample_size_pairs_list_file ../select/sample_size_pe_category_0824.csv \
+  #     --path_to_db ../db/nhanes_031725.sqlite \
+  #     --path_out ./results \
+  #     --exposures exposures_to_run.csv \
+  #     --use_quantile 1
+  #
+  # Notes:
+  #   • The file “sample_size_pe_category_0824.csv” must include columns: pvarname, evarname, n, etc.
+  #   • Users should ensure the SQLite database includes the necessary NHANES tables and indexes used by nhanespewas.
+  #   • If no eligible (phenotype, exposure) pairs remain (after filtering), the script logs “0 pairs, quitting” and exits.
+  #   • To debug or test on a single exposure, set TEST <- TRUE near the top; this overrides getopt().
+  #
+  # License:
+  #   MIT License (see LICENSE file in the nhanespewas repository)
+  #
+  # --------------------------------------------------------------
+
+
+
 library(getopt)
 library(tidyverse)
 library(logger)
@@ -22,21 +130,9 @@ opt <- getopt(spec)
 sample_size_threshold <- 500
 
 ########### debug stuff
-#phenotype <- "URXUMA"
-#exposure <- "LBX06"
 exposure <- 'LBXBCD'
 phenotype <- 'LBXRDW'
-#exposure <- "URXNAL"
-#phenotype <- "URXUCR"
-#phenotype <- "LBXP1"
-#exposure <- "DR1TACAR"
-#phenotype <- "LBDSAPSI"
-#exposure <- "LBDHD"
-#ss_file <- './select/sample_size_pe.csv'  #opt$sample_size_pairs_list_file
-#ss_file <- '../select/sample_size_pe_category_060623.csv'
 ss_file <- '../select/sample_size_pe_category_0824.csv'
-#path_to_db <-   '../db/nhanes_012324.sqlite' # '../nhanes_122322.sqlite'
-#path_to_db <- '../db/nhanes_112824.sqlite' # '../nhanes_122322.sqlite'
 path_to_db <-'../db/nhanes_031725.sqlite'
 path_out <- '.'
 use_quantile <- 0

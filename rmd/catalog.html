@@ -581,6 +581,32 @@ display: none;
 </div>
 
 
+<div id="display-the-variable-lists-for-exposures-and-phenotypes" class="section level1">
+<h1>Display the variable lists for exposures and phenotypes</h1>
+<pre class="r"><code>enew_big_group &lt;- adjusted_meta_2 |&gt; group_by(enewsubcategory) |&gt; count() |&gt; ungroup() |&gt; mutate(
+  super_ecat_number = case_when(
+    enewsubcategory == &#39;dietary biomarker&#39; | enewsubcategory == &#39;dietary interview&#39; | enewsubcategory == &#39;supplements&#39;    ~ 1,
+    enewsubcategory == &#39;smoking behavior&#39; | enewsubcategory == &#39;smoking biomarker&#39; | enewsubcategory == &#39;hydrocarbon&#39; | enewsubcategory == &#39;heavy metals&#39;   ~ 2,
+    enewsubcategory == &#39;infection&#39;  ~ 3,
+    enewsubcategory == &#39;phthalates&#39;  | enewsubcategory == &#39;phenols&#39; | enewsubcategory == &#39;polyfluoro&#39; ~ 4,
+    enewsubcategory == &#39;VOC&#39;  ~ 5,
+    enewsubcategory == &#39;amine/amide&#39; | enewsubcategory == &#39;diakyl&#39; | enewsubcategory == &#39;organochlorine&#39; | enewsubcategory == &#39;organophosphate&#39; | enewsubcategory == &#39;priority pesticide&#39; |   enewsubcategory == &#39;pyrethroid&#39;   ~ 6,
+    TRUE ~ 7
+  )
+) |&gt; mutate(
+  super_ecat_name = case_when(
+    super_ecat_number == 1 ~ &quot;Dietary Interview+Behavior&quot;,
+    super_ecat_number == 2 ~ &quot;Smoking+Hydrocarbon+Metals&quot;,
+    super_ecat_number == 3 ~ &quot;Infection&quot;,
+    super_ecat_number == 4 ~ &quot;Consumables&quot;,
+    super_ecat_number == 5 ~ &quot;Volatile Organics&quot;,
+    super_ecat_number == 6 ~ &quot;Pollutants&quot;,
+    
+  ) 
+)
+
+adjusted_meta_2 &lt;- adjusted_meta_2 |&gt; left_join(enew_big_group, by=c(&quot;enewsubcategory&quot;))</code></pre>
+</div>
 <div id="exposure-catalog" class="section level1">
 <h1>Exposure catalog</h1>
 <table class="table" style="margin-left: auto; margin-right: auto;">
@@ -9274,8 +9300,8 @@ Total sugars (gm)
 </tbody>
 </table>
 </div>
-<div id="phenotype-catelog" class="section level1">
-<h1>Phenotype Catelog</h1>
+<div id="phenotype-catalog" class="section level1">
+<h1>Phenotype Catalog</h1>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
