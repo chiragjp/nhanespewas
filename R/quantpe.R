@@ -118,8 +118,9 @@ svyrsquared <- function(analysisObj) {
 #' @param quantile_expo Numeric vector, quantiles to use for categorizing the exposure variable.
 #' If not NULL, this overwrites the scale_expo argument.
 #' @param expo_levels A vector of levels to categorize the exposure variable.
-#' @param save_dsn Logical, if TRUE, the desgin object for each model will be saved
+#' @param save_dsn Logical, if TRUE, the design object for each model will be saved
 #' If not NULL, this overwrites the quantile_expo and scale_expo arguments.
+#' @param scale_type Numeric: scale type 1 is mean and SD; scale type 2 == CLR scale type 3 is IVT
 #'
 #' @return A list containing:
 #'   * model: The model object (if the parameter is set to T)
@@ -416,6 +417,7 @@ pe <- function(pheno, exposure, adjustment_variables,con, series=NULL,
 #' @param expo_table_name Optional character string specifying the exposure table name (default is NULL).
 #' @param quantile_expo Optional vector specifying quantiles for the exposure variable (default is NULL).
 #' @param exposure_levels Optional vector specifying levels for the exposure variable (default is NULL).
+#' @param scale_type Numeric: scale type 1 is mean and SD; scale type 2 == CLR scale type 3 is IVT
 #' @return A list containing the following elements:
 #' \itemize{
 #'   \item `log_p`: Logical, whether the phenotype was log-transformed.

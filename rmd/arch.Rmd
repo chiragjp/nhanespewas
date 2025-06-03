@@ -168,7 +168,24 @@ Heatmap(to_array_pe, left_annotation = rowAn,
         column_title_rot= 45,  
         show_row_names = F, show_column_names = F, cluster_columns = F, cluster_rows = F,
         name="Adjusted Beta",
-        ) 
+        )
+
+pdf(file="./paper_figures_tables/atlas_fig3.pdf")
+hm <- Heatmap(to_array_pe, left_annotation = rowAn, 
+        right_annotation = rowAn, 
+        top_annotation = colAn, 
+        row_split = row_split_by_ecategory,
+        column_split = col_split_by_pcategory,
+        row_title_gp    = gpar(fontsize = 8),   # shrink/enlarge row-split label text
+        row_title_rot   = 0,                    # rotate the row-split labels (default is 90)
+        column_title_gp = gpar(fontsize = 8),   # shrink/enlarge column-split label text
+        column_title_rot= 45,  
+        show_row_names = F, show_column_names = F, cluster_columns = F, cluster_rows = F,
+        name="Adjusted Beta",
+        )
+draw(hm)
+dev.off()
+
 ```
 
 

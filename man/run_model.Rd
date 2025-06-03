@@ -29,7 +29,9 @@ If not NULL, this overwrites the scale_expo argument.}
 
 \item{expo_levels}{A vector of levels to categorize the exposure variable.}
 
-\item{save_dsn}{Logical, if TRUE, the desgin object for each model will be saved
+\item{scale_type}{Numeric: scale type 1 is mean and SD; scale type 2 == CLR scale type 3 is IVT}
+
+\item{save_dsn}{Logical, if TRUE, the design object for each model will be saved
 If not NULL, this overwrites the quantile_expo and scale_expo arguments.}
 }
 \value{

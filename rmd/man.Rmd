@@ -223,6 +223,10 @@ ppp
 cdfs_p <- plot_grid(cdf_p, cdf_e_p, p_r2, labels=c("B", "C", "D"),nrow = 1)
 ppp <- plot_grid(all_p_r2, cdfs_p, nrow=2, rel_heights = c(3,1), labels=c("A", ""))
 ppp
+
+ggsave(filename='./paper_figures_tables/r2_fig2.pdf', plot=ppp, width=12, height=12)
+
+
 ```
 
 ```{r}
@@ -351,6 +355,7 @@ pl
 ```{r fig.width=12, fig.height=11}
 pl2 <- plot_grid(all_p_logp,plot_grid(total_found_p_p_flip,total_found_p_flip, ncol = 2, labels=c("B", "C")), labels = c("A", ""), nrow = 2, hjust = 0, rel_heights =   c(3, 1))
 pl2
+ggsave("./paper_figures_tables/pval_fig1.pdf", plot=pl2, width=12, height=12)
 ```
 
 

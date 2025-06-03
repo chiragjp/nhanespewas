@@ -192,5 +192,10 @@ voe_p <- p
 ```
 
 ```{r fig.height=7, fig.width=7}
-plot_grid(histogram_p,voe_p,nrow = 2, labels=c("A", "B"), rel_heights = c(2,1))
+pl <- plot_grid(histogram_p,voe_p,nrow = 2, labels=c("A", "B"), rel_heights = c(2,1))
+
+pl
+
+ggsave("./paper_figures_tables/adjustment_fig5.pdf", plot=pl, width=8.5, height=8)
+
 ```

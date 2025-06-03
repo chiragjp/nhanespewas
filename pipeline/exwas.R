@@ -27,7 +27,7 @@
   #   --sample_size_pairs_list_file
   #       Path to a CSV that contains columns: pvarname, evarname, n, etc. This file is
   #       used to filter all (phenotype,exposure) pairs by sample size (minimum 500)
-  #       and number of surveys (≥2). Each row corresponds to one cohort’s n for a pair.
+  #       and number of surveys (≥2). Each row corresponds to one cohort’s n for a pair. Optional.
   #
   #   --path_to_db
   #       Path to an existing SQLite database containing cleaned NHANES tables. The script
@@ -49,7 +49,7 @@
   # Details:
   #   1. The script begins by parsing command‐line options via getopt().
   #   2. It sets a minimum sample size threshold (default 500) and filters out any (phenotype,
-  #      exposure) pairs with fewer than 500 total participants or fewer than 2 survey waves.
+  #      exposure) pairs with fewer than 500 total participants or fewer than 2 survey waves. If this file is not supplied, the script will use the package provided file
   #   3. If --exposures is supplied, only those exposures will be retained for analysis.
   #   4. For each remaining (phenotype, exposure) pair, the script:
   #       a. Determines exposure data type via nhanespewas::check_e_data_type():
@@ -113,13 +113,12 @@
 library(getopt)
 library(tidyverse)
 library(logger)
-library(tools)
 library(nhanespewas)
 
 TEST <- F
 spec <- matrix(c(
   'phenotype', 'p', 1, "character",
-  'sample_size_pairs_list_file', 'l', 1, "character", # file that lists the sample sizes for each pair
+  'sample_size_pairs_list_file', 'l', 2, "character", # file that lists the sample sizes for each pair
   'path_to_db', 'i', 1, "character",
   'path_out', 'o', 1, "character",
   'exposures', 'e', 2, "character",
@@ -132,14 +131,19 @@ sample_size_threshold <- 500
 ########### debug stuff
 exposure <- 'LBXBCD'
 phenotype <- 'LBXRDW'
-ss_file <- '../select/sample_size_pe_category_0824.csv'
+#ss_file <- '../select/sample_size_pe_category_0824.csv'
+ss_file <- system.file("extdata", "sample_size_pe_category_0824.csv", package = "nhanespewas")
 path_to_db <-'../db/nhanes_031725.sqlite'
 path_out <- '.'
 use_quantile <- 0
 
 if(!TEST) {
   phenotype <- opt$phenotype
-  ss_file <- opt$sample_size_pairs_list_file
+  if(is.null(opt$sample_size_pairs_list_file)) {
+    ss_file <- system.file("extdata", "sample_size_pe_category_0824.csv", package = "nhanespewas")
+  } else {
+    ss_file <- opt$sample_size_pairs_list_file
+  }
   path_to_db <- opt$path_to_db
   path_out <- opt$path_out
   use_quantile <- ifelse(is.null(opt$use_quantile), 0, opt$use_quantile)
@@ -147,7 +151,7 @@ if(!TEST) {
 
 QUANTILES <- c(0, .25, .5, .75, .9, 1)
 SCALE_P <- T
-SCALE_TYPE <- 3 # IVT
+SCALE_TYPE <- 1 # IVT
 ############### end DEBUG
 
 con <- DBI::dbConnect(RSQLite::SQLite(), dbname=path_to_db)

@@ -47,6 +47,8 @@ pe_flex_adjust(
 \item{quantile_expo}{Optional vector specifying quantiles for the exposure variable (default is NULL).}
 
 \item{exposure_levels}{Optional vector specifying levels for the exposure variable (default is NULL).}
+
+\item{scale_type}{Numeric: scale type 1 is mean and SD; scale type 2 == CLR scale type 3 is IVT}
 }
 \value{
 A list containing the following elements:
