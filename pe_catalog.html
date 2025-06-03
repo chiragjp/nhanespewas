@@ -370,23 +370,6 @@ to find what variables are in what tables in the NHANES database</p>
 ## ✖ dplyr::filter() masks stats::filter()
 ## ✖ dplyr::lag()    masks stats::lag()
 ## ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
-<pre class="r"><code>library(survey) # loaded by nhanespewas for complex‐survey regressions</code></pre>
-<pre><code>## Loading required package: grid
-## Loading required package: Matrix
-## 
-## Attaching package: &#39;Matrix&#39;
-## 
-## The following objects are masked from &#39;package:tidyr&#39;:
-## 
-##     expand, pack, unpack
-## 
-## Loading required package: survival
-## 
-## Attaching package: &#39;survey&#39;
-## 
-## The following object is masked from &#39;package:graphics&#39;:
-## 
-##     dotchart</code></pre>
 <pre class="r"><code>library(nhanespewas)
 library(DBI)</code></pre>
 <div id="explore-the-nhanes-database" class="section level1">
@@ -429,7 +412,7 @@ table_names # see column Variable.Name and Data.File.Name</code></pre>
 ## # ℹ 1,407 more rows</code></pre>
 <pre class="r"><code>varnames # this table is an index of variables in tables</code></pre>
 <pre><code>## # Source:   table&lt;`variable_names_epcf`&gt; [?? x 8]
-## # Database: sqlite 3.47.1 [/Users/chirag/HMS Dropbox/Chirag Patel/projects/nhanespewas/db/nhanes_031725.sqlite]
+## # Database: sqlite 3.50.0 [/Users/chirag/HMS Dropbox/Chirag Patel/projects/nhanespewas/db/nhanes_031725.sqlite]
 ##    Variable.Name Variable.Description       Data.File.Name Data.File.Description
 ##    &lt;chr&gt;         &lt;chr&gt;                      &lt;chr&gt;          &lt;chr&gt;                
 ##  1 DMAETHN       Logical Imputation Flag f… DEMO           Demographic Variable…
@@ -566,8 +549,12 @@ evarname</code></pre>
 <h1>Next steps</h1>
 <p>With the database and data structure described above, along with the
 “Select” file, you are now ready to start associaing each exposure to a
-phenotype. A script to do this for a phenotype is described in the code:
-pipeline/exwas.R</p>
+phenotype. A script to do this for a phenotype is described in the
+code:</p>
+<ul>
+<li>exwas_tour.Rmd</li>
+<li>pipeline/exwas.R</li>
+</ul>
 </div>
 
 

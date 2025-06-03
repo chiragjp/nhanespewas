@@ -1,0 +1,103 @@
+
+---
+title: "High level tour: Running an NHANES Exposure-Wide Association Study (ExWAS)"
+author: "nhanespewas team"
+date: "`r format(Sys.Date())`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+---
+
+> **Goal**  
+> Show, in a few reproducible steps, how the **exwas.R** driver script in the  
+> [`nhanespewas`](https://github.com/chiragjp/nhanespewas) package performs an  
+> Exposome-Wide scan for one phenotype.
+
+---
+
+## 1  What the script does
+
+`exwas.R` loops over every eligible exposure for a chosen phenotype and:
+
+1. **Filters** pairs to those with ≥ 500 participants in ≥ 2 NHANES cycles.  
+2. **Chooses** the right transformation for each exposure  
+   (log-scale, quantile bins, or categorical).  
+3. **Builds** nine predefined adjustment models (age-only, fully adjusted, etc.).  
+4. **Fits** survey-weighted regressions with `pe_flex_adjust()` and captures  
+   tidy coefficients, model “glance” statistics, and incremental R².  
+5. **Meta-analyses** results across cycles with unrestricted weighted least squares  
+   (UWLS), adding heterogeneity metrics (Q, I², H²).  
+6. **Saves** one compressed **RDS** file containing the three result tables  
+   (`pe_tidied`, `pe_glanced`, `rsq`) plus raw model objects for audit.
+
+---
+
+## 2  Setup
+
+```{r eval=FALSE, include=TRUE}
+# install.packages(c("remotes", "DBI", "RSQLite", "logger",
+#                    "getopt", "tidyverse"))
+remotes::install_github("chiragjp/nhanespewas")
+
+library(nhanespewas)
+```
+
+You also need
+	- nhanes_XXXX.sqlite – a SQLite database built by the package’s helper, available here: https://doi.org/10.6084/m9.figshare.29182196.v1 (~2GB)
+	-	sample_size_pe_category_0824.csv – shipped in the package’s extdata folder.
+
+⸻
+
+## 3  A minimal command-line call
+```{bash eval=FALSE, include=TRUE}
+Rscript exwas.R -p LBXRDW -i ../db/nhanes_031725.sqlite -o .
+```
+
+This scans all 619 exposures for the phenotype LBXRDW and writes
+./LBXRDW.rds.
+
+Restrict to selected exposures + quantile modelling
+ exposures_to_run.csv: one column, e.g. LBXBCD, URXUHG
+
+
+⸻
+
+
+## 4  Exploring the output
+
+
+```{r eval=FALSE, include=TRUE}
+res <- readRDS("LBXRDW.rds")
+names(res)
+head(res$pe_tidied[, c("evarname","estimate","p.value","pval_BY")])
+```
+
+res element	description
+
+- pe_tidied	coefficient, SE, p value for each model/level
+- pe_glanced	model-wise fit stats (AIC, df, etc.) for each model
+- rsq	incremental R² for each adjustment scenario
+- modls	raw model lists (one per exposure)
+
+⸻
+
+## 5  Algorithm flow
+
+```{r echo=FALSE}
+knitr::kable(
+  tibble::tribble(
+    ~Step, ~Function, ~Output,
+    "1 Filter pairs",    "dplyr::filter()",    "≥500 N, ≥2 cycles",
+    "2 Detect type",     "check_e_data_type()", "continuous / categorical / rank",
+    "3 Build models",    "adjustment_scenario_for_variable()", "9 covariate sets",
+    "4 Fit survey GLM",  "pe_flex_adjust()",  "tidy / glance / R²",
+    "5 Meta-analyse",    "internal UWLS",     "β_UWLS, p_UWLS, I²",
+    "6 Save results",    "saveRDS()",         "<phenotype>[ _subset].rds"
+  ),
+  caption = "High-level workflow executed by **exwas.R**"
+)
+```
+
+
+
