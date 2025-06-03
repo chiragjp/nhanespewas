@@ -1,12 +1,12 @@
 # Benchmarking exposome research: An atlas of exposome-phenome associations
 
-04/07/25
+06/02/25
 
 ## Summary
 
 We build a comprehensive "atlas" of correlations between 278 phenotypes (e.g., body mass index, glucose, height, creatinine) and 651 exposures and behaviors (e.g., self-reported nutrient intake; blood lead levels; urinary phthalates; blood PFOA) across the National Health and Nutrition Examination Surveys (NHANES), estimating 127,817 associations in individuals from 1999-2017. For each survey, we associate the phenotype and exposure, and summarize the association size across the surveys. We assess the robustness of associations by estimating the false discovery rate, consistency with adjustments, and concordance across multiple waves of the surveys.
 
-Specifically, the atlas provides a comprehensive list of exposure-phenome associations across the cohort, document statistical approaches used to associate exposures with phenotype, and systematically assesses replicability across independent cohorts.
+Specifically, the atlas provides a comprehensive list of exposure-phenome associations across the cohort, document statistical approaches used to associate exposures with phenotype, and systematically assesses reproducibility across independent cohorts.
 
 <img src="img/pe_fig1.png" width="70%" height="70%"/>
 
@@ -47,3 +47,4 @@ disconnect_pewas_data(pedata_con)
 
 -   [pe_quickstart.Rmd](https://github.com/chiragjp/nhanespewas/blob/main/pe_quickstart.Rmd): a quick tour on querying the database and running an association
 -   [pe_catalog.Rmd](https://github.com/chiragjp/nhanespewas/blob/main/pe_catalog.Rmd): a listing of the variables catalogged for associations
+-   [exwas_tour.Rmd](https://github.com/chiragjp/nhanespewas/blob/main/exwas_tour.Rmd): a high-level overview of the pipeline to conduct ExWAS
