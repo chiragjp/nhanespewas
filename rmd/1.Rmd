@@ -27,6 +27,10 @@ adjusted_meta_2 |> write_csv(file = "./paper_figures_tables/summary_stats.csv")
 ```{r catalog to data folder}
 p_catalog <- adjusted_meta_2 |> select(pvarname, pnewsubcategory, pvardesc) |> unique() |> rename(pcategory=pnewsubcategory)
 e_catalog <- adjusted_meta_2 |> select(evarname, super_ecat_name, enewsubcategory, evardesc) |> unique()
-usethis::use_data(p_catalog)
-usethis::use_data(e_catalog)
+#usethis::use_data(p_catalog)
+#usethis::use_data(e_catalog)
+
+p_catalog |> write_csv("./paper_figures_tables/p_catalog.csv")
+e_catalog |> write_csv("./paper_figures_tables/e_catalog.csv")
+
 ```

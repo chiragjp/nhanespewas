@@ -38,7 +38,7 @@ pedata_con <- connect_pewas_data(PATH_TO_THE_DATABASE)
 # conduct an association between c-reactive protein and cotinine
 ## -   See pe_quickstart.Rmd
 
-crp_cot <- pe_flex_adjust("LBXCRP", "LBXCOT", pedata_con, scale_p=T)
+crp_cot <- pe_flex_adjust("LBXCRP", "LBXCOT", con=pedata_con, adjustment_variables = adjustment_models, scale_p=T)
 # clean up
 disconnect_pewas_data(pedata_con)
 ```
