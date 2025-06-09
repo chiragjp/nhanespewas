@@ -15,6 +15,7 @@ Imports:
     DBI,
     RSQLite,
     dplyr,
+    dbplyr,
     tidyr,
     survey, 
     stats,
