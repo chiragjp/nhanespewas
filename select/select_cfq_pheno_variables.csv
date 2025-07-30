@@ -1,0 +1,5 @@
+Variable.Name,Variable.Description,Data.File.Name,Data.File.Description,Begin.Year,EndYear,Component,Use.Constraints
+CFDDS,Score: number correct,CFQ,Cognitive Functioning,1999,2000,Questionnaire,None
+CFDDS,Score: number correct,CFQ_B,Cognitive Functioning,2001,2002,Questionnaire,None
+CFDDS,Digit Symbol: Score,CFQ_G,Cognitive Functioning,2011,2012,Questionnaire,None
+CFDDS,Digit Symbol: Score,CFQ_H,Cognitive Functioning,2013,2014,Questionnaire,None

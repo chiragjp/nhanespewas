@@ -1,0 +1,106 @@
+---
+title: "Attaining Residuals from the Regression"
+output: html_document
+---
+
+
+```{r setup, include=FALSE}
+# Set global chunk options: show code by default
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+# Introduction
+
+This vignette shows how to extract residuals from the fitted models and plot the fitted vs. residual values to visualize presence of heteroskedascity. 
+
+
+
+# 1.  Load Libraries
+
+
+```{r load}
+library(tidyverse) # for data‐manipulation (dplyr, %\>%, etc.)
+library(DBI) # for connecting to an SQLite (or other) database
+library(survey) # loaded by nhanespewas for complex‐survey regressions
+#library(nhanespewas) # our package for PE associations
+devtools::load_all("..")
+```
+
+
+# 2.  Connect to the NHANES PE Database
+
+We assume that you have already downloaded the SQLite database
+containing all variables (1999–2017) formatted for nhanespewas. Adjust
+the path_to_db to match your local file.
+
+```{r connect}
+# Replace './db/nhanes_031725.sqlite' with your actual file path
+
+path_to_db <- "../db/nhanes_031725.sqlite"
+
+# Establish a connection to the NHANES PE database
+
+con <- connect_pewas_data(path_to_db)
+
+# Once connected, you can reference tables via dplyr::tbl()
+
+varnames <- dplyr::tbl(con, "variable_names_epcf")
+```
+
+
+
+
+# Example 1: CRP (P) vs. Cotinine (E)
+
+Let’s run a simple linear regression of C-reactive protein (LBXCRP) on
+serum cotinine (LBXCOT), adjusting for the default covariates and
+scaling the phenotype. 1. Confirm that both variables exist in
+variable_names_epcf. 2. Call pe_flex_adjust() with "LBXCRP" (phenotype),
+"LBXCOT" (exposure), plus the adjustment template. 3. Extract summary
+statistics and R² values.
+
+
+
+```{r}
+varnames |> filter(Variable.Name == "LBXCOT") 
+varnames |> filter(Variable.Name == "LBXCRP")
+```
+
+## 2. Run PE association: CRP (outcome) \~ Cotinine (exposure) and plot the fitted vs. the residuals
+
+ - adjustment_models: built‐in set of covariates (age, sex, race_ethnicity, etc.)
+
+ - scale_p = TRUE: z‐score the phenotype (LBXCRP) before regression
+
+ - logxform_p = FALSE: do NOT log‐transform the phenotype
+
+ - scale_type = 1:  scaled phenotype by SD
+ 
+ - save_svymodel = T: this will save the model to the workspace to extract the residuals.
+
+
+Centered around a mean of zero with little evidence of non-constant variance.
+
+```{r}
+crp_cot <- pe_flex_adjust("LBXCRP","LBXCOT", adjustment_variables   = adjustment_models, con = con, scale_p = TRUE, logxform_p = FALSE, scale_type = 1, save_svymodel=T ) # saving the model
+fitted_residual <- tibble(res=resid(crp_cot$models[[2]]$model), fitted=fitted(crp_cot$models[[2]]$model))
+p <- ggplot(fitted_residual, aes(fitted,res))
+p <- p + geom_point(alpha=0.2) + theme_bw()
+p
+```
+# Example 2: Glucose and beta-carotene
+
+
+```{r}
+glu_bec <- pe_flex_adjust("LBXGLU","LBXBEC", adjustment_variables   = adjustment_models, con = con, scale_p = TRUE, logxform_p = FALSE, scale_type = 1, save_svymodel=T ) # saving the model
+fitted_residual <- tibble(res=resid(glu_bec$models[[2]]$model), fitted=fitted(glu_bec$models[[2]]$model))
+p <- ggplot(fitted_residual, aes(fitted,res))
+p <- p + geom_point(alpha=0.2) + theme_bw()
+p
+```
+
+
+```{r}
+dbDisconnect(con)
+```
+

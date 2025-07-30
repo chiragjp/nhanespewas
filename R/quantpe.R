@@ -189,7 +189,7 @@ run_model <- function(formu, dsn, scale_expo=T, scale_pheno=F, quantile_expo=NUL
   r2 <- svyrsquared(mod)
   list(glanced=gl, tidied=ti, r2=r2,
        scale_pheno=scale_pheno, scale_expo=scale_expo,
-       q_cut_points=cut_points, quantiles=quantile_expo, expo_levels=expo_levels, model=ifelse(save_svymodel, mod, NA)) # not saving dsn
+       q_cut_points=cut_points, quantiles=quantile_expo, expo_levels=expo_levels, model= if (save_svymodel) mod else NA) # not saving dsn
 }
 
 run_mv_model <- function(formu, dsn, scale_pheno=F) {
@@ -455,7 +455,7 @@ pe <- function(pheno, exposure, adjustment_variables,con, series=NULL,
 pe_flex_adjust <- function(pheno, exposure, adjustment_variables,con, series=NULL,
                            logxform_p=T, logxform_e=T, scale_e=T, scale_p=F,
                            pheno_table_name=NULL, expo_table_name=NULL,
-                           quantile_expo=NULL, exposure_levels=NULL, scale_type=1) {
+                           quantile_expo=NULL, exposure_levels=NULL, scale_type=1, ...) {
 
   ptables <- get_table_names_for_varname(con, varname = pheno, series) |> rename(p_name = Data.File.Name)
   etables <- get_table_names_for_varname(con, varname = exposure, series) |> rename(e_name = Data.File.Name)
@@ -498,9 +498,9 @@ pe_flex_adjust <- function(pheno, exposure, adjustment_variables,con, series=NUL
     } else {
       baseadjusted <- addToBase(baseformula, adjust_variables_for_scene)
       basebaseadjusted <- addToBase(basebase, adjust_variables_for_scene)
-      base_models[[mod_num]] <- run_model(basebaseadjusted,dsn, scale_expo = scale_e, scale_pheno = scale_p,  quantile_expo=quantile_expo, expo_levels =  exposure_levels, scale_type=scale_type)
+      base_models[[mod_num]] <- run_model(basebaseadjusted,dsn, scale_expo = scale_e, scale_pheno = scale_p,  quantile_expo=quantile_expo, expo_levels =  exposure_levels, scale_type=scale_type, ...)
     }
-    models[[mod_num]] <- run_model(baseadjusted,dsn, scale_expo = scale_e, scale_pheno = scale_p,  quantile_expo=quantile_expo, expo_levels =  exposure_levels,scale_type=scale_type)
+    models[[mod_num]] <- run_model(baseadjusted,dsn, scale_expo = scale_e, scale_pheno = scale_p,  quantile_expo=quantile_expo, expo_levels =  exposure_levels,scale_type=scale_type, ... )
   }
   n <- dsn |> nrow()
   list(log_p = logxform_p, log_e = logxform_e, scaled_p = scale_p, scaled_e=scale_e, unweighted_n=n, phenotype=pheno, series=tab_obj$series, exposure=exposure, models=models, base_models=base_models, adjustment_variables=adjustment_variables, demographic_breakdown=demo_break_tbl)

@@ -151,7 +151,7 @@ if(!TEST) {
 
 QUANTILES <- c(0, .25, .5, .75, .9, 1)
 SCALE_P <- T
-SCALE_TYPE <- 1 # IVT
+SCALE_TYPE <- 1 # Scaled by SD
 ############### end DEBUG
 
 con <- DBI::dbConnect(RSQLite::SQLite(), dbname=path_to_db)
@@ -175,7 +175,7 @@ log_info("Process ID: {Sys.getpid()}")
 log_info("Number of Exposures: {nrow(to_do)}")
 
 if(nrow(to_do) == 0) {
-  done <- dbDisconnect(con)
+  done <- DBI::dbDisconnect(con)
   log_info("0 pairs, quitting")
   log_info("Done for the phenotype { phenotype } ")
   stop("No pairs to execute")
@@ -365,7 +365,7 @@ if(TEST) {
   outstruct <- list(pe_tidied=tidied,pe_glanced=glanced, rsq=rsq, modls=models)
 }
 
-done <- dbDisconnect(con)
+done <- DBI::dbDisconnect(con)
 
 log_info("Done with ExWAS for { phenotype }")
 

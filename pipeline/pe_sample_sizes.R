@@ -11,12 +11,12 @@ spec <- matrix(c(
 ), byrow=TRUE, ncol=4);
 opt <- getopt(spec)
 
-con <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/nhanes_112824.sqlite')
+#con <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/nhanes_112824.sqlite')
+con <- DBI::dbConnect(RSQLite::SQLite(), dbname='../db/nhanes_031725.sqlite')
 e_variables <- read_csv('../select/select_expo_variables_3.csv')
+p_variables <- read_csv("../select/select_cfq_pheno_variables.csv") |> mutate(varname=Variable.Name, epcf="p", category='cognitive',subcategory=NA)
 #p_variables <- read_csv('../select/select_pheno_variables_3.csv')
-p_variables <- read_csv('../select/select_ubiome_count_pheno_variables.csv') |> mutate(varname=Variable.Name, epcf="p", category='ubiome',subcategory=NA)
-
-#p_variables <- read_csv("./select/select_ubiome_pheno_variables.csv") |> mutate(epcf='p')
+#p_variables <- read_csv('../select/select_ubiome_count_pheno_variables.csv') |> mutate(varname=Variable.Name, epcf="p", category='ubiome',subcategory=NA)
 
 variable_information_selected <- rbind(e_variables, p_variables)
 
@@ -170,7 +170,8 @@ if(series == "A") {
 }
 
 #samp_size |> write_csv(sprintf('sample_size_pe_category_%s_0824.csv', series))
-samp_size |> write_csv(sprintf('sample_size_pe_ubiome_%s_1124.csv', series))
+#samp_size |> write_csv(sprintf('sample_size_pe_ubiome_%s_1124.csv', series))
+samp_size |> write_csv(sprintf('sample_size_pe_cfq_%s_1124.csv', series))
 
 #log_info("A")
 #samp_size_a <- ep_sample_sizes(con, e_variables |> filter(Begin.Year == 1999), p_variables |> filter(Begin.Year == 1999))
@@ -208,8 +209,10 @@ samp_size |> write_csv(sprintf('sample_size_pe_ubiome_%s_1124.csv', series))
 ## combine preexisting sample sizes
 #read_csv("./select/sample_size_pe_category_051323.csv") |> rbind(read_csv('./select/sample_size_pe_category_telo_052823.csv')) |> write_csv('./select/sample_size_pe_category_060623.csv')
 
-#write_csv("./sle")
-
+read_csv("./sample_size_pe_cfq_H_1124.csv") |>
+  rbind(read_csv('./sample_size_pe_cfq_G_1124.csv')) |>
+  rbind(read_csv('./sample_size_pe_cfq_A_1124.csv')) |>
+  rbind(read_csv('./sample_size_pe_cfq_B_1124.csv')) |> write_csv('../select/sample_size_pe_cfq.csv')
 
 
 dbDisconnect(con)

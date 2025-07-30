@@ -1,30 +1,30 @@
-Description,R2 E,R2 (G)
-Body Mass Index (kg/m**2),0.0972,0.1080
-Standing Height (cm),0.0314,0.1790
-Waist Circumference (cm),0.0742,0.0656
-Weight (kg),0.0461,0.1040
-Basophils number (1000 cells/uL),0.0168,0.0145
-Eosinophils number (1000 cells/uL),0.0076,0.0934
-Direct HDL-Cholesterol (mg/dL),0.0955,0.1490
-LDL-cholesterol (mg/dL),0.3097,0.0854
-Lymphocyte number (1000 cells/uL),0.0548,0.0205
-Monocyte number (1000 cells/uL),0.0184,0.0810
-Segmented neutrophils num (1000 cell/uL),0.0355,0.0887
-Glycohemoglobin (%),0.0789,0.0037
-Fasting Glucose (mg/dL),0.0809,0.0047
-Hematocrit (%),0.1699,0.0650
-Hemoglobin (g/dL),0.0823,0.0678
-Lymphocyte percent (%),0.0141,0.0884
-Monocyte percent (%),0.0381,0.0853
-Segmented neutrophils percent (%),0.0116,0.0793
-Platelet count SI (1000 cells/uL),0.0289,0.2080
-Red blood cell count (million cells/uL),0.0874,0.1170
-Red cell distribution width (%),0.1865,0.0283
-Red cell distribution width (%),0.1865,0.0793
-Albumin (g/dL),0.1207,0.0027
-Alanine aminotransferase ALT (U/L),0.0120,0.0028
-Total calcium (mg/dL),0.0971,0.0523
-Creatinine (mg/dL),0.1398,0.0013
-Total bilirubin (mg/dL),0.0321,0.1870
-Total cholesterol (mg/dL),0.3513,0.0433
-Triglyceride (mg/dL),0.5747,0.0930
+pvardesc,rsq_exposures_10_20,"Delta(Full, covariates-only)"
+Body Mass Index (kg/m**2),0.09722100076226375,0.108
+Standing Height (cm),0.0314448136096398,0.179
+Waist Circumference (cm),0.07420860579457522,0.0656
+Weight (kg),0.04614820673233,0.104
+Basophils number (1000 cells/uL),0.01678965833519642,0.0145
+Eosinophils number (1000 cells/uL),0.00756110225171056,0.0934
+Direct HDL-Cholesterol (mg/dL),0.09546282913863774,0.149
+LDL-cholesterol (mg/dL),0.3097142570855709,0.0854
+Lymphocyte number (1000 cells/uL),0.05483019591087131,0.0205
+Monocyte number (1000 cells/uL),0.01835637031313931,0.081
+Segmented neutrophils num (1000 cell/uL),0.03552100622881918,0.0887
+Glycohemoglobin (%),0.07890487897179349,0.00369
+Fasting Glucose (mg/dL),0.08085085636148856,0.00467
+Hematocrit (%),0.16987337960017734,0.065
+Hemoglobin (g/dL),0.08227829240184437,0.0678
+Lymphocyte percent (%),0.01410603901462048,0.0884
+Monocyte percent (%),0.03805460221398243,0.0853
+Segmented neutrophils percent (%),0.01159003094028285,0.0793
+Platelet count SI (1000 cells/uL),0.02887260589369753,0.208
+Red blood cell count (million cells/uL),0.08741390181361328,0.117
+Red cell distribution width (%),0.1864882289437665,0.0283
+Red cell distribution width (%),0.1864882289437665,0.0793
+Albumin (g/dL),0.12066484180884791,0.00267
+Alanine aminotransferase ALT (U/L),0.01201495675149213,0.00284
+Total calcium (mg/dL),0.09713609970474713,0.0523
+Creatinine (mg/dL),0.13975457918656578,0.00127
+Total bilirubin (mg/dL),0.03205302948779805,0.187
+Total cholesterol (mg/dL),0.3512723772673688,0.0433
+Triglyceride (mg/dL),0.5746534287660761,0.093

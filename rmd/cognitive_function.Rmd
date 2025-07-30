@@ -1,0 +1,78 @@
+---
+title: "cogitive_function ExWAS"
+author: "Chirag Patel"
+date: "2025-07-30"
+output: html_document
+---
+
+
+```{r}
+library(tidyverse)
+library(DBI)
+library(ggsci)
+library(DT)
+library(ggrepel)
+library(cowplot)
+library(reactable)
+library(gt)
+library(broom)
+library(ggridges)
+library(ComplexHeatmap)
+library(circlize)
+library(corrr)
+library(ggpubr)
+```
+
+```{r}
+load('./adjusted_meta_2.Rdata')
+exposure_desc  <- adjusted_meta_2 |> select(evarname, evardesc, esubcategory, enewsubcategory, super_ecat_number) |> unique()
+## adjusted_meta_2 |> filter(sig_levels =="BY<0.05") |> arrange(-p.value_overall) |> select(p.value_overall) 
+## max pvalue at BY < 0.05: 0.000523
+```
+
+
+```{r}
+cfdds <- read_rds("./CFDDS.rds")
+summary_stats <- cfdds$pe_tidied |> filter(model_number == 2) |> filter(grepl("expo", term)) |> rename(evarname=exposure, pvarname=phenotype)
+summary_stats <- summary_stats |> left_join(exposure_desc , by="evarname")
+
+summary_stats <- summary_stats |> filter(evarname != "H0Q065") |> filter(evarname != 'PAQ_recreation_vigorous_week')
+summary_stats <- summary_stats |> mutate(evardesc = ifelse(evarname == 'PAQ_recreation_vigorous_met', "Vigorous Activity METs", evardesc))
+summary_stats <- summary_stats |> mutate(evardesc = ifelse(evarname == 'PAQ_total_met', "Total Activity METs", evardesc))
+
+uni_rsq <- cfdds$rsq |> filter(model_number==2, aggregate_base_model==T) |> select(rsq, model_number, exposure) |> rename(ursq=rsq)
+full_rsq <- cfdds$rsq |> filter(model_number==2, aggregate_base_model==F)  |> select(rsq, model_number, exposure) |> rename(frsq=rsq)
+rsq <- full_rsq |> left_join(uni_rsq, by="exposure")  |> mutate(rsq_diff=frsq-ursq) |> select(-model_number.x, -model_number.y) |> rename(evarname=exposure)
+
+summary_stats <- summary_stats |> left_join(rsq)
+
+```
+
+
+```{r}
+p <- ggplot(summary_stats, aes(estimate, -log10(p.value)))
+p <- p + geom_point() + theme_bw()
+p
+```
+
+
+```{r}
+#sig_data <- summary_stats |> filter(p.value < 0.000523)
+sig_data <- summary_stats |> filter(p.value < 0.001)
+
+p <- ggplot(summary_stats, aes(rsq_diff*100, -log10(p.value)))
+p <- p + geom_point() + theme_bw() + xlab("R-squared of E (%)") + ylab("-log10(p.value)")
+p <- p + geom_hline(yintercept = -log10(0.001))
+p1 <- p + geom_text_repel(data=sig_data, aes(rsq_diff*100, -log10(p.value), label=evardesc), size=3)
+p1
+
+p <- ggplot(summary_stats, aes(estimate, -log10(p.value)))
+p <- p + geom_point() + theme_bw() + xlab("Effect of E [in SD units]") + ylab("-log10(p.value)")
+p <- p + geom_hline(yintercept = -log10(0.001))
+p2 <- p + geom_text_repel(data=sig_data, aes(estimate, -log10(p.value), label=evardesc), size=3)
+p2
+
+cowplot::plot_grid(p1, p2, labels=c("A", "B"))
+
+
+```

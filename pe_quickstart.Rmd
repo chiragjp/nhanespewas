@@ -121,7 +121,7 @@ varnames |> filter(Variable.Name == "LBXCRP")
  - scale_type = 3: use RankNorm (type‐3 scaling)
 
 ```{r}
-crp_cot <- pe_flex_adjust("LBXCRP","LBXCOT", adjustment_variables   = adjustment_models, con = con, scale_p = TRUE, logxform_p = FALSE, scale_type = 3 )
+crp_cot <- pe_flex_adjust("LBXCRP","LBXCOT", adjustment_variables   = adjustment_models, con = con, scale_p = TRUE, logxform_p = FALSE, scale_type = 3,  )
 ```
 
 

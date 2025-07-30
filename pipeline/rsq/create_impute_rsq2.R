@@ -152,7 +152,7 @@ summ_stat <- big_data$summ_stats
 phenotype <- big_data$phenotype
 
 ## select n=10 highest by R2
-M_TOP <- 50
+M_TOP <- 20
 exposures_selected <- summ_stat |> arrange(-rsq_adj) |> slice_head(n=M_TOP)
 
 
@@ -193,8 +193,9 @@ uni_r2 <- exposures_selected |> summarize(s=sum(rsq_adj)) |> pull(s)
 to_save <- list(rsq_summary=tibble(phenotype=phenotype, rsq_exposures=mv_diff, rsq_base=r2_1[1], rsq_uni=uni_r2, number_exposures_in_model=nrow(exposures_selected)),
                 exposures_selected=exposures_selected, fit1=r2_1, fit2=r2_2, pooled_fit=pooled_results)
 
-#file_out <- sprintf("./out/%s_imp_R2.rds", phenotype)
-file_out <- sprintf("./out/%s_imp_R2_20.rds", phenotype)
+file_out <- sprintf("./out/%s_imp_R2.rds", phenotype)
+#file_out <- sprintf("./out/%s_imp_R2_20.rds", phenotype)
+#file_out <- sprintf("./out/%s_imp_R2_20.rds", phenotype)
 write_rds(to_save, file=file_out)
 
 
