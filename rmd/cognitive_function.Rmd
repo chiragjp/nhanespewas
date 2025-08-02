@@ -21,6 +21,7 @@ library(ComplexHeatmap)
 library(circlize)
 library(corrr)
 library(ggpubr)
+
 ```
 
 ```{r}
@@ -49,11 +50,6 @@ summary_stats <- summary_stats |> left_join(rsq)
 ```
 
 
-```{r}
-p <- ggplot(summary_stats, aes(estimate, -log10(p.value)))
-p <- p + geom_point() + theme_bw()
-p
-```
 
 
 ```{r}
@@ -74,5 +70,23 @@ p2
 
 cowplot::plot_grid(p1, p2, labels=c("A", "B"))
 
+
+```
+
+Exposomic correlation with other phenotypes
+
+```{r compare effect across the phenome}
+adjusted_meta_to_hm <- adjusted_meta_2 |> filter(pnewsubcategory != 'dexa' ) |> filter(pnewsubcategory != 'microbiome' )
+adjusted_meta_to_hm <-  adjusted_meta_to_hm |> rbind(adjusted_meta_2 |> filter(grepl("^RSV", pvarname)))
+
+adjusted_meta_to_hm <- adjusted_meta_to_hm |> filter(term_name == 'expo' | term_name == 'expo1') |> select(evarname, pvarname, estimate_overall, p.value_overall) |> mutate(estimate_overall= ifelse(p.value_overall >= 0.1, 0, estimate_overall)) |> mutate(estimate_overall = ifelse(is.na(estimate_overall), 0, estimate_overall))
+
+cog_decline_row <- summary_stats  |> select(term == 'expo' | term == 'expo1') |> select(evarname, pvarname, estimate, p.value) |> rename(estimate_overall=estimate, p.value_overall=p.value) 
+
+
+#to_array <- adjusted_meta_to_hm |> filter(term_name == 'expo' | term_name == 'expo1') |> select(evarname, pvarname, estimate_overall, p.value_overall) |> mutate(estimate_overall= ifelse(p.value_overall >= 0.1, 0, estimate_overall)) |> mutate(estimate_overall = ifelse(is.na(estimate_overall), 0, estimate_overall))  |> select(-p.value_overall) |> pivot_wider(names_from = pvarname, values_from = estimate_overall)
+
+
+phenome_correlation <- to_array |> select(-pvarname) |> correlate(diagonal = 1)
 
 ```

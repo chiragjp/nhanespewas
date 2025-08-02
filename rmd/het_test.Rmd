@@ -13,8 +13,6 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
 This vignette shows how to extract residuals from the fitted models and plot the fitted vs. residual values to visualize presence of heteroskedascity. 
 
-
-
 # 1.  Load Libraries
 
 
@@ -22,8 +20,8 @@ This vignette shows how to extract residuals from the fitted models and plot the
 library(tidyverse) # for data‐manipulation (dplyr, %\>%, etc.)
 library(DBI) # for connecting to an SQLite (or other) database
 library(survey) # loaded by nhanespewas for complex‐survey regressions
-#library(nhanespewas) # our package for PE associations
-devtools::load_all("..")
+library(nhanespewas) # our package for PE associations
+
 ```
 
 
@@ -35,42 +33,34 @@ the path_to_db to match your local file.
 
 ```{r connect}
 # Replace './db/nhanes_031725.sqlite' with your actual file path
-
 path_to_db <- "../db/nhanes_031725.sqlite"
-
 # Establish a connection to the NHANES PE database
-
 con <- connect_pewas_data(path_to_db)
 
-# Once connected, you can reference tables via dplyr::tbl()
+```
 
-varnames <- dplyr::tbl(con, "variable_names_epcf")
+```{r summary stats loading}
+load('adjusted_meta_2.Rdata')
+
 ```
 
 
 
 
-# Example 1: CRP (P) vs. Cotinine (E)
-
-Let’s run a simple linear regression of C-reactive protein (LBXCRP) on
-serum cotinine (LBXCOT), adjusting for the default covariates and
-scaling the phenotype. 1. Confirm that both variables exist in
-variable_names_epcf. 2. Call pe_flex_adjust() with "LBXCRP" (phenotype),
-"LBXCOT" (exposure), plus the adjustment template. 3. Extract summary
-statistics and R² values.
+# Example 1: Hemoglobin (P) vs. Cadmium (E)
 
 
 
 ```{r}
-varnames |> filter(Variable.Name == "LBXCOT") 
-varnames |> filter(Variable.Name == "LBXCRP")
+varnames |> filter(Variable.Name == "LBXBCD") 
+varnames |> filter(Variable.Name == "LBXHGB")
 ```
 
-## 2. Run PE association: CRP (outcome) \~ Cotinine (exposure) and plot the fitted vs. the residuals
+## 2. Run PE association: Hemoglobin (outcome) \~ Cadmium (exposure) and plot the fitted vs. the residuals
 
  - adjustment_models: built‐in set of covariates (age, sex, race_ethnicity, etc.)
 
- - scale_p = TRUE: z‐score the phenotype (LBXCRP) before regression
+ - scale_p = TRUE: z‐score the phenotype (LBXHGB) before regression
 
  - logxform_p = FALSE: do NOT log‐transform the phenotype
 
@@ -78,18 +68,19 @@ varnames |> filter(Variable.Name == "LBXCRP")
  
  - save_svymodel = T: this will save the model to the workspace to extract the residuals.
 
+This association had an very small pvalue and measured in a large sample.
+
 
 Centered around a mean of zero with little evidence of non-constant variance.
 
 ```{r}
-crp_cot <- pe_flex_adjust("LBXCRP","LBXCOT", adjustment_variables   = adjustment_models, con = con, scale_p = TRUE, logxform_p = FALSE, scale_type = 1, save_svymodel=T ) # saving the model
-fitted_residual <- tibble(res=resid(crp_cot$models[[2]]$model), fitted=fitted(crp_cot$models[[2]]$model))
-p <- ggplot(fitted_residual, aes(fitted,res))
-p <- p + geom_point(alpha=0.2) + theme_bw()
+hgb_bcd <- pe_flex_adjust("LBXHGB","LBXBCD", adjustment_variables   = adjustment_models, con = con, scale_p = TRUE, logxform_p = FALSE, scale_type = 1, save_svymodel=T ) # saving the model
+fitted_residual <- tibble(res=resid(hgb_bcd$models[[2]]$model), fitted=fitted(hgb_bcd$models[[2]]$model))
+p <- ggplot(fitted_residual, aes(fitted,res)) # unweighted residuals
+p <- p + geom_point(alpha=.05)  + theme_bw()
 p
 ```
 # Example 2: Glucose and beta-carotene
-
 
 ```{r}
 glu_bec <- pe_flex_adjust("LBXGLU","LBXBEC", adjustment_variables   = adjustment_models, con = con, scale_p = TRUE, logxform_p = FALSE, scale_type = 1, save_svymodel=T ) # saving the model

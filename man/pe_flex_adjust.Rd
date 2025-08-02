@@ -2,7 +2,7 @@
 % Please edit documentation in R/quantpe.R
 \name{pe_flex_adjust}
 \alias{pe_flex_adjust}
-\title{Phenotype and Exposure Analysis under different modeling scenarios}
+\title{Phenotype and Exposure Flexible Adjustment and Interaction Modeling}
 \usage{
 pe_flex_adjust(
   pheno,
@@ -19,75 +19,115 @@ pe_flex_adjust(
   quantile_expo = NULL,
   exposure_levels = NULL,
   scale_type = 1,
+  interact_with = NULL,
   ...
 )
 }
 \arguments{
-\item{pheno}{A character string specifying the phenotype variable.}
+\item{pheno}{A string naming the phenotype (outcome) variable.}
 
-\item{exposure}{A character string specifying the exposure variable.}
+\item{exposure}{A string naming the exposure (predictor) variable.}
 
-\item{adjustment_variables}{A data frame containing adjustment variables and scenarios. It should have columns \code{variables} and \code{scenario}.}
+\item{adjustment_variables}{A data frame with columns \code{variables} (character) and \code{scenario} (character),
+defining which covariates to adjust for in each scenario.}
 
-\item{con}{A database connection object.}
+\item{con}{A DBI database connection object used to look up and fetch tables.}
 
-\item{series}{A character vector specifying the series to consider (default is NULL).}
+\item{series}{Optional character vector of survey series to restrict table lookup;
+\code{NULL} (default) means “use all available series.”}
 
-\item{logxform_p}{Logical, whether to log-transform the phenotype variable (default is TRUE).}
+\item{logxform_p}{Logical; if \code{TRUE} (default), the phenotype is log-transformed before modeling.}
 
-\item{logxform_e}{Logical, whether to log-transform the exposure variable (default is TRUE).}
+\item{logxform_e}{Logical; if \code{TRUE} (default), the exposure is log-transformed before modeling.}
 
-\item{scale_e}{Logical, whether to scale the exposure variable (default is TRUE).}
+\item{scale_e}{Logical; if \code{TRUE} (default), the exposure is scaled to mean 0 and SD 1.}
 
-\item{scale_p}{Logical, whether to scale the phenotype variable (default is FALSE).}
+\item{scale_p}{Logical; if \code{TRUE} (default \code{FALSE}), the phenotype is scaled to mean 0 and SD 1.}
 
-\item{pheno_table_name}{Optional character string specifying the phenotype table name (default is NULL).}
+\item{pheno_table_name}{Optional string to override the default phenotype table lookup (default \code{NULL}).}
 
-\item{expo_table_name}{Optional character string specifying the exposure table name (default is NULL).}
+\item{expo_table_name}{Optional string to override the default exposure table lookup (default \code{NULL}).}
 
-\item{quantile_expo}{Optional vector specifying quantiles for the exposure variable (default is NULL).}
+\item{quantile_expo}{Optional numeric vector of quantiles (e.g. \code{c(0.1,0.5,0.9)}) at which to evaluate
+exposure effects in \code{run_model()} (default \code{NULL}).}
 
-\item{exposure_levels}{Optional vector specifying levels for the exposure variable (default is NULL).}
+\item{exposure_levels}{Optional vector of factor levels for the exposure variable in categorical analyses
+(default \code{NULL}).}
 
-\item{scale_type}{Numeric: scale type 1 is mean and SD; scale type 2 == CLR scale type 3 is IVT}
+\item{scale_type}{Integer code for scaling method (default \code{1}):
+\itemize{
+\item \code{1} = standard (mean/SD),
+\item \code{2} = centered log‐ratio (CLR),
+\item \code{3} = inverse‐variance transformation (IVT).
+}}
+
+\item{interact_with}{Optional character vector of adjustment variables to include interaction terms
+with \code{expo} (must be a subset of \code{adjustment_variables$variables}; default \code{NULL}).}
+
+\item{...}{Additional arguments passed on to \code{\link[=run_model]{run_model()}}, e.g. model‐specific options.}
 }
 \value{
-A list containing the following elements:
-\itemize{
-\item \code{log_p}: Logical, whether the phenotype was log-transformed.
-\item \code{log_e}: Logical, whether the exposure was log-transformed.
-\item \code{scaled_p}: Logical, whether the phenotype was scaled.
-\item \code{scaled_e}: Logical, whether the exposure was scaled.
-\item \code{unweighted_n}: The number of unweighted observations.
-\item \code{phenotype}: The phenotype variable.
-\item \code{series}: The series information from the data.
-\item \code{exposure}: The exposure variable.
-\item \code{models}: A list of models run based on the scenarios.
-\item \code{base_models}: A list of base models run for comparison.
-\item \code{adjustment_variables}: The adjustment variables used in the models, a tibble: see adjustment_models
-\item \code{demographic_breakdown}: A table with demographic breakdown of the survey design.
+A named list with elements:
+\describe{
+\item{log_p}{Logical indicating whether the phenotype was log-transformed.}
+\item{log_e}{Logical indicating whether the exposure was log-transformed.}
+\item{scaled_p}{Logical indicating whether the phenotype was scaled.}
+\item{scaled_e}{Logical indicating whether the exposure was scaled.}
+\item{unweighted_n}{Integer: count of unweighted observations in the survey design.}
+\item{phenotype}{Character: name of the phenotype variable.}
+\item{series}{Data frame of series metadata used for table lookup.}
+\item{exposure}{Character: name of the exposure variable.}
+\item{models}{List of fitted survey‐weighted models for each scenario (with optional interactions).}
+\item{base_models}{List of baseline (intercept‐only or base‐adjusted) models for comparison.}
+\item{adjustment_variables}{The input data frame of adjustment variables and scenarios.}
+\item{demographic_breakdown}{Data frame of demographic summaries from the survey design.}
 }
 }
 \description{
-This function performs flexible adjustment for phenotype and exposure analysis using specified adjustment variables. It retrieves necessary data, handles weighting, and runs models based on the specified scenarios.
+This function performs phenotype–exposure analysis under multiple modeling scenarios,
+including optional log-transformation, scaling, and interaction terms. It retrieves
+data from the database, merges phenotype and exposure tables, handles survey weights,
+applies transformations, filters missingness, constructs a survey design, computes
+demographic summaries, and fits models for each scenario defined in
+\code{adjustment_variables}.
 }
 \details{
-The function performs the following steps:
-\itemize{
-\item Retrieves table names for the phenotype and exposure variables.
-\item Ensures the phenotype and exposure variables are collected in the same survey.
-\item Gets table names for each series and binds the tables.
-\item Handles weights by calling \code{figure_out_multiyear_weight}.
-\item Transforms and names the phenotype and exposure variables if specified.
-\item Filters data and creates a survey design object.
-\item Performs demographic breakdown of the survey design.
-\item Runs models based on the specified scenarios and adjustment variables.
+For each unique \code{scenario} in \code{adjustment_variables}, the function:
+\enumerate{
+\item Merges phenotype (\code{pheno}) and exposure (\code{exposure}) tables by year.
+\item Determines survey weights via \code{figure_out_multiyear_weight()}.
+\item Applies log‐transform and/or scaling to both \code{pheno} and \code{exposure} if requested.
+\item Filters out rows with missing weights or missing values in the outcome, exposure,
+or any adjustment covariates.
+\item Constructs a survey design object and computes a demographic breakdown.
+\item Uses \code{aceOfBase()} to build the formula—adding covariates and optional
+\code{expo:covariate} interactions—and then fits models via \code{run_model()}.
 }
 }
 \examples{
 \dontrun{
 con <- DBI::dbConnect(RSQLite::SQLite(), dbname = "nhanes.db")
-adjustment_vars <- data.frame(variables = c("AGE", "SEX"), scenario = c("A", "A"))
-result <- pe_flex_adjust(pheno = "BMXBMI", exposure = "LBXCOT", adjustment_variables = adjustment_vars, con = con)
+
+adj_vars <- data.frame(
+  variables = c("RIDAGEYR", "RIAGENDR", "INDFMPIR"),
+  scenario  = c("S1",      "S1",      "S1")
+)
+
+result <- pe_flex_adjust(
+  pheno                = "LBXCRP",
+  exposure             = "LBXCOT",
+  adjustment_variables = adj_vars,
+  con                  = con,
+  series               = c("2013-2014", "2015-2016"),
+  logxform_p           = TRUE,
+  logxform_e           = TRUE,
+  scale_e              = TRUE,
+  scale_p              = FALSE,
+  quantile_expo        = c(0.1, 0.5, 0.9),
+  exposure_levels      = c("low", "med", "high"),
+  scale_type           = 2,
+  interact_with        = "RIDAGEYR"
+)
 }
+
 }

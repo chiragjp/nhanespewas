@@ -61,7 +61,20 @@ addToBase <- function(base_formula, adjustingVariables) {
   return(form)
 }
 
-
+# considers interaction
+aceOfBase <- function(base_formula, adjustingVariables, interact_with = NULL, interactor_variable="expo") {
+  form <- addToBase(base_formula, adjustingVariables)
+  if (!is.null(interact_with) && length(interact_with) > 0) {
+    missing_vars <- setdiff(interact_with, adjustingVariables)
+    if (length(missing_vars) > 0) {
+      stop(sprintf("All interaction variables must be in adjustingVariables. Missing: %s",
+                   paste(missing_vars, collapse = ", ")))
+    }
+    interaction_terms <- paste(sprintf("expo*%s", interact_with), collapse = " + ")
+    form <- stats::update.formula(form, paste("~ . +", interaction_terms))
+  }
+  return(form)
+}
 
 #' Calculate R-squared and adjusted R-squared for a survey-weighted linear model
 #'
@@ -400,62 +413,119 @@ pe <- function(pheno, exposure, adjustment_variables,con, series=NULL,
 
 
 
-#' Phenotype and Exposure Analysis under different modeling scenarios
+#' Phenotype and Exposure Flexible Adjustment and Interaction Modeling
 #'
-#' This function performs flexible adjustment for phenotype and exposure analysis using specified adjustment variables. It retrieves necessary data, handles weighting, and runs models based on the specified scenarios.
+#' This function performs phenotype–exposure analysis under multiple modeling scenarios,
+#' including optional log-transformation, scaling, and interaction terms. It retrieves
+#' data from the database, merges phenotype and exposure tables, handles survey weights,
+#' applies transformations, filters missingness, constructs a survey design, computes
+#' demographic summaries, and fits models for each scenario defined in
+#' `adjustment_variables`.
 #'
-#' @param pheno A character string specifying the phenotype variable.
-#' @param exposure A character string specifying the exposure variable.
-#' @param adjustment_variables A data frame containing adjustment variables and scenarios. It should have columns `variables` and `scenario`.
-#' @param con A database connection object.
-#' @param series A character vector specifying the series to consider (default is NULL).
-#' @param logxform_p Logical, whether to log-transform the phenotype variable (default is TRUE).
-#' @param logxform_e Logical, whether to log-transform the exposure variable (default is TRUE).
-#' @param scale_e Logical, whether to scale the exposure variable (default is TRUE).
-#' @param scale_p Logical, whether to scale the phenotype variable (default is FALSE).
-#' @param pheno_table_name Optional character string specifying the phenotype table name (default is NULL).
-#' @param expo_table_name Optional character string specifying the exposure table name (default is NULL).
-#' @param quantile_expo Optional vector specifying quantiles for the exposure variable (default is NULL).
-#' @param exposure_levels Optional vector specifying levels for the exposure variable (default is NULL).
-#' @param scale_type Numeric: scale type 1 is mean and SD; scale type 2 == CLR scale type 3 is IVT
-#' @return A list containing the following elements:
-#' \itemize{
-#'   \item `log_p`: Logical, whether the phenotype was log-transformed.
-#'   \item `log_e`: Logical, whether the exposure was log-transformed.
-#'   \item `scaled_p`: Logical, whether the phenotype was scaled.
-#'   \item `scaled_e`: Logical, whether the exposure was scaled.
-#'   \item `unweighted_n`: The number of unweighted observations.
-#'   \item `phenotype`: The phenotype variable.
-#'   \item `series`: The series information from the data.
-#'   \item `exposure`: The exposure variable.
-#'   \item `models`: A list of models run based on the scenarios.
-#'   \item `base_models`: A list of base models run for comparison.
-#'   \item `adjustment_variables`: The adjustment variables used in the models, a tibble: see adjustment_models
-#'   \item `demographic_breakdown`: A table with demographic breakdown of the survey design.
+#' @param pheno
+#'   A string naming the phenotype (outcome) variable.
+#' @param exposure
+#'   A string naming the exposure (predictor) variable.
+#' @param adjustment_variables
+#'   A data frame with columns `variables` (character) and `scenario` (character),
+#'   defining which covariates to adjust for in each scenario.
+#' @param con
+#'   A DBI database connection object used to look up and fetch tables.
+#' @param series
+#'   Optional character vector of survey series to restrict table lookup;
+#'   `NULL` (default) means “use all available series.”
+#' @param logxform_p
+#'   Logical; if `TRUE` (default), the phenotype is log-transformed before modeling.
+#' @param logxform_e
+#'   Logical; if `TRUE` (default), the exposure is log-transformed before modeling.
+#' @param scale_e
+#'   Logical; if `TRUE` (default), the exposure is scaled to mean 0 and SD 1.
+#' @param scale_p
+#'   Logical; if `TRUE` (default `FALSE`), the phenotype is scaled to mean 0 and SD 1.
+#' @param pheno_table_name
+#'   Optional string to override the default phenotype table lookup (default `NULL`).
+#' @param expo_table_name
+#'   Optional string to override the default exposure table lookup (default `NULL`).
+#' @param quantile_expo
+#'   Optional numeric vector of quantiles (e.g. `c(0.1,0.5,0.9)`) at which to evaluate
+#'   exposure effects in `run_model()` (default `NULL`).
+#' @param exposure_levels
+#'   Optional vector of factor levels for the exposure variable in categorical analyses
+#'   (default `NULL`).
+#' @param scale_type
+#'   Integer code for scaling method (default `1`):
+#'   \itemize{
+#'     \item `1` = standard (mean/SD),
+#'     \item `2` = centered log‐ratio (CLR),
+#'     \item `3` = inverse‐variance transformation (IVT).
+#'   }
+#' @param interact_with
+#'   Optional character vector of adjustment variables to include interaction terms
+#'   with `expo` (must be a subset of `adjustment_variables$variables`; default `NULL`).
+#' @param ...
+#'   Additional arguments passed on to [`run_model()`], e.g. model‐specific options.
+#'
+#' @return
+#' A named list with elements:
+#' \describe{
+#'   \item{log_p}{Logical indicating whether the phenotype was log-transformed.}
+#'   \item{log_e}{Logical indicating whether the exposure was log-transformed.}
+#'   \item{scaled_p}{Logical indicating whether the phenotype was scaled.}
+#'   \item{scaled_e}{Logical indicating whether the exposure was scaled.}
+#'   \item{unweighted_n}{Integer: count of unweighted observations in the survey design.}
+#'   \item{phenotype}{Character: name of the phenotype variable.}
+#'   \item{series}{Data frame of series metadata used for table lookup.}
+#'   \item{exposure}{Character: name of the exposure variable.}
+#'   \item{models}{List of fitted survey‐weighted models for each scenario (with optional interactions).}
+#'   \item{base_models}{List of baseline (intercept‐only or base‐adjusted) models for comparison.}
+#'   \item{adjustment_variables}{The input data frame of adjustment variables and scenarios.}
+#'   \item{demographic_breakdown}{Data frame of demographic summaries from the survey design.}
 #' }
+#'
 #' @details
-#' The function performs the following steps:
-#' \itemize{
-#'   \item Retrieves table names for the phenotype and exposure variables.
-#'   \item Ensures the phenotype and exposure variables are collected in the same survey.
-#'   \item Gets table names for each series and binds the tables.
-#'   \item Handles weights by calling `figure_out_multiyear_weight`.
-#'   \item Transforms and names the phenotype and exposure variables if specified.
-#'   \item Filters data and creates a survey design object.
-#'   \item Performs demographic breakdown of the survey design.
-#'   \item Runs models based on the specified scenarios and adjustment variables.
+#' For each unique `scenario` in `adjustment_variables`, the function:
+#' \enumerate{
+#'   \item Merges phenotype (`pheno`) and exposure (`exposure`) tables by year.
+#'   \item Determines survey weights via `figure_out_multiyear_weight()`.
+#'   \item Applies log‐transform and/or scaling to both `pheno` and `exposure` if requested.
+#'   \item Filters out rows with missing weights or missing values in the outcome, exposure,
+#'         or any adjustment covariates.
+#'   \item Constructs a survey design object and computes a demographic breakdown.
+#'   \item Uses `aceOfBase()` to build the formula—adding covariates and optional
+#'         `expo:covariate` interactions—and then fits models via `run_model()`.
 #' }
+#'
 #' @examples
 #' \dontrun{
 #' con <- DBI::dbConnect(RSQLite::SQLite(), dbname = "nhanes.db")
-#' adjustment_vars <- data.frame(variables = c("AGE", "SEX"), scenario = c("A", "A"))
-#' result <- pe_flex_adjust(pheno = "BMXBMI", exposure = "LBXCOT", adjustment_variables = adjustment_vars, con = con)
+#'
+#' adj_vars <- data.frame(
+#'   variables = c("RIDAGEYR", "RIAGENDR", "INDFMPIR"),
+#'   scenario  = c("S1",      "S1",      "S1")
+#' )
+#'
+#' result <- pe_flex_adjust(
+#'   pheno                = "LBXCRP",
+#'   exposure             = "LBXCOT",
+#'   adjustment_variables = adj_vars,
+#'   con                  = con,
+#'   series               = c("2013-2014", "2015-2016"),
+#'   logxform_p           = TRUE,
+#'   logxform_e           = TRUE,
+#'   scale_e              = TRUE,
+#'   scale_p              = FALSE,
+#'   quantile_expo        = c(0.1, 0.5, 0.9),
+#'   exposure_levels      = c("low", "med", "high"),
+#'   scale_type           = 2,
+#'   interact_with        = "RIDAGEYR"
+#' )
 #' }
+#'
 #' @export
 pe_flex_adjust <- function(pheno, exposure, adjustment_variables,con, series=NULL,
                            logxform_p=T, logxform_e=T, scale_e=T, scale_p=F,
                            pheno_table_name=NULL, expo_table_name=NULL,
-                           quantile_expo=NULL, exposure_levels=NULL, scale_type=1, ...) {
+                           quantile_expo=NULL, exposure_levels=NULL, scale_type=1, interact_with=NULL, ...) {
 
   ptables <- get_table_names_for_varname(con, varname = pheno, series) |> rename(p_name = Data.File.Name)
   etables <- get_table_names_for_varname(con, varname = exposure, series) |> rename(e_name = Data.File.Name)
@@ -498,6 +568,12 @@ pe_flex_adjust <- function(pheno, exposure, adjustment_variables,con, series=NUL
     } else {
       baseadjusted <- addToBase(baseformula, adjust_variables_for_scene)
       basebaseadjusted <- addToBase(basebase, adjust_variables_for_scene)
+      if(!is.null(interact_with) | length(interact_with)==0) {
+        interact_with <- intersect(adjust_variables_for_scene, interact_with)
+        baseadjusted <- aceOfBase(baseformula, adjust_variables_for_scene, interact_with=interact_with)
+        basebaseadjusted <- aceOfBase(basebase, adjust_variables_for_scene, interact_with=interact_with)
+      }
+
       base_models[[mod_num]] <- run_model(basebaseadjusted,dsn, scale_expo = scale_e, scale_pheno = scale_p,  quantile_expo=quantile_expo, expo_levels =  exposure_levels, scale_type=scale_type, ...)
     }
     models[[mod_num]] <- run_model(baseadjusted,dsn, scale_expo = scale_e, scale_pheno = scale_p,  quantile_expo=quantile_expo, expo_levels =  exposure_levels,scale_type=scale_type, ... )

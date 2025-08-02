@@ -114,6 +114,7 @@ library(getopt)
 library(tidyverse)
 library(logger)
 library(nhanespewas)
+#devtools::load_all(".")
 
 TEST <- F
 spec <- matrix(c(
@@ -122,6 +123,8 @@ spec <- matrix(c(
   'path_to_db', 'i', 1, "character",
   'path_out', 'o', 1, "character",
   'exposures', 'e', 2, "character",
+  'adjustment_scenario', 's', 2, "character",
+  'interact_with','w', 2, "character",
   'use_quantile', 'q', 2, "numeric"
 ), byrow=TRUE, ncol=4);
 opt <- getopt(spec)
@@ -136,6 +139,10 @@ ss_file <- system.file("extdata", "sample_size_pe_category_0824.csv", package = 
 path_to_db <-'../db/nhanes_031725.sqlite'
 path_out <- '.'
 use_quantile <- 0
+#adjustment_scenario <- "age_sex_ethnicity_income_education"
+adjustment_scenario <- NULL
+interact_with <- NULL
+#interact_with <- "RIDAGEYR"
 
 if(!TEST) {
   phenotype <- opt$phenotype
@@ -147,6 +154,8 @@ if(!TEST) {
   path_to_db <- opt$path_to_db
   path_out <- opt$path_out
   use_quantile <- ifelse(is.null(opt$use_quantile), 0, opt$use_quantile)
+  adjustment_scenario <- opt$adjustment_scenario
+  interact_with <-opt$interact_with
 }
 
 QUANTILES <- c(0, .25, .5, .75, .9, 1)
@@ -197,6 +206,10 @@ for(ii in 1:N) {
   ## add in the SDDRVYR in the non-base models
   adjustment_model_for_e <- nhanespewas:::add_survey_year_to_adjustment_scenarios(adjustment_model_for_e)
 
+  if(!is.null(adjustment_scenario)) {
+    adjustment_model_for_e <- adjustment_model_for_e |> filter(scenario == adjustment_scenario)
+  }
+
   log_info("{ii} e_levels { e_levels$vartype } ")
   mod <- NULL
   if(e_levels$vartype == 'continuous') {
@@ -205,24 +218,24 @@ for(ii in 1:N) {
     if(use_quantile==1) {
       mod <- pe_safely(rw$pvarname, rw$evarname, adjustment_model_for_e, con,
                        logxform_p=F, logxform_e=F, scale_e=F, scale_p=SCALE_P,
-                       quantile_expo=QUANTILES, exposure_levels=NULL,scale_type=SCALE_TYPE)
+                       quantile_expo=QUANTILES, exposure_levels=NULL,scale_type=SCALE_TYPE, interact_with=interact_with)
     } else {
       mod <- pe_safely(rw$pvarname, rw$evarname, adjustment_model_for_e, con,
                      logxform_p=F, logxform_e=T, scale_e=T, scale_p=SCALE_P,
-                     quantile_expo=NULL, exposure_levels=NULL, scale_type=SCALE_TYPE)
+                     quantile_expo=NULL, exposure_levels=NULL, scale_type=SCALE_TYPE, interact_with=interact_with)
     }
 
   } else if(e_levels$vartype == 'categorical') {
     log_info("{ii} categorizing { rw$evarname } ")
     mod <- pe_safely(rw$pvarname, rw$evarname, adjustment_model_for_e, con,
                      logxform_p=F, logxform_e=F, scale_e=F, scale_p=SCALE_P,
-                     quantile_expo=NULL, exposure_levels=e_levels$varlevels, scale_type=SCALE_TYPE)
+                     quantile_expo=NULL, exposure_levels=e_levels$varlevels, scale_type=SCALE_TYPE, interact_with=interact_with)
 
   } else if(e_levels$vartype == 'continuous-rank') {
     log_info("{ii} as is { rw$evarname } ")
     mod <- pe_safely(rw$pvarname, rw$evarname, adjustment_model_for_e, con,
                      logxform_p=F, logxform_e=F, scale_e=T, scale_p=SCALE_P,
-                     quantile_expo=NULL, exposure_levels=NULL, scale_type=SCALE_TYPE)
+                     quantile_expo=NULL, exposure_levels=NULL, scale_type=SCALE_TYPE, interact_with=interact_with)
 
   }
 
