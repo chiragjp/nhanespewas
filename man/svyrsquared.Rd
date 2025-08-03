@@ -24,7 +24,7 @@ A list with two components:
 }
 \description{
 This function calculates the R-squared and adjusted R-squared values for a
-linear model based on an analysis object which contains a survey design,
+linear model based on an analysis object which containssave   a survey design,
 residuals, and a response variable. The calculation is conducted using
 survey-weighted means, totals, and residuals.
 }

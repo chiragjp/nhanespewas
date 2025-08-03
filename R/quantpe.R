@@ -76,10 +76,12 @@ aceOfBase <- function(base_formula, adjustingVariables, interact_with = NULL, in
   return(form)
 }
 
+
+
 #' Calculate R-squared and adjusted R-squared for a survey-weighted linear model
 #'
 #' This function calculates the R-squared and adjusted R-squared values for a
-#' linear model based on an analysis object which contains a survey design,
+#' linear model based on an analysis object which containssave   a survey design,
 #' residuals, and a response variable. The calculation is conducted using
 #' survey-weighted means, totals, and residuals.
 #'
@@ -118,40 +120,100 @@ svyrsquared <- function(analysisObj) {
 }
 
 
-#' Run a model with options for scaling and quantile-based categorization of exposure and phenotype variables
+svyregtermtest_for_formula <- function(mod,regTermTestForm) {
+  # does the default for svyregression, a tidy wrapper for survey::regTermTest
+  regTest <-survey::regTermTest(mod, regTermTestForm)
+  tibble(
+    p.value=as.numeric(regTest$p),
+    f.test = as.numeric(regTest$Ftest),
+    df=as.numeric(regTest$df),
+    ddf = as.numeric(regTest$ddf),
+    test.terms = paste( regTest$test.terms, collapse="+")
+  )
+}
+
+#' Fit a survey‐weighted GLM with optional scaling, categorization, and joint term testing
 #'
-#' This function runs a survey-weighted generalized linear model based on the given formula and design,
-#' with options for scaling the exposure and phenotype variables and for categorizing the exposure variable
-#' based on quantiles or given levels.
+#' This function fits a survey‐weighted generalized linear model (`svyglm`) using the
+#' provided formula and design object, with flexible options to:
+#' - scale or quantile‐categorize the exposure variable,
+#' - scale the outcome (phenotype) variable via mean/SD, CLR, or inverse‐variance transform,
+#' - run a joint term test (Wald test) on a specified set of terms,
+#' - optionally return the full model object.
 #'
-#' @param formu A formula specifying the model to be run.
-#' @param dsn A survey design object.
-#' @param scale_expo Logical, if TRUE, the exposure variable is scaled by its standard deviation.
-#' @param scale_pheno Logical, if TRUE, the phenotype variable is scaled by its standard deviation.
-#' @param quantile_expo Numeric vector, quantiles to use for categorizing the exposure variable.
-#' If not NULL, this overwrites the scale_expo argument.
-#' @param expo_levels A vector of levels to categorize the exposure variable.
-#' @param save_dsn Logical, if TRUE, the design object for each model will be saved
-#' If not NULL, this overwrites the quantile_expo and scale_expo arguments.
-#' @param scale_type Numeric: scale type 1 is mean and SD; scale type 2 == CLR scale type 3 is IVT
+#' @param formu
+#'   A two‐sided [`formula`] describing the regression model, e.g. `pheno ~ expo + covariate1`.
+#' @param dsn
+#'   A [`survey.design`] object created by `survey::svydesign()` or similar.
+#' @param scale_expo
+#'   Logical (default `TRUE`): if `TRUE`, center and scale `expo` to mean 0, SD 1.
+#'   Ignored if `quantile_expo` or `expo_levels` is non‐`NULL`.
+#' @param scale_pheno
+#'   Logical (default `FALSE`): if `TRUE`, scale the outcome variable (`pheno`).
+#'   The method is chosen by `scale_type`.
+#' @param quantile_expo
+#'   Optional numeric vector of quantiles (e.g. `c(0.25, 0.5, 0.75)`).
+#'   If not `NULL`, `expo` is converted to a factor with breaks at those survey‐weighted quantiles.
+#' @param expo_levels
+#'   Optional character or factor vector of levels for `expo`.
+#'   If not `NULL`, `expo` is converted to a factor with those levels.
+#'   Overrides `quantile_expo` if both are provided.
+#' @param scale_type
+#'   Integer (1, 2, or 3; default `1`) selecting the outcome scaling method when `scale_pheno = TRUE`:
+#'   \itemize{
+#'     \item `1` = standard (center & scale by mean/SD),
+#'     \item `2` = centered log‐ratio (CLR),
+#'     \item `3` = inverse‐variance (rank‐normal) transform.
+#'   }
+#' @param regTermTestForm
+#'   Optional one‐sided [`formula`] (e.g. `~ expo + expo:age`) specifying terms to jointly test
+#'   via `survey::regTermTest()`.  If provided, a tidy summary of that test is returned.
+#' @param save_svymodel
+#'   Logical (default `FALSE`): if `TRUE`, the full `svyglm` object is returned in the output list
+#'   under `$model`; otherwise `$model` is set to `NA`.
 #'
-#' @return A list containing:
-#'   * model: The model object (if the parameter is set to T)
-#'   * glanced: A one-row data frame of model-level statistics from glance().
-#'   * tidied: A data frame of term-level statistics from tidy().
-#'   * r2: R-squared and adjusted R-squared from svyrsquared().
-#'   * scale_pheno: Whether the phenotype variable was scaled.
-#'   * scale_expo: Whether the exposure variable was scaled.
-#'   * q_cut_points: Cut points used for quantile-based categorization of the exposure variable.
-#'   * quantiles: The input quantiles for categorizing the exposure variable.
-#'   * expo_levels: The input levels for categorizing the exposure variable.
+#' @return
+#' A named list with components:
+#' \describe{
+#'   \item{glanced}{A one‐row tibble from `broom::glance()` of model‐level fit statistics.}
+#'   \item{tidied}{A tibble from `broom::tidy()` of term‐level coefficients and tests.}
+#'   \item{r2}{A tibble with R² measures from `svyrsquared()`.}
+#'   \item{scale_pheno}{Logical, echoing the `scale_pheno` input.}
+#'   \item{scale_expo}{Logical, echoing the `scale_expo` input.}
+#'   \item{q_cut_points}{Numeric vector of cut‐points if `quantile_expo` was used; otherwise `NA`.}
+#'   \item{quantiles}{Echo of `quantile_expo`.}
+#'   \item{expo_levels}{Echo of `expo_levels`.}
+#'   \item{reg_term_tidied}{If `regTermTestForm` provided, a one‐row tibble with joint‐term test
+#'     results (`p.value`, `f.test`, `df`, `ddf`, `test.terms`); otherwise `NULL`.}
+#'   \item{model}{The full `svyglm` object if `save_svymodel = TRUE`, else `NA`.}
+#' }
 #'
 #' @examples
 #' \dontrun{
-#' result <- run_model(formu, dsn, scale_expo=T, scale_pheno=F, quantile_expo=c(0.25, 0.5, 0.75))
+#' library(survey)
+#'
+#' # Prepare survey design `dsn`...
+#' form <- pheno ~ expo + age + sex
+#' result <- run_model(
+#'   formu            = form,
+#'   dsn              = my_design,
+#'   scale_expo       = TRUE,
+#'   scale_pheno      = TRUE,
+#'   quantile_expo    = c(0.25, 0.5, 0.75),
+#'   expo_levels      = NULL,
+#'   scale_type       = 1,
+#'   regTermTestForm  = ~ expo + expo:age,
+#'   save_svymodel    = FALSE
+#' )
+#'
+#' # Access tidied coefficients:
+#' result$tidied
+#' # Joint Wald test of expo terms:
+#' result$reg_term_tidied
 #' }
+#'
 #' @export
-run_model <- function(formu, dsn, scale_expo=T, scale_pheno=F, quantile_expo=NULL, expo_levels=NULL, save_svymodel=F, scale_type=1) { # scale type 1 is mean and SD; scale type 2 == CLR scale type 3 is IVT
+run_model <- function(formu, dsn, scale_expo=T, scale_pheno=F, quantile_expo=NULL, expo_levels=NULL,  scale_type=1, regTermTestForm=NULL, save_svymodel=F) { # scale type 1 is mean and SD; scale type 2 == CLR scale type 3 is IVT
 
   cut_points <- NA
   if(scale_expo) {
@@ -200,9 +262,15 @@ run_model <- function(formu, dsn, scale_expo=T, scale_pheno=F, quantile_expo=NUL
   ti <- broom::tidy(mod)
   gl <- broom::glance(mod)
   r2 <- svyrsquared(mod)
+  regTermTest <- NULL
+  if(!is.null(regTermTestForm)) {
+    regTermTest <- svyregtermtest_for_formula(mod, regTermTestForm)
+  }
+
   list(glanced=gl, tidied=ti, r2=r2,
        scale_pheno=scale_pheno, scale_expo=scale_expo,
-       q_cut_points=cut_points, quantiles=quantile_expo, expo_levels=expo_levels, model= if (save_svymodel) mod else NA) # not saving dsn
+       q_cut_points=cut_points, quantiles=quantile_expo, expo_levels=expo_levels,
+       reg_term_tidied=regTermTest, model= if (save_svymodel) mod else NA) # not saving dsn
 }
 
 run_mv_model <- function(formu, dsn, scale_pheno=F) {
@@ -557,26 +625,33 @@ pe_flex_adjust <- function(pheno, exposure, adjustment_variables,con, series=NUL
   uniq_model_scenarios <- unique(adjustment_variables$scenario)
   models <- vector(mode="list", length=length(uniq_model_scenarios))
   base_models <- vector(mode="list", length=length(uniq_model_scenarios))
+
   logger::log_info("total models { length(uniq_model_scenarios)} " )
   for(mod_num in 1:length(uniq_model_scenarios)) {
     scene <- uniq_model_scenarios[mod_num]
     logger::log_info("running model {scene}" )
     adjust_variables_for_scene <- adjustment_variables |> filter(scenario==scene) |> dplyr::pull(variables)
     baseadjusted <- NA
+    interact_with_local_model <- interact_with
+    regtermformula <- NULL
     if(length(adjust_variables_for_scene) == 1 & is.na(adjust_variables_for_scene[1])) {
       baseadjusted <- baseformula
     } else {
       baseadjusted <- addToBase(baseformula, adjust_variables_for_scene)
       basebaseadjusted <- addToBase(basebase, adjust_variables_for_scene)
-      if(!is.null(interact_with) | length(interact_with)==0) {
-        interact_with <- intersect(adjust_variables_for_scene, interact_with)
-        baseadjusted <- aceOfBase(baseformula, adjust_variables_for_scene, interact_with=interact_with)
-        basebaseadjusted <- aceOfBase(basebase, adjust_variables_for_scene, interact_with=interact_with)
+      if(!is.null(interact_with)) {
+        interact_with_local_model <- intersect(adjust_variables_for_scene, interact_with)
+        if(length(interact_with_local_model)>0) {
+          term_labels      <- c("expo", paste0("expo:", interact_with_local_model))
+          regtermformula <- stats::as.formula(paste("~", paste(term_labels, collapse = " + ")))
+          baseadjusted <- aceOfBase(baseformula, adjust_variables_for_scene, interact_with=interact_with_local_model)
+          basebaseadjusted <- aceOfBase(basebase, adjust_variables_for_scene)
+        }
       }
 
       base_models[[mod_num]] <- run_model(basebaseadjusted,dsn, scale_expo = scale_e, scale_pheno = scale_p,  quantile_expo=quantile_expo, expo_levels =  exposure_levels, scale_type=scale_type, ...)
     }
-    models[[mod_num]] <- run_model(baseadjusted,dsn, scale_expo = scale_e, scale_pheno = scale_p,  quantile_expo=quantile_expo, expo_levels =  exposure_levels,scale_type=scale_type, ... )
+    models[[mod_num]] <- run_model(baseadjusted,dsn, scale_expo = scale_e, scale_pheno = scale_p,  quantile_expo=quantile_expo, expo_levels =  exposure_levels,scale_type=scale_type, regTermTestForm=regtermformula, ... )
   }
   n <- dsn |> nrow()
   list(log_p = logxform_p, log_e = logxform_e, scaled_p = scale_p, scaled_e=scale_e, unweighted_n=n, phenotype=pheno, series=tab_obj$series, exposure=exposure, models=models, base_models=base_models, adjustment_variables=adjustment_variables, demographic_breakdown=demo_break_tbl)

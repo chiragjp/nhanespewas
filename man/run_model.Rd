@@ -2,7 +2,7 @@
 % Please edit documentation in R/quantpe.R
 \name{run_model}
 \alias{run_model}
-\title{Run a model with options for scaling and quantile-based categorization of exposure and phenotype variables}
+\title{Fit a survey‐weighted GLM with optional scaling, categorization, and joint term testing}
 \usage{
 run_model(
   formu,
@@ -11,50 +11,90 @@ run_model(
   scale_pheno = F,
   quantile_expo = NULL,
   expo_levels = NULL,
-  save_svymodel = F,
-  scale_type = 1
+  scale_type = 1,
+  regTermTestForm = NULL,
+  save_svymodel = F
 )
 }
 \arguments{
-\item{formu}{A formula specifying the model to be run.}
+\item{formu}{A two‐sided \code{\link{formula}} describing the regression model, e.g. \code{pheno ~ expo + covariate1}.}
 
-\item{dsn}{A survey design object.}
+\item{dsn}{A \code{\link{survey.design}} object created by \code{survey::svydesign()} or similar.}
 
-\item{scale_expo}{Logical, if TRUE, the exposure variable is scaled by its standard deviation.}
+\item{scale_expo}{Logical (default \code{TRUE}): if \code{TRUE}, center and scale \code{expo} to mean 0, SD 1.
+Ignored if \code{quantile_expo} or \code{expo_levels} is non‐\code{NULL}.}
 
-\item{scale_pheno}{Logical, if TRUE, the phenotype variable is scaled by its standard deviation.}
+\item{scale_pheno}{Logical (default \code{FALSE}): if \code{TRUE}, scale the outcome variable (\code{pheno}).
+The method is chosen by \code{scale_type}.}
 
-\item{quantile_expo}{Numeric vector, quantiles to use for categorizing the exposure variable.
-If not NULL, this overwrites the scale_expo argument.}
+\item{quantile_expo}{Optional numeric vector of quantiles (e.g. \code{c(0.25, 0.5, 0.75)}).
+If not \code{NULL}, \code{expo} is converted to a factor with breaks at those survey‐weighted quantiles.}
 
-\item{expo_levels}{A vector of levels to categorize the exposure variable.}
+\item{expo_levels}{Optional character or factor vector of levels for \code{expo}.
+If not \code{NULL}, \code{expo} is converted to a factor with those levels.
+Overrides \code{quantile_expo} if both are provided.}
 
-\item{scale_type}{Numeric: scale type 1 is mean and SD; scale type 2 == CLR scale type 3 is IVT}
+\item{scale_type}{Integer (1, 2, or 3; default \code{1}) selecting the outcome scaling method when \code{scale_pheno = TRUE}:
+\itemize{
+\item \code{1} = standard (center & scale by mean/SD),
+\item \code{2} = centered log‐ratio (CLR),
+\item \code{3} = inverse‐variance (rank‐normal) transform.
+}}
 
-\item{save_dsn}{Logical, if TRUE, the design object for each model will be saved
-If not NULL, this overwrites the quantile_expo and scale_expo arguments.}
+\item{regTermTestForm}{Optional one‐sided \code{\link{formula}} (e.g. \code{~ expo + expo:age}) specifying terms to jointly test
+via \code{survey::regTermTest()}.  If provided, a tidy summary of that test is returned.}
+
+\item{save_svymodel}{Logical (default \code{FALSE}): if \code{TRUE}, the full \code{svyglm} object is returned in the output list
+under \verb{$model}; otherwise \verb{$model} is set to \code{NA}.}
 }
 \value{
-A list containing:
-\itemize{
-\item model: The model object (if the parameter is set to T)
-\item glanced: A one-row data frame of model-level statistics from glance().
-\item tidied: A data frame of term-level statistics from tidy().
-\item r2: R-squared and adjusted R-squared from svyrsquared().
-\item scale_pheno: Whether the phenotype variable was scaled.
-\item scale_expo: Whether the exposure variable was scaled.
-\item q_cut_points: Cut points used for quantile-based categorization of the exposure variable.
-\item quantiles: The input quantiles for categorizing the exposure variable.
-\item expo_levels: The input levels for categorizing the exposure variable.
+A named list with components:
+\describe{
+\item{glanced}{A one‐row tibble from \code{broom::glance()} of model‐level fit statistics.}
+\item{tidied}{A tibble from \code{broom::tidy()} of term‐level coefficients and tests.}
+\item{r2}{A tibble with R² measures from \code{svyrsquared()}.}
+\item{scale_pheno}{Logical, echoing the \code{scale_pheno} input.}
+\item{scale_expo}{Logical, echoing the \code{scale_expo} input.}
+\item{q_cut_points}{Numeric vector of cut‐points if \code{quantile_expo} was used; otherwise \code{NA}.}
+\item{quantiles}{Echo of \code{quantile_expo}.}
+\item{expo_levels}{Echo of \code{expo_levels}.}
+\item{reg_term_tidied}{If \code{regTermTestForm} provided, a one‐row tibble with joint‐term test
+results (\code{p.value}, \code{f.test}, \code{df}, \code{ddf}, \code{test.terms}); otherwise \code{NULL}.}
+\item{model}{The full \code{svyglm} object if \code{save_svymodel = TRUE}, else \code{NA}.}
 }
 }
 \description{
-This function runs a survey-weighted generalized linear model based on the given formula and design,
-with options for scaling the exposure and phenotype variables and for categorizing the exposure variable
-based on quantiles or given levels.
+This function fits a survey‐weighted generalized linear model (\code{svyglm}) using the
+provided formula and design object, with flexible options to:
+\itemize{
+\item scale or quantile‐categorize the exposure variable,
+\item scale the outcome (phenotype) variable via mean/SD, CLR, or inverse‐variance transform,
+\item run a joint term test (Wald test) on a specified set of terms,
+\item optionally return the full model object.
+}
 }
 \examples{
 \dontrun{
-result <- run_model(formu, dsn, scale_expo=T, scale_pheno=F, quantile_expo=c(0.25, 0.5, 0.75))
+library(survey)
+
+# Prepare survey design `dsn`...
+form <- pheno ~ expo + age + sex
+result <- run_model(
+  formu            = form,
+  dsn              = my_design,
+  scale_expo       = TRUE,
+  scale_pheno      = TRUE,
+  quantile_expo    = c(0.25, 0.5, 0.75),
+  expo_levels      = NULL,
+  scale_type       = 1,
+  regTermTestForm  = ~ expo + expo:age,
+  save_svymodel    = FALSE
+)
+
+# Access tidied coefficients:
+result$tidied
+# Joint Wald test of expo terms:
+result$reg_term_tidied
 }
+
 }
