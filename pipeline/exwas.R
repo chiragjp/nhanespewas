@@ -113,8 +113,9 @@
 library(getopt)
 library(tidyverse)
 library(logger)
-library(nhanespewas)
-#devtools::load_all(".")
+#library(nhanespewas)
+library(tools)
+devtools::load_all(".")
 
 TEST <- F
 spec <- matrix(c(
@@ -355,6 +356,37 @@ r2_result <-function(models, aggregate_base_model=F) {
   final_result
 }
 
+regterm_result <- function(models) {
+  map_dfr(models, ~ {
+    # skip errored runs
+    if (!is.null(.x$error)) return(tibble())
+
+    lcl <- .x$result
+    # pick the right set: main‐models vs. base‐models
+    to_do <- lcl$models
+
+    map2_dfr(to_do, seq_along(to_do), ~ {
+      mod_item <- .x
+      idx      <- .y
+
+      if (is.null(mod_item) || is.null(mod_item$reg_term_tidied)) {
+        return(tibble())
+      }
+
+      mod_item$reg_term_tidied %>%
+        mutate(
+          model_number = idx,
+          series       = paste(lcl$series, collapse = ";"),
+          exposure     = lcl$exposure,
+          phenotype    = lcl$phenotype,
+          log_p        = lcl$log_p,
+          log_e        = lcl$log_e,
+          scaled_p     = lcl$scaled_p,
+          scaled_e     = lcl$scaled_e
+        )
+    })
+  })
+}
 
 tidied <- rbind(
   tidied_result(models, F) |> mutate(aggregate_base_model = F),
@@ -370,12 +402,13 @@ rsq <- rbind(
   r2_result(models, T) |> mutate(aggregate_base_model = T)
 ) |> mutate(phenotype=phenotype )
 
+reg_term_test_tidied <- regterm_result(models) |> mutate(aggregate_base_model=F, phenotype=phenotype)
+
 outstruct <- NULL
 if(TEST) {
-  outstruct <- list(pe_tidied=tidied,pe_glanced=glanced, rsq=rsq,
-                    modls=models)
+  outstruct <- list(pe_tidied=tidied,pe_glanced=glanced, rsq=rsq, reg_term_test_tidied=reg_term_test_tidied,modls=models)
 } else {
-  outstruct <- list(pe_tidied=tidied,pe_glanced=glanced, rsq=rsq, modls=models)
+  outstruct <- list(pe_tidied=tidied,pe_glanced=glanced, rsq=rsq,reg_term_test_tidied=reg_term_test_tidied,modls=models)
 }
 
 done <- DBI::dbDisconnect(con)
