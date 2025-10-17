@@ -38,7 +38,7 @@ PCAP <- 1e-20
 to_plot <- adjusted_meta_2 |> mutate(plot_p = ifelse(p.value_overall < PCAP, PCAP, p.value_overall))
 to_plot <- to_plot |> filter(pnewsubcategory != 'psa')
 to_plot <- to_plot |> filter(pnewsubcategory != 'fitness')
-to_plot <- to_plot |> filter(pnewsubcategory != 'aging')
+#to_plot <- to_plot |> filter(pnewsubcategory != 'aging')
 
 ## order in terms of number found; or R2.
 enewsubcategory_order <- to_plot |> filter(sig_levels == 'Bonf.<0.05') |> group_by(enewsubcategory) |> summarize(med_r2=mean(rsq_adjusted_base_diff)) |> arrange(-med_r2) |> mutate(group_number = row_number())
@@ -48,7 +48,8 @@ eplot_order <- to_plot |> select(evarname ,enewsubcategory, group_number) |> uni
 
 # anthropometric, blood, blood pressure, bone, electrolyte, inflammation, kidney, liver, hormone, metabolic, nutrition, dexa
 # keep out: microbiome, lung
-keep <- c("anthropometric", "blood", "blood pressure", "bone", "electrolyte", "inflammation", "kidney", "liver", "hormone", "metabolic", "nutrition", "dexa")
+#keep <- c("anthropometric", "blood", "blood pressure", "bone", "electrolyte", "inflammation", "kidney", "liver", "hormone", "metabolic", "nutrition", "dexa")
+keep <- c("anthropometric", "blood", "blood pressure", "bone", "aging", "inflammation", "kidney", "liver", "hormone", "metabolic", "nutrition", "electrolyte")
 to_plot <- to_plot |> filter(pnewsubcategory %in% keep)
 
 xaxis_labels <- eplot_order |> group_by(group_number,enewsubcategory) |> summarize(med_x=round(median(order_number)), min_x=min(order_number), max_x=max(order_number))
@@ -123,8 +124,16 @@ p <- p + geom_point(data=p_effect_sizes_per |> filter(pnewsubcategory %in% keep)
 p <- p + geom_text_repel(data=p_effect_sizes_per |> filter(pnewsubcategory %in% keep), aes(x=median_r2, y = q, label=p_cat), size=3)  
 p <- p + xlab("R^2 (adjusted-base model)") + ylab("Percentile") 
 p <- p + theme_bw() + theme(legend.position="none") 
-cdf_p <- p
+cdf_p_v1 <- p
 
+
+p <- ggplot(adjusted_meta_2, aes(rsq_adjusted_base_diff, color=sig_levels))
+p <- p + stat_ecdf() + scale_x_continuous(limits=c(0, .05)) +scale_color_aaas()
+p <- p + geom_point(data=p_effect_sizes_per,  aes(x=median_r2, y = q)) 
+p <- p + geom_text_repel(data=p_effect_sizes_per, aes(x=median_r2, y = q, label=p_cat), size=3)  
+p <- p + xlab("R^2 (adjusted-base model)") + ylab("Percentile") 
+p <- p + theme_bw() + theme(legend.position="none") 
+cdf_p<- p
 
 e_percent_sig <- adjusted_meta_2 |> group_by(ecategory, enewsubcategory, sig_levels) |> count() |> pivot_wider(names_from = sig_levels, values_from = n) |> mutate(total_tests = rowSums(across(where(is.numeric)))) |> 
   mutate(percent_non_sig = `> BY & Bonf.`/total_tests, percent_bonf = `Bonf.<0.05`/total_tests, percent_BY=`BY<0.05`/total_tests) |> 
@@ -132,8 +141,6 @@ e_percent_sig <- adjusted_meta_2 |> group_by(ecategory, enewsubcategory, sig_lev
 
 e_effect_sizes_per <- adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05') |> group_by(ecategory, enewsubcategory) |> summarize(median_pvalue=median(p.value), median_r2=median((rsq_adjusted_base_diff))) |> left_join(e_percent_sig)
 
-#ecdf_for_sig <- adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05') |> pull(rsq_adjusted_base_diff) |> ecdf()
-#ecdf_for_non_sig <- adjusted_meta_2 |> filter(sig_levels == '> BY & Bonf.') |> pull(rsq_adjusted_base_diff) |> ecdf()
 
 e_effect_sizes_per <- e_effect_sizes_per |> mutate(q = ecdf_for_sig(median_r2), sig_levels ='Bonf.<0.05')
 e_effect_sizes_per <- e_effect_sizes_per |> mutate(e_cat = enewsubcategory)
@@ -268,7 +275,10 @@ manhattan_plot_wrap <- function(to_plot, phenotype_category) {
   pp <- ggarrange(p1,p2,nrow=2,align="v", heights=c(1, 1))
   pp
 }
-pp <- manhattan_plot_wrap(to_plot, "dexa")
+#pp <- manhattan_plot_wrap(to_plot, "dexa")
+#pp <- manhattan_plot_wrap(to_plot, "aging")
+pp <- manhattan_plot_wrap(to_plot, "aging")
+
 #ggsave("test.pdf", pp, width=3.5, height=4, units="in")
 #pp
 ```

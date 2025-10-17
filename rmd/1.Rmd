@@ -15,6 +15,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 ```{r}
+library(tidyverse)
 load('adjusted_meta_2.Rdata')
 ```
 
@@ -32,5 +33,15 @@ e_catalog <- adjusted_meta_2 |> select(evarname, super_ecat_name, enewsubcategor
 
 p_catalog |> write_csv("./paper_figures_tables/p_catalog.csv")
 e_catalog |> write_csv("./paper_figures_tables/e_catalog.csv")
+
+```
+
+
+```{r}
+adjusted_meta_2 |> group_by(sig_levels) |> count()
+adjusted_meta_2 |> group_by(pvarname) |> count() |> ungroup() |> summarize(min(n), max(n), median(n))
+tot <- adjusted_meta_2 |> group_by(pvarname) |> count() |> ungroup() |> rename(total=n)
+adjusted_meta_2 |> group_by(pvarname, sig_levels) |> count() |> ungroup() |> left_join(tot) |> mutate(pct_sig = n/total) |> filter(sig_levels == 'Bonf.<0.05') |> summarize(min(pct_sig*100), max(pct_sig*100))
+adjusted_meta_2 |> group_by(pvarname, sig_levels) |> count() |> ungroup() |> left_join(tot) |> mutate(pct_sig = n/total) |> filter(sig_levels == 'Bonf.<0.05') |> arrange(-pct_sig)
 
 ```

@@ -1,0 +1,221 @@
+---
+title: "Age Interaction"
+author: "Chirag Patel"
+date: "2025-08-03"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(DBI)
+library(ggsci)
+library(DT)
+library(ggrepel)
+library(cowplot)
+library(reactable)
+library(gt)
+library(broom)
+library(ggridges)
+library(ComplexHeatmap)
+library(circlize)
+library(corrr)
+```
+
+
+```{r}
+load("../pe_summary_0125/gathered_ageinteract_regterm_0825.Rdata")
+glanced_interaction <- glanced
+rsq_interaction <- rsq
+glanced_interaction <- glanced_interaction
+pe_interaction <- pe
+rm(pe, glanced, rsq)
+load('./adjusted_meta_2.Rdata')
+
+```
+
+```{r}
+#  compare the estimates
+
+rsq_base <- rsq_interaction |> filter(aggregate_base_model == TRUE)
+rsq_int <- rsq_interaction |> filter(aggregate_base_model == FALSE)
+rsq_interaction_diff <- rsq_int |> select(exposure, phenotype, rsq) |> left_join(rsq_base |> select(exposure, phenotype, rsq) |> rename(rsq_base_mod=rsq))  |> mutate(rsq_int_base_diff=rsq-rsq_base_mod)
+
+# rsq
+adjusted_meta_2 <- adjusted_meta_2 |> left_join(rsq_interaction_diff |> select(exposure, phenotype, rsq_int_base_diff) |> rename(evarname=exposure, pvarname=phenotype))
+
+# pvalue of reg_term_test (both expo and expo:age)
+adjusted_meta_2 <- adjusted_meta_2 |> left_join(reg_term_test_tidied |> rename(p.value.age.expo.int = p.value,evarname=exposure, pvarname=phenotype) |> select(evarname, pvarname, p.value.age.expo.int))
+
+# pvalue of interaction term
+pe_interaction_term <- pe_interaction |> filter(aggregate_base_model==FALSE) |> 
+  filter(grepl("expo", term), grepl("RIDAGEYR", term)) |> separate(term, sep=":", c("term_left", "term_right")) |> 
+  rename(term_name=term_left, p.value.interaction.term=p.value, evarname=exposure, pvarname=phenotype) |> select(evarname, pvarname, term_name, p.value.interaction.term) 
+
+adjusted_meta_2 <- adjusted_meta_2 |> left_join(pe_interaction_term)
+
+# beta term  (not the interaction)
+pe_expo_int_main_b <- pe_interaction |> filter(grepl("expo", term), !grepl("RIDAGEYR", term)) |> select(exposure, phenotype, term, estimate) |> rename(evarname=exposure,pvarname=phenotype, term_name=term, estimate.interaction.main=estimate)
+adjusted_meta_2 <- adjusted_meta_2 |> left_join(pe_expo_int_main_b )
+
+# beta-term, with the interaction
+pe_expo_int_main <- pe_interaction |>  filter(aggregate_base_model ==F) |> 
+  filter(grepl("expo", term), !grepl("RIDAGEYR", term)) |> 
+  select(exposure, phenotype, term, estimate, std.error, p.value) |> rename(estimate_main=estimate, std.error_main=std.error, p.value_main=p.value)
+
+pe_expo_int <- pe_interaction |> filter(aggregate_base_model==F) |>
+  filter(grepl("expo", term), grepl("RIDAGEYR", term)) |> select(exposure, phenotype, term, estimate, std.error, p.value) 
+pe_expo_int <- pe_expo_int |> separate(term, sep=":", c("term_left", "term_right")) |> rename(term=term_left, estimate_age_int=estimate, std.error_age_int=std.error, p.value_age_int=p.value) 
+
+pe_expo_age <- pe_interaction |> filter(aggregate_base_model == F) |> 
+  filter(term == "RIDAGEYR") |> select(exposure, phenotype, estimate, std.error, p.value) |> rename(estimate_age=estimate, std.error_age=std.error, p.value_age=p.value)
+
+pe_expo_int_main <- pe_expo_int_main |> left_join(pe_expo_age, by=c("exposure", "phenotype"))
+
+pe_expo_int_main <- pe_expo_int_main |> left_join(pe_expo_int) 
+
+adjusted_meta_2 <- adjusted_meta_2 |> left_join(pe_expo_int_main |> rename(evarname=exposure, pvarname=phenotype, term_name=term), by=c("evarname", "pvarname", "term_name"))
+
+```
+
+
+```{r}
+p <- ggplot(adjusted_meta_2, aes(rsq_int_base_diff,rsq_adjusted_base_diff)) + geom_point(alpha=.2) + theme_bw() + xlab("R^2 of E and E x Age") + ylab("R^2 of E") 
+p
+
+adjusted_meta_2 |> group_by(p.value.interaction.term < 4e-7) |> summarize(med_r2 = median(rsq_int_base_diff)) #0.003 for those that were significant
+adjusted_meta_2 |> group_by(sig_levels) |> summarize(med_r2 = median(rsq_adjusted_base_diff)) 
+
+p <- ggplot(adjusted_meta_2, aes(rsq_adjusted_base_diff,rsq_int_base_diff-rsq_adjusted_base_diff)) + geom_point(alpha=.2) + theme_bw() + xlab("R^2 of E") + ylab("R^2 of E + E*Age - R^2 of E") ## not much diff
+p
+
+p <- ggplot(adjusted_meta_2, aes(rsq_int_base_diff-rsq_adjusted_base_diff)) + geom_histogram() + theme_bw() + xlab("R^2 of E + E*Age - R^2 of E") 
+p
+
+adjusted_meta_2 |> group_by(sig_levels) |> summarize(med_r2=median(rsq_int_base_diff-rsq_adjusted_base_diff, na.rm=T))
+
+```
+
+
+
+```{r pvalue main vs combined regtermtest}
+## screening
+p <- ggplot(adjusted_meta_2, aes(-log10(p.value_overall), -log10(p.value.age.expo.int))) + geom_point() + theme_bw()  ## pvalue for screening, some interaction:expo are sig
+p
+```
+
+
+```{r main effect}
+# main effect
+p <- ggplot(adjusted_meta_2, aes(estimate_overall, estimate.interaction.main)) + geom_point(alpha=.1) + 
+  scale_x_continuous(limits=c(-1, 1)) + scale_y_continuous(limits=c(-1,1)) + theme_bw()  + facet_wrap(~sig_levels) + geom_hline(yintercept = 0) + geom_vline(xintercept=0) + geom_abline()
+p
+```
+
+
+
+
+ 1.) assess those associations that were found to be Bonferroni significant and had a strong age-specific effect: were they enhnaced, or deflated?
+ 2.) assess associations found in the reg_term_test - how many overlapped with those found in the Bonferroni
+ 
+ y = a + Bx + Cage ...
+ y = a + Bx  + Cage + Dx*age
+ 
+ # estimate effect size at ages 20, 40, 60
+ 
+```{r}
+estimate_at_age <- function(expo_term,interaction_term,age) {
+    return(expo_term + interaction_term*age)
+}
+
+#estimate.interaction.main
+#estimate_age_int
+#estimate_age
+adjusted_meta_2 <- adjusted_meta_2 |> mutate(expo_age_20=estimate_at_age(estimate.interaction.main,estimate_age_int,20),
+                                             expo_age_40=estimate_at_age(estimate.interaction.main,estimate_age_int,40),
+                                             expo_age_60=estimate_at_age(estimate.interaction.main,estimate_age_int,60),
+                                             expo_age_80=estimate_at_age(estimate.interaction.main,estimate_age_int,80)
+                                             )
+
+
+# effect vs. different ages
+p <- ggplot(adjusted_meta_2, aes(estimate_overall, expo_age_40)) + geom_point(alpha=.1) + 
+  scale_x_continuous(limits=c(-1, 1)) + scale_y_continuous(limits=c(-1,1)) + theme_bw()  + facet_wrap(~sig_levels) + geom_hline(yintercept = 0) + geom_vline(xintercept=0) + geom_abline()
+p
+
+p <- ggplot(adjusted_meta_2, aes(estimate_overall, expo_age_80)) + geom_point(alpha=.1) + 
+  scale_x_continuous(limits=c(-1, 1)) + scale_y_continuous(limits=c(-1,1)) + theme_bw()  + facet_wrap(~sig_levels) + geom_hline(yintercept = 0) + geom_vline(xintercept=0) + geom_abline()
+p
+```
+
+
+```{r fig.height=5, fig.width=7}
+## limit to the strongest relationships
+
+p <- ggplot(adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05'), aes(estimate_overall, expo_age_40)) + geom_point(alpha=.1) + 
+  scale_x_continuous(limits=c(-1, 1)) + scale_y_continuous(limits=c(-1,1)) + theme_bw()  + geom_hline(yintercept = 0) + geom_vline(xintercept=0) + geom_abline()
+p1 <- p + xlab("Effect Size Across All Ages") + ylab("Effect Size at Age 40")
+
+p <- ggplot(adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05'), aes(estimate_overall, expo_age_80)) + geom_point(alpha=.1) + 
+  scale_x_continuous(limits=c(-1, 1)) + scale_y_continuous(limits=c(-1,1)) + theme_bw()  + geom_hline(yintercept = 0) + geom_vline(xintercept=0) + geom_abline()
+p2 <- p + xlab("Effect Size Across All Ages") + ylab("Effect Size at Age 80") 
+
+p <- ggplot(adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05'), aes(expo_age_40,expo_age_80 )) + geom_point(alpha=.1) + 
+  scale_x_continuous(limits=c(-1, 1)) + scale_y_continuous(limits=c(-1,1)) + theme_bw()  + geom_hline(yintercept = 0) + geom_vline(xintercept=0) + geom_abline()
+p3 <- p + ylab("Effect Size At Age 80") + xlab("Effect Size at Age 40")
+
+p <- ggplot(adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05'), aes(expo_age_40-expo_age_80 )) + geom_histogram() + theme_bw() 
+p4 <- p + scale_x_continuous(limits=c(-.5, .5)) + xlab("Effect Size at age 40 - age 80")
+p4
+
+p <- ggplot(adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05'), aes(estimate_overall-expo_age_80 )) + geom_histogram() + theme_bw() 
+p5 <- p + scale_x_continuous(limits=c(-.5, .5)) + xlab("Original Effect Size - Effect Size at age 80")
+p5
+
+plot_grid(p1, p2, p3, ncol=3, labels=c("A", "B", "C"))
+plot_grid(p4,p5, ncol=2, labels=c("A", "B"))
+
+
+adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05') |> 
+  summarize(median((expo_age_40-expo_age_80)), 
+            quantile((expo_age_40-expo_age_80), probs=.25), 
+            quantile((expo_age_40-expo_age_80), probs=.75))
+
+adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05') |> 
+  summarize(median((estimate_overall-expo_age_80)), 
+            quantile((estimate_overall-expo_age_80), probs=.25), 
+            quantile((estimate_overall-expo_age_80), probs=.75))
+
+
+```
+
+```{r}
+
+#adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05', p.value.interaction.term < 4e-7) |> select(evarname, pvarname, expo_age_20, expo_age_40, expo_age_60, estimate_overall, estimate.interaction.main, estimate_age_int, estimate_age) |> View()
+p <- ggplot(adjusted_meta_2, aes(-log10(p.value_overall), -log10(p.value.interaction.term))) + geom_point(alpha=0.2) + theme_bw()  
+p
+```
+
+
+
+```{r}
+
+adjusted_meta_2 |> filter(sig_levels=="Bonf.<0.05") |>  select(evarname, pvarname, expo_age_20, expo_age_40, expo_age_60, estimate_overall, estimate.interaction.main, estimate_age_int, estimate_age) |> filter(evarname == 'LBXBCD', pvarname=="BMXBMI" )
+
+#adjusted_meta_2 |> filter(sig_levels=="Bonf.<0.05", p.value.age.expo.int < 1e-8) |>  select(evarname, pvarname, expo_age_20, expo_age_40, expo_age_60, estimate_overall, estimate.interaction.main, estimate_age_int, estimate_age) |> View()
+
+
+
+```
+
+ 
+ 
+ 
+ 
+
+
+
+

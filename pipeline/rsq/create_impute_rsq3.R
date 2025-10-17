@@ -18,7 +18,7 @@ library(splines)
 load_all('..')
 
 MISSING_PCT_THRESHOLD <- 40 # default
-ADDTC <- T
+ADDTC <- F
 spec <- matrix(c(
   'pvarname', 'p', 1, "character",
   'missing_pct', 'm', 2, "double"
@@ -27,28 +27,25 @@ opt <- getopt(spec)
 
 pvarname_to_query <- opt$pvarname
 #pvarname_to_query <- 'BMXHT'
+
+### first create the data
+path_to_nhanes <- '../../db/nhanes_031725.sqlite'
+
+load("../../rmd/adjusted_meta_2.Rdata")
+
+#pvarname_to_query <- "GrimAgeMort"
+
+summ_stats <- adjusted_meta_2 |> filter(pvarname == pvarname_to_query,
+       #p.value < 5e-4, nobs >= 2, # FDR significant
+       p.value < 5e-2, nobs >= 2, 
+       model_number == 2) |> filter(term_name == 'expo' | term_name == 'expo1') |> select(pvarname, evarname, p.value, nobs, rsq_adjusted_base_diff) |> rename(rsq_adj=rsq_adjusted_base_diff)
+
+
 cat("assembling the data\n")
 ### first create the data
 path_to_nhanes <- '../../db/nhanes_031725.sqlite'
-path_to_summary_stats <- '../../db/pe_summary_stats_01_2025.sqlite'
-
-
 nhanes_con <- DBI::dbConnect(RSQLite::SQLite(), dbname=path_to_nhanes)
-summary_stats_con <- DBI::dbConnect(RSQLite::SQLite(), dbname=path_to_summary_stats)
 
-summ_stats <- tbl(summary_stats_con, "adjusted_meta") |> filter(pvarname == pvarname_to_query,
-                                                                p.value < 5e-4, nobs >= 2, # FDR significant
-                                                                model_number == 2) |> filter(term_name == 'expo' | term_name == 'expo1') |> select(pvarname, evarname, p.value, nobs)
-
-
-
-rsq_1 <- tbl(summary_stats_con, "rsq_overall") |> filter(model_number == 2, aggregate_base_model ==0, phenotype==pvarname_to_query) |> select(exposure, rsq)
-rsq_2 <- tbl(summary_stats_con, "rsq_overall") |> filter(model_number == 2, aggregate_base_model ==1, phenotype==pvarname_to_query) |> select(exposure, rsq) |> rename(rsq_base=rsq)
-
-rsq <- rsq_1 |>left_join(rsq_2, by="exposure") |> mutate(rsq_adj = rsq-rsq_base)
-summ_stats <- summ_stats |> left_join(rsq, by=c("evarname"="exposure")) |> collect()
-
-DBI::dbDisconnect(summary_stats_con); remove(summary_stats_con)
 
 demo_table_for_begin_year <- function(nhanes_con, yr) {
   demo_name <- "DEMO"
@@ -76,7 +73,7 @@ demo_table_for_begin_year <- function(nhanes_con, yr) {
   } else {
     stop("Error: The year provided is not valid. Use one of 2001, 2003, 2005, 2007, 2009, 2011, 2013, 2015, or 2017.")
   }
-
+  
   # Return the table from the connection corresponding to the determined demo_name
   return(dplyr::tbl(nhanes_con, demo_name))
 }
@@ -97,9 +94,9 @@ get_phenotype_across_surveys <- function(nhanes_con, pvarname) {
     pheno_data[[i]] <- demo |> left_join(tbl(nhanes_con, tble_name) |>
                                            select(SEQN,all_of(vname)), by="SEQN") |> collect()
   }
-
+  
   pheno_data <- pheno_data |> bind_rows()
-
+  
 }
 
 
@@ -110,9 +107,9 @@ get_exposure_across_surveys <- function(nhanes_con, evarname) {
     dname <- etables |> slice(ii) |> pull(Data.File.Name)
     etable_list[[ii]] <- tbl(nhanes_con, dname) |> select("SEQN", all_of(evarname)) |> collect()
   }
-
+  
   etable_list <- bind_rows(etable_list)
-
+  
 }
 
 get_exposures_across_surveys <- function(con, evar_table, pheno_data) {
@@ -142,8 +139,10 @@ DBI::dbDisconnect(nhanes_con)
 
 cols_to_keep <- c("SEQN", "SDMVPSU", "WTMEC2YR", "SDMVSTRA", "INDFMPIR", "SDDSRVYR","RIAGENDR","RIDAGEYR",
                   "ETHNICITY_NONHISPANICWHITE", "ETHNICITY_MEXICAN", "ETHNICITY_OTHERHISPANIC", "ETHNICITY_OTHER", "ETHNICITY_NONHISPANICBLACK", "AGE_SQUARED",
-                  "EDUCATION_LESS9",  "EDUCATION_9_11", "EDUCATION_HSGRAD", "EDUCATION_AA", "EDUCATION_COLLEGEGRAD", "BORN_INUSA", "URXUCR_adj",
-                  "DR1TKCAL_adj", "DR2TKCAL_adj", "BMXBMI_adj", "BMXHT_adj")
+                  "EDUCATION_LESS9",  "EDUCATION_9_11", "EDUCATION_HSGRAD", "EDUCATION_AA", "EDUCATION_COLLEGEGRAD", "BORN_INUSA", "URXUCR_adj", "DRXTKCAL_adj", "DR1TKCAL_adj", "DR2TKCAL_adj",
+                   "BMXBMI_adj", "BMXHT_adj")
+
+cols_to_keep <- intersect(colnames(p_mv), cols_to_keep)
 
 cols_to_keep <- c(cols_to_keep, summ_stats_variables |> pull(evarname), pvarname_to_query)
 
@@ -214,11 +213,4 @@ to_save <- list(rsq_summary=tibble(phenotype=phenotype, rsq_exposures=mv_diff, r
                 exposures_selected=exposures_selected, fit1=r2_1, fit2=r2_2, pooled_fit=pooled_results)
 
 file_out <- sprintf("./out/%s_imp_R2.rds", phenotype)
-#file_out <- sprintf("./out/%s_imp_R2_20.rds", phenotype)
-#file_out <- sprintf("./out/%s_imp_R2_20.rds", phenotype)
 write_rds(to_save, file=file_out)
-
-
-
-
-

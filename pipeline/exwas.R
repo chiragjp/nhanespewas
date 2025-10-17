@@ -113,9 +113,9 @@
 library(getopt)
 library(tidyverse)
 library(logger)
-#library(nhanespewas)
+library(nhanespewas)
 library(tools)
-devtools::load_all(".")
+#devtools::load_all(".")
 
 TEST <- F
 spec <- matrix(c(

@@ -6,7 +6,7 @@ Weight (kg),0.04614820673233,0.104
 Basophils number (1000 cells/uL),0.01678965833519642,0.0145
 Eosinophils number (1000 cells/uL),0.00756110225171056,0.0934
 Direct HDL-Cholesterol (mg/dL),0.09546282913863774,0.149
-LDL-cholesterol (mg/dL),0.3097142570855709,0.0854
+LDL-cholesterol (mg/dL),0.0219594358612325,0.0854
 Lymphocyte number (1000 cells/uL),0.05483019591087131,0.0205
 Monocyte number (1000 cells/uL),0.01835637031313931,0.081
 Segmented neutrophils num (1000 cell/uL),0.03552100622881918,0.0887
@@ -27,4 +27,4 @@ Total calcium (mg/dL),0.09713609970474713,0.0523
 Creatinine (mg/dL),0.13975457918656578,0.00127
 Total bilirubin (mg/dL),0.03205302948779805,0.187
 Total cholesterol (mg/dL),0.3512723772673688,0.0433
-Triglyceride (mg/dL),0.5746534287660761,0.093
+Triglyceride (mg/dL),0.4318765075047156,0.093

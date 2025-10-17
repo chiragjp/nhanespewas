@@ -26,6 +26,11 @@ rsq <- rds_files |> map_df(function(x) {
   dat$rsq
 })
 
+reg_term_test_tidied <- rds_files |> map_df(function(x) {
+  dat <- read_rds(file.path(path_to_out, x))
+  dat$reg_term_test_tidied
+})
+
 file_out <- opt$path_to_gathered
-save(pe, glanced, rsq, file = file_out)
+save(pe, glanced, rsq, reg_term_test_tidied, file = file_out)
 

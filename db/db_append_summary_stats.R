@@ -1,41 +1,29 @@
-## append summary stats to sqlite
+# load summary stats to sqlite for the multiple adjustment scenarios
+# appending new data
+
 library(tidyverse)
 library(DBI)
 
-con <- DBI::dbConnect(RSQLite::SQLite(), dbname='./pe_summary_stats.sqlite')
-#vn <- tbl(con, "variable_names_epcf")
-#tn <- tbl(con, "table_names_epcf")
-#domains <- read_csv('./select/variable_domains_ep_2.csv')
-
-
-path_to_summary <- './pe_summary_telo'
-load(file.path(path_to_summary, 'pe_out_pscale.Rdata'))
-dbWriteTable(con, 'pe', pe, overwrite=FALSE, append=TRUE)
-dbWriteTable(con, 'glanced', glanced, overwrite=FALSE, append=TRUE)
-
-
-adjusted_meta <- rbind(
-  read_rds(file.path(path_to_summary, 'pe_meta_adjusted_continuous.rds')) |> mutate(vartype="continuous"),
-  read_rds(file.path(path_to_summary, 'pe_meta_adjusted_continuous-rank.rds')) |> mutate(vartype="continuous-rank"),
-  read_rds(file.path(path_to_summary, 'pe_meta_adjusted_categorical.rds')) |> mutate(vartype="categorical")
-)
-
-adjusted_meta <- adjusted_meta |> select(-error) |> rename(expo_name=term) |> mutate(expo_name=ifelse(is.na(expo_name), "expo", expo_name))
-
-unadjusted_meta <- rbind(
-  read_rds(file.path(path_to_summary, 'pe_meta_unadjusted_continuous.rds')) |> mutate(vartype="continuous"),
-  read_rds(file.path(path_to_summary, 'pe_meta_unadjusted_continuous-rank.rds')) |> mutate(vartype="continuous-rank"),
-  read_rds(file.path(path_to_summary, 'pe_meta_unadjusted_categorical.rds')) |> mutate(vartype="categorical"),
-)
-
-unadjusted_meta <- unadjusted_meta |> select(-error) |> rename(expo_name=term) |> mutate(expo_name=ifelse(is.na(expo_name), "expo", expo_name))
-
-dbWriteTable(con, 'adjusted_meta', adjusted_meta |> select(-meta_model) |> unnest(c(tidied, glanced)) |> ungroup(), overwrite=FALSE, append=TRUE)
-dbWriteTable(con, 'unadjusted_meta', unadjusted_meta |> select(-meta_model) |> unnest(c(tidied, glanced)) |> ungroup(), overwrite=FALSE, append=TRUE)
-
+con <- DBI::dbConnect(RSQLite::SQLite(), dbname='./nhanes_012324.sqlite')
+varnames <- tbl(con, "variable_names_epcf") |> collect()
+expo_levels <- tbl(con, "e_variable_levels") |> collect()
+tablenames <- tbl(con, "table_names_epcf") |> collect()
 dbDisconnect(con)
+
+path_to_summary <- '../pe_summary_0824/'
+load(file.path(path_to_summary, 'mage', 'mage_gathered.Rdata'))
+#load('../pe_summary_0824/mage/mage_gathered.Rdata')
+
+domains <- read_csv('../select/variable_domains_ep_2.csv')
+
+#con <- DBI::dbConnect(RSQLite::SQLite(), dbname='./pe_summary_stats_08_2024.sqlite')
+con <- DBI::dbConnect(RSQLite::SQLite(), dbname='./pe_summary_stats_01_2025.sqlite')
+#dbWriteTable(con, "variable_names_epcf", varnames, overwrite=T, append=F)
+#dbWriteTable(con, "table_names_epcf", tablenames, overwrite=T, append=F)
+dbWriteTable(con, 'pe', pe, overwrite=F, append=T)
+dbWriteTable(con, 'glanced', glanced, overwrite=F, append=T)
+dbWriteTable(con, 'rsq', rsq, overwrite=F, append=T)
+dbWriteTable(con, 'variable_domain', domains, overwrite=T, append=F)
+
+
 remove(list=ls())
-
-
-
-

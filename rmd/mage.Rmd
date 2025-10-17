@@ -1,0 +1,63 @@
+---
+title: "mAge ExWAS"
+author: "Chirag Patel"
+date: "2025-08-31"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+library(tidyverse)
+library(DBI)
+library(ggsci)
+library(DT)
+library(ggrepel)
+library(cowplot)
+library(reactable)
+library(gt)
+library(broom)
+library(ggridges)
+library(ComplexHeatmap)
+library(circlize)
+library(corrr)
+library(ggpubr)
+
+```
+
+```{r}
+load('./adjusted_meta_2.Rdata')
+exposure_desc  <- adjusted_meta_2 |> select(evarname, evardesc, esubcategory, enewsubcategory, super_ecat_number) |> unique()
+
+## adjusted_meta_2 |> filter(sig_levels =="BY<0.05") |> arrange(-p.value_overall) |> select(p.value_overall) 
+## max pvalue at BY < 0.05: 0.000523
+```
+
+
+```{r}
+load('../pe_summary_0824/mage/mage_gathered.Rdata')
+
+pexwas_mage <- pe |> filter(grepl("expo", term)) |> filter(model_number==2)
+rsq_base <- rsq |> filter(model_number == 2, aggregate_base_model == TRUE)
+rsq_full <- rsq |> filter(model_number == 2, aggregate_base_model == FALSE) # full model + E
+rsq_2 <- rsq_full |> left_join(rsq_base |> select(exposure, phenotype, rsq) |> rename(rsq_base=rsq), by=c("exposure", "phenotype"))  
+rsq_2 <- rsq_2 |> mutate(rsq_diff=rsq-rsq_base)
+pexwas_mage <- pexwas_mage |> left_join(rsq_2 |> select(exposure, phenotype, rsq_diff), by=c("exposure", "phenotype"))
+pexwas_mage <- pexwas_mage |> left_join(exposure_desc, by=c("exposure"="evarname"))
+```
+
+
+```{r fig.height=7, fig.width=9}
+to_plot <- pexwas_mage |> filter(phenotype != 'PACKYRSMort') |> mutate(lab=sprintf("%s-%s", evardesc, phenotype))
+p <- ggplot(to_plot, aes(rsq_diff*100, -log10(p.value))) + geom_point()
+p <- p + geom_point() + theme_bw()
+p <- p + geom_text_repel(data=to_plot |> filter(rsq_diff > .05), aes(rsq_diff*100, -log10(p.value), label=lab))
+p <- p + xlab("R-squared") + ylab("-log10(P.value)")
+p
+
+
+
+```

@@ -16,7 +16,10 @@ library(DBI)
 con <- DBI::dbConnect(RSQLite::SQLite(), dbname='./pe_summary_stats_01_2025.sqlite')
 varnames <- tbl(con, "variable_names_epcf")
 adjusted_meta <- tbl(con, "adjusted_meta_uwls") |> rename(term_name=expo_name)
-mvr2 <- read_rds('../pe_summary_060623/mvr2.rds') |> mutate(mv = mve_rsq-base_rsq)
+#mvr2 <- read_rds('../pe_summary_060623/mvr2.rds') |> mutate(mv = mve_rsq-base_rsq)
+
+load('../pipeline/rsq/mvrsq_20.Rdata')
+mvr2 <- rsq_summary |> mutate(mv = rsq_exposures)
 pe <- tbl(con, "pe") ## individual surveys
 pe_r2 <- tbl(con, "rsq")
 glanced <- tbl(con, "glanced")
@@ -44,32 +47,59 @@ expos_wide <- expos_wide |> left_join(varnames |> select(Variable.Name, Data.Fil
 
 expos_wide <- expos_wide |> collect() |> select(-Use.Constraints) |> rename(e_data_file_desc=Data.File.Description.x, p_data_file_desc=Data.File.Description.y,e_variable_description=Variable.Description.x, p_variable_description=Variable.Description.y)
 
-
 glanced_summary <- glanced_overall_wide |> mutate(total_n = nobs_2_0, rsq_adjusted_base_diff = rsq_2_0-rsq_2_1, rsq_adjusted_diff=rsq_2_0-rsq_1_0) |> 
-  select(evarname, pvarname, rsq_adjusted_base_diff, rsq_adjusted_diff, total_n)
+  select(evarname, pvarname, rsq_adjusted_base_diff, rsq_adjusted_diff, total_n) |> collect()
 
-adjusted_meta_full <- adjusted_meta |> filter(model_number == 2)  |> left_join(glanced_summary, by=c("evarname", "pvarname")) |> collect() ## fully adjusted model
+adjusted_meta_full <- adjusted_meta |> filter(model_number == 2)  |> collect()
+#adjusted_meta_full <- adjusted_meta_full |> left_join(glanced_summary |> collect(), by=c("evarname", "pvarname")) |> collect() ## fully adjusted model
+
+model_concordia <- adjusted_meta |> select(term_name, evarname, pvarname, estimate.uwls, model_number) |> group_by(term_name, evarname, pvarname) |> summarize(model_concordance = sum(sign(estimate.uwls))) |> collect()
+
+model_concordia_12 <- adjusted_meta |> filter(model_number <= 2) |> select(term_name, evarname, pvarname, estimate.uwls) |> group_by(term_name, evarname, pvarname) |> summarize(model_concordance_1_2 = sum(sign(estimate.uwls))) |> collect()
+
+adjusted_meta_full <- adjusted_meta_full |> left_join(model_concordia |> inner_join(model_concordia_12, by = c("term_name", "evarname", "pvarname")),  by = c("term_name", "evarname", "pvarname"))
+
 
 p_variable_domain <- variable_domain |> filter(epcf == 'p') |> collect() |> group_by(Variable.Name) |> summarise(pvardesc=first(Variable.Description),pcategory=first(category),psubcategory=first(subcategory))
 e_variable_domain <- variable_domain |> filter(epcf == 'e') |> collect() |> group_by(Variable.Name) |> summarise(evardesc=first(Variable.Description),ecategory=first(category),esubcategory=first(subcategory))
 
-adjusted_meta_full <- adjusted_meta_full |> left_join(p_variable_domain, by=c("pvarname"="Variable.Name"))
-adjusted_meta_full <- adjusted_meta_full |> left_join(e_variable_domain, by=c("evarname"="Variable.Name"))
 expos_wide <- expos_wide |> left_join(p_variable_domain, by=c("pvarname"="Variable.Name"))
 expos_wide <- expos_wide |> left_join(e_variable_domain, by=c("evarname"="Variable.Name"))
-mvr2 <- mvr2 |> collect() |> left_join(p_variable_domain, by=c("pvarname"="Variable.Name"))
+mvr2 <- mvr2 |> collect() |> left_join(p_variable_domain, by=c("phenotype"="Variable.Name"))
 
 pe_overall_full <- pe_overall |> filter(model_number == 2, term %like% "expo%") |> select(term, estimate, std.error, statistic, p.value, exposure, phenotype) |> 
   rename(evarname = exposure, pvarname = phenotype, term_name=term) |> collect()
 
-adjusted_meta_full <- adjusted_meta_full |> left_join(pe_overall_full, by=c("term_name", "evarname", "pvarname"), suffix=c("", "_overall"))
+adjusted_meta_full <- adjusted_meta_full |> full_join(pe_overall_full, by=c("term_name", "evarname", "pvarname"), suffix=c("", "_overall")) |> mutate(model_number = 2)
+adjusted_meta_full <- adjusted_meta_full |> left_join(glanced_summary, by=c("evarname", "pvarname"))  
+
 
 adjusted_meta_full <- adjusted_meta_full |> mutate(estimate_overall=ifelse(k.uwls == 1, estimate.uwls, estimate), 
                                                    p.value_overall=ifelse(k.uwls == 1, p.value.uwls, p.value),
                                                    std.error_overall=ifelse(k.uwls == 1, std.error.uwls, std.error), 
                                                    statistic_overall=ifelse(k.uwls == 1, statistic.uwls, statistic)
                                                    )
+adjusted_meta_full <- adjusted_meta_full |> left_join(p_variable_domain, by=c("pvarname"="Variable.Name"))
+adjusted_meta_full <- adjusted_meta_full |> left_join(e_variable_domain, by=c("evarname"="Variable.Name"))
+
+
 ```
+
+```{r mage add on}
+mage_vars <- c("Bcell", "CD4TPP","CD8TPP","CRPMort","CystatinCMort", "DunedinPoAm", "GDF15Mort","GrimAge2Mort","GrimAgeMort","HannumAge","HorvathAge","HorvathTelo","LeptinMort","LinAge","logA1CMort","MonoPP","NeuPP","Nkcell","PACKYRSMort", "PAI1Mort","PhenoAge","SkinBloodAge","TIMP1Mort","VidalBraloAge","WeidnerAge","YangCell", "ZhangAge")
+
+adjusted_meta_full <- adjusted_meta_full |> mutate(estimate_overall = ifelse(pvarname %in% mage_vars, estimate, estimate_overall),
+                                                   p.value_overall = ifelse(pvarname %in% mage_vars, p.value, p.value_overall),
+                                                   std.error_overall = ifelse(pvarname %in% mage_vars, std.error, std.error_overall),
+                                                   statistic_overall = ifelse(pvarname %in% mage_vars, statistic, statistic_overall)
+                                                   )
+adjusted_meta_full <- adjusted_meta_full |> mutate(k.uwls = ifelse(pvarname %in% mage_vars, 2, k.uwls))
+adjusted_meta_full <- adjusted_meta_full |> mutate(pcategory = ifelse(pvarname %in% mage_vars, "aging", pcategory))
+
+
+```
+
+
 ```{r filter exposure categories}
 exposure_categories <- c("pollutant", "nutrients", "smoking", "infection")
 adjusted_meta_full <- adjusted_meta_full |> filter(ecategory %in% exposure_categories)

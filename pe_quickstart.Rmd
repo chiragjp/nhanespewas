@@ -122,6 +122,7 @@ varnames |> filter(Variable.Name == "LBXCRP")
 
 ```{r}
 crp_cot <- pe_flex_adjust("LBXCRP","LBXCOT", adjustment_variables   = adjustment_models, con = con, scale_p = TRUE, logxform_p = FALSE, scale_type = 3)
+fev1_cot <- pe_flex_adjust("SPXNFEV1","LBXCOT", adjustment_variables   = adjustment_models, con = con, scale_p = TRUE, logxform_p = FALSE, scale_type = 1)
 
 ```
 

@@ -19,6 +19,8 @@ load('./adjusted_meta_2.Rdata')
 load('./pe_condensed.Rdata')
 ```
 
+
+## All signficant values
 ```{r}
 significant <- adjusted_meta_2 |> filter(sig_levels != '> BY & Bonf.') |> group_by(sig_levels, nobs) ## how many in each of these groups had pvalues that were less than 0.05?
 survey_specific_threshold <- 0.05
@@ -39,11 +41,83 @@ sig_by_nobs <- sig_by_nobs |>
   left_join(sig_by_nobs |> group_by(n) |> 
               summarize(n_tests = sum(total))) |> mutate(pct_tests=total/n_tests)
 
+
+
 sig_by_nobs |> filter(num_sig==0) |> summarize(m=mean(pct_tests)) ## over half were not significant in one survey at p<0.05
 sig_by_nobs |> filter(num_sig==1) |> summarize(m=mean(pct_tests)) ## 25%
 sig_by_nobs |> filter(num_sig > 1) |> group_by(n) |> summarize(pct_over_2 = sum(pct_tests))    ## 
 sig_by_nobs |> filter(num_sig > 1) |> group_by(n) |> summarize(pct_over_2 = sum(pct_tests)) |> summarize(m=mean(pct_over_2)) 
+
+
+
 ```
+
+
+# Bonferroni signficant only
+```{r}
+significant <- adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05') |> group_by(sig_levels, nobs) ## how many in each of these groups had pvalues that were less than 0.05?
+survey_specific_threshold <- 0.05
+pe_condensed <- pe_condensed |> mutate(p.value = ifelse(is.na(p.value), 1, p.value))
+
+pct_sig_survey <- pe_condensed |> filter(term == 'expo' ) |> 
+  group_by(exposure, phenotype) |> 
+  summarize(n=n(), num_sig = sum(p.value < survey_specific_threshold), pct_sig = num_sig/n)
+
+
+## filter for those in significant
+pct_sig_survey_2 <- pct_sig_survey |> inner_join(significant |> ungroup() |> filter(term_name == 'expo') |> select(evarname, pvarname), by=c("exposure"="evarname", "phenotype"="pvarname"))
+
+sig_by_nobs <- pct_sig_survey_2 |> group_by(n,num_sig) |> summarize(total=n()) |> ungroup() |> arrange(n)
+
+sig_by_nobs <- sig_by_nobs |> 
+  left_join(sig_by_nobs |> group_by(n) |> 
+              summarize(n_tests = sum(total))) |> mutate(pct_tests=total/n_tests)
+
+
+
+sig_by_nobs |> filter(num_sig==0) |> summarize(m=mean(pct_tests)) ## over half were not significant in one survey at p<0.05
+sig_by_nobs |> filter(num_sig==1) |> summarize(m=mean(pct_tests)) ## 25%
+sig_by_nobs |> filter(num_sig > 1) |> group_by(n) |> summarize(pct_over_2 = sum(pct_tests))    ## 
+sig_by_nobs |> filter(num_sig > 1) |> group_by(n) |> summarize(pct_over_2 = sum(pct_tests)) |> summarize(m=mean(pct_over_2))
+
+```
+
+```{r}
+
+non_significant <- adjusted_meta_2 |> filter(sig_levels == '> BY & Bonf.') |> group_by(sig_levels, nobs)
+
+pct_sig_survey_3 <- pct_sig_survey |> inner_join(non_significant |> ungroup() |> filter(term_name == 'expo') |> select(evarname, pvarname), by=c("exposure"="evarname", "phenotype"="pvarname"))
+
+sig_by_nobs <- pct_sig_survey_3 |> group_by(n,num_sig) |> summarize(total=n()) |> ungroup() |> arrange(n)
+
+sig_by_nobs <- sig_by_nobs |> 
+  left_join(sig_by_nobs |> group_by(n) |> 
+              summarize(n_tests = sum(total))) |> mutate(pct_tests=total/n_tests)
+
+sig_by_nobs |> filter(num_sig==0) |> summarize(m=mean(pct_tests)) ## over half were not significant in one survey at p<0.05
+sig_by_nobs |> filter(num_sig==1) |> summarize(m=mean(pct_tests)) ## 25%
+sig_by_nobs |> filter(num_sig > 1) |> group_by(n) |> summarize(pct_over_2 = sum(pct_tests))    ## 
+sig_by_nobs |> filter(num_sig > 1) |> group_by(n) |> summarize(pct_over_2 = sum(pct_tests)) |> summarize(m=mean(pct_over_2)) 
+
+
+```
+
+
+## Number of Signficant Associations
+
+of the associations measured in 10 surveys, how many were significant at a p.value of 0.05?
+```{r}
+pct_sig_survey |> filter(n==10) |> group_by(num_sig) |> count()
+pct_sig_survey <- pct_sig_survey |> rename(evarname = exposure) |> left_join(adjusted_meta_2 |> select(evarname, evardesc, esubcategory) |> unique())
+
+pct_sig_survey |> filter(n==10) |> group_by(num_sig, esubcategory) |> count()
+
+
+```
+
+
+
+
 
 
 
@@ -51,6 +125,8 @@ sig_by_nobs |> filter(num_sig > 1) |> group_by(n) |> summarize(pct_over_2 = sum(
 p <- ggplot(sig_by_nobs, aes(factor(num_sig), I(pct_tests*100)))
 p <- p + geom_bar(stat = "identity") + facet_wrap(~n) + xlab("Number of Surveys P-E achieved p<0.05") + ylab("% of total P-E identified [FDR < 0.05]") + theme_bw()
 p
+
+
 ```
 
 
@@ -75,6 +151,8 @@ p
 adjusted_meta_2 |> filter(sig_levels != '> BY & Bonf.') |> group_by(enewsubcategory) |> summarize(m=median(i.squared.uwls)) |> arrange(-m)
 
 adjusted_meta_2 |> filter(sig_levels != '> BY & Bonf.') |> group_by(nobs) |> summarize(m=median(i.squared.uwls)) |> arrange(-nobs)
+adjusted_meta_2 |> filter(sig_levels != '> BY & Bonf.')  |> summarize(m=median(i.squared.uwls, na.rm=T)) 
+adjusted_meta_2 |> filter(sig_levels != '> BY & Bonf.')  |> summarize(m=median(i.squared.uwls, na.rm=T), q25=quantile(i.squared.uwls, probs=c(0.25), na.rm=T), q75=quantile(i.squared.uwls, probs=c(.75), na.rm=T)) 
 
 ```
 

@@ -79,6 +79,7 @@ pnewcat_colors <- tibble(pnewsubcategory = c(
 Filter for visualization
 ```{r}
 adjusted_meta_to_hm <- adjusted_meta_2 |> filter(pnewsubcategory != 'dexa' ) |> filter(pnewsubcategory != 'microbiome' )
+
 adjusted_meta_to_hm <-  adjusted_meta_to_hm |> rbind(adjusted_meta_2 |> filter(grepl("^RSV", pvarname)))
 
 

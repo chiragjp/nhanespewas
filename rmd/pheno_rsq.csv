@@ -56,12 +56,9 @@ Trunk Bone BMD (g/cm^2),DXDTRBMD,10,0.005189585603641578
 Trunk Lean excl Bone Mineral Content (grams),DXDTRLE,17,0.010113369724980115
 Trunk Percent Fat,DXDTRPF,19,0.027980955463511037
 Trunk Total (grams),DXDTRTOT,20,0.018135676712808746
-Android to gynoid ratio,DXXAGRAT,NA,0.050746503140403465
 Android/gynoid region status,DXXAGST,10,0.033752662386942925
 Android fat mass,DXXANFM,20,0.008882237837628426
 Android lean mass,DXXANLM,20,0.03949007552140349
-Android percent fat,DXXAPFAT,NA,0.09690025785247153
-Gynoid percent fat,DXXGPFAT,NA,0.1268402931318961
 Gynoid fat mass,DXXGYFM,20,0.06067068560867023
 Gynoid lean mass,DXXGYLM,20,0.02729024210412634
 Gynoid total mass,DXXGYTOM,20,0.06262914338670128
@@ -103,7 +100,6 @@ Left Ribs Bone Mineral Density (grams/cm^2),DXXLRBMD,8,0.004790685925311067
 Lumbar Spine Area (cm^2),DXXLSA,5,9.778113849185366e-4
 Lumbar Spine Bone Mineral Content (grams),DXXLSBMC,5,0.0016411943620572855
 Lumbar Spine Bone Mineral Density (grams/cm^2),DXXLSBMD,6,0.002763996756312781
-Femoral neck area (cm^2),DXXNKA,NA,0.0052048873379290095
 Femoral neck bone mineral content (gm),DXXNKBMC,20,0.01465413339216498
 Femoral neck bone mineral density (gm/cm^2),DXXNKBMD,20,0.013426018709008114
 Total femur area (cm^2),DXXOFA,18,0.006860745876326457
@@ -141,15 +137,16 @@ Thoracic Spine Area (cm^2),DXXTSA,12,0.010211473000517168
 Thoracic Spine Bone Mineral Content (grams),DXXTSBMC,12,0.009486443685373436
 Thoracic Spine Bone Mineral Density (grams/cm^2),DXXTSBMD,10,0.006042921846958871
 Ward's triangle area (cm^2),DXXWDA,5,0.005235065293483471
-Ward's triangle bone mineral content (gm),DXXWDBMC,NA,0.0046308381934764276
 Ward's triangle bone mineral density (gm/cm^2),DXXWDBMD,20,0.008570210246994725
 "Mean of two reproducible FENO measurements, in parts per billion",ENXMEAN,20,0.03326286398319378
+GrimAgeMort,GrimAgeMort,10,0.10490799770275272
+HorvathAge,HorvathAge,12,0.005167662778403415
 Basophils number (1000 cells/uL),LBDBANO,20,0.016789658335196425
 Eosinophils number (1000 cells/uL),LBDEONO,20,0.007561102251710569
 Serum total folate (ng/mL),LBDFOT,20,0.12706407413752713
 Direct HDL-Cholesterol (mg/dL),LBDHDD,20,0.09546282913863774
 "Iron, Frozen Serum (umol/L)",LBDIRNSI,15,0.05359197810254447
-LDL-cholesterol (mg/dL),LBDLDL,20,0.3097142570855709
+LDL-cholesterol (mg/dL),LBDLDL,20,0.0219594358612325
 Lymphocyte number (1000 cells/uL),LBDLYMNO,20,0.05483019591087131
 Monocyte number (1000 cells/uL),LBDMONO,20,0.01835637031313931
 Segmented neutrophils num (1000 cell/uL),LBDNENO,20,0.03552100622881918
@@ -161,7 +158,6 @@ Bone alkaline phosphotase (ug/L),LBXBAP,7,0.006365913584632565
 Basophils percent (%),LBXBAPCT,6,0.0028720442037863895
 C-peptide (nmol/L) in SI units,LBXCPSI,20,0.11053230732634212
 C-reactive protein (mg/dL),LBXCRP,20,0.048226709642622226
-Eosinophils percent (%),LBXEOPCT,NA,0.007453405066712743
 Protoporphyrin(ug/dL RBC),LBXEPP,13,0.020594008370685687
 Ferritin(ng/mL),LBXFER,20,0.02367413685401437
 "Folate, serum (ng/mL)",LBXFOL,20,0.13317749307879778
@@ -174,7 +170,6 @@ Insulin (uU/mL ),LBXIN,20,0.09426639380677301
 "Iron, Frozen Serum (ug/dL)",LBXIRN,15,0.053622522099689256
 Lymphocyte percent (%),LBXLYPCT,20,0.014106039014620486
 Mean cell hemoglobin concentration (g/dL),LBXMC,20,0.041149049974889856
-Mean cell volume (fL),LBXMCVSI,NA,0.03389337280664506
 Methylmalonic acid (umol/L),LBXMMA,14,0.0053359476583817594
 Monocyte percent (%),LBXMOPCT,20,0.038054602213982436
 Mean platelet volume (fL),LBXMPSI,12,0.0076589728419481085
@@ -191,9 +186,8 @@ Alkaline phosphotase (U/L),LBXSAPSI,20,0.022902589955309027
 Aspartate aminotransferase AST (U/L),LBXSASSI,20,0.02039136609576876
 Alanine aminotransferase ALT (U/L),LBXSATSI,20,0.012014956751492133
 Blood urea nitrogen (mg/dL),LBXSBU,20,0.10787428602554938
-Bicarbonate (mmol/L),LBXSC3SI,NA,0.02912990879593351
 Total calcium (mg/dL),LBXSCA,20,0.09713609970474711
-Cholesterol (mg/dL),LBXSCH,20,0.4315886887064744
+Cholesterol (mg/dL),LBXSCH,20,0.0010365089221529011
 Creatine Phosphokinase(CPK) (IU/L),LBXSCK,12,0.025587204454598306
 Chloride (mmol/L),LBXSCLSI,20,0.07703484042533834
 Creatinine (mg/dL),LBXSCR,20,0.13975457918656578
@@ -216,7 +210,7 @@ Osmolality (mmol/Kg),LBXSOSSI,20,0.0438468984372794
 Phosphorus (mg/dL),LBXSPH,20,0.04510011507265127
 Total bilirubin (mg/dL),LBXSTB,20,0.03205302948779805
 Total protein (g/dL),LBXSTP,20,0.04585783843268572
-Triglycerides (mg/dL),LBXSTR,20,0.5657327852581214
+Triglycerides (mg/dL),LBXSTR,20,0.4303865615043496
 Uric acid (mg/dL),LBXSUA,20,0.07853742479817874
 "Triiodothyronine (T3), free (pg/mL)",LBXT3F,7,0.004433767648425929
 "Thyroxine, free (ng/dL)",LBXT4F,6,0.013838230399909252
@@ -225,7 +219,7 @@ Transferrin receptor (mg/L),LBXTFR,4,0.031403727566296016
 Thyroglobulin (ng/mL),LBXTGN,2,0.002315109289393682
 "TIBC, Frozen Serum (ug/dL)",LBXTIB,1,0.013756505236675175
 Thyroid peroxidase antibodies (IU/mL),LBXTPO,3,2.785417485914564e-4
-Triglyceride (mg/dL),LBXTR,20,0.5746534287660761
+Triglyceride (mg/dL),LBXTR,20,0.43187650750471557
 Thyroid stimulating hormone (uIU/mL),LBXTSH1,2,0.00649740629363601
 Testosterone total (ng/dL),LBXTST,20,0.006395405501963158
 "Triiodothyronine (T3), total (ng/dL)",LBXTT3,10,0.011512575629375937

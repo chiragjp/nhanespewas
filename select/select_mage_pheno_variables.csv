@@ -1,0 +1,63 @@
+Variable.Name,Variable.Description,Data.File.Name,Data.File.Description,Begin.Year,EndYear,Component,Use.Constraints
+XY_Estimation,Predicted biological sex from DNAm (XY estimation),DNAM_A,DNA methylation (epigenetic clocks and surrogates),1999,2000,Laboratory,None
+HorvathAge,DNAm age (Horvath clock),DNAM_A,DNA methylation (epigenetic clocks and surrogates),1999,2000,Laboratory,None
+HannumAge,DNAm age (Hannum clock),DNAM_A,DNA methylation (epigenetic clocks and surrogates),1999,2000,Laboratory,None
+SkinBloodAge,DNAm age (Skin & Blood clock),DNAM_A,DNA methylation (epigenetic clocks and surrogates),1999,2000,Laboratory,None
+PhenoAge,DNAm PhenoAge,DNAM_A,DNA methylation (epigenetic clocks and surrogates),1999,2000,Laboratory,None
+GDF15Mort,DNAm GrimAge surrogate: GDF15,DNAM_A,DNA methylation (epigenetic clocks and surrogates),1999,2000,Laboratory,None
+B2MMort,DNAm GrimAge surrogate: Beta-2 microglobulin,DNAM_A,DNA methylation (epigenetic clocks and surrogates),1999,2000,Laboratory,None
+CystatinCMort,DNAm GrimAge surrogate: Cystatin C,DNAM_A,DNA methylation (epigenetic clocks and surrogates),1999,2000,Laboratory,None
+TIMP1Mort,DNAm GrimAge surrogate: TIMP1,DNAM_A,DNA methylation (epigenetic clocks and surrogates),1999,2000,Laboratory,None
+ADMMort,DNAm GrimAge surrogate: Adrenomedullin,DNAM_A,DNA methylation (epigenetic clocks and surrogates),1999,2000,Laboratory,None
+PAI1Mort,DNAm GrimAge surrogate: PAI-1,DNAM_A,DNA methylation (epigenetic clocks and surrogates),1999,2000,Laboratory,None
+LeptinMort,DNAm GrimAge surrogate: Leptin,DNAM_A,DNA methylation (epigenetic clocks and surrogates),1999,2000,Laboratory,None
+PACKYRSMort,DNAm smoking pack-years surrogate,DNAM_A,DNA methylation (epigenetic clocks and surrogates),1999,2000,Laboratory,None
+CRPMort,DNAm GrimAge surrogate: CRP,DNAM_A,DNA methylation (epigenetic clocks and surrogates),1999,2000,Laboratory,None
+logA1CMort,DNAm GrimAge surrogate: log(HbA1c),DNAM_A,DNA methylation (epigenetic clocks and surrogates),1999,2000,Laboratory,None
+GrimAgeMort,DNAm GrimAge,DNAM_A,DNA methylation (epigenetic clocks and surrogates),1999,2000,Laboratory,None
+GrimAge2Mort,DNAm GrimAge2,DNAM_A,DNA methylation (epigenetic clocks and surrogates),1999,2000,Laboratory,None
+HorvathTelo,DNAm telomere length (Horvath Telo),DNAM_A,DNA methylation (epigenetic clocks and surrogates),1999,2000,Laboratory,None
+YangCell,DNAm mitotic age (PCHi-C/Yang replication clock),DNAM_A,DNA methylation (epigenetic clocks and surrogates),1999,2000,Laboratory,None
+ZhangAge,DNAm age (Zhang clock),DNAM_A,DNA methylation (epigenetic clocks and surrogates),1999,2000,Laboratory,None
+LinAge,DNAm age (Lin clock),DNAM_A,DNA methylation (epigenetic clocks and surrogates),1999,2000,Laboratory,None
+WeidnerAge,DNAm age (Weidner clock),DNAM_A,DNA methylation (epigenetic clocks and surrogates),1999,2000,Laboratory,None
+VidalBraloAge,DNAm age (Vidal-Bralo clock),DNAM_A,DNA methylation (epigenetic clocks and surrogates),1999,2000,Laboratory,None
+DunedinPoAm,DNAm pace of aging (DunedinPoAm),DNAM_A,DNA methylation (epigenetic clocks and surrogates),1999,2000,Laboratory,None
+CD8TPP,Estimated immune proportion: CD8 T cells,DNAM_A,DNA methylation (epigenetic clocks and surrogates),1999,2000,Laboratory,None
+CD4TPP,Estimated immune proportion: CD4 T cells,DNAM_A,DNA methylation (epigenetic clocks and surrogates),1999,2000,Laboratory,None
+Nkcell,Estimated immune proportion: NK cells,DNAM_A,DNA methylation (epigenetic clocks and surrogates),1999,2000,Laboratory,None
+Bcell,Estimated immune proportion: B cells,DNAM_A,DNA methylation (epigenetic clocks and surrogates),1999,2000,Laboratory,None
+MonoPP,Estimated immune proportion: Monocytes,DNAM_A,DNA methylation (epigenetic clocks and surrogates),1999,2000,Laboratory,None
+NeuPP,Estimated immune proportion: Neutrophils,DNAM_A,DNA methylation (epigenetic clocks and surrogates),1999,2000,Laboratory,None
+WTDN4YR,DNAm 4-year examination weight,DNAM_A,DNA methylation (epigenetic clocks and surrogates),1999,2000,Laboratory,None
+XY_Estimation,Predicted biological sex from DNAm (XY estimation),DNAM_B,DNA methylation (epigenetic clocks and surrogates),2001,2002,Laboratory,None
+HorvathAge,DNAm age (Horvath clock),DNAM_B,DNA methylation (epigenetic clocks and surrogates),2001,2002,Laboratory,None
+HannumAge,DNAm age (Hannum clock),DNAM_B,DNA methylation (epigenetic clocks and surrogates),2001,2002,Laboratory,None
+SkinBloodAge,DNAm age (Skin & Blood clock),DNAM_B,DNA methylation (epigenetic clocks and surrogates),2001,2002,Laboratory,None
+PhenoAge,DNAm PhenoAge,DNAM_B,DNA methylation (epigenetic clocks and surrogates),2001,2002,Laboratory,None
+GDF15Mort,DNAm GrimAge surrogate: GDF15,DNAM_B,DNA methylation (epigenetic clocks and surrogates),2001,2002,Laboratory,None
+B2MMort,DNAm GrimAge surrogate: Beta-2 microglobulin,DNAM_B,DNA methylation (epigenetic clocks and surrogates),2001,2002,Laboratory,None
+CystatinCMort,DNAm GrimAge surrogate: Cystatin C,DNAM_B,DNA methylation (epigenetic clocks and surrogates),2001,2002,Laboratory,None
+TIMP1Mort,DNAm GrimAge surrogate: TIMP1,DNAM_B,DNA methylation (epigenetic clocks and surrogates),2001,2002,Laboratory,None
+ADMMort,DNAm GrimAge surrogate: Adrenomedullin,DNAM_B,DNA methylation (epigenetic clocks and surrogates),2001,2002,Laboratory,None
+PAI1Mort,DNAm GrimAge surrogate: PAI-1,DNAM_B,DNA methylation (epigenetic clocks and surrogates),2001,2002,Laboratory,None
+LeptinMort,DNAm GrimAge surrogate: Leptin,DNAM_B,DNA methylation (epigenetic clocks and surrogates),2001,2002,Laboratory,None
+PACKYRSMort,DNAm smoking pack-years surrogate,DNAM_B,DNA methylation (epigenetic clocks and surrogates),2001,2002,Laboratory,None
+CRPMort,DNAm GrimAge surrogate: CRP,DNAM_B,DNA methylation (epigenetic clocks and surrogates),2001,2002,Laboratory,None
+logA1CMort,DNAm GrimAge surrogate: log(HbA1c),DNAM_B,DNA methylation (epigenetic clocks and surrogates),2001,2002,Laboratory,None
+GrimAgeMort,DNAm GrimAge,DNAM_B,DNA methylation (epigenetic clocks and surrogates),2001,2002,Laboratory,None
+GrimAge2Mort,DNAm GrimAge2,DNAM_B,DNA methylation (epigenetic clocks and surrogates),2001,2002,Laboratory,None
+HorvathTelo,DNAm telomere length (Horvath Telo),DNAM_B,DNA methylation (epigenetic clocks and surrogates),2001,2002,Laboratory,None
+YangCell,DNAm mitotic age (PCHi-C/Yang replication clock),DNAM_B,DNA methylation (epigenetic clocks and surrogates),2001,2002,Laboratory,None
+ZhangAge,DNAm age (Zhang clock),DNAM_B,DNA methylation (epigenetic clocks and surrogates),2001,2002,Laboratory,None
+LinAge,DNAm age (Lin clock),DNAM_B,DNA methylation (epigenetic clocks and surrogates),2001,2002,Laboratory,None
+WeidnerAge,DNAm age (Weidner clock),DNAM_B,DNA methylation (epigenetic clocks and surrogates),2001,2002,Laboratory,None
+VidalBraloAge,DNAm age (Vidal-Bralo clock),DNAM_B,DNA methylation (epigenetic clocks and surrogates),2001,2002,Laboratory,None
+DunedinPoAm,DNAm pace of aging (DunedinPoAm),DNAM_B,DNA methylation (epigenetic clocks and surrogates),2001,2002,Laboratory,None
+CD8TPP,Estimated immune proportion: CD8 T cells,DNAM_B,DNA methylation (epigenetic clocks and surrogates),2001,2002,Laboratory,None
+CD4TPP,Estimated immune proportion: CD4 T cells,DNAM_B,DNA methylation (epigenetic clocks and surrogates),2001,2002,Laboratory,None
+Nkcell,Estimated immune proportion: NK cells,DNAM_B,DNA methylation (epigenetic clocks and surrogates),2001,2002,Laboratory,None
+Bcell,Estimated immune proportion: B cells,DNAM_B,DNA methylation (epigenetic clocks and surrogates),2001,2002,Laboratory,None
+MonoPP,Estimated immune proportion: Monocytes,DNAM_B,DNA methylation (epigenetic clocks and surrogates),2001,2002,Laboratory,None
+NeuPP,Estimated immune proportion: Neutrophils,DNAM_B,DNA methylation (epigenetic clocks and surrogates),2001,2002,Laboratory,None
+
