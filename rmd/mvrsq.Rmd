@@ -22,7 +22,8 @@ rsq_summary_10 <- rsq_summary
 load('../pipeline/rsq/mvrsq_50.Rdata')
 rsq_summary_50 <- rsq_summary
 
-rsq_summary <- rsq_summary_10 |> left_join(rsq_summary_20, by = "phenotype", suffix = c("_10", "_20")) 
+#rsq_summary <- rsq_summary_10 |> left_join(rsq_summary_20, by = "phenotype", suffix = c("_10", "_20"))
+rsq_summary <- rsq_summary_20 |> left_join(rsq_summary_10, by = "phenotype", suffix = c("_20", "_10")) 
 
 ```
 
@@ -30,6 +31,7 @@ rsq_summary <- rsq_summary_10 |> left_join(rsq_summary_20, by = "phenotype", suf
 ```{r}
 load('./adjusted_meta_2.Rdata')
 pheno_desc <- adjusted_meta_2 |> select(pvarname, pvardesc, pnewsubcategory) |> unique()
+pheno_desc <- pheno_desc |> mutate(pvardesc = ifelse(is.na(pvardesc), pvarname, pvardesc))
 rsq_summary <- rsq_summary |> left_join(pheno_desc, by=c("phenotype"="pvarname"))
 
 #rsq_summary |> filter(rsq_exposures_20 > 0) |> summarize(m=median(rsq_exposures_20), q25=quantile(rsq_exposures_20, probs=.25), q75=quantile(rsq_exposures_20, probs=.75))

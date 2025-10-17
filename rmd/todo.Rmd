@@ -9,13 +9,6 @@ output: html_document
 
 ## analysis:
 
--   adjustment by age,age2, education, race, marital status, born in US? - static factors - done
--   consistency of association in sign and pvalue - done
--   difference between adjusted vs. unadjusted model in R2 and beta - done
--   differences in adjusted models in the different domains - need to put in domains - done
--   for 15 exposures show time change of association - done
--   average age, sex percentage, ethncity percentage, and average income to poverty per association - table todo
-
 
 
 ## data examples
@@ -25,7 +18,7 @@ output: html_document
 -   prediction across domains - done
 -   diet - done
 -   heavy metals - done
--   PFOA
+
 
 ## coding:
 
@@ -40,6 +33,5 @@ output: html_document
 -  package - done
 
 ## bugs:
--- why is cotinine not showing up with quantile estimates for FEV?
--- HCT - confounding by survey year
+
 
