@@ -18,8 +18,9 @@ Specifically, the atlas provides a comprehensive list of exposure-phenome associ
 
 ### Download the database
 
-NHANES (.sqlite) <https://figshare.com/ndownloader/files/54925445>
-Summary Statistics <https://figshare.com/ndownloader/files/58835380>
+- NHANES (.sqlite) <https://figshare.com/ndownloader/files/54925445>
+
+- Summary Statistics <https://figshare.com/ndownloader/files/58835380>
 
 ### Install the R package
 
