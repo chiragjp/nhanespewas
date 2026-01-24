@@ -83,3 +83,8 @@ gwas_exwas |> select(pvardesc, rsq_exposures_10_20, `Delta(Full, covariates-only
 
 
 ```
+
+Extended Data Figure 8 source
+```{r}
+p$data |> select(`Delta(Full, covariates-only)`, rsq_exposures_10_20, `Trait Name`) |> write.csv(file="ExtDataFig8.csv")
+```

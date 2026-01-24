@@ -85,6 +85,9 @@ p <- p + xlab("") + ylab("R^2")
 #p
 all_p_r2 <- p
 
+## .csv file, Figure 2 panel A
+all_p_r2$data |> select(order_number, rsquared, pnewsubcategory,enewsubcategory)
+##
 
 ```
 
@@ -134,6 +137,10 @@ p <- p + geom_text_repel(data=p_effect_sizes_per, aes(x=median_r2, y = q, label=
 p <- p + xlab("R^2 (adjusted-base model)") + ylab("Percentile") 
 p <- p + theme_bw() + theme(legend.position="none") 
 cdf_p<- p
+
+## file to make the ecdfs
+adjusted_meta_2 |> select(rsq_adjusted_base_diff, sig_levels, enewsubcategory, pnewsubcategory) 
+##
 
 e_percent_sig <- adjusted_meta_2 |> group_by(ecategory, enewsubcategory, sig_levels) |> count() |> pivot_wider(names_from = sig_levels, values_from = n) |> mutate(total_tests = rowSums(across(where(is.numeric)))) |> 
   mutate(percent_non_sig = `> BY & Bonf.`/total_tests, percent_bonf = `Bonf.<0.05`/total_tests, percent_BY=`BY<0.05`/total_tests) |> 
@@ -217,12 +224,19 @@ rsq_mv |> mutate(rsq_exposures = ifelse(rsq_exposures < 0, 0, rsq_exposures)) |>
                                                                                           q.75=quantile(rsq_exposures, probs=c(.75)),
                                                                                           q.100=quantile(rsq_exposures, probs=c(1))
 )
+
+# rsq .csv, Figure 2, panel D (Scatter plot)
+rbind(p_r2$data |> select(rsq_base, rsq_adj_e) |> mutate(mv=F) |> rename(rsq_exposures=rsq_adj_e),
+rsq_mv |> select(rsq_exposures, rsq_base) |> mutate(mv=T))
+#
 ```
 
 ```{r combine plot, fig.height=8, fig.width=10}
 cdfs_p <- plot_grid(cdf_p, cdf_e_p, p_r2, labels=c("B", "C", "D"),nrow = 3)
 ppp <- plot_grid(all_p_r2, cdfs_p, ncol=2, rel_widths = c(2,1), labels=c("A", ""))
 ppp
+
+
 ```
 
 
@@ -231,7 +245,7 @@ cdfs_p <- plot_grid(cdf_p, cdf_e_p, p_r2, labels=c("B", "C", "D"),nrow = 1)
 ppp <- plot_grid(all_p_r2, cdfs_p, nrow=2, rel_heights = c(3,1), labels=c("A", ""))
 ppp
 
-ggsave(filename='./paper_figures_tables/r2_fig2.pdf', plot=ppp, width=12, height=12)
+#ggsave(filename='./paper_figures_tables/r2_fig2.pdf', plot=ppp, width=12, height=12)
 
 
 ```
@@ -365,11 +379,194 @@ pl
 ```{r fig.width=12, fig.height=11}
 pl2 <- plot_grid(all_p_logp,plot_grid(total_found_p_p_flip,total_found_p_flip, ncol = 2, labels=c("B", "C")), labels = c("A", ""), nrow = 2, hjust = 0, rel_heights =   c(3, 1))
 pl2
-ggsave("./paper_figures_tables/pval_fig1.pdf", plot=pl2, width=12, height=12)
+#ggsave("./paper_figures_tables/pval_fig1.pdf", plot=pl2, width=12, height=12)
 ```
 
 
+###### 
 
+```{r csv source files}
+
+# ==============================================================================
+# 1. SETUP & PRE-PROCESSING 
+# ==============================================================================
+
+# Constants
+PCAP <- 1e-20
+keep <- c("anthropometric", "blood", "blood pressure", "bone", "aging", 
+          "inflammation", "kidney", "liver", "hormone", "metabolic", 
+          "nutrition", "electrolyte")
+
+# 1.1 Process 'to_plot' (Used for Manhattan plots in pl2-A and ppp-A)
+to_plot <- adjusted_meta_2 |> 
+  mutate(plot_p = ifelse(p.value_overall < PCAP, PCAP, p.value_overall)) |>
+  filter(pnewsubcategory != 'psa', 
+         pnewsubcategory != 'fitness',
+         pnewsubcategory %in% keep)
+
+# Calculate ordering based on R2
+enewsubcategory_order <- to_plot |> 
+  filter(sig_levels == 'Bonf.<0.05') |> 
+  group_by(enewsubcategory) |> 
+  summarize(med_r2 = mean(rsq_adjusted_base_diff, na.rm=TRUE)) |> 
+  arrange(-med_r2) |> 
+  mutate(group_number = row_number())
+
+to_plot <- to_plot |> left_join(enewsubcategory_order |> select(enewsubcategory, group_number), by="enewsubcategory")
+
+# Create the x-axis integer ordering (order_number)
+eplot_order <- to_plot |> 
+  select(evarname, enewsubcategory, group_number) |> 
+  unique() |> 
+  arrange(group_number) |> 
+  mutate(order_number = row_number())
+
+to_plot <- to_plot |> left_join(eplot_order |> select(evarname, order_number), by="evarname")
+
+# Create Axis Labels (Essential for interpreting x-axis 'order_number')
+xaxis_labels <- eplot_order |> 
+  group_by(group_number, enewsubcategory) |> 
+  summarize(med_x = round(median(order_number)), 
+            min_x = min(order_number), 
+            max_x = max(order_number), .groups="drop") |>
+  mutate(enewsubcategory = case_when(
+    enewsubcategory == 'priority pesticide' ~ 'organophosphate',
+    enewsubcategory == 'phthalates' ~ 'phthalates-amine/amide',
+    enewsubcategory == 'amine/amide' ~ '',
+    TRUE ~ enewsubcategory
+  )) |>
+  slice_head(n = -2)
+
+# ==============================================================================
+# 2. EXTRACT DATA FOR FIGURE 'pl2'
+# ==============================================================================
+
+# --- pl2 Panel A: Manhattan Plot (-log10 p-value) ---
+# X: order_number, Y: -log10(plot_p)
+pl2_panel_a_data <- to_plot |>
+  select(evarname, pvarname, enewsubcategory, pnewsubcategory, 
+         order_number, plot_p, sig_levels) |>
+  mutate(neg_log10_p = -log10(plot_p)) |>
+  arrange(order_number)
+
+write.csv(pl2_panel_a_data, "pl2_panel_A_manhattan_data.csv", row.names = FALSE)
+write.csv(xaxis_labels, "pl2_panel_A_axis_labels.csv", row.names = FALSE)
+
+# --- pl2 Panel B & C: Bar Charts (% Identified) ---
+# Prepare 'ecat' and 'pcat' columns
+adjusted_meta_2_bar <- adjusted_meta_2 |> 
+  mutate(ecat = ifelse(is.na(enewsubcategory), ecategory, enewsubcategory),
+         pcat = ifelse(is.na(pnewsubcategory), pcategory, pnewsubcategory))
+
+# Panel B: Phenotype Group Bars
+# X: pcat, Y: pct_sig_per_category
+pl2_panel_b_data <- adjusted_meta_2_bar |> 
+  group_by(pcat, sig_levels) |> 
+  summarize(n = n(), .groups="drop_last") |>
+  ungroup() |>
+  group_by(pcat) |>
+  mutate(total_tests = sum(n),
+         pct_sig_per_category = n / total_tests) |>
+  filter(sig_levels == 'Bonf.<0.05') |>
+  select(pcat, n_significant=n, total_tests, pct_sig_per_category)
+
+write.csv(pl2_panel_b_data, "pl2_panel_B_pheno_bars.csv", row.names = FALSE)
+
+# Panel C: Exposure Group Bars
+# X: ecat, Y: pct_sig_per_category
+pl2_panel_c_data <- adjusted_meta_2_bar |> 
+  group_by(ecat, sig_levels) |> 
+  summarize(n = n(), .groups="drop_last") |>
+  ungroup() |>
+  group_by(ecat) |>
+  mutate(total_tests = sum(n),
+         pct_sig_per_category = n / total_tests) |>
+  filter(sig_levels == 'Bonf.<0.05') |>
+  select(ecat, n_significant=n, total_tests, pct_sig_per_category)
+
+write.csv(pl2_panel_c_data, "pl2_panel_C_expo_bars.csv", row.names = FALSE)
+
+
+# ==============================================================================
+# 3. EXTRACT DATA FOR FIGURE 'ppp'
+# ==============================================================================
+
+# --- ppp Panel A: Manhattan R2 Plot ---
+# X: order_number, Y: rsquared (capped at 0.1)
+ppp_panel_a_data <- to_plot |>
+  mutate(rsquared_capped = ifelse(rsq_adjusted_base_diff >= .1, .1, rsq_adjusted_base_diff)) |>
+  select(evarname, pvarname, enewsubcategory, pnewsubcategory, 
+         order_number, rsq_adjusted_base_diff, rsquared_capped, sig_levels) |>
+  arrange(order_number)
+
+write.csv(ppp_panel_a_data, "ppp_panel_A_r2_manhattan.csv", row.names = FALSE)
+
+# --- ppp Panel B: CDF Phenotype ---
+# This plot has two layers: ECDF curves and Summary Points (Labels)
+
+# 1. Summary Points (The labels in the plot)
+ecdf_for_sig <- adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05') |> pull(rsq_adjusted_base_diff) |> ecdf()
+
+ppp_panel_b_points <- adjusted_meta_2 |> 
+  filter(sig_levels == 'Bonf.<0.05') |> 
+  group_by(pcategory, pnewsubcategory) |> 
+  summarize(median_r2 = median(rsq_adjusted_base_diff, na.rm=TRUE), .groups="drop") |>
+  mutate(q = ecdf_for_sig(median_r2),
+         label = pnewsubcategory)
+
+write.csv(ppp_panel_b_points, "ppp_panel_B_cdf_labels.csv", row.names = FALSE)
+
+# 2. Raw Data for ECDF Curves (x=rsq, color=sig_levels)
+# Users can reconstruct the curve using these raw values
+ppp_panel_b_curves <- adjusted_meta_2 |>
+  select(rsq_adjusted_base_diff, sig_levels)
+
+write.csv(ppp_panel_b_curves, "ppp_panel_B_cdf_raw_values.csv", row.names = FALSE)
+
+# --- ppp Panel C: CDF Exposure ---
+# 1. Summary Points
+ppp_panel_c_points <- adjusted_meta_2 |> 
+  filter(sig_levels == 'Bonf.<0.05') |> 
+  group_by(ecategory, enewsubcategory) |> 
+  summarize(median_r2 = median(rsq_adjusted_base_diff, na.rm=TRUE), .groups="drop") |>
+  mutate(q = ecdf_for_sig(median_r2),
+         label = enewsubcategory)
+
+write.csv(ppp_panel_c_points, "ppp_panel_C_cdf_labels.csv", row.names = FALSE)
+# Raw values are the same as Panel B (based on overall adjusted_meta_2 distribution)
+
+# --- ppp Panel D: R2 Base vs Adjusted Comparison ---
+# Need to reconstruct the univariate and multivariate data frames
+
+# 1. Univariate Data (Black circles)
+# X: rsq_base, Y: rsq_adj_e
+rsq_uni <- adjusted_meta_2 |> 
+  select(evarname, pvarname) |> 
+  unique() |> 
+  left_join(r2_overall, by=c("evarname"="exposure", "pvarname"="phenotype")) |>
+  filter(model_number == 2)
+
+rsq_uni_base <- rsq_uni |> filter(aggregate_base_model == 0) |> select(evarname, pvarname, rsq) |> rename(rsq_adj_e = rsq)
+rsq_uni_e <- rsq_uni |> filter(aggregate_base_model == 1) |> select(evarname, pvarname, rsq) |> rename(rsq_base = rsq)
+ppp_panel_d_univariate <- rsq_uni_base |> 
+  left_join(rsq_uni_e, by=c("evarname", "pvarname")) |>
+  filter(evarname != 'LBXHCT')
+
+write.csv(ppp_panel_d_univariate, "ppp_panel_D_univariate_r2.csv", row.names = FALSE)
+
+# 2. Multivariate Data (Red points)
+# X: rsq_base, Y: rsq_exposures + rsq_base
+# Assuming 'rsq_summary' is loaded as 'rsq_mv' per the Rmd
+ppp_panel_d_multivariate <- rsq_mv |>
+  mutate(rsq_exposures = ifelse(rsq_exposures < 0, 0, rsq_exposures),
+         y_val = rsq_exposures + rsq_base) |>
+  select(phenotype, rsq_base, rsq_exposures, y_val)
+
+write.csv(ppp_panel_d_multivariate, "ppp_panel_D_multivariate_r2.csv", row.names = FALSE)
+
+
+
+```
 
 
 

@@ -33,7 +33,7 @@ exposure_desc  <- adjusted_meta_2 |> select(evarname, evardesc, esubcategory, en
 
 
 ```{r}
-cfdds <- read_rds("./CFDDS.rds")
+cfdds <- read_rds("../pe_summary_0824/CFDDS.rds")
 summary_stats <- cfdds$pe_tidied |> filter(model_number == 2) |> filter(grepl("expo", term)) |> rename(evarname=exposure, pvarname=phenotype)
 summary_stats <- summary_stats |> left_join(exposure_desc , by="evarname")
 
@@ -54,7 +54,7 @@ summary_stats <- summary_stats |> left_join(rsq)
 
 ```{r fig.height=7, fig.width=9}
 #sig_data <- summary_stats |> filter(p.value < 0.000523)
-sig_data <- summary_stats |> filter(p.value < 0.001)
+sig_data <- summary_stats |> filter(p.value < 0.01)
 
 p <- ggplot(summary_stats, aes(rsq_diff*100, -log10(p.value)))
 p <- p + geom_point() + theme_bw() + xlab("R-squared of E (%)") + ylab("-log10(p.value)")
@@ -72,6 +72,8 @@ cowplot::plot_grid(p1, p2, labels=c("A", "B"))
 
 
 ```
+
+
 
 Exposomic correlation with other phenotypes
 

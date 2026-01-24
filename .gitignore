@@ -11,6 +11,7 @@ db/ee_summary_stats_03_2024.sqlite
 db/pp_summary_stats_03_2024.sqlite
 db/nhanes_031725.sqlite
 db/nhanes_112824.sqlite
+db/shiny/pe_shiny_2.sqlite
 db/pe_summary_stats_01_2025.sqlite
 db/pe_summary_stats_08_2024.sqlite
 db/pe_summary_stats_percentile_10_2024.sqlite

@@ -179,17 +179,25 @@ plot_grid(p1, p2, p3, ncol=3, labels=c("A", "B", "C"))
 plot_grid(p4,p5, ncol=2, labels=c("A", "B"))
 
 
-adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05') |> 
-  summarize(median((expo_age_40-expo_age_80)), 
-            quantile((expo_age_40-expo_age_80), probs=.25), 
-            quantile((expo_age_40-expo_age_80), probs=.75))
+#adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05') |> 
+#  summarize(median((expo_age_40-expo_age_80)), 
+#            quantile((expo_age_40-expo_age_80), probs=.25, na.rm=T), 
+#            quantile((expo_age_40-expo_age_80), probs=.75, na.rm=T))
 
-adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05') |> 
-  summarize(median((estimate_overall-expo_age_80)), 
-            quantile((estimate_overall-expo_age_80), probs=.25), 
-            quantile((estimate_overall-expo_age_80), probs=.75))
+#adjusted_meta_2 |> filter(sig_levels == 'Bonf.<0.05') |> 
+#  summarize(median((estimate_overall-expo_age_80)), 
+#            quantile((estimate_overall-expo_age_80), probs=.25), 
+#            quantile((estimate_overall-expo_age_80), probs=.75))
 
 
+```
+
+Extended Data Figure 6 Source Data
+```{r}
+# Panel A and B
+p4$data |> select (expo_age_40, expo_age_80, estimate_overall) |> write.csv(file="ExtFig6_PanelA-B.csv")
+# Panel C
+adjusted_meta_2 |> select(rsq_int_base_diff,rsq_adjusted_base_diff) |> write.csv(file="ExtFig6_PanelC.csv")
 ```
 
 ```{r}

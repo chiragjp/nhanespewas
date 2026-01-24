@@ -51,7 +51,16 @@ sig_by_nobs |> filter(num_sig > 1) |> group_by(n) |> summarize(pct_over_2 = sum(
 
 
 ```
+Extended Data Figure 2
 
+```{r}
+p <- ggplot(sig_by_nobs, aes(factor(num_sig), I(pct_tests*100)))
+p <- p + geom_bar(stat = "identity") + facet_wrap(~n) + xlab("Number of Surveys P-E achieved p<0.05") + ylab("% of total P-E identified [FDR < 0.05]") + theme_bw()
+p
+
+write.csv(sig_by_nobs, file="ExtFig2.csv")
+
+```
 
 # Bonferroni signficant only
 ```{r}
@@ -82,6 +91,9 @@ sig_by_nobs |> filter(num_sig > 1) |> group_by(n) |> summarize(pct_over_2 = sum(
 
 ```
 
+
+
+
 ```{r}
 
 non_significant <- adjusted_meta_2 |> filter(sig_levels == '> BY & Bonf.') |> group_by(sig_levels, nobs)
@@ -103,6 +115,7 @@ sig_by_nobs |> filter(num_sig > 1) |> group_by(n) |> summarize(pct_over_2 = sum(
 ```
 
 
+
 ## Number of Signficant Associations
 
 of the associations measured in 10 surveys, how many were significant at a p.value of 0.05?
@@ -121,13 +134,7 @@ pct_sig_survey |> filter(n==10) |> group_by(num_sig, esubcategory) |> count()
 
 
 
-```{r}
-p <- ggplot(sig_by_nobs, aes(factor(num_sig), I(pct_tests*100)))
-p <- p + geom_bar(stat = "identity") + facet_wrap(~n) + xlab("Number of Surveys P-E achieved p<0.05") + ylab("% of total P-E identified [FDR < 0.05]") + theme_bw()
-p
 
-
-```
 
 
 

@@ -824,6 +824,128 @@ demographic_breakdown <- function(svy_dsn) {
 
 
 
+#' Estimate exposure ~ demographics (survey-weighted) for a single exposure
+#'
+#' This is a lightweight helper that reuses your existing “guts”:
+#'   get_tables() / figure_out_*weight() / name_and_xform_* / create_svydesign() / run_model()
+#'
+#' It fits: expo ~ <demographic covariates> (optionally including survey year)
+#' and returns a tidy coefficient table plus model fit stats.
+#'
+#' Notes:
+#' - The “outcome” in run_model() is `pheno`, so we map `pheno := expo` and set `expo := 1`
+#'   (intercept-only predictor) to make the model estimate E[exposure | demographics].
+#' - We force `scale_expo = FALSE` because the predictor is constant (1). Scaling the predictor
+#'   would break (svyvar of a constant is 0). The outcome scaling can be toggled via `scale_exposure`.
+#'
+#' @param exposure Character. NHANES exposure variable name (e.g., "LBXGTC").
+#' @param con DBI connection to NHANES sqlite.
+#' @param series Optional character vector or NULL. If provided and length==1, uses pe_by_survey_series path.
+#' @param adjustment_variables Character vector of demographic covariates.
+#' @param logxform_exposure Logical. If TRUE, log10-transform exposure using your log10_xform_variable().
+#' @param scale_exposure Logical. If TRUE, scale the exposure outcome (pheno) in run_model().
+#' @param include_survey_year Logical. If TRUE, add as.factor(SDDSRVYR) to adjustment_variables (when present).
+#' @param expo_table_name Optional override for exposure table name.
+#' @param save_svymodel Logical. If TRUE, return the svyglm object from run_model().
+#'
+#' @return A list with: dsn, unweighted_n, exposure, formula, glanced, tidied, r2, model (optional)
+#' @export
+expo_on_demographics <- function(exposure,
+                                 con,
+                                 series = NULL,
+                                 adjustment_variables = c(
+                                   "RIDAGEYR", "AGE_SQUARED", "RIAGENDR", "INDFMPIR",
+                                   "EDUCATION_LESS9", "EDUCATION_9_11", "EDUCATION_AA", "EDUCATION_COLLEGEGRAD",
+                                   "ETHNICITY_MEXICAN", "ETHNICITY_OTHERHISPANIC", "ETHNICITY_OTHER", "ETHNICITY_NONHISPANICBLACK"
+                                 ),
+                                 logxform_exposure = TRUE,
+                                 scale_exposure = FALSE,
+                                 include_survey_year = FALSE,
+                                 expo_table_name = NULL,
+                                 save_svymodel = FALSE) {
+
+  # Optionally add survey year as a factor term (only if column exists later)
+  if (isTRUE(include_survey_year)) {
+    adjustment_variables <- c(adjustment_variables, "as.factor(SDDSRVYR)")
+  }
+
+  # ---------- Pull and weight data ----------
+  if (!is.null(series) && length(series) == 1) {
+    # single-series path using get_tables()
+    tab_obj <- get_tables(pheno = exposure, exposure = exposure, series = series, con = con,
+                          pheno_table_name = expo_table_name, expo_table_name = expo_table_name)
+    tab_obj <- figure_out_weight(tab_obj)
+  } else {
+    # multi-series path using get_x_y_tables_as_list()
+    etables <- get_table_names_for_varname(con, varname = exposure, series) |> rename(e_name = Data.File.Name)
+    if (nrow(etables) == 0) stop("Exposure variable not found in get_table_names_for_varname(): ", exposure)
+
+    tab_obj <- get_x_y_tables_as_list(con, etables$e_name, etables$e_name)
+    tab_obj <- figure_out_multiyear_weight(tab_obj)
+  }
+
+  # ---------- Create `expo` column (the exposure), then map to pheno ----------
+  # Use your log10 transform helper (handles zeros)
+  if (isTRUE(logxform_exposure)) {
+    tab_obj$merged_tab <- tab_obj$merged_tab |>
+      dplyr::mutate(expo = log10_xform_variable(!!as.name(exposure)))
+  } else {
+    tab_obj$merged_tab <- tab_obj$merged_tab |>
+      dplyr::mutate(expo = !!as.name(exposure))
+  }
+
+  # Invert roles so that run_model() fits: pheno ~ demographics (+ intercept predictor)
+  tab_obj$merged_tab <- tab_obj$merged_tab |>
+    dplyr::mutate(pheno = expo, expo = 1)
+
+  # Ensure adjustment variables exist (strip function wrappers for checking)
+  # e.g. "as.factor(SDDSRVYR)" -> "SDDSRVYR"
+  adjust_raw_vars <- all.vars(stats::as.formula(sprintf("~ %s", paste(adjustment_variables, collapse = " + "))))
+
+  dat <- tab_obj$merged_tab |>
+    dplyr::filter(
+      !is.na(wt), wt > 0,
+      !is.na(pheno),
+      dplyr::if_all(tidyselect::all_of(adjust_raw_vars), ~ !is.na(.))
+    )
+
+  if (nrow(dat) == 0) stop("No complete-case rows after filtering (wt/pheno/adjusters).")
+
+  dsn <- create_svydesign(dat)
+
+  # ---------- Fit model: pheno ~ demographics ----------
+  rhs <- paste(adjustment_variables, collapse = " + ")
+  form <- stats::as.formula(sprintf("pheno ~ %s", rhs))
+
+  # IMPORTANT: scale_expo must be FALSE because predictor expo==1 is constant
+  fit <- run_model(
+    formu = form,
+    dsn = dsn,
+    scale_expo = FALSE,
+    scale_pheno = isTRUE(scale_exposure),
+    quantile_expo = NULL,
+    expo_levels = NULL,
+    scale_type = 1,
+    regTermTestForm = NULL,
+    save_svymodel = save_svymodel
+  )
+
+  list(
+    dsn = dsn,
+    unweighted_n = nrow(dsn),
+    exposure = exposure,
+    logxform_exposure = logxform_exposure,
+    scale_exposure = scale_exposure,
+    series = tab_obj$series,
+    formula = form,
+    glanced = fit$glanced,
+    tidied = fit$tidied,
+    r2 = fit$r2,
+    model = fit$model
+  )
+}
+
+
 #' XY by Table Flexible Adjustments
 #'
 #' This function operates similarly to the 'pe' function, but takes a pre-processed table object as input instead of separate phenotype and exposure tables. It is designed to help analysts scale up the pe associations by sepearting the "get_tables" procedure from runnin an association.

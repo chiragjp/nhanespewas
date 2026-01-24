@@ -171,7 +171,7 @@ Heatmap(to_array_pe, left_annotation = rowAn,
         name="Adjusted Beta",
         )
 
-pdf(file="./paper_figures_tables/atlas_fig3.pdf")
+#pdf(file="./paper_figures_tables/atlas_fig3.pdf")
 hm <- Heatmap(to_array_pe, left_annotation = rowAn, 
         right_annotation = rowAn, 
         top_annotation = colAn, 
@@ -188,6 +188,13 @@ draw(hm)
 dev.off()
 
 ```
+
+
+```{r csv source file}
+write.csv(to_array_pe, file="fig4_architecture.csv")
+```
+
+
 
 
 EE Architecture
@@ -214,7 +221,7 @@ Heatmap(m, right_annotation = ha, row_split = row_split_by_ecategory,
 
 
 
-
+ee_m <- m
 ```
 
 ```{r}
@@ -265,7 +272,7 @@ Heatmap(m, right_annotation = ha, row_split = col_split_by_pcategory,
         show_row_names=F, show_column_names = F, cluster_rows = T, cluster_columns = T, show_column_dend = F, show_row_dend = F,
         name="Correlation")
 
-
+pp_m <- m
 phenome_correlation_str <- phenome_correlation |> stretch() |> right_join(adjusted_meta_to_hm |> select(pvarname, pnewsubcategory, pvardesc) |> unique(), by=c("x"="pvarname"))
 
 phenome_correlation_str |> group_by(pnewsubcategory) |> summarize(m=median(r, na.rm=T),m_abs=median(abs(r), na.rm=T), q25_abs=quantile(abs(r), probs=.25, na.rm=T),q75_abs=quantile(abs(r), probs=.75, na.rm=T)) 
@@ -273,4 +280,11 @@ phenome_correlation_str |> group_by(pnewsubcategory) |> summarize(m=median(r, na
 phenome_correlation_str |> summarize(m=median(abs(r), na.rm=T))
 phenome_correlation_str |> filter(x!=y) |> filter(x=='LBXGLU')|> arrange(r) |> head(200) 
 
+```
+
+
+Extended Data Figure 7 Source Data
+```{r}
+pp_m |> write.csv(file="ExtData7_PanelB.csv")
+ee_m |> write.csv(file="ExtData7_PanelA.csv")
 ```

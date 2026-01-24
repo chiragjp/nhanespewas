@@ -18,3 +18,12 @@
 ^scripts
 ^select
 ^srun_meta.sh$
+
+
+^db/.*\\.sqlite$
+^\\.git$
+^\\.Rproj\\.user$
+^pe_summary_.*$
+^ubiome_summary_.*$
+^select$
+^data$

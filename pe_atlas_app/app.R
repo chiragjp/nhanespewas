@@ -38,9 +38,8 @@ expos_wide <- read_fst("data/expos_wide.fst", as.data.table = T)
 ui <- navbarPage("Phenome-Exposome Atlas",
     tabPanel("About",
       mainPanel(h1("Welcome to the Phenome-Exposome Atlas!"),
-                p("How much variation do exposures explain in phenotype?"),
-                p("This is an atlas of 127K correlations between 278 phenotypes (e.g., body mass index, glucose, height, creatinine) and 651 exposures and behaviors (e.g., self-reported nutrient intake; blood lead levels; urinary phthalates; blood PFOA) across the National Health and Nutrition Examination Surveys (NHANES) in individuals from 1999-2017. For each survey, we associate the phenotype and exposure, and summarize the association size across the surveys. We assess the robustness of associations by estimating the false discovery rate, consistency with adjustments, and concordance across multiple waves of the surveys."),
-                img(src="pe_fig1.png",height="650px"),
+                p("This is an atlas of 127K correlations between 309 phenotypes (e.g., body mass index, glucose, height, creatinine, methylation age) and 619 exposures and behaviors (e.g., self-reported nutrient intake; blood lead levels; urinary phthalates; blood PFOA) in participants from the US."),
+                img(src="Fig1.png",height="650px"),
                 h3("GitHub Repository:"),
                 p(a("nhanes_pewas", href="https://github.com/chiragjp/nhanes_pewas"))
                 )
@@ -172,16 +171,18 @@ reactable_tibble <- function(meta_obj) {
     mutate(neglogpvalue=-log10(p.value)) |> select(-p.value) |>
     rename(effect.size=estimate,r.squared=rsq_adjusted_base_diff,n_surveys=nobs, total_sample_size=total_n, p_description=pvardesc, e_description=evardesc) |>
     rename(es_25_50=expoq2, es_50_75=expoq3, es_75_90=expoq4, es_90_100=expoq5)
-  to_react <- to_react |> select(p_description, e_description, effect.size, es_25_50, es_50_75, es_75_90, es_90_100, neglogpvalue, sig_levels, r.squared, i.squared.uwls, total_sample_size, n_surveys)
+  to_react <- to_react |>
+    #select(p_description, e_description, effect.size, es_25_50, es_50_75, es_75_90, es_90_100, neglogpvalue, sig_levels, r.squared, i.squared.uwls, total_sample_size, n_surveys)
+    select(p_description, e_description, effect.size, r.squared, neglogpvalue, sig_levels, total_sample_size, n_surveys, i.squared.uwls)
 }
 
 reactable_summary_stats <- function(meta_obj) {
   to_react <- reactable_tibble(meta_obj)
   reactable(to_react |> arrange(-r.squared), columns = list(effect.size=colDef(format = colFormat(digits=3)),
-                                                               es_25_50=colDef(format = colFormat(digits=3)),
-                                                               es_50_75=colDef(format = colFormat(digits=3)),
-                                                               es_75_90=colDef(format = colFormat(digits=3)),
-                                                               es_90_100=colDef(format = colFormat(digits=3)),
+                                                               #es_25_50=colDef(format = colFormat(digits=3)),
+                                                               #es_50_75=colDef(format = colFormat(digits=3)),
+                                                               #es_75_90=colDef(format = colFormat(digits=3)),
+                                                               #es_90_100=colDef(format = colFormat(digits=3)),
                                                                neglogpvalue=colDef(format=colFormat(digits=1)),
                                                                i.squared.uwls=colDef(format = colFormat(digits=2)),
                                                                r.squared=colDef(format=colFormat(digits=4))
@@ -341,8 +342,30 @@ server <- function(input, output, session) {
         to_react <- adjusted_meta_2 |> filter(pvarname == pvarn)
         #qns <- tbl(pool, "pe_quantile_ns") |> filter(pvarname == pvarn) |>
         #  select(estimate, evarname, pvarname, term) |> pivot_wider(names_from =c("term"), values_from=c("estimate"))
-        qns <- pe_quantile_ns |> filter(pvarname == pvarn) |>
-          select(estimate, evarname, pvarname, term) |> pivot_wider(names_from =c("term"), values_from=c("estimate"))
+        qns_raw <- pe_quantile_ns |> filter(pvarname == pvarn) |>
+          select(estimate, evarname, pvarname, term) #|> pivot_wider(names_from =c("term"), values_from=c("estimate"))
+
+        if (nrow(qns_raw) == 0) {
+          # Manually define the structure if empty
+          # Use the unique values of 'term' from the ENTIRE dataset to be safe
+          all_possible_terms <- unique(pe_quantile_ns$term)
+
+          qns <- tibble::tibble(
+            evarname = character(),
+            pvarname = character()
+          )
+
+          # Add the columns that pivot_wider WOULD have created
+          for (col in all_possible_terms) {
+            qns[[as.character(col)]] <- numeric()
+          }
+
+        } else {
+          # If we have data, proceed with your original logic
+          qns <- qns_raw |>
+            select(estimate, evarname, pvarname, term) |>
+            pivot_wider(names_from = "term", values_from = "estimate")
+        }
 
         to_react <- to_react |> left_join(qns, by=c("evarname", "pvarname"))
         reactable_summary_stats(to_react)

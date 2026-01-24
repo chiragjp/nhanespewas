@@ -1,0 +1,25 @@
+---
+title: "dwas"
+author: "Chirag Patel"
+date: "2025-12-30"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+rds_files <- dir("../de_summary_1225/", pattern=".rds")
+tidied <- vector(mode="list", length=length(rds_files))
+rsq <- vector(mode="list", length=length(rds_files))
+for(i in seq_along(rds_files)) {
+  dat <- read_rds(file.path("../de_summary_1225/", rds_files[i]))
+  tidied[[i]] <- dat$pe_tidied
+  rsq[[i]] <- dat$rsq
+}
+tidied <- bind_rows(tidied)
+rsq <- bind_rows(rsq)
+
+
+```

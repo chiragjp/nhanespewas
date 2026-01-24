@@ -100,7 +100,7 @@ p <- ggplot(lbx_urx, aes(estimate_lbx, estimate_urx, color=sig_levels_lbx))
 p <- p + geom_point() 
 p <- p + geom_abline() + geom_hline(yintercept=0) + geom_vline(xintercept =0) + facet_grid(urx_lbx_name~sig_levels_lbx) +scale_color_aaas()
 p <- p +  theme_bw() + theme(legend.title=element_blank()) + xlab("Effect Size Estimate of Blood Biomarker") + ylab("Effect Size Estimate of Urinary Biomarker")
-
+p
 
 
 lbx_urx |> group_by(urx_lbx_name, sig_levels_lbx) |> summarize(cr=cor(estimate_lbx, estimate_urx))
@@ -129,3 +129,13 @@ p
 lbx_sr |> group_by(sig_levels_lbx) |> summarize(cr=cor(estimate_lbx,estimate_sr))
 
 ```
+
+
+Extended Data Figure 4 Source Data
+```{r}
+ds |> select(evarname_DS1, evarname_DS2, estimate_DS1, estimate_DS2, sig_levels_DS1) |> write.csv(file="ExtFig4_PanelA.csv")
+lbx_sr |> select(estimate_lbx, estimate_sr, sig_levels_lbx, lbx_sr_name) |> write.csv(file="ExtFig4_PanelB.csv")
+lbx_urx |> select(estimate_lbx, estimate_urx, sig_levels_lbx, urx_lbx_name) |> write.csv(file="ExtFig4_PanelC.csv")
+```
+
+

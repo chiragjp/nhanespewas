@@ -118,6 +118,7 @@ exposome_globe <- function(corr_tibble, exposure_tibble) {
     vertex.label.family = "sans",
     edge.curved=FALSE,
     edge.width = abs(E(g)$estimate) * scaling_factor)
+  sig_graph
 }
 
 #exposome_globe(ee_process$adjusted_meta_raw, adjusted_meta_2 |> rename(phenotype=pvarname, exposure=evarname) |> filter(phenotype == 'LBXGH', p.value_overall < 1e-5) |> slice_min(n=10, order_by = -rsq_adjusted_base_diff))
@@ -144,8 +145,9 @@ for(ii in 1:length(uniq_exposures)) {
 
 to_globe <- to_globe |> bind_rows() |> select(exposure) |> group_by(exposure) |> count() |> ungroup()
 
-exposome_globe(ee_process$adjusted_meta_raw, to_globe)
+eg_a <- exposome_globe(ee_process$adjusted_meta_raw, to_globe)
 
+write.csv(eg_a, file="fig5_globe.csv")
 ## distribution of correlations
 exposure_corr_for_random<- ee_process$adjusted_meta_raw |> right_join(to_globe |> select("exposure") |> collect(), by=c("xvarname"="exposure")) |> right_join(to_globe |> select("exposure") |> collect(), by=c("yvarname"="exposure")) 
 
@@ -177,9 +179,12 @@ for(ii in 1:length(evar_examples)) {
 
 to_globe <- to_globe |> bind_rows() |> select(exposure) |> group_by(exposure) |> count() |> ungroup()
 
-exposome_globe(ee_process$adjusted_meta_raw, to_globe)
+eg_b <- exposome_globe(ee_process$adjusted_meta_raw, to_globe)
 
+# Source data for Figure 5
+write.csv(eg_b, file="fig5_globe_panelB.csv")
 exposure_corr_for_sig <- ee_process$adjusted_meta_raw |> right_join(to_globe |> select("exposure") |> collect(), by=c("xvarname"="exposure")) |> right_join(to_globe |> select("exposure") |> collect(), by=c("yvarname"="exposure")) 
+
 
 
 
@@ -239,4 +244,28 @@ p_cdf <- p
 
 p_cdf
 
+### csv file
+to_write_p_cdf <- rbind(ee_process$adjusted_meta_raw |> mutate(p.bonf=p.adjust(p.value), p_sig=p.bonf<.05) |> filter(p.bonf < 0.05) |> select(estimate) |> mutate(color="black"),
+exposure_corr_for_sig |> select(estimate) |> mutate(color="blue"),
+exposure_corr_for_random |> select(estimate) |> mutate(color="grey"))
+write.csv(to_write_p_cdf,file="fig5_panelC.csv")
+
+```
+
+
+```{r globe for FEV, fig.height=8, fig.width=8}
+evar_examples <- c(
+  "SPXNFEV1"
+)
+
+temp_am <- adjusted_meta_2 |>  rename(phenotype=pvarname, exposure=evarname) |> filter(sig_levels == 'Bonf.<0.05')
+to_globe <- vector("list", length = length(evar_examples))
+for(ii in 1:length(evar_examples)) {
+  to_globe[[ii]] <- temp_am |> filter(phenotype == evar_examples[ii]) |> slice_min(n=20, order_by = -rsq_adjusted_base_diff)
+}
+
+to_globe <- to_globe |> bind_rows() |> select(exposure) |> group_by(exposure) |> count() |> ungroup()
+
+eg_fev <- exposome_globe(ee_process$adjusted_meta_raw, to_globe)
+#write.csv(eg_fev, file="ExtData5_FEVglobe.csv")
 ```

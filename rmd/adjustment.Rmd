@@ -199,3 +199,12 @@ pl
 ggsave("./paper_figures_tables/adjustment_fig5.pdf", plot=pl, width=8.5, height=8)
 
 ```
+
+Extended Data Figure 3 Source Data
+```{r}
+# Panel A
+histogram_p$data |> select(scenario_label, estimate_adjusted, estimate) |> write.csv(file="ExtFig3_PanelA.csv")
+# Panel B
+voe_p$data |> select(scenario_label, estimate, evardesc,std.error.x) |> write.csv(file="ExtFig3_PanelB.csv")
+
+```

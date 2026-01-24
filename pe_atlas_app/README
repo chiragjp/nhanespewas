@@ -1,0 +1,6 @@
+Chirag Patel
+1/23/26
+See ../db/shiny for creation of the database and the .fst files needed for this app.
+.fst files are recommended for fast loading.
+(the .sqllite is not being used to keep things small)
+TODO: move over to posit connect cloud
