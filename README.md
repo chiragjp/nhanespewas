@@ -8,7 +8,7 @@ We build a comprehensive "atlas" of correlations between 305 phenotypes (e.g., m
 
 Specifically, the atlas provides a comprehensive list of exposure-phenome associations across the cohort, document statistical approaches used to associate exposures with phenotype, and systematically assesses reproducibility across independent cohorts.
 
-<img src="img/pe_fig1.png" width="70%" height="70%"/>
+<img src="img/pe_fig1.png" width="50%" height="50%"/>
 
 ## Phenome-Exposome Atlas and Browser
 
@@ -19,6 +19,7 @@ Specifically, the atlas provides a comprehensive list of exposure-phenome associ
 ### Download the database
 
 NHANES (.sqlite) <https://figshare.com/ndownloader/files/54925445>
+Summary Statistics <https://figshare.com/ndownloader/files/58835380>
 
 ### Install the R package
 
