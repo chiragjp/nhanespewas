@@ -5,7 +5,7 @@ account: chiragjp
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 13652771
-bundleId: 11486975
+bundleId: 11487111
 url: https://chiragjp.shinyapps.io/pe_atlas_app/
 version: 1
 asMultiple: FALSE

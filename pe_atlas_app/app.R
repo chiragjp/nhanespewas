@@ -33,15 +33,32 @@ phenotype_correlation <- read_fst('data/phenotype_correlation.fst', as.data.tabl
 expos_wide <- read_fst("data/expos_wide.fst", as.data.table = T)
 ##
 
+overview_text <-
+  "Non-genetic exposures comprising the exposome, including diet, lifestyle, infections and pollutants, may shape many clinical phenotypes relevant to health, yet evidence remains fragmented. We conducted an exposome-wide association study (ExWAS) across 619 indicators of exposure and 305 quantitative phenotypes across 10 independent US Centers for Disease Control and Preventional National Health and Nutrition Examination Survey (CDC NHANES) waves. Our findings highlight which exposures are most likely to add value to disease risk assessment, population surveillance, exposure prioritization, and next-generation longitudinal exposomics."
+
+
+## precompute stuff for globes
+#all_possible_categories <- sort(unique(ee$xcategory))
+all_possible_categories <- c("pollutant", "nutrients", "smoking", "infection", "allergy", "income", "physical activity")
+color_pal <- ggsci::pal_tron("legacy", alpha = 0.7)
+MASTER_COLORS <- setNames(color_pal(length(all_possible_categories)),
+                          all_possible_categories)
 
 ## ui
 ui <- navbarPage("Phenome-Exposome Atlas",
+    tags$head(includeHTML("g-analytics.html")),
     tabPanel("About",
-      mainPanel(h1("Welcome to the Phenome-Exposome Atlas!"),
-                p("This is an atlas of 127K correlations between 309 phenotypes (e.g., body mass index, glucose, height, creatinine, methylation age) and 619 exposures and behaviors (e.g., self-reported nutrient intake; blood lead levels; urinary phthalates; blood PFOA) in participants from the US."),
+      mainPanel(h1("The Phenome-Exposome Atlas of Health and Disease Risk"),
+                #p("This is an atlas of links between phenotypes (e.g., body mass index, glucose, height, creatinine, methylation age) and exposures/behaviors (e.g., self-reported nutrient intake; blood lead levels; urinary phthalates; blood PFOA) in participants from the US."),
                 img(src="Fig1.png",height="650px"),
-                h3("GitHub Repository:"),
-                p(a("nhanes_pewas", href="https://github.com/chiragjp/nhanes_pewas"))
+                h2("Overview:"),
+                p(overview_text),
+                h2("Data and Software Resources:"),
+                h3(a("Data and Software", href="https://github.com/chiragjp/nhanespewas")),
+                h2("Citation & Paper:"),
+                h3(a("Preprint", href="https://www.medrxiv.org/content/10.1101/2025.06.05.25329055v2")),
+                h3("Paper in press! Check back here soon!"),
+                h3(a("Contact us", href="https://www.chiragjpgroup.org/about.html"))
                 )
     ),
     tabPanel("Browse By Phenotype",
@@ -53,7 +70,7 @@ ui <- navbarPage("Phenome-Exposome Atlas",
             h2("Category:", textOutput("pvariable_subcategory")),
             tabsetPanel(type = "tabs",
                 tabPanel("-log(P) vs. Exposure Group", plotOutput("by_phenotype_manhattan_plot")),
-                tabPanel("Effect Sizes", plotOutput("by_phenotype_effect_size")),
+                tabPanel("Effect Sizes", plotOutput("by_phenotype_effect_size",height = "600px")),
                 tabPanel("R^2", plotOutput("by_phenotype_r2_plot")),
                 tabPanel("-log(P) vs. Effect Size", plotOutput("by_phenotype_volcano_plot"),
                          p("Points in the background depict summary stats for the entire category")),
@@ -225,11 +242,37 @@ plot_effect_size <- function(to_plot) {
   pvarname_lcl <- unique(to_plot$pvarname)[1]
   p <- ggplot(to_plot |> filter(!is.na(sig_levels)) |> mutate(sig_levels = factor(sig_levels, levels=c("> BY & Bonf.", "BY<0.05", "Bonf.<0.05"))),
               aes(y=exposure_level, x=I(abs(estimate)), fill=sig_levels))
-  p <- p + geom_violin()
+  p <- p + geom_violin(orientation = "y", scale = "width", width = 0.5)
+  #p <- p + geom_histogram(orientation = "y", width = 0.5)
   p <- p + xlab("Absolute Value Effect Size [1 Unit of Phenotype (original units)]") + ylab("Quantile of Exposure") + ylab("Percentile of Exposure")
   p <- p + scale_fill_tron()
-  p <- p + theme_bw() + theme(legend.position = "bottom")
+  p <- p + theme_bw() + coord_flip() + theme(legend.position = "bottom")
   p
+}
+plot_effect_size_box <- function(to_plot) {
+
+  to_plot <- to_plot |>
+    filter(!is.na(sig_levels)) |>
+    mutate(
+      sig_levels = factor(sig_levels, levels = c("> BY & Bonf.", "BY<0.05", "Bonf.<0.05")),
+      exposure_level = factor(exposure_level)
+    )
+
+
+  p <- ggplot(to_plot, aes(x = exposure_level, y = abs(estimate), fill = sig_levels)) +
+    # notch = TRUE can help show if medians differ significantly
+    geom_boxplot(outlier.size = 1, alpha = 0.8) +
+
+    # Flip the coordinates to make it horizontal
+    coord_flip() +
+
+    xlab("Percentile of Exposure") +
+    ylab("Absolute Value Effect Size") +
+    scale_fill_tron() +
+    theme_bw() +
+    theme(legend.position = "bottom")
+
+  return(p)
 }
 
 exposome_globe_plot <- function(exposure_tibble) {
@@ -251,14 +294,15 @@ exposome_globe_plot <- function(exposure_tibble) {
   sig_graph <- sig_graph |> mutate(estimate = ifelse(estimate > 1, 1, estimate)) |> mutate(estimate = ifelse(estimate < -1, -1, estimate))
 
   g <- graph_from_data_frame(sig_graph, directed = FALSE)
-  E(g)$color <- ifelse(E(g)$estimate > 0, "black", "grey")
+  E(g)$color <- ifelse(E(g)$estimate > 0, "black", "blue")
   V(g)$category <- sig_vertex$category[match(V(g)$name, sig_vertex$varname)]
   categories <- unique(V(g)$category)
   # Assign colors to each category
-  color_pal <- ggsci::pal_tron("legacy", alpha = 0.7)
-  category_colors <- setNames(color_pal(length(categories)), categories)
+  #color_pal <- ggsci::pal_tron("legacy", alpha = 0.7)
+  #category_colors <- setNames(color_pal(length(categories)), categories)
   # Map the colors to vertices based on category
-  vertex_colors <- category_colors[V(g)$category]
+  #vertex_colors <- category_colors[V(g)$category]
+  vertex_colors <- MASTER_COLORS[V(g)$category]
   coords <- layout_in_circle(g)
   scaling_factor <- 5
   par(mar = c(0, 0, 0, 0))
@@ -269,6 +313,7 @@ exposome_globe_plot <- function(exposure_tibble) {
        vertex.label.cex = 0.7,         # Control the size of the labels
        vertex.label.color = "black",   # Color of the labels
        vertex.label.family = "sans",
+       edge.curved=FALSE,
        edge.width = abs(sqrt(E(g)$estimate)) * scaling_factor
   )
 }
@@ -318,7 +363,7 @@ server <- function(input, output, session) {
       pcat <- p_variables |> filter(pvarname == pvarn) |> pull(pcategory)
       #es <- tbl(pool, "pe_quantile_ns") |> filter(pvarname == pvarn) |> collect()
       es <- pe_quantile_ns |> filter(pvarname == pvarn) #|> collect()
-      plot_effect_size(es)
+      plot_effect_size_box(es)
     })
 
     output$by_phenotype_r2_plot <- renderPlot({

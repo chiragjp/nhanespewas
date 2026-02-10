@@ -194,7 +194,129 @@ dev.off()
 write.csv(to_array_pe, file="fig4_architecture.csv")
 ```
 
+```{r}
+# Nature Medicine Research Summary version
+# Dimensions: 115mm x 85mm (approximately 4.5" x 3.3")
 
+# 1. Setup dimensions
+width_in <- 115 / 25.4  
+height_in <- 85 / 25.4  
+
+# 2. Filter and Process Data
+adjusted_meta_compact <- adjusted_meta_to_hm |>
+  filter(!pnewsubcategory %in% c("aging", "psa"))
+
+# Rebuild the matrix 
+to_array_pe_compact_df <- adjusted_meta_compact |>
+  filter(term_name %in% c('expo', 'expo1')) |>
+  select(evarname, pvarname, estimate_overall, p.value_overall) |>
+  mutate(estimate_overall = ifelse(p.value_overall >= 0.1 | is.na(estimate_overall), 0, estimate_overall)) |>
+  select(-p.value_overall) |>
+  pivot_wider(names_from = pvarname, values_from = estimate_overall) |>
+  as.data.frame() # Convert to DF to allow row names
+
+rownames(to_array_pe_compact_df) <- to_array_pe_compact_df$evarname
+to_array_pe_matrix <- as.matrix(to_array_pe_compact_df[, -1])
+
+# 3. Build Annotation Data Frames
+pvardesc_compact <- adjusted_meta_compact |>
+  filter(term_name %in% c('expo', 'expo1')) |>
+  select(pvarname, pcategory, pnewsubcategory) |>
+  distinct() |>
+  filter(pvarname %in% colnames(to_array_pe_matrix)) |>
+  left_join(pnewcat_colors, by = "pnewsubcategory") |>
+  as.data.frame()
+rownames(pvardesc_compact) <- pvardesc_compact$pvarname
+pvardesc_compact <- pvardesc_compact[colnames(to_array_pe_matrix), ]
+
+evardesc_compact <- adjusted_meta_compact |>
+  filter(term_name %in% c('expo', 'expo1')) |>
+  select(evarname, ecategory, super_ecat_number, enewsubcategory, super_ecat_name) |>
+  distinct() |>
+  filter(evarname %in% rownames(to_array_pe_matrix)) |>
+  left_join(super_ecat_colors, by = c("super_ecat_name" = "ecat_name")) |>
+  as.data.frame()
+rownames(evardesc_compact) <- evardesc_compact$evarname
+evardesc_compact <- evardesc_compact[rownames(to_array_pe_matrix), ]
+
+# 4. FIX: Named Color Vectors (The Error Fix)
+envec_compact <- evardesc_compact |> 
+  select(enewsubcategory, colors) |> 
+  distinct() |> 
+  deframe()
+
+pnvec_compact <- pvardesc_compact |> 
+  select(pnewsubcategory, colors) |> 
+  distinct() |> 
+  deframe()
+
+# 5. Define Splits and Colors
+row_split_compact <- factor(evardesc_compact$enewsubcategory)
+row_split_compact <- fct_reorder(row_split_compact, evardesc_compact$super_ecat_number)
+
+col_split_compact <- factor(pvardesc_compact$pnewsubcategory)
+col_split_compact <- fct_reorder(col_split_compact, pvardesc_compact$pnewcat_order)
+
+col_fun <- colorRamp2(c(-0.1, 0, 0.1), c("#2166AC", "white", "#B2182B"))
+
+# 6. Build Annotations
+rowAn_compact <- rowAnnotation(
+  sc = evardesc_compact$enewsubcategory,
+  show_legend = FALSE,
+  show_annotation_name = FALSE,
+  col = list(sc = envec_compact),
+  width = unit(2, "mm")
+)
+
+colAn_compact <- columnAnnotation(
+  sc = pvardesc_compact$pnewsubcategory,
+  show_legend = FALSE,
+  show_annotation_name = FALSE,
+  col = list(sc = pnvec_compact),
+  height = unit(2, "mm")
+)
+
+# 7. Create Heatmap
+hm_compact <- Heatmap(
+  to_array_pe_matrix,
+  col = col_fun,
+  left_annotation = rowAn_compact,
+  top_annotation = colAn_compact,
+  row_split = row_split_compact,
+  column_split = col_split_compact,
+  row_title_gp = gpar(fontsize = 5),
+  row_title_rot = 0,
+  column_title_gp = gpar(fontsize = 5),
+  column_title_rot = 90,
+  row_gap = unit(0.5, "mm"),
+  column_gap = unit(0.5, "mm"),
+  show_row_names = FALSE,
+  show_column_names = FALSE,
+  cluster_columns = FALSE,
+  cluster_rows = FALSE,
+  name = "Association",
+  heatmap_legend_param = list(
+    title_gp = gpar(fontsize = 5, fontface = "bold"),
+    labels_gp = gpar(fontsize = 4),
+    legend_height = unit(15, "mm")
+  ),
+  border = FALSE,
+  rect_gp = gpar(col = NA)
+)
+
+# 8. Save and Draw
+pdf(file = "./paper_figures_tables/atlas_fig_research_summary.pdf", width = width_in, height = height_in)
+draw(hm_compact, padding = unit(c(2, 2, 2, 2), "mm"), heatmap_legend_side = "right")
+dev.off()
+
+suppressMessages(draw(hm_compact, padding = unit(c(2, 2, 2, 2), "mm"), heatmap_legend_side = "right"))
+```
+ 
+ 
+ 
+ 
+ 
+ 
 
 
 EE Architecture

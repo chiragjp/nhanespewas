@@ -4,7 +4,7 @@
 
 ## Summary
 
-We build a comprehensive "atlas" of correlations between 305 phenotypes (e.g., methylation age, body mass index, glucose, height, creatinine) and 651 exposures and behaviors (e.g., self-reported nutrient intake; blood lead levels; urinary phthalates; blood PFOA) across the National Health and Nutrition Examination Surveys (NHANES), estimating 127,817 associations in individuals from 1999-2017. For each survey, we associate the phenotype and exposure, and summarize the association size across the surveys. We assess the robustness of associations by estimating the false discovery rate, consistency with adjustments, and concordance across multiple waves of the surveys.
+We build a comprehensive "atlas" of correlations between 305 phenotypes (e.g., methylation age, body mass index, glucose, height, creatinine) and 619 exposures and behaviors (e.g., self-reported nutrient intake; blood lead levels; urinary phthalates; blood PFOA) across the National Health and Nutrition Examination Surveys (NHANES), estimating \>100k associations in individuals from 1999-2017. For each survey, we associate the phenotype and exposure, and summarize the association size across the surveys. We assess the robustness of associations by estimating the false discovery rate, consistency with adjustments, and concordance across multiple waves of the surveys.
 
 Specifically, the atlas provides a comprehensive list of exposure-phenome associations across the cohort, document statistical approaches used to associate exposures with phenotype, and systematically assesses reproducibility across independent cohorts.
 
@@ -12,15 +12,15 @@ Specifically, the atlas provides a comprehensive list of exposure-phenome associ
 
 ## Phenome-Exposome Atlas and Browser
 
--   [PE Browsable Atlas](http://apps.chiragjpgroup.org/pe_atlas/)
+-   [PE Atlas](https://pe.exposomeatlas.com)
 
 ## nhanespewas: run your own P-E Associations
 
 ### Download the database
 
-- NHANES (.sqlite) <https://figshare.com/ndownloader/files/54925445>
+-   NHANES (.sqlite) <https://figshare.com/ndownloader/files/54925445>
 
-- Summary Statistics <https://figshare.com/ndownloader/files/58835380>
+-   Summary Statistics <https://figshare.com/ndownloader/files/58835380>
 
 ### Install the R package
 
