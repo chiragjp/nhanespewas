@@ -44,6 +44,6 @@ pe_meta <- pe_meta |> mutate(
 log_info("Done... saving file now.")
 ##
 remove(expos_nested)
-fileout <- str_glue('pp_meta_model_{MODEL_NUMBER}.rds')
+fileout <- str_glue('pe_meta_model_{MODEL_NUMBER}.rds')
 saveRDS(pe_meta, file=fileout)
 

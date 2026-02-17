@@ -76,8 +76,8 @@ ui <- navbarPage("Phenome-Exposome Atlas",
                          p("Points in the background depict summary stats for the entire category")),
                 tabPanel("Globe", plotOutput("by_phenotype_globe_plot"),
                         p("Nodes are exposures associated with phenotype"),
-                        p("Grey lines depict positive and significant correlations"),
-                        p("Black lines depict negative and significant correlations"),
+                        p("Black lines depict positive and significant correlations"),
+                        p("Blue lines depict negative and significant correlations"),
                         h3("Globe Abbreviation Legend"),
                          DTOutput("by_phenotype_globe_legend_table")),
                 tabPanel("Specification Bias", plotOutput("by_phenotype_estimate_plot"))
@@ -306,7 +306,7 @@ exposome_globe_plot <- function(exposure_tibble) {
   coords <- layout_in_circle(g)
   scaling_factor <- 5
   par(mar = c(0, 0, 0, 0))
-  plot(g, vertex.color = vertex_colors, layout=coords,
+  plot(g, layout=coords,
        vertex.size = 10,
        vertex.color = vertex_colors,
        vertex.label = substr(V(g)$name, nchar(V(g)$name)-2, nchar(V(g)$name)),      # Label each vertex with its name
@@ -314,7 +314,7 @@ exposome_globe_plot <- function(exposure_tibble) {
        vertex.label.color = "black",   # Color of the labels
        vertex.label.family = "sans",
        edge.curved=FALSE,
-       edge.width = abs(sqrt(E(g)$estimate)) * scaling_factor
+       edge.width = sqrt(abs(E(g)$estimate)) * scaling_factor
   )
 }
 
@@ -346,9 +346,9 @@ server <- function(input, output, session) {
 
     output$by_phenotype_globe_plot <- renderPlot({
       pvarn <-input$pvarname
-      pcat <- p_variables |> filter(pvarname == pvarn) |> pull(pcategory)
       #exposures_to_plot <- tbl(pool, "adjusted_meta_2") |> filter(pvarname == pvarn, sig_levels == "Bonf.<0.05")|> select(evarname)
       exposures_to_plot <- adjusted_meta_2 |> filter(pvarname == pvarn, sig_levels == "Bonf.<0.05")|> select(evarname)
+      validate(need(nrow(exposures_to_plot) > 0, "No exposures pass the Bonferroni significance threshold for this phenotype."))
       exposome_globe_plot(exposure_tibble = exposures_to_plot)
     })
     output$by_phenotype_globe_legend_table <- renderDT({
@@ -430,13 +430,6 @@ server <- function(input, output, session) {
       }
     )
 
-    output$phenotype_corr_table <- renderReactable({
-        pvarn <- input$pvarname
-        to_react <- exposure_correlation |> filter(x == pvarn) |> select(-x) |> rename(corr=r)
-        to_react <- to_react |> left_join(p_variable_domain, by=c("y"="Variable.Name")) |> select("pvardesc", "pcategory", "corr")
-        reactable(to_react |> arrange(-corr), columns=list(corr=colDef(format=colFormat(digits=3))))
-    })
-
     output$pvariable_description <- renderText({
         pvarn <- input$pvarname
         #ret <- tbl(pool, "p_variable_domain") |> filter(Variable.Name == pvarn) |> pull(pvardesc)
@@ -504,8 +497,17 @@ server <- function(input, output, session) {
       to_react <- adjusted_meta_2 |> filter(evarname == evarn)
       #qns <- tbl(pool, "pe_quantile_ns") |> filter(evarname == evarn) |>
       #  select(estimate, evarname, pvarname, term) |> pivot_wider(names_from =c("term"), values_from=c("estimate"))
-      qns <- pe_quantile_ns |> filter(evarname == evarn) |>
-        select(estimate, evarname, pvarname, term) |> pivot_wider(names_from =c("term"), values_from=c("estimate"))
+      qns_raw <- pe_quantile_ns |> filter(evarname == evarn) |>
+        select(estimate, evarname, pvarname, term)
+      if (nrow(qns_raw) == 0) {
+        all_possible_terms <- unique(pe_quantile_ns$term)
+        qns <- tibble::tibble(evarname = character(), pvarname = character())
+        for (col in all_possible_terms) {
+          qns[[as.character(col)]] <- numeric()
+        }
+      } else {
+        qns <- qns_raw |> pivot_wider(names_from = "term", values_from = "estimate")
+      }
       to_react <- to_react |> left_join(qns, by=c("evarname", "pvarname"))
       reactable_summary_stats(to_react)
     })
@@ -602,7 +604,16 @@ server <- function(input, output, session) {
         #qns <- tbl(pool, "pe_quantile_ns") |> filter(esubcategory == subcategory_str)
         qns <- pe_quantile_ns |> filter(esubcategory == subcategory_str)
       }
-      qns <- qns |> select(estimate, evarname, pvarname, term) |> pivot_wider(names_from =c("term"), values_from=c("estimate"))
+      qns_raw <- qns |> select(estimate, evarname, pvarname, term)
+      if (nrow(qns_raw) == 0) {
+        all_possible_terms <- unique(pe_quantile_ns$term)
+        qns <- tibble::tibble(evarname = character(), pvarname = character())
+        for (col in all_possible_terms) {
+          qns[[as.character(col)]] <- numeric()
+        }
+      } else {
+        qns <- qns_raw |> pivot_wider(names_from = "term", values_from = "estimate")
+      }
       to_react <- to_react |> left_join(qns, by=c("evarname", "pvarname"))
       reactable_summary_stats(to_react)
     })

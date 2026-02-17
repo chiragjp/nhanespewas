@@ -86,11 +86,11 @@ for(ii in 1:N) {
   if(use_quantile==1) {
     mod <- pe_safely(rw$pvarname, rw$evarname, adjustment_model_for_e, con,
                      logxform_p=F, logxform_e=F, scale_e=F, scale_p=T,
-                     quantile_expo=c(0, .25, .5, .75, 1), exposure_levels=NULL, scale_clr=SCALE_CLR)
+                     quantile_expo=c(0, .25, .5, .75, 1), exposure_levels=NULL, scale_type=SCALE_CLR)
   } else {
     mod <- pe_safely(rw$pvarname, rw$evarname, adjustment_model_for_e, con,
                      logxform_p=F, logxform_e=F, scale_e=T, scale_p=T,
-                     quantile_expo=NULL, exposure_levels=NULL, scale_clr=SCALE_CLR)
+                     quantile_expo=NULL, exposure_levels=NULL, scale_type=SCALE_CLR)
   }
 
   models[[ii]] <- mod ## each iteration contains a pair, and a data struct of all the models

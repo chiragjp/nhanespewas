@@ -167,7 +167,7 @@ if(series == "A") {
   log_info("J")
   samp_size <- ep_sample_sizes(con, e_variables |> filter(Begin.Year == 2017), p_variables |> filter(Begin.Year == 2017))
 } else {
-  exit("specify a valid series!")
+  stop("specify a valid series!")
 }
 
 #samp_size |> write_csv(sprintf('sample_size_pe_category_%s_0824.csv', series))

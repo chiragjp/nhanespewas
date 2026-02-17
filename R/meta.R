@@ -23,7 +23,7 @@ stanley_meta <- function(dat) {
   se <- sqrt(var.stanley)
   zval <- estimate / se
   pval <- pt(abs(zval), df=m, lower.tail = F)*2
-  pval.stouffer <- pnorm(abs(sum(dat$statistic)/(m+1)), lower.tail =F)*2
+  pval.stouffer <- pnorm(abs(sum(dat$statistic)/sqrt(m+1)), lower.tail =F)*2
   i2 <- (mse-1)/mse
   i2 <- ifelse(i2 < 0, 0, i2)
   return(list(estimate=estimate, std.error=se, zval=zval, pval = pval, pval.stouffer=pval.stouffer, k=k, h.squared=mse, Q=sse, I.squared=i2))

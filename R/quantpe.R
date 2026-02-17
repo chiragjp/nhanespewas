@@ -441,8 +441,8 @@ pe <- function(pheno, exposure, adjustment_variables,con, series=NULL,
                pheno_table_name=NULL, expo_table_name=NULL,
                quantile_expo=NULL, exposure_levels=NULL) {
   ## adjustment_variables has to be in the demo table
-  if(is.null(series) & length(series) == 1) {
-    return(pe_by_survey_series(pheno,exposure, adjustment_variables, con, series, logxform_p, logxform_e, scale_e, scale_p, pheno_table_name, expo_table_name, quantile_expo, exposure_levels))
+  if(!is.null(series) & length(series) == 1) {
+    return(pe_by_survey_series(pheno, exposure, adjustment_variables, series, con, logxform_p, logxform_e, scale_e, scale_p, pheno_table_name, expo_table_name, quantile_expo, exposure_levels))
   }
   ## get tables
   ptables <- get_table_names_for_varname(con, varname = pheno, series) |> rename(p_name = Data.File.Name)

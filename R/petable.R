@@ -127,7 +127,7 @@ get_tables <- function(pvarname, evarname, seriesName, con, pheno_table_name=NUL
   }
 
   if(expo_table_name == pheno_table_name) {
-    p_table <- p_table |> dplyr::select(SEQN, pvarname)
+    p_table <- p_table |> dplyr::select(SEQN, all_of(pvarname))
   }
 
   cols_both <- intersect(colnames(p_table), colnames(e_table)) |> setdiff(c("SEQN"))
@@ -205,7 +205,7 @@ get_table_names_for_varname <- function(con, varname, series=NULL) {
         if(!(tab_name %in% dbListTables(con))) {
           next;
         }
-        nrows <- tbl(con, tab_name) |> filter(!is.na(varname)) |> tally() |> pull(n)
+        nrows <- tbl(con, tab_name) |> filter(!is.na(!!sym(varname))) |> tally() |> pull(n)
         logger::log_info("Number of rows in { tab_name }: { nrows } ")
         nrow_per_table[[i]] <- tibble(Data.File.Name=tab_name, nrows_in_table=nrows)
       }
