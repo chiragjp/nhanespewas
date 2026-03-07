@@ -45,7 +45,7 @@ MASTER_COLORS <- setNames(color_pal(length(all_possible_categories)),
                           all_possible_categories)
 
 ## ui
-ui <- navbarPage("Phenome-Exposome Atlas",
+ui <- navbarPage("Phenome-Exposome Atlas", id = "main_nav",
     tags$head(includeHTML("g-analytics.html")),
     tabPanel("About",
       mainPanel(h1("The Phenome-Exposome Atlas of Health and Disease Risk"),
@@ -56,14 +56,19 @@ ui <- navbarPage("Phenome-Exposome Atlas",
                 h2("Data and Software Resources:"),
                 h3(a("Data and Software", href="https://github.com/chiragjp/nhanespewas")),
                 h2("Citation & Paper:"),
+                h3(a("Patel CJ. Benchmarking exposome research: An atlas of exposome-phenome associations. Nature Medicine (2026)", href="https://doi.org/10.1038/s41591-026-04266-0")),
                 h3(a("Preprint", href="https://www.medrxiv.org/content/10.1101/2025.06.05.25329055v2")),
-                h3("Paper in press! Check back here soon!"),
-                h3(a("Contact us", href="https://www.chiragjpgroup.org/about.html"))
+                h2("Course:"),
+                h3(a("ExWAS Course", href="https://exwas-course.exposomeatlas.com")),
+                h3(a("Contact us", href="https://www.chiragjpgroup.org/about.html")),
+                hr(),
+                img(src="HMS_DBMI_Logo.svg", height="80px")
                 )
     ),
     tabPanel("Browse By Phenotype",
         sidebarPanel(
-            selectInput("pvarname", h3("By Phenotype"), choices=setNames(p_variables$pvarname,p_variables$pvardesc_selector), selected="LBXGLU")
+            selectInput("pvarname", h3("By Phenotype"), choices=setNames(p_variables$pvarname,p_variables$pvardesc_selector), selected="LBXGLU"),
+            actionButton("copy_pheno_link", "Copy Link to This Phenotype", icon = icon("link"))
         ),
         mainPanel(
             h1(textOutput("pvariable_description")),
@@ -95,7 +100,8 @@ ui <- navbarPage("Phenome-Exposome Atlas",
 
     tabPanel("Browse By Exposure",
              sidebarPanel(
-                 selectInput("evarname", h3("By Exposure"), choices=setNames(e_variables$evarname,e_variables$evardesc_selector), selected="LBXBCD")
+                 selectInput("evarname", h3("By Exposure"), choices=setNames(e_variables$evarname,e_variables$evardesc_selector), selected="LBXBCD"),
+                 actionButton("copy_expo_link", "Copy Link to This Exposure", icon = icon("link"))
              ),
              mainPanel(
                h1(textOutput("evariable_description")),
@@ -119,7 +125,8 @@ ui <- navbarPage("Phenome-Exposome Atlas",
 
     tabPanel("Browse by Exposure Group",
                sidebarPanel(
-               selectInput("egroup", h3("By Group"), choices=setNames(e_category_strs$cat_subcat,e_category_strs$cat_subcat), selected="pollutant-hydrocarbon")
+               selectInput("egroup", h3("By Group"), choices=setNames(e_category_strs$cat_subcat,e_category_strs$cat_subcat), selected="pollutant-hydrocarbon"),
+               actionButton("copy_group_link", "Copy Link to This Group", icon = icon("link"))
              ),
              mainPanel(
                h1(textOutput("egroup")),
@@ -321,6 +328,69 @@ exposome_globe_plot <- function(exposure_tibble) {
 
 # server logic
 server <- function(input, output, session) {
+    # Parse URL query parameters to set dropdowns and navigate to the right tab
+    observe({
+      query <- parseQueryString(session$clientData$url_search)
+      if (!is.null(query$phenotype) && query$phenotype %in% p_variables$pvarname) {
+        updateSelectInput(session, "pvarname", selected = query$phenotype)
+        updateNavbarPage(session, "main_nav", selected = "Browse By Phenotype")
+      }
+      if (!is.null(query$exposure) && query$exposure %in% e_variables$evarname) {
+        updateSelectInput(session, "evarname", selected = query$exposure)
+        updateNavbarPage(session, "main_nav", selected = "Browse By Exposure")
+      }
+      if (!is.null(query$group) && query$group %in% e_category_strs$cat_subcat) {
+        updateSelectInput(session, "egroup", selected = query$group)
+        updateNavbarPage(session, "main_nav", selected = "Browse by Exposure Group")
+      }
+    }) |> bindEvent(session$clientData$url_search, once = TRUE)
+
+    # Copy link buttons - show modal with selectable link
+    observeEvent(input$copy_pheno_link, {
+      base_url <- paste0(session$clientData$url_protocol, "//", session$clientData$url_hostname,
+                         if (session$clientData$url_port != "") paste0(":", session$clientData$url_port),
+                         session$clientData$url_pathname)
+      link <- paste0(base_url, "?phenotype=", input$pvarname)
+      showModal(modalDialog(
+        title = "Shareable Link",
+        tags$input(type = "text", value = link, id = "share_link_text",
+                   style = "width:100%; padding:8px; font-size:14px;", readonly = "readonly"),
+        tags$script(HTML("document.getElementById('share_link_text').select();")),
+        footer = modalButton("Close"),
+        easyClose = TRUE
+      ))
+    })
+
+    observeEvent(input$copy_expo_link, {
+      base_url <- paste0(session$clientData$url_protocol, "//", session$clientData$url_hostname,
+                         if (session$clientData$url_port != "") paste0(":", session$clientData$url_port),
+                         session$clientData$url_pathname)
+      link <- paste0(base_url, "?exposure=", input$evarname)
+      showModal(modalDialog(
+        title = "Shareable Link",
+        tags$input(type = "text", value = link, id = "share_link_text",
+                   style = "width:100%; padding:8px; font-size:14px;", readonly = "readonly"),
+        tags$script(HTML("document.getElementById('share_link_text').select();")),
+        footer = modalButton("Close"),
+        easyClose = TRUE
+      ))
+    })
+
+    observeEvent(input$copy_group_link, {
+      base_url <- paste0(session$clientData$url_protocol, "//", session$clientData$url_hostname,
+                         if (session$clientData$url_port != "") paste0(":", session$clientData$url_port),
+                         session$clientData$url_pathname)
+      link <- paste0(base_url, "?group=", URLencode(input$egroup, reserved = TRUE))
+      showModal(modalDialog(
+        title = "Shareable Link",
+        tags$input(type = "text", value = link, id = "share_link_text",
+                   style = "width:100%; padding:8px; font-size:14px;", readonly = "readonly"),
+        tags$script(HTML("document.getElementById('share_link_text').select();")),
+        footer = modalButton("Close"),
+        easyClose = TRUE
+      ))
+    })
+
     output$by_phenotype_volcano_plot <- renderPlot({
         pvarn <- input$pvarname
         pcat <- p_variables |> filter(pvarname == pvarn) |> pull(pcategory)

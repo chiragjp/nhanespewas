@@ -80,12 +80,12 @@ ee <- get_data('../db/ee_summary_stats_03_2024.sqlite')
 ee_process <- process_data(ee, 'e')
 ```
 
-```{r fig.height=5, fig.width=5}
+```{r}
 library(igraph)
 E_CORR_THRESHOLD_NEG <- -0.25
 E_CORR_THRESHOLD_POS <- 0.25
 
-exposome_globe <- function(corr_tibble, exposure_tibble) {
+exposome_globe <- function(corr_tibble, exposure_tibble, file_out=NULL) {
   
   ff <- corr_tibble |> right_join(exposure_tibble |> select("exposure") |> collect(), by=c("xvarname"="exposure"))
   sig <- ff |> right_join(exposure_tibble |> select("exposure") |> collect(), by=c("yvarname"="exposure")) 
@@ -109,6 +109,9 @@ exposome_globe <- function(corr_tibble, exposure_tibble) {
   vertex_colors <- category_colors[V(g)$category]
   coords <- layout_in_circle(g)
   scaling_factor <- 3
+  if(!is.null(file_out)) {
+    pdf(file_out, width = 9, height = 9)
+  }
   plot(g, vertex.color = vertex_colors, layout=coords,
      vertex.size = 14,
      vertex.color = vertex_colors,
@@ -119,6 +122,9 @@ exposome_globe <- function(corr_tibble, exposure_tibble) {
     edge.curved=FALSE,
     edge.width = abs(E(g)$estimate) * scaling_factor)
   sig_graph
+  if(!is.null(file_out)) {
+    dev.off()
+  }
 }
 
 #exposome_globe(ee_process$adjusted_meta_raw, adjusted_meta_2 |> rename(phenotype=pvarname, exposure=evarname) |> filter(phenotype == 'LBXGH', p.value_overall < 1e-5) |> slice_min(n=10, order_by = -rsq_adjusted_base_diff))
@@ -146,8 +152,9 @@ for(ii in 1:length(uniq_exposures)) {
 to_globe <- to_globe |> bind_rows() |> select(exposure) |> group_by(exposure) |> count() |> ungroup()
 
 eg_a <- exposome_globe(ee_process$adjusted_meta_raw, to_globe)
+#eg_a <- exposome_globe(ee_process$adjusted_meta_raw, to_globe, "PanelA.pdf")
 
-write.csv(eg_a, file="fig5_globe.csv")
+#write.csv(eg_a, file="fig5_globe.csv")
 ## distribution of correlations
 exposure_corr_for_random<- ee_process$adjusted_meta_raw |> right_join(to_globe |> select("exposure") |> collect(), by=c("xvarname"="exposure")) |> right_join(to_globe |> select("exposure") |> collect(), by=c("yvarname"="exposure")) 
 
@@ -180,9 +187,10 @@ for(ii in 1:length(evar_examples)) {
 to_globe <- to_globe |> bind_rows() |> select(exposure) |> group_by(exposure) |> count() |> ungroup()
 
 eg_b <- exposome_globe(ee_process$adjusted_meta_raw, to_globe)
+eg_b <- exposome_globe(ee_process$adjusted_meta_raw, to_globe, "PanelB.pdf")
 
 # Source data for Figure 5
-write.csv(eg_b, file="fig5_globe_panelB.csv")
+#write.csv(eg_b, file="fig5_globe_panelB.csv")
 exposure_corr_for_sig <- ee_process$adjusted_meta_raw |> right_join(to_globe |> select("exposure") |> collect(), by=c("xvarname"="exposure")) |> right_join(to_globe |> select("exposure") |> collect(), by=c("yvarname"="exposure")) 
 
 
@@ -237,10 +245,12 @@ p <- p + stat_ecdf(data=exposure_corr_for_random, aes(estimate), color="grey")
 p <- p + ylab("Percentile") + theme_bw() + geom_vline(xintercept = c(E_CORR_THRESHOLD_NEG, E_CORR_THRESHOLD_POS)) + theme(legend.position = "none")
 
 p_cdf <- p
+ggsave("PanelC.pdf", p_cdf, width = 7, height = 5)
 #p_cdf <- p + geom_rect(data=rect_data, mapping=aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax, fill = "yellow"),inherit.aes = FALSE, alpha=.2)
 #png("../rmd/paper figs/png/globe_cdf.png", width = 500, height=500, units="px")
 #p_cdf
 #dev.off()
+
 
 p_cdf
 
@@ -248,7 +258,7 @@ p_cdf
 to_write_p_cdf <- rbind(ee_process$adjusted_meta_raw |> mutate(p.bonf=p.adjust(p.value), p_sig=p.bonf<.05) |> filter(p.bonf < 0.05) |> select(estimate) |> mutate(color="black"),
 exposure_corr_for_sig |> select(estimate) |> mutate(color="blue"),
 exposure_corr_for_random |> select(estimate) |> mutate(color="grey"))
-write.csv(to_write_p_cdf,file="fig5_panelC.csv")
+#write.csv(to_write_p_cdf,file="fig5_panelC.csv")
 
 ```
 
